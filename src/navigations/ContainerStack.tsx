@@ -4,7 +4,7 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { MyStoreStack, ProfileStack, QrStack } from ".";
+import { BottomTab, MyStoreStack, ProfileStack, QrStack } from ".";
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +13,15 @@ export default function ContainerStack() {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="BottomTab">
+        <Stack.Screen
+          name="BottomTab"
+          component={BottomTab}
+          options={{
+            headerShown: false,
+          }}
+        />
+
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="QrStack" component={QrStack} />
         <Stack.Screen name="MyStoreStack" component={MyStoreStack} />
