@@ -28,7 +28,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     apiUrl: process.env.EXPO_PUBLIC_API_URL,
   },
   plugins: [
-    "expo-router",
+    // "expo-router",
     [
       "expo-splash-screen",
       {
@@ -56,7 +56,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
   ],
-  experiments: {
-    typedRoutes: true,
-  },
+  // experiments: {
+  //   typedRoutes: true,
+  // },
 });

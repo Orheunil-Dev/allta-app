@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import PagerView from "react-native-pager-view";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function HomeScreen() {
+export const Home = () => {
   const bannerData = [
     { image: "", url: "" },
     { image: "", url: "" },
@@ -13,10 +12,12 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <PagerView initialPage={0} style={styles.bannerImage}>
+        <PagerView initialPage={0} style={styles.bannerCarousel}>
           {bannerData.map((value, index) => (
-            <View key={index} style={styles.bannerImage}>
-              <Text>캐러셀 {index}</Text>
+            <View key={index} style={styles.bannerCard}>
+              <View style={styles.bannerImage}>
+                <Text>캐러셀 {index}</Text>
+              </View>
             </View>
           ))}
         </PagerView>
@@ -25,7 +26,7 @@ export default function HomeScreen() {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -37,9 +38,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
   },
-  bannerImage: {
+  bannerCarousel: {
     width: "100%",
     height: 200,
+  },
+  bannerCard: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: 200,
+  },
+  bannerImage: {
+    width: "90%",
+    height: 200,
+    borderRadius: 10,
     backgroundColor: "#F3F3F3",
   },
 });
