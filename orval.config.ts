@@ -7,10 +7,16 @@ export default defineConfig({
     },
     output: {
       mode: "tags-split",
-      target: "./api/petstore.ts",
-      schemas: "./api/models",
+      target: "./src/api/petstore.ts",
+      schemas: "./src/api/models",
       client: "react-query",
       clean: true,
+      override: {
+        mutator: {
+          path: "./src/libs/custom-instance.ts",
+          name: "customInstance",
+        },
+      },
     },
   },
 });
