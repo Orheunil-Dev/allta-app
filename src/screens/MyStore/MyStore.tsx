@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export const QrScan = () => {
+export const MyStore = () => {
   return (
     <View style={styles.container}>
       <Text>내 매장</Text>

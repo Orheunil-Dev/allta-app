@@ -1,12 +1,11 @@
-import { useColorScheme } from "@/hooks/useColorScheme.web";
-import ContainerStack from "@/navigations/ContainerStack";
+import { ContainerStack } from "@/navigations";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("./src/assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -15,8 +14,10 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ContainerStack />
-      <StatusBar style="auto" />
+      <SafeAreaProvider>
+        <ContainerStack />
+        <StatusBar style="auto" />
+      </SafeAreaProvider>
     </QueryClientProvider>
   );
 }

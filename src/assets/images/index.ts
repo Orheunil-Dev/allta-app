@@ -1,0 +1,9 @@
+// 공통
+export { default as headerBackArrow } from "./header-back-arrow.png";
+
+// 홈
+export { default as alltaHeaderLogo } from "./allta-header-logo.png";
+export { default as alarmEmpty } from "./alarm-empty.png";
+export { default as alarmUnread } from "./alarm-unread.png";
+export { default as homeQrScan } from "./home-qr-scan.png";
+export { default as homeMoreArrow } from "./home-more-arrow.png";

@@ -1,14 +1,14 @@
-import { QrScan } from "@/screens/QrScan/QrScan";
+import { MyStore } from "@/screens/MyStore";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
 
 export const MyStoreStack = () => {
   return (
-    <Stack.Navigator initialRouteName="QrScan">
+    <Stack.Navigator initialRouteName="MyStore">
       <Stack.Screen
-        name="QrScan"
-        component={QrScan}
+        name="MyStore"
+        component={MyStore}
         options={{
           headerShown: false,
         }}

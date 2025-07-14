@@ -1,21 +1,31 @@
-import { Home } from "@/screens/Home/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MyStoreStack, ProfileStack, QrStack } from ".";
+import { HomeStack } from "./HomeStack";
+import { QrStack } from "./QrStack";
+import { MyStoreStack } from "./MyStoreStack";
+import { ProfileStack } from "./ProfileStack";
 
-const Tab = createBottomTabNavigator();
+export type BottomTabParamList = {
+  HomeStack: undefined;
+  QrStack: undefined;
+  MyStoreStack: undefined;
+  ProfileStack: undefined;
+};
+
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 export const BottomTab = () => {
   return (
     <Tab.Navigator detachInactiveScreens={false}>
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="HomeStack"
+        component={HomeStack}
         options={{
           title: "홈",
+          headerShown: false,
         }}
       />
       <Tab.Screen
-        name="OfferStack"
+        name="QrStack"
         component={QrStack}
         options={{
           title: "QR 스캔",
