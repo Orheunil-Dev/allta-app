@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Alarm } from "@/screens/Alarm";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
+import { LoginStack } from "./LoginStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -28,12 +29,19 @@ export const ContainerStack = () => {
             headerShown: false,
           }}
         />
-
         <Stack.Screen
           name="Alarm"
           component={Alarm}
           options={{
             header: () => <CustomHeader title="알림" showBackButton />,
+          }}
+        />
+        <Stack.Screen
+          name="LoginStack"
+          component={LoginStack}
+          options={{
+            headerShown: false,
+            presentation: "transparentModal",
           }}
         />
       </Stack.Navigator>
