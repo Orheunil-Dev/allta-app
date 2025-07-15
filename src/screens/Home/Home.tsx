@@ -24,10 +24,11 @@ import {
   homeQrScan,
 } from "@/assets/images";
 import { useAlarmControllerGetUnreadAlarmCount } from "@/api/alarm/alarm";
-import { bannerData } from "@/mock";
+import { bannerData, myStoreData } from "@/mock";
 import { colors } from "@/styles";
 import Carousel from "react-native-reanimated-carousel";
 import { CustomText } from "@/components/ui/CustomText";
+import { RecommendCard } from "@/components/ui/Card";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -45,6 +46,10 @@ export const Home = () => {
 
   // 미확인 알림 조회
   const { data: alarmCount, refetch } = useAlarmControllerGetUnreadAlarmCount();
+
+  // 내 매장 목록 조회
+
+  // 추천 매장 목록 조회
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -183,6 +188,18 @@ export const Home = () => {
                   <Image source={homeMoreArrow} style={styles.moreIcon} />
                 </Pressable>
               </View>
+
+              <View style={styles.myStoreList}>
+                {myStoreData.map((value, index) => (
+                  <RecommendCard
+                    key={index}
+                    name={value.name}
+                    address={value.address}
+                    image={value.image}
+                    distance={5.2}
+                  />
+                ))}
+              </View>
             </View>
           </View>
         </View>
@@ -216,7 +233,7 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     alignItems: "center",
-    paddingVertical: 20,
+    paddingVertical: 5,
   },
   carouselContainer: { position: "relative", width: "100%", height: 200 },
   bannerCarousel: {
@@ -315,6 +332,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     width: "100%",
     marginTop: 32,
+    marginBottom: 8,
   },
   moreStore: {
     flexDirection: "row",
@@ -323,5 +341,8 @@ const styles = StyleSheet.create({
   moreIcon: {
     width: 20,
     height: 20,
+  },
+  myStoreList: {
+    columnGap: 12,
   },
 });
