@@ -1,10 +1,8 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { headerBackArrow } from "@/assets/images";
+import { CustomText } from "@/components/ui/CustomText";
 
 interface CustomHeaderProps {
   title: string;
@@ -23,7 +21,9 @@ export const CustomHeader = ({ title, showBackButton }: CustomHeaderProps) => {
         </Pressable>
       )}
 
-      <Text style={styles.title}>{title}</Text>
+      <CustomText fontSize={20} textAlign="center">
+        {title}
+      </CustomText>
 
       <View style={styles.side} />
     </View>
@@ -44,10 +44,6 @@ const styles = StyleSheet.create({
   backButton: {
     width: 24,
     height: 24,
-  },
-  title: {
-    fontSize: 20,
-    textAlign: "center",
   },
   side: { width: 24, height: 24 },
 });

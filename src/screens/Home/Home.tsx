@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -20,6 +19,7 @@ import {
   alarmEmpty,
   alarmUnread,
   alltaHeaderLogo,
+  autoWashImage,
   homeMoreArrow,
   homeQrScan,
 } from "@/assets/images";
@@ -27,6 +27,7 @@ import { useAlarmControllerGetUnreadAlarmCount } from "@/api/alarm/alarm";
 import { bannerData } from "@/mock";
 import { colors } from "@/styles";
 import Carousel from "react-native-reanimated-carousel";
+import { CustomText } from "@/components/ui/CustomText";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -80,31 +81,30 @@ export const Home = () => {
             />
 
             <View style={styles.indicator}>
-              <Text style={{ color: "#fff", fontWeight: "500" }}>
+              <CustomText color={colors.white} fontSize={12} fontWeight={"700"}>
                 {currentSlide + 1}
-              </Text>
-              <Text style={{ color: "rgba(255, 255, 255, 0.7)" }}>
+              </CustomText>
+
+              <CustomText color="rgba(255, 255, 255, 0.7)" fontSize={12}>
                 {" "}
                 / {bannerData.length}
-              </Text>
+              </CustomText>
             </View>
           </View>
           <View style={styles.mainContainer}>
             {/* 세차 추천 */}
             <View style={styles.washRecommend}>
-              <Text style={{ color: colors.black, fontSize: 16 }}>
+              <CustomText color={colors.black} fontSize={16}>
                 오늘 미세먼지 '나쁨'
-              </Text>
-              <Text
-                style={{
-                  color: colors.black,
-                  fontSize: 22,
-                  fontWeight: "600",
-                  marginTop: 5,
-                }}
+              </CustomText>
+              <CustomText
+                color={colors.black}
+                fontSize={22}
+                fontWeight={"600"}
+                marginTop={5}
               >
                 세차하기 좋은 날이에요
-              </Text>
+              </CustomText>
             </View>
 
             {/* 상품 추천 */}
@@ -112,14 +112,12 @@ export const Home = () => {
               style={styles.productRecommend}
               onPress={() => homeNavigation.navigate("ExploreStores")}
             >
-              <Text
-                style={{ color: colors.white, fontSize: 22, fontWeight: "700" }}
-              >
+              <CustomText color={colors.white} fontSize={22} fontWeight={"700"}>
                 올타 플러스
-              </Text>
-              <Text style={{ color: colors.white, fontSize: 16, marginTop: 6 }}>
+              </CustomText>
+              <CustomText color={colors.white} fontSize={16} marginTop={6}>
                 여럿이 함께, 더 알뜰하게
-              </Text>
+              </CustomText>
             </Pressable>
 
             <View style={styles.autoWash}>
@@ -128,20 +126,18 @@ export const Home = () => {
                 onPress={() => homeNavigation.navigate("ExploreStores")}
                 style={styles.exploreStores}
               >
-                <Text
-                  style={{
-                    color: colors.main,
-                    fontSize: 22,
-                    fontWeight: "700",
-                  }}
+                <CustomText
+                  color={colors.main}
+                  fontSize={22}
+                  fontWeight={"700"}
                 >
                   자동세차
-                </Text>
-                <Text
-                  style={{ color: colors.gray5, fontSize: 16, marginTop: 6 }}
-                >
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={16} marginTop={6}>
                   최신 세차 기계로 간단하게!
-                </Text>
+                </CustomText>
+
+                <Image source={autoWashImage} style={styles.autoWashImage} />
               </Pressable>
 
               {/* QR 스캔 */}
@@ -151,40 +147,38 @@ export const Home = () => {
               >
                 <Image source={homeQrScan} style={styles.qrScanIcon} />
 
-                <Text
-                  style={{
-                    color: colors.black,
-                    fontSize: 16,
-                    fontWeight: "500",
-                    marginTop: 5,
-                  }}
+                <CustomText
+                  color={colors.black}
+                  fontSize={16}
+                  fontWeight={"500"}
+                  marginTop={5}
                 >
                   QR 스캔
-                </Text>
+                </CustomText>
               </Pressable>
             </View>
 
             <View>
               <View style={styles.myStore}>
-                <Text
-                  style={{ color: colors.black, fontSize: 18, fontWeight: 600 }}
+                <CustomText
+                  color={colors.black}
+                  fontSize={18}
+                  fontWeight={"600"}
                 >
                   내 이용 매장
-                </Text>
+                </CustomText>
 
                 <Pressable
                   onPress={() => bottomTabNavigation.navigate("MyStoreStack")}
                   style={styles.moreStore}
                 >
-                  <Text
-                    style={{
-                      color: colors.gray5,
-                      fontSize: 12,
-                      fontWeight: 600,
-                    }}
+                  <CustomText
+                    color={colors.gray5}
+                    fontSize={12}
+                    fontWeight={"600"}
                   >
                     더보기
-                  </Text>
+                  </CustomText>
 
                   <Image source={homeMoreArrow} style={styles.moreIcon} />
                 </Pressable>
@@ -271,27 +265,42 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   autoWash: {
+    position: "relative",
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
     height: 88,
     marginTop: 16,
   },
+  autoWashImage: {
+    position: "absolute",
+    width: 60,
+    height: 46,
+    bottom: 12,
+    right: 12,
+  },
   exploreStores: {
     flex: 1,
     height: "100%",
     paddingHorizontal: 12,
     paddingVertical: 12,
+    marginRight: 16,
+    backgroundColor: colors.white,
     borderRadius: 12,
     borderColor: colors.gray2,
     borderWidth: 1,
-    marginRight: 16,
+    // shadowColor: colors.black,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowRadius: 6,
+    // shadowOpacity: 0.1,
+    // elevation: 5,
   },
   qrScan: {
     justifyContent: "center",
     alignItems: "center",
     width: 72,
     height: "100%",
+    backgroundColor: colors.white,
     borderRadius: 12,
     borderColor: colors.gray2,
     borderWidth: 1,

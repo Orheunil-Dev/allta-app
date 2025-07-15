@@ -2,10 +2,11 @@ import { colors } from "@/styles";
 import { Text, TextStyle } from "react-native";
 
 interface Props {
-  text: string;
+  children: React.ReactNode;
   color?: string;
   fontSize?: number;
   fontWeight?: TextStyle["fontWeight"];
+  textAlign?: TextStyle["textAlign"];
   marginTop?: number;
   marginBottom?: number;
   marginRight?: number;
@@ -13,10 +14,11 @@ interface Props {
 }
 
 export const CustomText = ({
-  text,
+  children,
   color = colors.black,
   fontSize = 14,
   fontWeight = "400",
+  textAlign = "auto",
   marginTop = 0,
   marginBottom = 0,
   marginRight = 0,
@@ -28,13 +30,14 @@ export const CustomText = ({
         color,
         fontSize,
         fontWeight,
+        textAlign,
         marginTop,
         marginBottom,
         marginRight,
         marginLeft,
       }}
     >
-      {text}
+      {children}
     </Text>
   );
 };
