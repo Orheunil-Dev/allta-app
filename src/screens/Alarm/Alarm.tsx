@@ -1,3 +1,4 @@
+import { colors } from "@/styles";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 export const Alarm = () => {
@@ -18,22 +19,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  bannerCarousel: {
-    width: "100%",
-    height: 200,
-  },
-  bannerCard: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: 200,
-  },
-  bannerImage: {
-    width: "90%",
-    height: 200,
-    borderRadius: 10,
-    backgroundColor: "#F3F3F3",
+    backgroundColor: colors.white,
   },
 });

@@ -20,6 +20,7 @@ import {
   alarmUnread,
   alltaHeaderLogo,
   autoWashImage,
+  homeFooterArrow,
   homeMoreArrow,
   homeQrScan,
 } from "@/assets/images";
@@ -29,6 +30,11 @@ import { colors } from "@/styles";
 import Carousel from "react-native-reanimated-carousel";
 import { CustomText } from "@/components/ui/CustomText";
 import { RecommendCard } from "@/components/ui/Card";
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import { getFontSize, getResponsiveSize } from "@/utils";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -42,7 +48,8 @@ export const Home = () => {
   const bottomTabNavigation =
     useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [footerOpen, setFooterOpen] = useState<boolean>(false);
 
   // 미확인 알림 조회
   const { data: alarmCount, refetch } = useAlarmControllerGetUnreadAlarmCount();
@@ -50,6 +57,34 @@ export const Home = () => {
   // 내 매장 목록 조회
 
   // 추천 매장 목록 조회
+
+  // 푸터 애니메이션
+  const footerHeight = getResponsiveSize(100);
+  const footerMarginTop = getResponsiveSize(12);
+
+  const openAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      height: withTiming(footerOpen ? footerHeight : 0, {
+        duration: 300,
+      }),
+      marginTop: withTiming(footerOpen ? footerMarginTop : 0, {
+        duration: 300,
+      }),
+      opacity: withTiming(footerOpen ? 1 : 0, { duration: 300 }),
+    };
+  });
+
+  const rotateAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotate: withTiming(footerOpen ? "0deg" : "180deg", {
+            duration: 300,
+          }),
+        },
+      ],
+    };
+  });
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -72,16 +107,16 @@ export const Home = () => {
             <Carousel
               data={bannerData}
               width={screenWidth}
-              height={200}
+              height={getResponsiveSize(200)}
               loop
               autoPlay
               scrollAnimationDuration={1000}
               autoPlayInterval={2500}
               onSnapToItem={(index) => setCurrentSlide(index)}
               renderItem={({ item, index }) => (
-                <View key={index} style={styles.bannerCard}>
+                <Pressable key={index} style={styles.bannerCard}>
                   <Image src={item.image} style={styles.bannerImage} />
-                </View>
+                </Pressable>
               )}
             />
 
@@ -117,10 +152,10 @@ export const Home = () => {
               style={styles.productRecommend}
               onPress={() => homeNavigation.navigate("ExploreStores")}
             >
-              <CustomText color={colors.white} fontSize={22} fontWeight={"700"}>
+              <CustomText color={colors.white} fontSize={18} fontWeight={"700"}>
                 올타 플러스
               </CustomText>
-              <CustomText color={colors.white} fontSize={16} marginTop={6}>
+              <CustomText color={colors.white} fontSize={13} marginTop={6}>
                 여럿이 함께, 더 알뜰하게
               </CustomText>
             </Pressable>
@@ -133,12 +168,12 @@ export const Home = () => {
               >
                 <CustomText
                   color={colors.main}
-                  fontSize={22}
+                  fontSize={18}
                   fontWeight={"700"}
                 >
                   자동세차
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={16} marginTop={6}>
+                <CustomText color={colors.gray5} fontSize={13} marginTop={6}>
                   최신 세차 기계로 간단하게!
                 </CustomText>
 
@@ -163,6 +198,7 @@ export const Home = () => {
               </Pressable>
             </View>
 
+            {/* 추천 매장 */}
             <View>
               <View style={styles.myStore}>
                 <CustomText
@@ -202,6 +238,48 @@ export const Home = () => {
               </View>
             </View>
           </View>
+
+          {/* 푸터 */}
+          <View style={styles.footer}>
+            <View style={styles.footerTop}>
+              <Pressable
+                onPress={() => setFooterOpen(!footerOpen)}
+                style={styles.footerButton}
+              >
+                <CustomText color={colors.gray7} fontSize={14}>
+                  (주)옳은일
+                </CustomText>
+
+                <Animated.View
+                  style={[styles.footerArrow, rotateAnimatedStyle]}
+                >
+                  <Image source={homeFooterArrow} style={styles.footerArrow} />
+                </Animated.View>
+              </Pressable>
+
+              <CustomText color={colors.gray5} fontSize={14}>
+                고객센터 운영시간(월~금 : 10-18시)
+              </CustomText>
+            </View>
+
+            <Animated.View style={[styles.footerBottom, openAnimatedStyle]}>
+              <CustomText color={colors.gray5} fontSize={14}>
+                대표이사 : 이승열
+              </CustomText>
+              <CustomText color={colors.gray5} fontSize={14}>
+                사업자등록번호 : 850-81-02703
+              </CustomText>
+              <CustomText color={colors.gray5} fontSize={14}>
+                통신판매번호 : 2024-경기하남-2769
+              </CustomText>
+              <CustomText color={colors.gray5} fontSize={14}>
+                주소 : 경기도 하남시 미사강변한강로 155, 1031호
+              </CustomText>
+              <CustomText color={colors.gray5} fontSize={14}>
+                대표전화 : 1688-1620
+              </CustomText>
+            </Animated.View>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -211,31 +289,34 @@ export const Home = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: 60,
-    paddingHorizontal: 20,
-    backgroundColor: "#fff",
+    height: getResponsiveSize(60),
+    paddingHorizontal: getResponsiveSize(20),
+    backgroundColor: colors.white,
     zIndex: 1,
   },
   headerLogo: {
-    width: 58,
-    height: 28,
+    width: getResponsiveSize(58),
+    height: getResponsiveSize(28),
   },
   alarm: {
-    width: 24,
-    height: 24,
+    width: getResponsiveSize(24),
+    height: getResponsiveSize(24),
   },
   container: {
     height: "100%",
     alignItems: "center",
-    paddingVertical: 5,
   },
-  carouselContainer: { position: "relative", width: "100%", height: 200 },
+  carouselContainer: {
+    position: "relative",
+    width: "100%",
+    height: getResponsiveSize(200),
+  },
   bannerCarousel: {
     width: "100%",
     height: "100%",
@@ -248,36 +329,36 @@ const styles = StyleSheet.create({
   },
   bannerImage: {
     width: "100%",
-    height: 200,
-    paddingHorizontal: 20,
+    height: getResponsiveSize(200),
+    paddingHorizontal: getResponsiveSize(20),
     borderRadius: 10,
   },
   indicator: {
     position: "absolute",
     flexDirection: "row",
-    right: 30,
-    bottom: 10,
+    right: getResponsiveSize(30),
+    bottom: getResponsiveSize(10),
     width: "auto",
     height: "auto",
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    fontSize: 12,
+    paddingVertical: getResponsiveSize(4),
+    paddingHorizontal: getResponsiveSize(8),
+    fontSize: getFontSize(12),
     backgroundColor: "rgba(38, 38, 39, 0.7)",
     borderRadius: 40,
   },
   mainContainer: {
     width: "100%",
-    paddingHorizontal: 20,
+    paddingHorizontal: getResponsiveSize(20),
   },
   washRecommend: {
     width: "100%",
-    marginTop: 32,
+    marginTop: getResponsiveSize(32),
   },
   productRecommend: {
     width: "100%",
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    marginTop: 20,
+    paddingHorizontal: getResponsiveSize(12),
+    paddingVertical: getResponsiveSize(12),
+    marginTop: getResponsiveSize(20),
     backgroundColor: colors.main,
     borderRadius: 12,
   },
@@ -286,22 +367,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
-    height: 88,
-    marginTop: 16,
+    height: getResponsiveSize(88),
+    marginTop: getResponsiveSize(16),
   },
   autoWashImage: {
     position: "absolute",
-    width: 60,
-    height: 46,
-    bottom: 12,
-    right: 12,
+    width: getResponsiveSize(60),
+    height: getResponsiveSize(46),
+    bottom: getResponsiveSize(12),
+    right: getResponsiveSize(12),
   },
   exploreStores: {
     flex: 1,
     height: "100%",
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    marginRight: 16,
+    paddingHorizontal: getResponsiveSize(12),
+    paddingVertical: getResponsiveSize(12),
+    marginRight: getResponsiveSize(16),
     backgroundColor: colors.white,
     borderRadius: 12,
     borderColor: colors.gray2,
@@ -315,7 +396,7 @@ const styles = StyleSheet.create({
   qrScan: {
     justifyContent: "center",
     alignItems: "center",
-    width: 72,
+    width: getResponsiveSize(72),
     height: "100%",
     backgroundColor: colors.white,
     borderRadius: 12,
@@ -323,26 +404,49 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   qrScanIcon: {
-    width: 36,
-    height: 36,
+    width: getResponsiveSize(36),
+    height: getResponsiveSize(36),
   },
   myStore: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignContent: "center",
     width: "100%",
-    marginTop: 32,
-    marginBottom: 8,
+    marginTop: getResponsiveSize(40),
+    marginBottom: getResponsiveSize(8),
   },
   moreStore: {
     flexDirection: "row",
     alignItems: "center",
   },
   moreIcon: {
-    width: 20,
-    height: 20,
+    width: getResponsiveSize(20),
+    height: getResponsiveSize(20),
   },
   myStoreList: {
-    columnGap: 12,
+    marginBottom: getResponsiveSize(40),
+  },
+  footer: {
+    width: "100%",
+    paddingHorizontal: getResponsiveSize(20),
+    paddingVertical: getResponsiveSize(16),
+    backgroundColor: colors.gray1,
+  },
+  footerTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  footerButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  footerArrow: {
+    width: getResponsiveSize(20),
+    height: getResponsiveSize(20),
+  },
+  footerBottom: {
+    justifyContent: "center",
+    overflow: "hidden",
   },
 });

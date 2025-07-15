@@ -1,4 +1,5 @@
 import { colors } from "@/styles";
+import { getFontSize, getResponsiveSize } from "@/utils";
 import { Text, TextStyle } from "react-native";
 
 interface Props {
@@ -28,13 +29,13 @@ export const CustomText = ({
     <Text
       style={{
         color,
-        fontSize,
+        fontSize: getFontSize(fontSize),
         fontWeight,
         textAlign,
-        marginTop,
-        marginBottom,
-        marginRight,
-        marginLeft,
+        marginTop: getResponsiveSize(marginTop),
+        marginBottom: getResponsiveSize(marginBottom),
+        marginRight: getResponsiveSize(marginRight),
+        marginLeft: getResponsiveSize(marginLeft),
       }}
     >
       {children}

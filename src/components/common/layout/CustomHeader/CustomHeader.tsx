@@ -1,8 +1,10 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, StyleSheet, Image, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { headerBackArrow } from "@/assets/images";
 import { CustomText } from "@/components/ui/CustomText";
+import { getResponsiveSize } from "@/utils";
+import { colors } from "@/styles";
 
 interface CustomHeaderProps {
   title: string;
@@ -14,14 +16,19 @@ export const CustomHeader = ({ title, showBackButton }: CustomHeaderProps) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
+    <View
+      style={[
+        styles.header,
+        { paddingTop: insets.top + getResponsiveSize(10) },
+      ]}
+    >
       {showBackButton && (
         <Pressable onPress={() => navigation.goBack()}>
           <Image source={headerBackArrow} style={styles.backButton} />
         </Pressable>
       )}
 
-      <CustomText fontSize={20} textAlign="center">
+      <CustomText fontSize={20} fontWeight={"600"} textAlign="center">
         {title}
       </CustomText>
 
@@ -35,15 +42,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-    paddingVertical: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    backgroundColor: colors.white,
+    paddingHorizontal: getResponsiveSize(20),
+    paddingVertical: getResponsiveSize(24),
   },
   backButton: {
-    width: 24,
-    height: 24,
+    width: getResponsiveSize(24),
+    height: getResponsiveSize(24),
   },
-  side: { width: 24, height: 24 },
+  side: { width: getResponsiveSize(24), height: getResponsiveSize(24) },
 });

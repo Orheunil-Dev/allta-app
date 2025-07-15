@@ -9,3 +9,4 @@ export { default as homeQrScan } from "./home-qr-scan.png";
 export { default as homeMoreArrow } from "./home-more-arrow.png";
 export { default as autoWashImage } from "./auto-wash-image.png";
 export { default as homeDistanceIcon } from "./home-distance-icon.png";
+export { default as homeFooterArrow } from "./home-footer-arrow.png";
