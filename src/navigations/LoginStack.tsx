@@ -12,7 +12,10 @@ import { CustomHeader } from "@/components/common/layout/CustomHeader";
 export type LoginStackParamList = {
   Login: undefined;
   SignUpUserInfo: undefined;
-  SignUpCarRegist: undefined;
+  SignUpCarRegist: {
+    name: string;
+    phoneNumber: string;
+  };
   SignUpRefferal: undefined;
   SignUpServey: undefined;
   SignUpComplete: undefined;

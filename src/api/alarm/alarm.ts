@@ -20,10 +20,96 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
+import type {
+  AlarmControllerGetManyAlarmsParams
+} from '.././models';
+
 import { customInstance } from '../../libs/custom-instance';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+
+export const alarmControllerGetManyAlarms = (
+    params: AlarmControllerGetManyAlarmsParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<void>(
+      {url: `/alarm`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+export const getAlarmControllerGetManyAlarmsQueryKey = (params: AlarmControllerGetManyAlarmsParams,) => {
+    return [`/alarm`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getAlarmControllerGetManyAlarmsQueryOptions = <TData = Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError = unknown>(params: AlarmControllerGetManyAlarmsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAlarmControllerGetManyAlarmsQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>> = ({ signal }) => alarmControllerGetManyAlarms(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type AlarmControllerGetManyAlarmsQueryResult = NonNullable<Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>>
+export type AlarmControllerGetManyAlarmsQueryError = unknown
+
+
+export function useAlarmControllerGetManyAlarms<TData = Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError = unknown>(
+ params: AlarmControllerGetManyAlarmsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>,
+          TError,
+          Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAlarmControllerGetManyAlarms<TData = Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError = unknown>(
+ params: AlarmControllerGetManyAlarmsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>,
+          TError,
+          Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAlarmControllerGetManyAlarms<TData = Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError = unknown>(
+ params: AlarmControllerGetManyAlarmsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useAlarmControllerGetManyAlarms<TData = Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError = unknown>(
+ params: AlarmControllerGetManyAlarmsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof alarmControllerGetManyAlarms>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getAlarmControllerGetManyAlarmsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
 
 
 

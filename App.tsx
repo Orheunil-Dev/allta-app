@@ -14,7 +14,7 @@ export default function App() {
       <SafeAreaProvider>
         <KeyboardProvider>
           <ContainerStack />
-          <StatusBar style="auto" />{" "}
+          <StatusBar style="auto" />
         </KeyboardProvider>
       </SafeAreaProvider>
     </QueryClientProvider>
