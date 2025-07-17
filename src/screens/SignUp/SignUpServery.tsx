@@ -1,4 +1,5 @@
 import {
+  Image,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -16,13 +17,14 @@ import { SignUpTextInput } from "@/components/ui/TextInput";
 import { useState } from "react";
 import { z } from "zod";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
+import Checkbox from "expo-checkbox";
+import { joinPathOptions } from "@/constants";
+import { checkedRadioIcon, radioIcon } from "@/assets/images";
 
 type SignUpServeyRouteProp = RouteProp<LoginStackParamList, "SignUpServey">;
 
 // 유효성 검사
-const signUpFormSchema = z.object({
-  joinPath: z.string(),
-});
+const joinPathSchema = z.string().min(1);
 
 export const SignUpServey = () => {
   const route = useRoute<SignUpServeyRouteProp>();
@@ -30,21 +32,20 @@ export const SignUpServey = () => {
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
-  const [signUpForm, setSignUpForm] = useState({
-    joinPath: "",
-  });
+  const [joinPath, setjoinPath] = useState("");
+  const [isShow, setIsShow] = useState(false);
 
-  const handleChangeSignUpForm = (
-    key: keyof typeof signUpForm,
-    value: string
-  ) => {
-    setSignUpForm((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  const isValid = joinPathSchema.safeParse(joinPath).success;
+
+  const handlePressJoinPath = (value: string) => {
+    setIsShow(false);
+    setjoinPath(value);
   };
 
-  const isValid = signUpFormSchema.safeParse(signUpForm).success;
+  const handlePressEtc = () => {
+    setIsShow(true);
+    setjoinPath("");
+  };
 
   const handleNextStep = () => {
     loginStackNavigation.navigate("SignUpComplete");
@@ -58,19 +59,46 @@ export const SignUpServey = () => {
             showsVerticalScrollIndicator={false}
             scrollEnabled={false}
           >
-            <CustomText fontSize={24} fontWeight={"600"}>
+            <CustomText fontSize={24} fontWeight={"600"} marginBottom={32}>
               올타를 어떻게 알게 되셨나요?
             </CustomText>
 
-            <CustomText fontSize={16} marginTop={32}>
-              기타
-            </CustomText>
-            <SignUpTextInput
-              value={signUpForm.joinPath}
-              onChangeText={(text) => handleChangeSignUpForm("joinPath", text)}
-              maxLength={6}
-              placeholder="직접 입력"
-            />
+            {joinPathOptions.map((value, index) => (
+              <Pressable
+                key={index}
+                onPress={() => handlePressJoinPath(value)}
+                style={styles.checkBoxContainer}
+              >
+                {joinPath === value ? (
+                  <Image source={checkedRadioIcon} style={styles.radioButton} />
+                ) : (
+                  <Image source={radioIcon} style={styles.radioButton} />
+                )}
+
+                <CustomText fontSize={18}>{value}</CustomText>
+              </Pressable>
+            ))}
+
+            <Pressable
+              onPress={handlePressEtc}
+              style={styles.checkBoxContainer}
+            >
+              {isShow ? (
+                <Image source={checkedRadioIcon} style={styles.radioButton} />
+              ) : (
+                <Image source={radioIcon} style={styles.radioButton} />
+              )}
+
+              <CustomText fontSize={18}>기타</CustomText>
+            </Pressable>
+            {isShow && (
+              <SignUpTextInput
+                value={joinPath}
+                onChangeText={(text) => setjoinPath(text)}
+                maxLength={50}
+                placeholder="직접 입력"
+              />
+            )}
           </ScrollView>
 
           <CustomButton
@@ -102,23 +130,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(20),
     paddingVertical: getResponsiveSize(10),
   },
-  inputBox: {
-    position: "relative",
+  checkBoxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: "100%",
+    padding: getResponsiveSize(8),
   },
-  sendCodeButton: {
-    justifyContent: "center",
-    alignSelf: "center",
-    width: getResponsiveSize(90),
+  radioButton: {
+    width: getResponsiveSize(24),
     height: getResponsiveSize(24),
-    marginLeft: getResponsiveSize(12),
-    borderWidth: 1,
-    borderRadius: 15,
-  },
-  timer: {
-    position: "absolute",
-    right: getResponsiveSize(10),
+    marginRight: getResponsiveSize(8),
   },
 });

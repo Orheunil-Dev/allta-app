@@ -1,6 +1,8 @@
 // 공통
 export { default as headerBackArrow } from "./header-back-arrow.png";
 export { default as closeIcon } from "./close-icon.png";
+export { default as radioIcon } from "./radio-icon.png";
+export { default as checkedRadioIcon } from "./checked-radio-icon.png";
 
 // 홈
 export { default as alltaHeaderLogo } from "./allta-header-logo.png";
