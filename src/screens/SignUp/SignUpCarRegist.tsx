@@ -95,7 +95,7 @@ export const SignUpCarRegist = () => {
   const isValid = signUpFormSchema.safeParse(signUpForm).success;
 
   const handleNextStep = () => {
-    loginStackNavigation.navigate("SignUpRefferal", {
+    loginStackNavigation.navigate("SignUpReferral", {
       ...route.params,
       ...signUpForm,
     });

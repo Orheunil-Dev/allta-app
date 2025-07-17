@@ -3,7 +3,7 @@ import { Login } from "@/screens/Login";
 import {
   SignUpCarRegist,
   SignUpComplete,
-  SignUpRefferal,
+  SignUpReferral,
   SignUpServey,
   SignUpUserInfo,
 } from "@/screens/SignUp";
@@ -17,7 +17,7 @@ export type LoginStackParamList = {
     name: string;
     phoneNumber: string;
   };
-  SignUpRefferal: {
+  SignUpReferral: {
     name: string;
     phoneNumber: string;
     carBrand?: string;
@@ -32,7 +32,7 @@ export type LoginStackParamList = {
     carModel?: string;
     carType?: CreateUserDtoCarType;
     carNumber?: string;
-    refferalCode?: string;
+    referralCode?: string;
   };
   SignUpComplete: undefined;
 };
@@ -64,8 +64,8 @@ export const LoginStack = () => {
         }}
       />
       <Stack.Screen
-        name="SignUpRefferal"
-        component={SignUpRefferal}
+        name="SignUpReferral"
+        component={SignUpReferral}
         options={{
           header: () => <CustomHeader title="" showBackButton />,
         }}

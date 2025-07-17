@@ -13,45 +13,80 @@ import { colors } from "@/styles";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { SignUpTextInput } from "@/components/ui/TextInput";
-import { useState } from "react";
-import { z } from "zod";
+import { useEffect, useRef, useState } from "react";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
+import { useUserControllerVerifyRefferalCode } from "@/api/user/user";
 
-type SignUpRefferalRouteProp = RouteProp<LoginStackParamList, "SignUpRefferal">;
+type SignUpReferralRouteProp = RouteProp<LoginStackParamList, "SignUpReferral">;
 
-// 유효성 검사
-const signUpFormSchema = z.object({
-  refferalCode: z.string(),
-});
-
-export const SignUpRefferal = () => {
-  const route = useRoute<SignUpRefferalRouteProp>();
+export const SignUpReferral = () => {
+  const route = useRoute<SignUpReferralRouteProp>();
 
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
-  const [signUpForm, setSignUpForm] = useState({
-    refferalCode: "",
-  });
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleChangeSignUpForm = (
-    key: keyof typeof signUpForm,
-    value: string
-  ) => {
-    setSignUpForm((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
+  const [referralCode, setReferralCode] = useState("");
+  const [isValid, setIsValid] = useState(false);
 
-  const isValid = signUpFormSchema.safeParse(signUpForm).success;
+  const {
+    data: verifyReferralCodeData,
+    refetch: fetchVerifyReferralCode,
+    isFetching: verifyReferralCodeLoading,
+    error: verifyReferralCodeError,
+  } = useUserControllerVerifyRefferalCode(
+    {
+      referralCode,
+    },
+    {
+      query: {
+        enabled: false,
+        retry: false,
+        gcTime: 0,
+      },
+    }
+  );
 
   const handleNextStep = () => {
     loginStackNavigation.navigate("SignUpServey", {
       ...route.params,
-      ...signUpForm,
+      referralCode: undefined,
     });
   };
+
+  // 추천인 코드 6자 입력 시 자동으로 검증 요청
+  useEffect(() => {
+    if (referralCode.length !== 6) {
+      setIsValid(false);
+      return;
+    }
+
+    // 이전 타이머 제거
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    // 새 타이머 설정
+    debounceRef.current = setTimeout(() => {
+      fetchVerifyReferralCode();
+    }, 500);
+
+    // 컴포넌트 언마운트 시 타이머 클리어
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [referralCode]);
+
+  useEffect(() => {
+    if (referralCode.length !== 6) {
+      return;
+    } else if (verifyReferralCodeData) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [verifyReferralCodeData, referralCode]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -69,11 +104,10 @@ export const SignUpRefferal = () => {
               추천인 코드
             </CustomText>
             <SignUpTextInput
-              value={signUpForm.refferalCode}
-              onChangeText={(text) =>
-                handleChangeSignUpForm("refferalCode", text)
-              }
+              value={referralCode}
+              onChangeText={(text) => setReferralCode(text)}
               maxLength={6}
+              errorMessage={String(verifyReferralCodeError)}
               placeholder="추천인 코드 6자리를 입력해주세요."
             />
           </ScrollView>

@@ -6,17 +6,27 @@
  * OpenAPI spec version: 1.0
  */
 import {
-  useMutation
+  useMutation,
+  useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
-  UseMutationResult
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult
 } from '@tanstack/react-query';
 
 import type {
-  CreateUserDto
+  CreateUserDto,
+  UserControllerVerifyRefferalCodeParams
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -84,4 +94,85 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
       return useMutation(mutationOptions , queryClient);
     }
+    export const userControllerVerifyRefferalCode = (
+    params: UserControllerVerifyRefferalCodeParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<void>(
+      {url: `/user/referral-code/exists`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+export const getUserControllerVerifyRefferalCodeQueryKey = (params: UserControllerVerifyRefferalCodeParams,) => {
+    return [`/user/referral-code/exists`, ...(params ? [params]: [])] as const;
+    }
+
     
+export const getUserControllerVerifyRefferalCodeQueryOptions = <TData = Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError = unknown>(params: UserControllerVerifyRefferalCodeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getUserControllerVerifyRefferalCodeQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>> = ({ signal }) => userControllerVerifyRefferalCode(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UserControllerVerifyRefferalCodeQueryResult = NonNullable<Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>>
+export type UserControllerVerifyRefferalCodeQueryError = unknown
+
+
+export function useUserControllerVerifyRefferalCode<TData = Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError = unknown>(
+ params: UserControllerVerifyRefferalCodeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUserControllerVerifyRefferalCode<TData = Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError = unknown>(
+ params: UserControllerVerifyRefferalCodeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUserControllerVerifyRefferalCode<TData = Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError = unknown>(
+ params: UserControllerVerifyRefferalCodeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useUserControllerVerifyRefferalCode<TData = Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError = unknown>(
+ params: UserControllerVerifyRefferalCodeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerVerifyRefferalCode>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getUserControllerVerifyRefferalCodeQueryOptions(params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+

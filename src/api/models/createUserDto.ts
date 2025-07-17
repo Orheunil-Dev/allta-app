@@ -7,6 +7,10 @@
  */
 import type { CreateUserDtoLoginKind } from './createUserDtoLoginKind';
 import type { CreateUserDtoJoinPath } from './createUserDtoJoinPath';
+import type { CreateUserDtoCarBrand } from './createUserDtoCarBrand';
+import type { CreateUserDtoCarModel } from './createUserDtoCarModel';
+import type { CreateUserDtoCarType } from './createUserDtoCarType';
+import type { CreateUserDtoCarNumber } from './createUserDtoCarNumber';
 
 export interface CreateUserDto {
   /** 이름 */
@@ -24,4 +28,24 @@ export interface CreateUserDto {
    * @nullable
    */
   joinPath: CreateUserDtoJoinPath;
+  /**
+   * 차량 제조사
+   * @nullable
+   */
+  carBrand: CreateUserDtoCarBrand;
+  /**
+   * 차량 모델명
+   * @nullable
+   */
+  carModel: CreateUserDtoCarModel;
+  /**
+   * 차량 종류
+   * @nullable
+   */
+  carType: CreateUserDtoCarType;
+  /**
+   * 차량 번호
+   * @nullable
+   */
+  carNumber: CreateUserDtoCarNumber;
 }
