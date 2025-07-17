@@ -54,7 +54,7 @@ export const SignUpTextInput = ({
         style={[
           {
             borderBottomColor:
-              errorMessage !== "null"
+              errorMessage && errorMessage !== "null"
                 ? colors.red
                 : isFocused
                 ? colors.main
@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
   container: { position: "relative", flex: 1 },
   textInput: {
     flex: 1,
+    height: getResponsiveSize(42),
+    paddingHorizontal: getResponsiveSize(8),
     fontSize: getFontSize(16),
     color: colors.black,
-    paddingHorizontal: getResponsiveSize(8),
-    paddingVertical: getResponsiveSize(10),
     borderBottomWidth: 1,
   },
   errorMessage: {

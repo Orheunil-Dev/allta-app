@@ -8,6 +8,7 @@ import {
   SignUpUserInfo,
 } from "@/screens/SignUp";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
+import { CreateUserDtoCarType } from "@/api/models/createUserDtoCarType";
 
 export type LoginStackParamList = {
   Login: undefined;
@@ -16,8 +17,23 @@ export type LoginStackParamList = {
     name: string;
     phoneNumber: string;
   };
-  SignUpRefferal: undefined;
-  SignUpServey: undefined;
+  SignUpRefferal: {
+    name: string;
+    phoneNumber: string;
+    carBrand?: string;
+    carModel?: string;
+    carType?: CreateUserDtoCarType;
+    carNumber?: string;
+  };
+  SignUpServey: {
+    name: string;
+    phoneNumber: string;
+    carBrand?: string;
+    carModel?: string;
+    carType?: CreateUserDtoCarType;
+    carNumber?: string;
+    refferalCode?: string;
+  };
   SignUpComplete: undefined;
 };
 

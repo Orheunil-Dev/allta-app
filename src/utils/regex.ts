@@ -7,3 +7,6 @@ export const regexEmoji =
 
 // 전화번호
 export const regexPhoneNumber = /^\d{3}-\d{4}-\d{4}$/;
+
+// 차량 번호
+export const regexCarNumber = /^\d{1,3}[가-힣]{1,2}\d{4}$/;

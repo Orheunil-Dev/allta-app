@@ -60,7 +60,7 @@ export const SignUpUserInfo = () => {
     error: verifyPhoneNumberError,
   } = useAuthControllerVerifyPhoneNumber();
 
-  const handleChangeUserInfo = (
+  const handleChangeSignUpForm = (
     key: keyof typeof signUpForm,
     value: string
   ) => {
@@ -152,7 +152,7 @@ export const SignUpUserInfo = () => {
             scrollEnabled={false}
           >
             <CustomText fontSize={24} fontWeight={"600"}>
-              기본 정보를 입력해주세요
+              기본 정보를 입력해주세요.
             </CustomText>
 
             <CustomText fontSize={16} marginTop={32}>
@@ -160,7 +160,7 @@ export const SignUpUserInfo = () => {
             </CustomText>
             <SignUpTextInput
               value={signUpForm.name}
-              onChangeText={(text) => handleChangeUserInfo("name", text)}
+              onChangeText={(text) => handleChangeSignUpForm("name", text)}
               placeholder="이름을 입력해주세요."
             />
 
@@ -171,7 +171,7 @@ export const SignUpUserInfo = () => {
               <SignUpTextInput
                 value={signUpForm.phoneNumber}
                 onChangeText={(text) =>
-                  handleChangeUserInfo("phoneNumber", formatPhoneNumber(text))
+                  handleChangeSignUpForm("phoneNumber", formatPhoneNumber(text))
                 }
                 maxLength={13}
                 keyboardType="number-pad"
@@ -228,7 +228,7 @@ export const SignUpUserInfo = () => {
           <CustomButton
             onPress={() => {}}
             isDisabled={!isValid}
-            backgroundColor={isValid ? colors.black : colors.gray2}
+            backgroundColor={isValid ? colors.main : colors.gray2}
           >
             <CustomText
               color={isValid ? colors.white : colors.gray5}
