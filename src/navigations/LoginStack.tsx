@@ -60,7 +60,7 @@ export const LoginStack = () => {
         name="SignUpCarRegist"
         component={SignUpCarRegist}
         options={{
-          header: () => <CustomHeader title="" showBackButton />,
+          headerShown: false,
         }}
       />
       <Stack.Screen

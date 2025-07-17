@@ -7,7 +7,7 @@ import { getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
 
 interface CustomHeaderProps {
-  title: string;
+  title?: string;
   showBackButton?: boolean;
 }
 

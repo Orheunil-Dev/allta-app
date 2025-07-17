@@ -7,6 +7,7 @@ import { CustomText } from "../CustomText";
 interface Props {
   value: string;
   onChangeText: (text: string) => void;
+  editable?: boolean;
   keyboardType?: KeyboardTypeOptions;
   maxLength?: number;
   placeholder?: string;
@@ -20,6 +21,7 @@ interface Props {
 export const SignUpTextInput = ({
   value,
   onChangeText,
+  editable = true,
   maxLength = 20,
   keyboardType = "default",
   placeholder,
@@ -46,6 +48,7 @@ export const SignUpTextInput = ({
       <TextInput
         value={value}
         onChangeText={onChangeText}
+        editable={editable}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         keyboardType={keyboardType}

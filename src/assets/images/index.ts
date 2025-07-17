@@ -1,5 +1,6 @@
 // 공통
 export { default as headerBackArrow } from "./header-back-arrow.png";
+export { default as closeIcon } from "./close-icon.png";
 
 // 홈
 export { default as alltaHeaderLogo } from "./allta-header-logo.png";

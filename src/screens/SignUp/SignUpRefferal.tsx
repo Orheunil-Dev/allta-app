@@ -13,10 +13,9 @@ import { colors } from "@/styles";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { SignUpTextInput } from "@/components/ui/TextInput";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { CreateUserDtoCarType } from "@/api/models/createUserDtoCarType";
 
 type SignUpRefferalRouteProp = RouteProp<LoginStackParamList, "SignUpRefferal">;
 

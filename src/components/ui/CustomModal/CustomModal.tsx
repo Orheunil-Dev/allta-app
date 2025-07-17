@@ -20,7 +20,7 @@ export const CustomModal = ({
 }: CustomModalProps) => {
   return (
     <Modal transparent={true} visible={visible}>
-      <Pressable onPress={onClose} style={styles.overlay}>
+      <Pressable onPress={onClose} style={styles.backdrop}>
         <TouchableWithoutFeedback onPress={() => {}}>
           <View style={styles.modalContainer}>
             <CustomText fontSize={18} fontWeight="600">
@@ -39,7 +39,7 @@ export const CustomModal = ({
 };
 
 const styles = StyleSheet.create({
-  overlay: {
+  backdrop: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
