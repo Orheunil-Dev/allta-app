@@ -5,14 +5,53 @@ import { colors } from "@/styles";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import { Alert, Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import * as KakaoLogins from "@react-native-seoul/kakao-login";
+import { useAuthControllerCheckUserBySocialId } from "@/api/auth/auth";
+import {
+  CreateUserDtoLoginKind,
+  LoginBySocialIdDtoLoginKind,
+} from "@/api/models";
 
 export const Login = () => {
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
-  const handleSocialLogin = () => {
-    loginStackNavigation.navigate("SignUpUserInfo");
+  const {
+    mutate: checkSocialId,
+    data,
+    isPending,
+    isError,
+  } = useAuthControllerCheckUserBySocialId();
+
+  const handleLoginKakao = async () => {
+    try {
+      await KakaoLogins.login();
+      const profile = await KakaoLogins.getProfile();
+      const socialId = String(profile.id);
+
+      checkSocialId(
+        {
+          data: {
+            loginKind: LoginBySocialIdDtoLoginKind.KAKAO,
+            socialId,
+          },
+        },
+        {
+          onSuccess: (res) => {
+            if (!res) {
+              loginStackNavigation.navigate("SignUpUserInfo", {
+                loginKind: CreateUserDtoLoginKind.KAKAO,
+                socialId,
+              });
+            }
+          },
+          onError: (error: any) => {
+            Alert.alert("Error", error.message);
+          },
+        }
+      );
+    } catch {}
   };
 
   return (
@@ -38,7 +77,7 @@ export const Login = () => {
 
         <View style={styles.bottom}>
           {/* 카카오 로그인 */}
-          <CustomButton onPress={handleSocialLogin} backgroundColor="#FEE500">
+          <CustomButton onPress={handleLoginKakao} backgroundColor="#FEE500">
             <CustomText fontSize={15} fontWeight={"500"}>
               카카오로 로그인
             </CustomText>

@@ -35,7 +35,7 @@ export const authControllerCheckUserBySocialId = (
 ) => {
       
       
-      return customInstance<void>(
+      return customInstance<boolean>(
       {url: `/auth/social/check`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: checkUserBySocialIdDto, signal

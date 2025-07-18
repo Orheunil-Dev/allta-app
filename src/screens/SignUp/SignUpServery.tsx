@@ -17,7 +17,6 @@ import { SignUpTextInput } from "@/components/ui/TextInput";
 import { useState } from "react";
 import { z } from "zod";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import Checkbox from "expo-checkbox";
 import { joinPathOptions } from "@/constants";
 import { checkedRadioIcon, radioIcon } from "@/assets/images";
 

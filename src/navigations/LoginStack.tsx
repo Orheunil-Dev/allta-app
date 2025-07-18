@@ -9,15 +9,23 @@ import {
 } from "@/screens/SignUp";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
 import { CreateUserDtoCarType } from "@/api/models/createUserDtoCarType";
+import { CreateUserDtoLoginKind } from "@/api/models";
 
 export type LoginStackParamList = {
   Login: undefined;
-  SignUpUserInfo: undefined;
+  SignUpUserInfo: {
+    loginKind: CreateUserDtoLoginKind;
+    socialId: string;
+  };
   SignUpCarRegist: {
+    loginKind: CreateUserDtoLoginKind;
+    socialId: string;
     name: string;
     phoneNumber: string;
   };
   SignUpReferral: {
+    loginKind: CreateUserDtoLoginKind;
+    socialId: string;
     name: string;
     phoneNumber: string;
     carBrand?: string;
@@ -26,6 +34,8 @@ export type LoginStackParamList = {
     carNumber?: string;
   };
   SignUpServey: {
+    loginKind: CreateUserDtoLoginKind;
+    socialId: string;
     name: string;
     phoneNumber: string;
     carBrand?: string;

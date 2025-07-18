@@ -5,7 +5,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
 import { CustomText } from "@/components/ui/CustomText";
@@ -21,6 +21,8 @@ import {
   useAuthControllerVerifyPhoneNumber,
 } from "@/api/auth/auth";
 
+type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpUserInfo">;
+
 // 유효성 검사
 const signUpFormSchema = z.object({
   name: z.string().regex(regexName, "올바른 이름 형식이 아닙니다."),
@@ -30,6 +32,8 @@ const signUpFormSchema = z.object({
 });
 
 export const SignUpUserInfo = () => {
+  const route = useRoute<SignUpUserInfoRouteProp>();
+
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
@@ -134,6 +138,7 @@ export const SignUpUserInfo = () => {
         {
           onSuccess: () => {
             return loginStackNavigation.navigate("SignUpCarRegist", {
+              ...route.params,
               name: signUpForm.name,
               phoneNumber: signUpForm.phoneNumber,
             });
