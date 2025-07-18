@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import {
+  useAuthControllerCheckPhoneNumberExists,
   useAuthControllerSendVerificationCode,
   useAuthControllerVerifyPhoneNumber,
 } from "@/api/auth/auth";
@@ -37,8 +38,10 @@ export const SignUpUserInfo = () => {
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const secondsRef = useRef<NodeJS.Timeout | null>(null);
 
+  const [isValid, setIsValid] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [isSended, setIsSended] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
@@ -47,6 +50,14 @@ export const SignUpUserInfo = () => {
     name: "",
     phoneNumber: "",
   });
+
+  // 휴대폰 번호 중복 확인 API
+  const {
+    mutate: checkPhoneNumberExists,
+    data: checkPhoneNumberExistsData,
+    isPending: checkPhoneNumberExistsLoading,
+    error: checkPhoneNumberExistsError,
+  } = useAuthControllerCheckPhoneNumberExists();
 
   // 인증코드 발송 API
   const {
@@ -91,8 +102,6 @@ export const SignUpUserInfo = () => {
     return `0${min}:${sec < 10 ? "0" + sec : sec}`;
   };
 
-  const isValid = signUpFormSchema.safeParse(signUpForm).success;
-
   // 인증코드 전송
   const handleSendVerificationCode = () => {
     sendVerificationCode(
@@ -111,6 +120,45 @@ export const SignUpUserInfo = () => {
     );
   };
 
+  // 휴대폰번호 입력 시 자동으로 검증 요청
+  useEffect(() => {
+    if (signUpForm.phoneNumber.length !== 13) {
+      setIsValid(false);
+      return;
+    }
+
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      checkPhoneNumberExists({
+        data: {
+          phoneNumber: signUpForm.phoneNumber,
+        },
+      });
+    }, 500);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [signUpForm.phoneNumber]);
+
+  // 이름, 휴대폰 번호 입력 완료해야 인증코드 발송 가능
+  useEffect(() => {
+    if (signUpForm.phoneNumber.length !== 13) {
+      return;
+    } else if (
+      checkPhoneNumberExistsData &&
+      signUpFormSchema.safeParse(signUpForm).success
+    ) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [checkPhoneNumberExistsData, signUpFormSchema]);
+
+  // 인증코드 타이머
   useEffect(() => {
     if (isActive && seconds > 0) {
       secondsRef.current = setTimeout(() => setSeconds(seconds - 1), 1000);
@@ -126,6 +174,7 @@ export const SignUpUserInfo = () => {
     };
   }, [isActive, seconds]);
 
+  // 인증코드 입력 완료 시 자동으로 검증 후 화면 이동
   useEffect(() => {
     if (verificationCode.length === 6) {
       verifyPhoneNumber(

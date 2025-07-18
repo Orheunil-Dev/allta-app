@@ -29,6 +29,7 @@ export const Login = () => {
       await KakaoLogins.login();
       const profile = await KakaoLogins.getProfile();
       const socialId = String(profile.id);
+      const email = profile.email;
 
       checkSocialId(
         {
@@ -43,6 +44,7 @@ export const Login = () => {
               loginStackNavigation.navigate("SignUpUserInfo", {
                 loginKind: CreateUserDtoLoginKind.KAKAO,
                 socialId,
+                email,
               });
             }
           },

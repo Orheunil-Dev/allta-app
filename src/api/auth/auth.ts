@@ -16,8 +16,10 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  CheckPhoneNumberExistsDto,
   CheckUserBySocialIdDto,
   LoginBySocialIdDto,
+  Response,
   SendVerificationCodeDto,
   VerifyPhoneNumberDto
 } from '.././models';
@@ -93,7 +95,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 ) => {
       
       
-      return customInstance<void>(
+      return customInstance<Response>(
       {url: `/auth/social/login`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: loginBySocialIdDto, signal
@@ -145,14 +147,72 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
       return useMutation(mutationOptions , queryClient);
     }
+    export const authControllerCheckPhoneNumberExists = (
+    checkPhoneNumberExistsDto: CheckPhoneNumberExistsDto,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<boolean>(
+      {url: `/auth/phone/exists`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: checkPhoneNumberExistsDto, signal
+    },
+      options);
+    }
+  
+
+
+export const getAuthControllerCheckPhoneNumberExistsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>, TError,{data: CheckPhoneNumberExistsDto}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>, TError,{data: CheckPhoneNumberExistsDto}, TContext> => {
+
+const mutationKey = ['authControllerCheckPhoneNumberExists'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>, {data: CheckPhoneNumberExistsDto}> = (props) => {
+          const {data} = props ?? {};
+
+          return  authControllerCheckPhoneNumberExists(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AuthControllerCheckPhoneNumberExistsMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>>
+    export type AuthControllerCheckPhoneNumberExistsMutationBody = CheckPhoneNumberExistsDto
+    export type AuthControllerCheckPhoneNumberExistsMutationError = unknown
+
+    export const useAuthControllerCheckPhoneNumberExists = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>, TError,{data: CheckPhoneNumberExistsDto}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>,
+        TError,
+        {data: CheckPhoneNumberExistsDto},
+        TContext
+      > => {
+
+      const mutationOptions = getAuthControllerCheckPhoneNumberExistsMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
     export const authControllerSendVerificationCode = (
     sendVerificationCodeDto: SendVerificationCodeDto,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<void>(
-      {url: `/auth/phobloginBySocialIde/send-verification`, method: 'POST',
+      return customInstance<string>(
+      {url: `/auth/phone/send-verification`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: sendVerificationCodeDto, signal
     },
@@ -209,7 +269,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 ) => {
       
       
-      return customInstance<void>(
+      return customInstance<boolean>(
       {url: `/auth/phone/verify`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: verifyPhoneNumberDto, signal

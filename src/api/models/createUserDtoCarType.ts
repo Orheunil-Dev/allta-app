@@ -8,9 +8,8 @@
 
 /**
  * 차량 종류
- * @nullable
  */
-export type CreateUserDtoCarType = typeof CreateUserDtoCarType[keyof typeof CreateUserDtoCarType] | null;
+export type CreateUserDtoCarType = typeof CreateUserDtoCarType[keyof typeof CreateUserDtoCarType];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare

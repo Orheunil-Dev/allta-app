@@ -23,29 +23,14 @@ export interface CreateUserDto {
   socialId: string;
   /** 전화번호 */
   phoneNumber: string;
-  /**
-   * 가입 경로
-   * @nullable
-   */
-  joinPath: CreateUserDtoJoinPath;
-  /**
-   * 차량 제조사
-   * @nullable
-   */
-  carBrand: CreateUserDtoCarBrand;
-  /**
-   * 차량 모델명
-   * @nullable
-   */
-  carModel: CreateUserDtoCarModel;
-  /**
-   * 차량 종류
-   * @nullable
-   */
-  carType: CreateUserDtoCarType;
-  /**
-   * 차량 번호
-   * @nullable
-   */
-  carNumber: CreateUserDtoCarNumber;
+  /** 가입 경로 */
+  joinPath?: CreateUserDtoJoinPath;
+  /** 차량 제조사 */
+  carBrand?: CreateUserDtoCarBrand;
+  /** 차량 모델명 */
+  carModel?: CreateUserDtoCarModel;
+  /** 차량 종류 */
+  carType?: CreateUserDtoCarType;
+  /** 차량 번호 */
+  carNumber?: CreateUserDtoCarNumber;
 }

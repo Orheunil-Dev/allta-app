@@ -8,6 +8,5 @@
 
 /**
  * 차량 모델명
- * @nullable
  */
-export type CreateUserDtoCarModel = { [key: string]: unknown } | null;
+export type CreateUserDtoCarModel = string | null;

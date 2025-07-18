@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Pressable,
   SafeAreaView,
@@ -19,6 +20,7 @@ import { z } from "zod";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { joinPathOptions } from "@/constants";
 import { checkedRadioIcon, radioIcon } from "@/assets/images";
+import { useUserControllerCreateUser } from "@/api/user/user";
 
 type SignUpServeyRouteProp = RouteProp<LoginStackParamList, "SignUpServey">;
 
@@ -34,6 +36,14 @@ export const SignUpServey = () => {
   const [joinPath, setjoinPath] = useState("");
   const [isShow, setIsShow] = useState(false);
 
+  // 회원가입 요청
+  const {
+    mutate: createUser,
+    data: createUserData,
+    isPending: createUserLoading,
+    error: createUserError,
+  } = useUserControllerCreateUser();
+
   const isValid = joinPathSchema.safeParse(joinPath).success;
 
   const handlePressJoinPath = (value: string) => {
@@ -47,7 +57,22 @@ export const SignUpServey = () => {
   };
 
   const handleNextStep = () => {
-    loginStackNavigation.navigate("SignUpComplete");
+    createUser(
+      {
+        data: {
+          ...route.params,
+          joinPath: joinPath,
+        },
+      },
+      {
+        onSuccess: () => {
+          return loginStackNavigation.navigate("SignUpComplete");
+        },
+        onError: (error: any) => {
+          Alert.alert("error", error);
+        },
+      }
+    );
   };
 
   return (

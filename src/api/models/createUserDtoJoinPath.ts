@@ -8,6 +8,5 @@
 
 /**
  * 가입 경로
- * @nullable
  */
-export type CreateUserDtoJoinPath = { [key: string]: unknown } | null;
+export type CreateUserDtoJoinPath = string | null;

@@ -119,7 +119,7 @@ export const alarmControllerGetUnreadAlarmCount = (
 ) => {
       
       
-      return customInstance<void>(
+      return customInstance<number>(
       {url: `/alarm/unread/count`, method: 'GET', signal
     },
       options);

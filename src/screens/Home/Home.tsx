@@ -54,8 +54,8 @@ export const Home = () => {
   // 미확인 알림 조회
   const { data: alarmCount, refetch } = useAlarmControllerGetUnreadAlarmCount({
     query: {
-      retry: false, // 요청 1번만 함
-      gcTime: 0, // 캐싱 안함
+      retry: false,
+      gcTime: 0,
     },
   });
 

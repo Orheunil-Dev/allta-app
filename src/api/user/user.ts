@@ -42,7 +42,7 @@ export const userControllerCreateUser = (
 ) => {
       
       
-      return customInstance<void>(
+      return customInstance<boolean>(
       {url: `/user/create`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: createUserDto, signal
@@ -100,7 +100,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 ) => {
       
       
-      return customInstance<void>(
+      return customInstance<boolean>(
       {url: `/user/referral-code/exists`, method: 'GET',
         params, signal
     },

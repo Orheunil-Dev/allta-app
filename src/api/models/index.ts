@@ -7,6 +7,7 @@
  */
 
 export * from './alarmControllerGetManyAlarmsParams';
+export * from './checkPhoneNumberExistsDto';
 export * from './checkUserBySocialIdDto';
 export * from './checkUserBySocialIdDtoLoginKind';
 export * from './createUserDto';
@@ -18,6 +19,7 @@ export * from './createUserDtoJoinPath';
 export * from './createUserDtoLoginKind';
 export * from './loginBySocialIdDto';
 export * from './loginBySocialIdDtoLoginKind';
+export * from './response';
 export * from './sendManySmsDto';
 export * from './sendVerificationCodeDto';
 export * from './storeControllerGetManyStoresParams';

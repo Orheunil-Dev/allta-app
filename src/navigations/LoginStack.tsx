@@ -16,16 +16,19 @@ export type LoginStackParamList = {
   SignUpUserInfo: {
     loginKind: CreateUserDtoLoginKind;
     socialId: string;
+    email: string;
   };
   SignUpCarRegist: {
     loginKind: CreateUserDtoLoginKind;
     socialId: string;
+    email: string;
     name: string;
     phoneNumber: string;
   };
   SignUpReferral: {
     loginKind: CreateUserDtoLoginKind;
     socialId: string;
+    email: string;
     name: string;
     phoneNumber: string;
     carBrand?: string;
@@ -36,6 +39,7 @@ export type LoginStackParamList = {
   SignUpServey: {
     loginKind: CreateUserDtoLoginKind;
     socialId: string;
+    email: string;
     name: string;
     phoneNumber: string;
     carBrand?: string;

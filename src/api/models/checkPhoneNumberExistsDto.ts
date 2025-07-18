@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-/**
- * 차량 제조사
- */
-export type CreateUserDtoCarBrand = string | null;
+export interface CheckPhoneNumberExistsDto {
+  /** 전화번호 */
+  phoneNumber: string;
+}

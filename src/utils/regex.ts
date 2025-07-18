@@ -1,5 +1,5 @@
 // 이름
-export const regexName = /^[가-힣a-zA-Z ]+$/;
+export const regexName = /^[가-힣a-zA-Z0-9 ]+$/;
 
 // 이모지
 export const regexEmoji =

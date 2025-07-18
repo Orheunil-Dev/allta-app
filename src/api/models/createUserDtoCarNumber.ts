@@ -8,6 +8,5 @@
 
 /**
  * 차량 번호
- * @nullable
  */
-export type CreateUserDtoCarNumber = { [key: string]: unknown } | null;
+export type CreateUserDtoCarNumber = string | null;
