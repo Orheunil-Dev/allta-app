@@ -1,29 +1,42 @@
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
-import { LoginStackParamList } from "@/navigations";
+import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import { colors } from "@/styles";
 import { getFontSize, getResponsiveSize } from "@/utils";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Alert, Platform, SafeAreaView, StyleSheet, View } from "react-native";
 import * as KakaoLogins from "@react-native-seoul/kakao-login";
-import { useAuthControllerCheckUserBySocialId } from "@/api/auth/auth";
+import {
+  useAuthControllerCheckUserBySocialId,
+  useAuthControllerLoginBySocialId,
+} from "@/api/auth/auth";
 import {
   CreateUserDtoLoginKind,
   LoginBySocialIdDtoLoginKind,
 } from "@/api/models";
+import CookieManager from "@react-native-cookies/cookies";
 
 export const Login = () => {
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
+  const containerNavigation =
+    useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
   const {
     mutate: checkSocialId,
-    data,
-    isPending,
-    isError,
+    isPending: checkSocialIdLoading,
+    isError: checkSocialIdError,
   } = useAuthControllerCheckUserBySocialId();
 
+  const {
+    mutate: loginBySocialId,
+    isPending: loginBySocialIdLoading,
+    isError: loginBySocialIdError,
+  } = useAuthControllerLoginBySocialId();
+
+  // 카카오 로그인
   const handleLoginKakao = async () => {
     try {
       await KakaoLogins.login();
@@ -46,6 +59,33 @@ export const Login = () => {
                 socialId,
                 email,
               });
+            } else {
+              loginBySocialId(
+                {
+                  data: {
+                    loginKind: LoginBySocialIdDtoLoginKind.KAKAO,
+                    socialId,
+                  },
+                },
+                {
+                  onSuccess: (res) => {
+                    containerNavigation.dispatch(
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [
+                          {
+                            name: "BottomTab",
+                            params: { screen: "HomeStack" },
+                          },
+                        ],
+                      })
+                    );
+                  },
+                  onError: (error: any) => {
+                    Alert.alert("Error", error.message);
+                  },
+                }
+              );
             }
           },
           onError: (error: any) => {
