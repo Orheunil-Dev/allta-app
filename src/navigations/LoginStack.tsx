@@ -81,7 +81,7 @@ export const LoginStack = () => {
         name="SignUpComplete"
         component={SignUpComplete}
         options={{
-          header: () => <CustomHeader title="" showBackButton />,
+          header: () => <CustomHeader title="" />,
         }}
       />
     </Stack.Navigator>

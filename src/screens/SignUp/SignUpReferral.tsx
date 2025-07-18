@@ -48,10 +48,16 @@ export const SignUpReferral = () => {
     }
   );
 
+  const handleSkipRegist = () => {
+    loginStackNavigation.navigate("SignUpServey", {
+      ...route.params,
+    });
+  };
+
   const handleNextStep = () => {
     loginStackNavigation.navigate("SignUpServey", {
       ...route.params,
-      referralCode: undefined,
+      referralCode,
     });
   };
 
@@ -112,7 +118,7 @@ export const SignUpReferral = () => {
             />
           </ScrollView>
 
-          <Pressable onPress={handleNextStep}>
+          <Pressable onPress={handleSkipRegist}>
             <CustomText
               color={colors.gray7}
               fontSize={16}

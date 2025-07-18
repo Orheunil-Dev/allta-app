@@ -5,7 +5,8 @@ import { ContainerStackParamList } from "@/navigations";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { getResponsiveSize } from "@/utils";
+import { getResponsiveSize, regexCarNumber } from "@/utils";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 
 export const SignUpComplete = () => {
   const containerNavigation =
@@ -27,24 +28,24 @@ export const SignUpComplete = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.scrollView}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.form}>
-            <CustomText>가입 완료</CustomText>
-          </View>
-        </ScrollView>
+      <CustomKeyboardAvoidingView>
+        <View style={styles.container}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
+          >
+            <CustomText fontSize={24} fontWeight={"600"} marginBottom={32}>
+              회원가입이 완료되었어요!
+            </CustomText>
+          </ScrollView>
 
-        <CustomButton
-          onPress={handleNextStep}
-          backgroundColor={colors.black}
-          marginBottom={20}
-        >
-          <CustomText color={colors.white}>완료</CustomText>
-        </CustomButton>
-      </View>
+          <CustomButton onPress={handleNextStep} backgroundColor={colors.main}>
+            <CustomText color={colors.white} fontSize={16} fontWeight={"600"}>
+              시작하기
+            </CustomText>
+          </CustomButton>
+        </View>
+      </CustomKeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -52,18 +53,11 @@ export const SignUpComplete = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    width: "100%",
-    paddingHorizontal: getResponsiveSize(20),
     backgroundColor: colors.white,
   },
   container: {
     flex: 1,
     paddingHorizontal: getResponsiveSize(20),
-  },
-  scrollView: {
-    flexGrow: 1,
-  },
-  form: {
-    alignItems: "center",
+    paddingVertical: getResponsiveSize(10),
   },
 });

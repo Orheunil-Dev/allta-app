@@ -94,6 +94,12 @@ export const SignUpCarRegist = () => {
 
   const isValid = signUpFormSchema.safeParse(signUpForm).success;
 
+  const handleSkipRegist = () => {
+    loginStackNavigation.navigate("SignUpReferral", {
+      ...route.params,
+    });
+  };
+
   const handleNextStep = () => {
     loginStackNavigation.navigate("SignUpReferral", {
       ...route.params,
@@ -233,7 +239,7 @@ export const SignUpCarRegist = () => {
               />
             </ScrollView>
 
-            <Pressable onPress={handleNextStep}>
+            <Pressable onPress={handleSkipRegist}>
               <CustomText
                 color={colors.gray7}
                 fontSize={16}
