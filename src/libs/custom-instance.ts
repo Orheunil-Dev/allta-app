@@ -1,19 +1,38 @@
-import CookieManager from "@react-native-cookies/cookies";
 import Axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import * as SecureStore from "expo-secure-store";
+import CookieManager from "@react-native-cookies/cookies";
 
 export const AXIOS_INSTANCE = Axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
   withCredentials: true,
 });
 
-// AXIOS_INSTANCE.interceptors.response.use(
-//   async (response) => {
-//     const cookies = await CookieManager.getAll();
+// API 요청 시 SecureStorage에서 토큰을 꺼내 쿠키에 담아 전송
+AXIOS_INSTANCE.interceptors.request.use(
+  async (config) => {
+    const accessToken = await SecureStore.getItemAsync("accessToken");
+    const refreshToken = await SecureStore.getItemAsync("refreshToken");
 
-//     return response;
-//   },
-//   (error) => Promise.reject(error)
-// );
+    if (accessToken && refreshToken) {
+      await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
+        name: "accessToken",
+        value: accessToken,
+        path: "/",
+        httpOnly: false,
+      });
+
+      await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
+        name: "refreshToken",
+        value: refreshToken,
+        path: "/",
+        httpOnly: false,
+      });
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export const customInstance = <T = any>(
   config: AxiosRequestConfig,

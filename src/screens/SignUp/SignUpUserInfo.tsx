@@ -71,7 +71,6 @@ export const SignUpUserInfo = () => {
   // 인증코드 발송 API
   const {
     mutate: sendVerificationCode,
-    data: sendVerificationCodeData,
     isPending: sendVerificationCodeLoading,
     error: sendVerificationCodeError,
   } = useUserControllerSendVerificationCode();
@@ -79,7 +78,6 @@ export const SignUpUserInfo = () => {
   // 인증코드 확인 API
   const {
     mutate: verifyPhoneNumber,
-    data: verifyPhoneNumberData,
     isPending: verifyPhoneNumberLoading,
     error: verifyPhoneNumberError,
   } = useUserControllerVerifyPhoneNumber();
