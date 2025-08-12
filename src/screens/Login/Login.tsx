@@ -1,21 +1,18 @@
-import { CustomButton } from "@/components/ui/CustomButton";
-import { CustomText } from "@/components/ui/CustomText";
-import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
-import { colors } from "@/styles";
-import { getFontSize, getResponsiveSize } from "@/utils";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Alert, Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import * as KakaoLogins from "@react-native-seoul/kakao-login";
+import CookieManager from "@react-native-cookies/cookies";
+import * as SecureStore from "expo-secure-store";
+import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import {
   useAuthControllerCheckUserBySocialId,
   useAuthControllerLoginBySocialId,
 } from "@/api/auth/auth";
-import {
-  CreateUserDtoLoginKind,
-  LoginBySocialIdDtoLoginKind,
-} from "@/api/models";
-import CookieManager from "@react-native-cookies/cookies";
+import { getFontSize, getResponsiveSize } from "@/utils";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomText } from "@/components/ui/CustomText";
+import { colors } from "@/styles";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -47,15 +44,15 @@ export const Login = () => {
       checkSocialId(
         {
           data: {
-            loginKind: LoginBySocialIdDtoLoginKind.KAKAO,
+            loginKind: "KAKAO",
             socialId,
           },
         },
         {
           onSuccess: (res) => {
-            if (!res) {
-              loginStackNavigation.navigate("SignUpUserInfo", {
-                loginKind: CreateUserDtoLoginKind.KAKAO,
+            if (!res.ok) {
+              loginStackNavigation.navigate("SignUpTerms", {
+                loginKind: "KAKAO",
                 socialId,
                 email,
               });
@@ -63,12 +60,23 @@ export const Login = () => {
               loginBySocialId(
                 {
                   data: {
-                    loginKind: LoginBySocialIdDtoLoginKind.KAKAO,
+                    loginKind: "KAKAO",
                     socialId,
                   },
                 },
                 {
-                  onSuccess: (res) => {
+                  onSuccess: async (res) => {
+                    const cookies = await CookieManager.getAll();
+
+                    const accessToken = cookies.accessToken.value;
+                    const refreshToken = cookies.refreshToken.value;
+
+                    await SecureStore.setItemAsync("accessToken", accessToken);
+                    await SecureStore.setItemAsync(
+                      "refreshToken",
+                      refreshToken
+                    );
+
                     containerNavigation.dispatch(
                       CommonActions.reset({
                         index: 0,

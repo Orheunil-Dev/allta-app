@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-/**
- * 차량 번호
- */
-export type CreateUserDtoCarNumber = string | null;
+export interface CheckPhoneNumberRequest {
+  /** 전화번호 */
+  phoneNumber: string;
+}

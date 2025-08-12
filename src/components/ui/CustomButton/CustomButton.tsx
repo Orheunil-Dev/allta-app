@@ -11,6 +11,7 @@ interface Props {
   children?: React.ReactNode;
   onPress?: ((event: GestureResponderEvent) => void) | null | undefined;
   isDisabled?: boolean;
+  flex?: number;
   width?: ViewStyle["width"];
   height?: ViewStyle["height"];
   marginTop?: number;
@@ -25,7 +26,8 @@ export const CustomButton = ({
   children,
   onPress,
   isDisabled,
-  width = "100%",
+  flex,
+  width = "auto",
   height = getResponsiveSize(45),
   marginTop = 0,
   marginBottom = 0,
@@ -40,6 +42,7 @@ export const CustomButton = ({
       disabled={isDisabled}
       style={[
         {
+          flex: flex ?? undefined,
           width,
           height,
           marginTop: getResponsiveSize(marginTop),

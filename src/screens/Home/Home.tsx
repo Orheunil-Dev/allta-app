@@ -36,6 +36,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { getFontSize, getResponsiveSize } from "@/utils";
 
+import * as SecureStore from "expo-secure-store";
+
 const { width: screenWidth } = Dimensions.get("window");
 
 export const Home = () => {

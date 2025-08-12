@@ -10,7 +10,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: "alltaapp",
   userInterfaceStyle: "automatic",
   newArchEnabled: true,
-  ios: { bundleIdentifier: "io.allta.user", supportsTablet: true },
+  ios: {
+    bundleIdentifier: "io.allta.user",
+    supportsTablet: true,
+    config: {
+      usesNonExemptEncryption: false,
+    },
+  },
   android: {
     package: "io.allta.user",
     adaptiveIcon: {
@@ -42,13 +48,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "expo-build-properties",
       {
         android: {
-          kotlinVersion: "1.9.10",
+          kotlinVersion: "1.9.22",
           extraMavenRepos: [
             "https://devrepo.kakao.com/nexus/content/groups/public/",
           ],
         },
       },
     ],
+    ["expo-secure-store"],
     [
       "@react-native-seoul/kakao-login",
       {

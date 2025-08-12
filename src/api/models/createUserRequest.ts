@@ -5,11 +5,16 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { LoginBySocialIdDtoLoginKind } from './loginBySocialIdDtoLoginKind';
 
-export interface LoginBySocialIdDto {
+export interface CreateUserRequest {
+  /** 이름 */
+  name: string;
+  /** 이메일 */
+  email: string;
   /** 로그인 종류 */
-  loginKind: LoginBySocialIdDtoLoginKind;
+  loginKind: string;
   /** 소셜 로그인 ID */
   socialId: string;
+  /** 전화번호 */
+  phoneNumber: string;
 }

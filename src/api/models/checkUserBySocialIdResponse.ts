@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-/**
- * 차량 모델명
- */
-export type CreateUserDtoCarModel = string | null;
+export interface CheckUserBySocialIdResponse {
+  /** 회원 가입 여부 */
+  ok: boolean;
+}

@@ -15,13 +15,14 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 export const BottomTab = () => {
   return (
-    <Tab.Navigator detachInactiveScreens={false}>
+    <Tab.Navigator>
       <Tab.Screen
         name="HomeStack"
         component={HomeStack}
         options={{
           title: "홈",
           headerShown: false,
+          freezeOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -30,6 +31,7 @@ export const BottomTab = () => {
         options={{
           title: "QR 스캔",
           tabBarStyle: { display: "none" },
+          freezeOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -37,6 +39,7 @@ export const BottomTab = () => {
         component={MyStoreStack}
         options={{
           title: "내 매장",
+          freezeOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -44,6 +47,7 @@ export const BottomTab = () => {
         component={ProfileStack}
         options={{
           title: "내 정보",
+          freezeOnBlur: true,
         }}
       />
     </Tab.Navigator>

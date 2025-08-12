@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -5,22 +6,30 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  CommonActions,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import CookieManager from "@react-native-cookies/cookies";
+import * as SecureStore from "expo-secure-store";
+import { z } from "zod";
 import { LoginStackParamList } from "@/navigations";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { getResponsiveSize, regexName, regexPhoneNumber } from "@/utils";
 import { SignUpTextInput } from "@/components/ui/TextInput";
-import { useEffect, useRef, useState } from "react";
-import { z } from "zod";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import {
-  useAuthControllerCheckPhoneNumberExists,
-  useAuthControllerSendVerificationCode,
-  useAuthControllerVerifyPhoneNumber,
-} from "@/api/auth/auth";
+  useUserControllerCheckPhoneNumber,
+  useUserControllerCreateUser,
+  useUserControllerSendVerificationCode,
+  useUserControllerVerifyPhoneNumber,
+} from "@/api/user/user";
+import { useAuthControllerLoginBySocialId } from "@/api/auth/auth";
 
 type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpUserInfo">;
 
@@ -53,11 +62,11 @@ export const SignUpUserInfo = () => {
 
   // 휴대폰 번호 중복 확인 API
   const {
-    mutate: checkPhoneNumberExists,
-    data: checkPhoneNumberExistsData,
-    isPending: checkPhoneNumberExistsLoading,
-    error: checkPhoneNumberExistsError,
-  } = useAuthControllerCheckPhoneNumberExists();
+    mutate: checkPhoneNumber,
+    data: checkPhoneNumberData,
+    isPending: checkPhoneNumberLoading,
+    error: checkPhoneNumberError,
+  } = useUserControllerCheckPhoneNumber();
 
   // 인증코드 발송 API
   const {
@@ -65,7 +74,7 @@ export const SignUpUserInfo = () => {
     data: sendVerificationCodeData,
     isPending: sendVerificationCodeLoading,
     error: sendVerificationCodeError,
-  } = useAuthControllerSendVerificationCode();
+  } = useUserControllerSendVerificationCode();
 
   // 인증코드 확인 API
   const {
@@ -73,7 +82,21 @@ export const SignUpUserInfo = () => {
     data: verifyPhoneNumberData,
     isPending: verifyPhoneNumberLoading,
     error: verifyPhoneNumberError,
-  } = useAuthControllerVerifyPhoneNumber();
+  } = useUserControllerVerifyPhoneNumber();
+
+  // 회원가입
+  const {
+    mutate: createUser,
+    isPending: createUserLoading,
+    isError: createUserError,
+  } = useUserControllerCreateUser();
+
+  // 로그인
+  const {
+    mutate: loginBySocialId,
+    isPending: loginBySocialIdLoading,
+    isError: loginBySocialIdError,
+  } = useAuthControllerLoginBySocialId();
 
   const handleChangeSignUpForm = (
     key: keyof typeof signUpForm,
@@ -89,9 +112,19 @@ export const SignUpUserInfo = () => {
   const formatPhoneNumber = (value: string) => {
     const digits = value.replace(/\D/g, "");
 
-    if (digits.length <= 3) return digits;
-    if (digits.length <= 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
-    return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7, 11)}`;
+    switch (true) {
+      case digits.length <= 3:
+        return digits;
+
+      case digits.length <= 7:
+        return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+
+      default:
+        return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(
+          7,
+          11
+        )}`;
+    }
   };
 
   //시간 포맷팅 (ex. 03:00)
@@ -120,6 +153,48 @@ export const SignUpUserInfo = () => {
     );
   };
 
+  const handleSignUp = () => {
+    createUser(
+      {
+        data: {
+          ...route.params,
+          name: signUpForm.name,
+          phoneNumber: signUpForm.phoneNumber,
+        },
+      },
+      {
+        onSuccess: () => {
+          loginBySocialId(
+            {
+              data: {
+                loginKind: route.params.loginKind,
+                socialId: route.params.socialId,
+              },
+            },
+            {
+              onSuccess: async (res) => {
+                const cookies = await CookieManager.getAll();
+
+                const accessToken = cookies.accessToken.value;
+                const refreshToken = cookies.refreshToken.value;
+
+                await SecureStore.setItemAsync("accessToken", accessToken);
+                await SecureStore.setItemAsync("refreshToken", refreshToken);
+
+                return loginStackNavigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "SignUpComplete" }],
+                  })
+                );
+              },
+            }
+          );
+        },
+      }
+    );
+  };
+
   // 휴대폰번호 입력 시 자동으로 검증 요청
   useEffect(() => {
     if (signUpForm.phoneNumber.length !== 13) {
@@ -132,7 +207,7 @@ export const SignUpUserInfo = () => {
     }
 
     debounceRef.current = setTimeout(() => {
-      checkPhoneNumberExists({
+      checkPhoneNumber({
         data: {
           phoneNumber: signUpForm.phoneNumber,
         },
@@ -149,14 +224,14 @@ export const SignUpUserInfo = () => {
     if (signUpForm.phoneNumber.length !== 13) {
       return;
     } else if (
-      checkPhoneNumberExistsData &&
+      checkPhoneNumberData &&
       signUpFormSchema.safeParse(signUpForm).success
     ) {
       setIsValid(true);
     } else {
       setIsValid(false);
     }
-  }, [checkPhoneNumberExistsData, signUpFormSchema]);
+  }, [checkPhoneNumberData, signUpFormSchema]);
 
   // 인증코드 타이머
   useEffect(() => {
@@ -186,11 +261,7 @@ export const SignUpUserInfo = () => {
         },
         {
           onSuccess: () => {
-            return loginStackNavigation.navigate("SignUpCarRegist", {
-              ...route.params,
-              name: signUpForm.name,
-              phoneNumber: signUpForm.phoneNumber,
-            });
+            handleSignUp();
           },
         }
       );

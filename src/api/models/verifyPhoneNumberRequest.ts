@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface VerifyPhoneNumberDto {
+export interface VerifyPhoneNumberRequest {
   /** 전화번호 */
   phoneNumber: string;
   /** 인증코드 */

@@ -17,7 +17,6 @@ import { SignUpTextInput } from "@/components/ui/TextInput";
 import { useCallback, useRef, useState } from "react";
 import { z } from "zod";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { CreateUserDtoCarType } from "@/api/models/createUserDtoCarType";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -57,7 +56,7 @@ export const SignUpCarRegist = () => {
   const [signUpForm, setSignUpForm] = useState({
     carBrand: "",
     carModel: "",
-    carType: CreateUserDtoCarType.SEDAN,
+    carType: "",
     carNumber: "",
   });
 

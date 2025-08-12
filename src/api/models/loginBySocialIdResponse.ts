@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-/**
- * 가입 경로
- */
-export type CreateUserDtoJoinPath = string | null;
+export interface LoginBySocialIdResponse {
+  /** 로그인 성공 여부 */
+  ok: boolean;
+}

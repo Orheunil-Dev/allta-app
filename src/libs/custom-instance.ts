@@ -6,14 +6,14 @@ export const AXIOS_INSTANCE = Axios.create({
   withCredentials: true,
 });
 
-AXIOS_INSTANCE.interceptors.response.use(
-  async (response) => {
-    const cookies = await CookieManager.getAll();
+// AXIOS_INSTANCE.interceptors.response.use(
+//   async (response) => {
+//     const cookies = await CookieManager.getAll();
 
-    return response;
-  },
-  (error) => Promise.reject(error)
-);
+//     return response;
+//   },
+//   (error) => Promise.reject(error)
+// );
 
 export const customInstance = <T = any>(
   config: AxiosRequestConfig,

@@ -25,8 +25,16 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  CreateUserDto,
-  UserControllerVerifyRefferalCodeParams
+  CheckPhoneNumberRequest,
+  CheckPhoneNumberResponse,
+  CreateUserRequest,
+  CreateUserResponse,
+  SendVerificationCodeRequest,
+  SendVerificationCodeResponse,
+  UserControllerVerifyRefferalCodeParams,
+  VerifyPhoneNumberRequest,
+  VerifyPhoneNumberResponse,
+  VerifyReferralCodeResponse
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -37,15 +45,15 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 export const userControllerCreateUser = (
-    createUserDto: CreateUserDto,
+    createUserRequest: CreateUserRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<boolean>(
+      return customInstance<CreateUserResponse>(
       {url: `/user/create`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: createUserDto, signal
+      data: createUserRequest, signal
     },
       options);
     }
@@ -53,8 +61,8 @@ export const userControllerCreateUser = (
 
 
 export const getUserControllerCreateUserMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerCreateUser>>, TError,{data: CreateUserDto}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof userControllerCreateUser>>, TError,{data: CreateUserDto}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerCreateUser>>, TError,{data: CreateUserRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof userControllerCreateUser>>, TError,{data: CreateUserRequest}, TContext> => {
 
 const mutationKey = ['userControllerCreateUser'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -66,7 +74,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerCreateUser>>, {data: CreateUserDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerCreateUser>>, {data: CreateUserRequest}> = (props) => {
           const {data} = props ?? {};
 
           return  userControllerCreateUser(data,requestOptions)
@@ -78,19 +86,193 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UserControllerCreateUserMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerCreateUser>>>
-    export type UserControllerCreateUserMutationBody = CreateUserDto
+    export type UserControllerCreateUserMutationBody = CreateUserRequest
     export type UserControllerCreateUserMutationError = unknown
 
     export const useUserControllerCreateUser = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerCreateUser>>, TError,{data: CreateUserDto}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerCreateUser>>, TError,{data: CreateUserRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof userControllerCreateUser>>,
         TError,
-        {data: CreateUserDto},
+        {data: CreateUserRequest},
         TContext
       > => {
 
       const mutationOptions = getUserControllerCreateUserMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const userControllerCheckPhoneNumber = (
+    checkPhoneNumberRequest: CheckPhoneNumberRequest,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<CheckPhoneNumberResponse>(
+      {url: `/user/check/phone-number`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: checkPhoneNumberRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getUserControllerCheckPhoneNumberMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerCheckPhoneNumber>>, TError,{data: CheckPhoneNumberRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof userControllerCheckPhoneNumber>>, TError,{data: CheckPhoneNumberRequest}, TContext> => {
+
+const mutationKey = ['userControllerCheckPhoneNumber'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerCheckPhoneNumber>>, {data: CheckPhoneNumberRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  userControllerCheckPhoneNumber(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UserControllerCheckPhoneNumberMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerCheckPhoneNumber>>>
+    export type UserControllerCheckPhoneNumberMutationBody = CheckPhoneNumberRequest
+    export type UserControllerCheckPhoneNumberMutationError = unknown
+
+    export const useUserControllerCheckPhoneNumber = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerCheckPhoneNumber>>, TError,{data: CheckPhoneNumberRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof userControllerCheckPhoneNumber>>,
+        TError,
+        {data: CheckPhoneNumberRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUserControllerCheckPhoneNumberMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const userControllerSendVerificationCode = (
+    sendVerificationCodeRequest: SendVerificationCodeRequest,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<SendVerificationCodeResponse>(
+      {url: `/user/send/verification-code`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: sendVerificationCodeRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getUserControllerSendVerificationCodeMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerSendVerificationCode>>, TError,{data: SendVerificationCodeRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof userControllerSendVerificationCode>>, TError,{data: SendVerificationCodeRequest}, TContext> => {
+
+const mutationKey = ['userControllerSendVerificationCode'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerSendVerificationCode>>, {data: SendVerificationCodeRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  userControllerSendVerificationCode(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UserControllerSendVerificationCodeMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerSendVerificationCode>>>
+    export type UserControllerSendVerificationCodeMutationBody = SendVerificationCodeRequest
+    export type UserControllerSendVerificationCodeMutationError = unknown
+
+    export const useUserControllerSendVerificationCode = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerSendVerificationCode>>, TError,{data: SendVerificationCodeRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof userControllerSendVerificationCode>>,
+        TError,
+        {data: SendVerificationCodeRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUserControllerSendVerificationCodeMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const userControllerVerifyPhoneNumber = (
+    verifyPhoneNumberRequest: VerifyPhoneNumberRequest,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<VerifyPhoneNumberResponse>(
+      {url: `/user/verify/phone-number`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: verifyPhoneNumberRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getUserControllerVerifyPhoneNumberMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerVerifyPhoneNumber>>, TError,{data: VerifyPhoneNumberRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof userControllerVerifyPhoneNumber>>, TError,{data: VerifyPhoneNumberRequest}, TContext> => {
+
+const mutationKey = ['userControllerVerifyPhoneNumber'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerVerifyPhoneNumber>>, {data: VerifyPhoneNumberRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  userControllerVerifyPhoneNumber(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UserControllerVerifyPhoneNumberMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerVerifyPhoneNumber>>>
+    export type UserControllerVerifyPhoneNumberMutationBody = VerifyPhoneNumberRequest
+    export type UserControllerVerifyPhoneNumberMutationError = unknown
+
+    export const useUserControllerVerifyPhoneNumber = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerVerifyPhoneNumber>>, TError,{data: VerifyPhoneNumberRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof userControllerVerifyPhoneNumber>>,
+        TError,
+        {data: VerifyPhoneNumberRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUserControllerVerifyPhoneNumberMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }
@@ -100,8 +282,8 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 ) => {
       
       
-      return customInstance<boolean>(
-      {url: `/user/referral-code/exists`, method: 'GET',
+      return customInstance<VerifyReferralCodeResponse>(
+      {url: `/user/verify/referral-code`, method: 'GET',
         params, signal
     },
       options);
@@ -109,7 +291,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   
 
 export const getUserControllerVerifyRefferalCodeQueryKey = (params: UserControllerVerifyRefferalCodeParams,) => {
-    return [`/user/referral-code/exists`, ...(params ? [params]: [])] as const;
+    return [`/user/verify/referral-code`, ...(params ? [params]: [])] as const;
     }
 
     

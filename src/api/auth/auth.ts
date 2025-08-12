@@ -16,12 +16,10 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  CheckPhoneNumberExistsDto,
-  CheckUserBySocialIdDto,
-  LoginBySocialIdDto,
-  Response,
-  SendVerificationCodeDto,
-  VerifyPhoneNumberDto
+  CheckUserBySocialIdRequest,
+  CheckUserBySocialIdResponse,
+  LoginBySocialIdRequest,
+  LoginBySocialIdResponse
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -32,15 +30,15 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 export const authControllerCheckUserBySocialId = (
-    checkUserBySocialIdDto: CheckUserBySocialIdDto,
+    checkUserBySocialIdRequest: CheckUserBySocialIdRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<boolean>(
+      return customInstance<CheckUserBySocialIdResponse>(
       {url: `/auth/social/check`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: checkUserBySocialIdDto, signal
+      data: checkUserBySocialIdRequest, signal
     },
       options);
     }
@@ -48,8 +46,8 @@ export const authControllerCheckUserBySocialId = (
 
 
 export const getAuthControllerCheckUserBySocialIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, TError,{data: CheckUserBySocialIdDto}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, TError,{data: CheckUserBySocialIdDto}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, TError,{data: CheckUserBySocialIdRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, TError,{data: CheckUserBySocialIdRequest}, TContext> => {
 
 const mutationKey = ['authControllerCheckUserBySocialId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -61,7 +59,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, {data: CheckUserBySocialIdDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, {data: CheckUserBySocialIdRequest}> = (props) => {
           const {data} = props ?? {};
 
           return  authControllerCheckUserBySocialId(data,requestOptions)
@@ -73,15 +71,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type AuthControllerCheckUserBySocialIdMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>>
-    export type AuthControllerCheckUserBySocialIdMutationBody = CheckUserBySocialIdDto
+    export type AuthControllerCheckUserBySocialIdMutationBody = CheckUserBySocialIdRequest
     export type AuthControllerCheckUserBySocialIdMutationError = unknown
 
     export const useAuthControllerCheckUserBySocialId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, TError,{data: CheckUserBySocialIdDto}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, TError,{data: CheckUserBySocialIdRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>,
         TError,
-        {data: CheckUserBySocialIdDto},
+        {data: CheckUserBySocialIdRequest},
         TContext
       > => {
 
@@ -90,15 +88,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       return useMutation(mutationOptions , queryClient);
     }
     export const authControllerLoginBySocialId = (
-    loginBySocialIdDto: LoginBySocialIdDto,
+    loginBySocialIdRequest: LoginBySocialIdRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<Response>(
+      return customInstance<LoginBySocialIdResponse>(
       {url: `/auth/social/login`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: loginBySocialIdDto, signal
+      data: loginBySocialIdRequest, signal
     },
       options);
     }
@@ -106,8 +104,8 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 export const getAuthControllerLoginBySocialIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLoginBySocialId>>, TError,{data: LoginBySocialIdDto}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerLoginBySocialId>>, TError,{data: LoginBySocialIdDto}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLoginBySocialId>>, TError,{data: LoginBySocialIdRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authControllerLoginBySocialId>>, TError,{data: LoginBySocialIdRequest}, TContext> => {
 
 const mutationKey = ['authControllerLoginBySocialId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -119,7 +117,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerLoginBySocialId>>, {data: LoginBySocialIdDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerLoginBySocialId>>, {data: LoginBySocialIdRequest}> = (props) => {
           const {data} = props ?? {};
 
           return  authControllerLoginBySocialId(data,requestOptions)
@@ -131,193 +129,19 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type AuthControllerLoginBySocialIdMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerLoginBySocialId>>>
-    export type AuthControllerLoginBySocialIdMutationBody = LoginBySocialIdDto
+    export type AuthControllerLoginBySocialIdMutationBody = LoginBySocialIdRequest
     export type AuthControllerLoginBySocialIdMutationError = unknown
 
     export const useAuthControllerLoginBySocialId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLoginBySocialId>>, TError,{data: LoginBySocialIdDto}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLoginBySocialId>>, TError,{data: LoginBySocialIdRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof authControllerLoginBySocialId>>,
         TError,
-        {data: LoginBySocialIdDto},
+        {data: LoginBySocialIdRequest},
         TContext
       > => {
 
       const mutationOptions = getAuthControllerLoginBySocialIdMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    export const authControllerCheckPhoneNumberExists = (
-    checkPhoneNumberExistsDto: CheckPhoneNumberExistsDto,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/auth/phone/exists`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: checkPhoneNumberExistsDto, signal
-    },
-      options);
-    }
-  
-
-
-export const getAuthControllerCheckPhoneNumberExistsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>, TError,{data: CheckPhoneNumberExistsDto}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>, TError,{data: CheckPhoneNumberExistsDto}, TContext> => {
-
-const mutationKey = ['authControllerCheckPhoneNumberExists'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>, {data: CheckPhoneNumberExistsDto}> = (props) => {
-          const {data} = props ?? {};
-
-          return  authControllerCheckPhoneNumberExists(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AuthControllerCheckPhoneNumberExistsMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>>
-    export type AuthControllerCheckPhoneNumberExistsMutationBody = CheckPhoneNumberExistsDto
-    export type AuthControllerCheckPhoneNumberExistsMutationError = unknown
-
-    export const useAuthControllerCheckPhoneNumberExists = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>, TError,{data: CheckPhoneNumberExistsDto}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerCheckPhoneNumberExists>>,
-        TError,
-        {data: CheckPhoneNumberExistsDto},
-        TContext
-      > => {
-
-      const mutationOptions = getAuthControllerCheckPhoneNumberExistsMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    export const authControllerSendVerificationCode = (
-    sendVerificationCodeDto: SendVerificationCodeDto,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<string>(
-      {url: `/auth/phone/send-verification`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sendVerificationCodeDto, signal
-    },
-      options);
-    }
-  
-
-
-export const getAuthControllerSendVerificationCodeMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerSendVerificationCode>>, TError,{data: SendVerificationCodeDto}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerSendVerificationCode>>, TError,{data: SendVerificationCodeDto}, TContext> => {
-
-const mutationKey = ['authControllerSendVerificationCode'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerSendVerificationCode>>, {data: SendVerificationCodeDto}> = (props) => {
-          const {data} = props ?? {};
-
-          return  authControllerSendVerificationCode(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AuthControllerSendVerificationCodeMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerSendVerificationCode>>>
-    export type AuthControllerSendVerificationCodeMutationBody = SendVerificationCodeDto
-    export type AuthControllerSendVerificationCodeMutationError = unknown
-
-    export const useAuthControllerSendVerificationCode = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerSendVerificationCode>>, TError,{data: SendVerificationCodeDto}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerSendVerificationCode>>,
-        TError,
-        {data: SendVerificationCodeDto},
-        TContext
-      > => {
-
-      const mutationOptions = getAuthControllerSendVerificationCodeMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    export const authControllerVerifyPhoneNumber = (
-    verifyPhoneNumberDto: VerifyPhoneNumberDto,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<boolean>(
-      {url: `/auth/phone/verify`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: verifyPhoneNumberDto, signal
-    },
-      options);
-    }
-  
-
-
-export const getAuthControllerVerifyPhoneNumberMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerVerifyPhoneNumber>>, TError,{data: VerifyPhoneNumberDto}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerVerifyPhoneNumber>>, TError,{data: VerifyPhoneNumberDto}, TContext> => {
-
-const mutationKey = ['authControllerVerifyPhoneNumber'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerVerifyPhoneNumber>>, {data: VerifyPhoneNumberDto}> = (props) => {
-          const {data} = props ?? {};
-
-          return  authControllerVerifyPhoneNumber(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AuthControllerVerifyPhoneNumberMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerVerifyPhoneNumber>>>
-    export type AuthControllerVerifyPhoneNumberMutationBody = VerifyPhoneNumberDto
-    export type AuthControllerVerifyPhoneNumberMutationError = unknown
-
-    export const useAuthControllerVerifyPhoneNumber = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerVerifyPhoneNumber>>, TError,{data: VerifyPhoneNumberDto}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerVerifyPhoneNumber>>,
-        TError,
-        {data: VerifyPhoneNumberDto},
-        TContext
-      > => {
-
-      const mutationOptions = getAuthControllerVerifyPhoneNumberMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }

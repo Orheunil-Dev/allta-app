@@ -1,54 +1,39 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login } from "@/screens/Login";
-import {
-  SignUpCarRegist,
-  SignUpComplete,
-  SignUpReferral,
-  SignUpServey,
-  SignUpUserInfo,
-} from "@/screens/SignUp";
+import { SignUpComplete, SignUpTerms, SignUpUserInfo } from "@/screens/SignUp";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
-import { CreateUserDtoCarType } from "@/api/models/createUserDtoCarType";
-import { CreateUserDtoLoginKind } from "@/api/models";
 
 export type LoginStackParamList = {
   Login: undefined;
+  SignUpTerms: {
+    loginKind: string;
+    socialId: string;
+    email: string;
+  };
   SignUpUserInfo: {
-    loginKind: CreateUserDtoLoginKind;
+    loginKind: string;
     socialId: string;
     email: string;
-  };
-  SignUpCarRegist: {
-    loginKind: CreateUserDtoLoginKind;
-    socialId: string;
-    email: string;
-    name: string;
-    phoneNumber: string;
-  };
-  SignUpReferral: {
-    loginKind: CreateUserDtoLoginKind;
-    socialId: string;
-    email: string;
-    name: string;
-    phoneNumber: string;
-    carBrand?: string;
-    carModel?: string;
-    carType?: CreateUserDtoCarType;
-    carNumber?: string;
-  };
-  SignUpServey: {
-    loginKind: CreateUserDtoLoginKind;
-    socialId: string;
-    email: string;
-    name: string;
-    phoneNumber: string;
-    carBrand?: string;
-    carModel?: string;
-    carType?: CreateUserDtoCarType;
-    carNumber?: string;
-    referralCode?: string;
   };
   SignUpComplete: undefined;
+  // SignUpCarRegist: {
+  //   loginKind: string;
+  //   socialId: string;
+  //   email: string;
+  //   name: string;
+  //   phoneNumber: string;
+  // };
+  // SignUpReferral: {
+  //   loginKind: string;
+  //   socialId: string;
+  //   email: string;
+  //   name: string;
+  //   phoneNumber: string;
+  //   carBrand?: string;
+  //   carModel?: string;
+  //   carType?: string;
+  //   carNumber?: string;
+  // };
 };
 
 const Stack = createNativeStackNavigator();
@@ -64,6 +49,13 @@ export const LoginStack = () => {
         }}
       />
       <Stack.Screen
+        name="SignUpTerms"
+        component={SignUpTerms}
+        options={{
+          header: () => <CustomHeader title="" showBackButton />,
+        }}
+      />
+      <Stack.Screen
         name="SignUpUserInfo"
         component={SignUpUserInfo}
         options={{
@@ -71,6 +63,13 @@ export const LoginStack = () => {
         }}
       />
       <Stack.Screen
+        name="SignUpComplete"
+        component={SignUpComplete}
+        options={{
+          header: () => <CustomHeader title="" />,
+        }}
+      />
+      {/* <Stack.Screen
         name="SignUpCarRegist"
         component={SignUpCarRegist}
         options={{
@@ -83,21 +82,7 @@ export const LoginStack = () => {
         options={{
           header: () => <CustomHeader title="" showBackButton />,
         }}
-      />
-      <Stack.Screen
-        name="SignUpServey"
-        component={SignUpServey}
-        options={{
-          header: () => <CustomHeader title="" showBackButton />,
-        }}
-      />
-      <Stack.Screen
-        name="SignUpComplete"
-        component={SignUpComplete}
-        options={{
-          header: () => <CustomHeader title="" />,
-        }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

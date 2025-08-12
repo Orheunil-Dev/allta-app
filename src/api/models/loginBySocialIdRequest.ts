@@ -6,7 +6,9 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CheckPhoneNumberExistsDto {
-  /** 전화번호 */
-  phoneNumber: string;
+export interface LoginBySocialIdRequest {
+  /** 로그인 종류 */
+  loginKind: string;
+  /** 소셜 로그인 ID */
+  socialId: string;
 }

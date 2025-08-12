@@ -6,7 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface SendVerificationCodeDto {
-  /** 전화번호 */
-  phoneNumber: string;
-}
+export interface VerifyReferralCodeResponse { [key: string]: unknown }

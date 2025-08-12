@@ -5,11 +5,10 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { CheckUserBySocialIdDtoLoginKind } from './checkUserBySocialIdDtoLoginKind';
 
-export interface CheckUserBySocialIdDto {
+export interface CheckUserBySocialIdRequest {
   /** 로그인 종류 */
-  loginKind: CheckUserBySocialIdDtoLoginKind;
+  loginKind: string;
   /** 소셜 로그인 ID */
   socialId: string;
 }
