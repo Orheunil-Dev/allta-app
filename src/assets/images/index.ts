@@ -3,6 +3,13 @@ export { default as headerBackArrow } from "./header-back-arrow.png";
 export { default as closeIcon } from "./close-icon.png";
 export { default as radioIcon } from "./radio-icon.png";
 export { default as checkedRadioIcon } from "./checked-radio-icon.png";
+export { default as blackHomeIcon } from "./black-home-icon.png";
+export { default as whiteHomeIcon } from "./white-home-icon.png";
+export { default as blackStoreIcon } from "./black-store-icon.png";
+export { default as whiteStoreIcon } from "./white-store-icon.png";
+export { default as scanIcon } from "./scan-icon.png";
+export { default as blackMyIcon } from "./black-my-icon.png";
+export { default as whiteMyIcon } from "./white-my-icon.png";
 
 // 홈
 export { default as alltaHeaderLogo } from "./allta-header-logo.png";

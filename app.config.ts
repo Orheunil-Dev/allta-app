@@ -48,7 +48,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "expo-build-properties",
       {
         android: {
-          kotlinVersion: "1.9.22",
+          compileSdkVersion: 35,
+          targetSdkVersion: 35,
+          minSdkVersion: 25,
+          buildToolsVersion: "35.0.0",
+          kotlinVersion: "2.0.21",
+          gradlePluginVersion: "8.4.0",
           extraMavenRepos: [
             "https://devrepo.kakao.com/nexus/content/groups/public/",
           ],
@@ -56,6 +61,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     ["expo-secure-store"],
+    [
+      "@react-native-kakao/core",
+      {
+        nativeAppKey: process.env.EXPO_PUBLIC_KAKAO_APP_KEY,
+      },
+    ],
     [
       "@react-native-seoul/kakao-login",
       {
