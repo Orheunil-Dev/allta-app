@@ -3,7 +3,6 @@ import {
   Dimensions,
   Image,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
@@ -35,8 +34,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { getFontSize, getResponsiveSize } from "@/utils";
-
-import * as SecureStore from "expo-secure-store";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -60,8 +58,6 @@ export const Home = () => {
       gcTime: 0,
     },
   });
-
-  // 내 매장 목록 조회
 
   // 추천 매장 목록 조회
 
@@ -94,7 +90,7 @@ export const Home = () => {
   });
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView>
       <View style={styles.header}>
         <Image source={alltaHeaderLogo} style={styles.headerLogo} />
 
@@ -122,7 +118,11 @@ export const Home = () => {
               onSnapToItem={(index) => setCurrentSlide(index)}
               renderItem={({ item, index }) => (
                 <Pressable key={index} style={styles.bannerCard}>
-                  <Image src={item.image} style={styles.bannerImage} />
+                  <Image
+                    src={item.image}
+                    resizeMode="cover"
+                    style={styles.bannerImage}
+                  />
                 </Pressable>
               )}
             />
@@ -289,15 +289,11 @@ export const Home = () => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -332,12 +328,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    height: "100%",
+    height: getResponsiveSize(200),
+    paddingHorizontal: getResponsiveSize(20),
   },
   bannerImage: {
     width: "100%",
     height: getResponsiveSize(200),
-    paddingHorizontal: getResponsiveSize(20),
     borderRadius: 10,
   },
   indicator: {

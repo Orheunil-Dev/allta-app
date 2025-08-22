@@ -6,7 +6,7 @@ import { ProfileStack } from "./ProfileStack";
 import { getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
 import { CustomBottomTab } from "@/components/common/layout/CustomBottomTab";
-import { Image } from "react-native";
+import { Image, Platform } from "react-native";
 import {
   blackHomeIcon,
   blackMyIcon,
@@ -32,7 +32,10 @@ export const BottomTab = () => {
       tabBar={(props) => <CustomBottomTab {...props} />}
       screenOptions={{
         tabBarStyle: {
-          height: getResponsiveSize(60),
+          height:
+            Platform.OS === "ios"
+              ? getResponsiveSize(60)
+              : getResponsiveSize(90),
           backgroundColor: colors.white,
         },
         tabBarIconStyle: {

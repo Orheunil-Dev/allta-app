@@ -11,6 +11,9 @@ export { default as scanIcon } from "./scan-icon.png";
 export { default as blackMyIcon } from "./black-my-icon.png";
 export { default as whiteMyIcon } from "./white-my-icon.png";
 
+// 스플래쉬
+export { default as splashIamge } from "./splash-image.png";
+
 // 홈
 export { default as alltaHeaderLogo } from "./allta-header-logo.png";
 export { default as alarmEmpty } from "./alarm-empty.png";
