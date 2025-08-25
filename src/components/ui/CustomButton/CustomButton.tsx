@@ -12,6 +12,7 @@ interface Props {
   onPress?: ((event: GestureResponderEvent) => void) | null | undefined;
   isDisabled?: boolean;
   flex?: number;
+  flexDirection?: ViewStyle["flexDirection"];
   width?: ViewStyle["width"];
   height?: ViewStyle["height"];
   marginTop?: number;
@@ -27,6 +28,7 @@ export const CustomButton = ({
   onPress,
   isDisabled,
   flex,
+  flexDirection = "row",
   width = "auto",
   height = getResponsiveSize(45),
   marginTop = 0,
@@ -43,6 +45,7 @@ export const CustomButton = ({
       style={[
         {
           flex: flex ?? undefined,
+          flexDirection,
           width,
           height,
           marginTop: getResponsiveSize(marginTop),

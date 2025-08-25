@@ -1,11 +1,14 @@
+import { useUserControllerGetUserProfile } from "@/api/user/user";
 import { ContainerStackParamList } from "@/navigations";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export const Profile = () => {
+export const MyPage = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const { data, error } = useUserControllerGetUserProfile();
 
   return (
     <View style={styles.container}>

@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeStack } from "./HomeStack";
 import { QrStack } from "./QrStack";
 import { MyStoreStack } from "./MyStoreStack";
-import { ProfileStack } from "./ProfileStack";
 import { getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
 import { CustomBottomTab } from "@/components/common/layout/CustomBottomTab";
@@ -16,12 +15,13 @@ import {
   whiteMyIcon,
   whiteStoreIcon,
 } from "@/assets/images";
+import { MyPageStack } from "./MyPageStack";
 
 export type BottomTabParamList = {
   HomeStack: undefined;
   QrStack: undefined;
   MyStoreStack: undefined;
-  ProfileStack: undefined;
+  MyPageStack: undefined;
 };
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -102,8 +102,8 @@ export const BottomTab = () => {
         }}
       />
       <Tab.Screen
-        name="ProfileStack"
-        component={ProfileStack}
+        name="MyPageStack"
+        component={MyPageStack}
         options={{
           title: "내 정보",
           tabBarIcon: ({ focused }) => (

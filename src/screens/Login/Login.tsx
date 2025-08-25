@@ -1,4 +1,12 @@
-import { Alert, Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import * as KakaoLogins from "@react-native-seoul/kakao-login";
@@ -9,10 +17,17 @@ import {
   useAuthControllerCheckUserBySocialId,
   useAuthControllerLoginBySocialId,
 } from "@/api/auth/auth";
-import { getFontSize, getResponsiveSize } from "@/utils";
+import { getResponsiveSize } from "@/utils";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
+import {
+  appleLoginIcon,
+  closeIcon,
+  googleLoginIcon,
+  kakaoLoginIcon,
+} from "@/assets/images";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -97,6 +112,8 @@ export const Login = () => {
             }
           },
           onError: (error: any) => {
+            console.log(error);
+
             Alert.alert("Error", error.message);
           },
         }
@@ -104,66 +121,115 @@ export const Login = () => {
     } catch {}
   };
 
+  const handlePressClose = () => {
+    containerNavigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {
+            name: "BottomTab",
+            params: { screen: "HomeStack" },
+          },
+        ],
+      })
+    );
+  };
+
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView>
       <View style={styles.container}>
-        <View style={styles.top}>
-          <View style={styles.title}>
-            <CustomText
-              color={colors.black}
-              fontSize={getFontSize(28)}
-              fontWeight={"700"}
-              textAlign="center"
-            >
-              월구독으로
-              {"\n"}내 맘대로, 간편 세차
-            </CustomText>
-          </View>
+        <Pressable onPress={handlePressClose} style={styles.closeButton}>
+          <Image
+            source={closeIcon}
+            style={{
+              width: getResponsiveSize(28),
+              height: getResponsiveSize(28),
+            }}
+          />
+        </Pressable>
 
-          <View style={styles.image}>
-            <CustomText>이미지 들어갈 자리</CustomText>
-          </View>
+        <CustomText fontSize={24} fontWeight={"700"}>
+          올타와 함께
+        </CustomText>
+        <CustomText marginTop={6} fontSize={24} fontWeight={"700"}>
+          세차를 시작하세요!
+        </CustomText>
+
+        <View style={styles.image}>
+          <CustomText>이미지 들어갈 자리</CustomText>
         </View>
-
-        <View style={styles.bottom}>
-          {/* 카카오 로그인 */}
-          <CustomButton onPress={handleLoginKakao} backgroundColor="#FEE500">
-            <CustomText fontSize={15} fontWeight={"500"}>
-              카카오로 로그인
-            </CustomText>
-          </CustomButton>
-
-          {/* 구글 로그인 */}
-          <CustomButton
-            marginTop={getResponsiveSize(12)}
-            backgroundColor={colors.white}
-            borderColor={colors.gray7}
+        {/* 카카오 로그인 */}
+        <CustomButton
+          width="100%"
+          marginTop={32}
+          onPress={handleLoginKakao}
+          backgroundColor="#FEE500"
+        >
+          <Image
+            source={kakaoLoginIcon}
+            style={{
+              width: getResponsiveSize(18),
+              height: getResponsiveSize(18),
+              marginRight: getResponsiveSize(10),
+            }}
+          />
+          <CustomText fontSize={15} fontWeight={"500"}>
+            카카오로 로그인
+          </CustomText>
+        </CustomButton>
+        {/* 구글 로그인 */}
+        <CustomButton
+          width="100%"
+          marginTop={getResponsiveSize(12)}
+          backgroundColor={colors.white}
+          borderColor={colors.gray2}
+        >
+          <Image
+            source={googleLoginIcon}
+            style={{
+              width: getResponsiveSize(18),
+              height: getResponsiveSize(18),
+              marginRight: getResponsiveSize(10),
+            }}
+          />
+          <Text
+            style={{
+              fontFamily: "Roboto-Light",
+              fontSize: getResponsiveSize(15),
+            }}
           >
-            <CustomText fontSize={15} fontWeight={"500"}>
-              구글 계정으로 로그인
+            구글 계정으로 로그인
+          </Text>
+        </CustomButton>
+        {/* 애플 로그인 */}
+        {Platform.OS === "ios" && (
+          <CustomButton
+            width="100%"
+            marginTop={getResponsiveSize(12)}
+            backgroundColor="#141414"
+          >
+            <Image
+              source={appleLoginIcon}
+              style={{
+                width: getResponsiveSize(18),
+                height: getResponsiveSize(18),
+                marginRight: getResponsiveSize(10),
+              }}
+            />
+            <CustomText color={colors.white} fontSize={15} fontWeight={"500"}>
+              Apple로 로그인
             </CustomText>
           </CustomButton>
-
-          {/* 애플 로그인 */}
-          {Platform.OS === "ios" && (
-            <CustomButton
-              marginTop={getResponsiveSize(12)}
-              backgroundColor="#141414"
-            >
-              <CustomText color={colors.white} fontSize={15} fontWeight={"500"}>
-                Apple로 로그인
-              </CustomText>
-            </CustomButton>
-          )}
-        </View>
+        )}
       </View>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    width: "100%",
     backgroundColor: colors.white,
   },
   container: {
@@ -176,21 +242,17 @@ const styles = StyleSheet.create({
     paddingBottom: getResponsiveSize(40),
     backgroundColor: colors.white,
   },
+  closeButton: {
+    position: "absolute",
+    top: 0,
+    right: getResponsiveSize(20),
+  },
   image: {
     justifyContent: "center",
     alignItems: "center",
-    width: getResponsiveSize(280),
-    height: getResponsiveSize(280),
+    width: getResponsiveSize(204),
+    height: getResponsiveSize(204),
+    marginTop: getResponsiveSize(16),
     backgroundColor: colors.main,
-  },
-  top: { position: "relative", alignItems: "center", width: "100%" },
-  title: {
-    position: "absolute",
-    top: -getResponsiveSize(100),
-  },
-  bottom: {
-    position: "absolute",
-    width: "100%",
-    bottom: getResponsiveSize(20),
   },
 });

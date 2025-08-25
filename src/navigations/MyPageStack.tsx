@@ -1,14 +1,14 @@
-import { Profile } from "@/screens/Profile";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { MyPage } from "@/screens/MyPage";
 
 const Stack = createNativeStackNavigator();
 
-export const ProfileStack = () => {
+export const MyPageStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Profile">
+    <Stack.Navigator initialRouteName="MyPage">
       <Stack.Screen
-        name="Profile"
-        component={Profile}
+        name="MyPage"
+        component={MyPage}
         options={{
           headerShown: false,
         }}

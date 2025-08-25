@@ -6,31 +6,48 @@ import {
   View,
 } from "react-native";
 import { CustomText } from "../CustomText";
+import { colors } from "@/styles";
+import { getResponsiveSize } from "@/utils";
 
 interface CustomModalProps {
   visible: boolean;
-  message: string;
+  onNext?: () => void;
+  nextButtonText?: string;
   onClose: () => void;
+  closeButtonText?: string;
+  children: React.ReactNode;
 }
 
 export const CustomModal = ({
   visible,
+  onNext,
+  nextButtonText,
   onClose,
-  message,
+  closeButtonText,
+  children,
 }: CustomModalProps) => {
   return (
-    <Modal transparent={true} visible={visible}>
+    <Modal transparent={true} visible={visible} statusBarTranslucent>
       <Pressable onPress={onClose} style={styles.backdrop}>
         <TouchableWithoutFeedback onPress={() => {}}>
           <View style={styles.modalContainer}>
-            <CustomText fontSize={18} fontWeight="600">
-              {message}
-            </CustomText>
-            <Pressable onPress={onClose} style={styles.closeButton}>
-              <CustomText fontSize={16} fontWeight="500" color="#fff">
-                확인
-              </CustomText>
-            </Pressable>
+            {children}
+
+            <View style={styles.buttonBox}>
+              <Pressable onPress={onClose} style={styles.closeButton}>
+                <CustomText fontSize={15} fontWeight="500" color={colors.black}>
+                  {closeButtonText ?? "확인"}
+                </CustomText>
+              </Pressable>
+
+              {onNext && (
+                <Pressable onPress={onNext} style={styles.nextButton}>
+                  <CustomText fontSize={15} fontWeight="500" color="#fff">
+                    {nextButtonText ?? "확인"}
+                  </CustomText>
+                </Pressable>
+              )}
+            </View>
           </View>
         </TouchableWithoutFeedback>
       </Pressable>
@@ -46,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: 280,
+    width: 320,
     backgroundColor: "#fff",
     borderRadius: 12,
     paddingVertical: 24,
@@ -57,11 +74,27 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
+  buttonBox: {
+    flexDirection: "row",
+    marginTop: getResponsiveSize(32),
+  },
+  nextButton: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: getResponsiveSize(15),
+    marginLeft: getResponsiveSize(16),
+    backgroundColor: colors.main,
+    borderRadius: 8,
+  },
   closeButton: {
-    marginTop: 24,
-    backgroundColor: "#007AFF",
-    paddingHorizontal: 24,
-    paddingVertical: 10,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: getResponsiveSize(15),
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: colors.gray2,
     borderRadius: 8,
   },
 });

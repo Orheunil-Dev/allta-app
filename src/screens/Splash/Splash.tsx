@@ -12,7 +12,7 @@ export const Splash = () => {
 
   const splashAnimatedStyle = useAnimatedStyle(() => {
     return {
-      marginTop: withTiming(visible ? 0 : getResponsiveSize(40), {
+      marginTop: withTiming(visible ? 0 : getResponsiveSize(80), {
         duration: 300,
       }),
       opacity: withTiming(visible ? 1 : 0, { duration: 300 }),

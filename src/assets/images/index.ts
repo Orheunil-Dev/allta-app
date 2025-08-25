@@ -14,6 +14,11 @@ export { default as whiteMyIcon } from "./white-my-icon.png";
 // 스플래쉬
 export { default as splashIamge } from "./splash-image.png";
 
+// 로그인
+export { default as kakaoLoginIcon } from "./kakao-login-icon.png";
+export { default as googleLoginIcon } from "./google-login-icon.png";
+export { default as appleLoginIcon } from "./apple-login-icon.png";
+
 // 홈
 export { default as alltaHeaderLogo } from "./allta-header-logo.png";
 export { default as alarmEmpty } from "./alarm-empty.png";

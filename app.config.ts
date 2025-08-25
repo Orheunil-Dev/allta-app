@@ -38,6 +38,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-splash-screen",
       {
+        image: "./src/assets/images/splash-image.png",
+        imageWidth: 154,
+        resizeMode: "contain",
         backgroundColor: "#ffffff",
       },
     ],
@@ -59,15 +62,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ],
     ["expo-secure-store"],
     [
-      "@react-native-kakao/core",
-      {
-        nativeAppKey: process.env.EXPO_PUBLIC_KAKAO_APP_KEY,
-      },
-    ],
-    [
       "@react-native-seoul/kakao-login",
       {
         kakaoAppKey: process.env.EXPO_PUBLIC_KAKAO_APP_KEY,
+        kotlinVersion: "2.0.21",
+        overrideKakaoSDKVersion: "2.22.0",
       },
     ],
   ],

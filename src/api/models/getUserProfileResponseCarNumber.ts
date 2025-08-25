@@ -6,4 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CheckPhoneNumberResponse { [key: string]: unknown }
+/**
+ * 차량 번호
+ */
+export type GetUserProfileResponseCarNumber = string | null;

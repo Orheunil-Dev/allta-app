@@ -8,19 +8,35 @@ import { Alarm } from "@/screens/Alarm";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack } from "./LoginStack";
+import { LoginModal } from "@/components/common/modal/LoginModal";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
+  LoginStack: undefined;
   Alarm: undefined;
 };
 
 const Stack = createNativeStackNavigator();
 
-export const ContainerStack = () => {
+interface Props {
+  showLoginModal: boolean;
+  setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const ContainerStack = ({
+  showLoginModal,
+  setShowLoginModal,
+}: Props) => {
   const navigationRef = useNavigationContainerRef();
 
   return (
     <NavigationContainer ref={navigationRef}>
+      <LoginModal
+        navigationRef={navigationRef}
+        visible={showLoginModal}
+        setVisible={setShowLoginModal}
+      />
+
       <Stack.Navigator initialRouteName="BottomTab">
         <Stack.Screen
           name="BottomTab"

@@ -2,6 +2,18 @@ import { colors } from "@/styles";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { Text, TextStyle } from "react-native";
 
+const fontMap: Record<string, string> = {
+  "100": "Pretendard-Thin",
+  "200": "Pretendard-ExtraLight",
+  "300": "Pretendard-Light",
+  "400": "Pretendard-Regular",
+  "500": "Pretendard-Medium",
+  "600": "Pretendard-SemiBold",
+  "700": "Pretendard-Bold",
+  "800": "Pretendard-ExtraBold",
+  "900": "Pretendard-Black",
+};
+
 interface Props {
   children: React.ReactNode;
   color?: string;
@@ -16,26 +28,27 @@ interface Props {
 
 export const CustomText = ({
   children,
-  color = colors.black,
-  fontSize = 14,
-  fontWeight = "400",
   textAlign = "auto",
   marginTop = 0,
   marginBottom = 0,
   marginRight = 0,
   marginLeft = 0,
+  color = colors.black,
+  fontSize = 14,
+  fontWeight = "400",
 }: Props) => {
   return (
     <Text
       style={{
-        color,
-        fontSize: getFontSize(fontSize),
-        fontWeight,
+        fontFamily: fontMap[fontWeight],
         textAlign,
         marginTop: getResponsiveSize(marginTop),
         marginBottom: getResponsiveSize(marginBottom),
         marginRight: getResponsiveSize(marginRight),
         marginLeft: getResponsiveSize(marginLeft),
+        color,
+        fontSize: getFontSize(fontSize),
+        fontWeight,
       }}
     >
       {children}

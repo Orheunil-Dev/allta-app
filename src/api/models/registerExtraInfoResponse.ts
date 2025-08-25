@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CheckPhoneNumberResponse { [key: string]: unknown }
+export interface RegisterExtraInfoResponse { [key: string]: unknown }

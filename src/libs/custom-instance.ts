@@ -1,4 +1,4 @@
-import Axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import * as SecureStore from "expo-secure-store";
 import CookieManager from "@react-native-cookies/cookies";
 
@@ -47,18 +47,13 @@ export const customInstance = <T = any>(
   })
     .then((response: AxiosResponse<T>) => response.data)
     .catch((error) => {
+      const axiosError = error as AxiosError;
+
       // 서버 응답 메시지가 있을 경우 error 객체에 추가
       const message = error.response?.data?.message;
-      const statusCode = error.response?.data?.statusCode;
+      const status = axiosError.response?.status;
 
-      console.log(statusCode);
-
-      // 에러 메시지를 그대로 throw하거나, error 객체에 직접 붙여도 OK
-      if (message) {
-        error.message = message; // override 기본 message
-      }
-
-      throw error.message;
+      throw { message, status };
     });
 
   // @ts-ignore
