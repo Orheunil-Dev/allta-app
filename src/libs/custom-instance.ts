@@ -98,7 +98,10 @@ AXIOS_INSTANCE.interceptors.response.use(
         // 새로운 토큰으로 원래 요청 재시도
         return AXIOS_INSTANCE(originalRequest);
       } catch (error) {
-        throw error;
+        throw {
+          message: "로그인 후 사용해주세요.",
+          status: 401,
+        };
       }
     }
 
@@ -119,13 +122,20 @@ export const customInstance = <T = any>(
   })
     .then((response: AxiosResponse<T>) => response.data)
     .catch((error) => {
-      const axiosError = error as AxiosError;
+      if ((error as AxiosError).isAxiosError) {
+        const axiosError = error as AxiosError;
 
-      // 서버 응답 메시지가 있을 경우 error 객체에 추가
-      const message = error.response?.data?.message;
-      const status = axiosError.response?.status;
+        // 서버 응답 메시지가 있을 경우 error 객체에 추가
+        const message = error.response?.data?.message;
+        const status = axiosError.response?.status;
 
-      throw { message, status };
+        throw { message, status };
+      } else {
+        const message = (error as any)?.message ?? "에러가 발생했습니다.";
+        const status = (error as any)?.status ?? 500;
+
+        throw { message, status };
+      }
     });
 
   // @ts-ignore
