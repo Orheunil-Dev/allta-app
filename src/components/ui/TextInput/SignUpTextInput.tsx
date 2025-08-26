@@ -9,6 +9,7 @@ interface Props {
   onChangeText: (text: string) => void;
   editable?: boolean;
   keyboardType?: KeyboardTypeOptions;
+  secureTextEntry?: boolean;
   maxLength?: number;
   placeholder?: string;
   marginTop?: number;
@@ -24,6 +25,7 @@ export const SignUpTextInput = ({
   editable = true,
   maxLength = 20,
   keyboardType = "default",
+  secureTextEntry = false,
   placeholder,
   marginTop = 0,
   marginBottom = 0,
@@ -52,6 +54,7 @@ export const SignUpTextInput = ({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
         maxLength={maxLength}
         placeholder={placeholder}
         style={[

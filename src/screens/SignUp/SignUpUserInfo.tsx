@@ -12,7 +12,13 @@ import {
 } from "@/api/user/user";
 import { useAuthControllerLoginBySocialId } from "@/api/auth/auth";
 import { LoginStackParamList } from "@/navigations";
-import { getResponsiveSize, regexName, regexPhoneNumber } from "@/utils";
+import {
+  formatPhoneNumber,
+  formatTime,
+  getResponsiveSize,
+  regexName,
+  regexPhoneNumber,
+} from "@/utils";
 import { CustomError } from "@/types";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
@@ -94,33 +100,6 @@ export const SignUpUserInfo = () => {
       ...prev,
       [key]: value,
     }));
-  };
-
-  // 전화번호 포맷팅 (ex. 010-1234-5678)
-  const formatPhoneNumber = (value: string) => {
-    const digits = value.replace(/\D/g, "");
-
-    switch (true) {
-      case digits.length <= 3:
-        return digits;
-
-      case digits.length <= 7:
-        return `${digits.slice(0, 3)}-${digits.slice(3)}`;
-
-      default:
-        return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(
-          7,
-          11
-        )}`;
-    }
-  };
-
-  //시간 포맷팅 (ex. 03:00)
-  const formatTime = () => {
-    const min = Math.floor(seconds / 60);
-    const sec = seconds % 60;
-
-    return `0${min}:${sec < 10 ? "0" + sec : sec}`;
   };
 
   // 인증코드 전송
@@ -248,8 +227,11 @@ export const SignUpUserInfo = () => {
             <View style={styles.inputBox}>
               <SignUpTextInput
                 value={infoForm.phoneNumber}
-                onChangeText={(text) =>
-                  handleChangeSignUpForm("phoneNumber", formatPhoneNumber(text))
+                onChangeText={(value) =>
+                  handleChangeSignUpForm(
+                    "phoneNumber",
+                    formatPhoneNumber(value)
+                  )
                 }
                 maxLength={13}
                 keyboardType="number-pad"
@@ -297,7 +279,7 @@ export const SignUpUserInfo = () => {
                   />
 
                   <View style={styles.timer}>
-                    <CustomText>{formatTime()}</CustomText>
+                    <CustomText>{formatTime(seconds)}</CustomText>
                   </View>
                 </View>
               </>

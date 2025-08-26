@@ -91,7 +91,9 @@ export const SignUpReferral = () => {
             },
             {
               onSuccess: async (res) => {
-                const cookies = await CookieManager.getAll();
+                const cookies = await CookieManager.get(
+                  process.env.EXPO_PUBLIC_API_URL!
+                );
 
                 const accessToken = cookies.accessToken.value;
                 const refreshToken = cookies.refreshToken.value;
@@ -99,7 +101,7 @@ export const SignUpReferral = () => {
                 await SecureStore.setItemAsync("accessToken", accessToken);
                 await SecureStore.setItemAsync("refreshToken", refreshToken);
 
-                return loginStackNavigation.dispatch(
+                loginStackNavigation.dispatch(
                   CommonActions.reset({
                     index: 0,
                     routes: [{ name: "SignUpComplete" }],

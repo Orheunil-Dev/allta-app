@@ -1,20 +1,29 @@
 import { Image, StyleSheet, View } from "react-native";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { signupCompleteImage } from "@/assets/images";
+import { registerCompleteImage, signupCompleteImage } from "@/assets/images";
 import { colors } from "@/styles";
 
-export const SignUpComplete = () => {
+type RegisterCompleteRouteProp = RouteProp<
+  LoginStackParamList,
+  "RegisterComplete"
+>;
+
+export const RegisterComplete = () => {
+  const route = useRoute<RegisterCompleteRouteProp>();
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
-
-  const loginStackNavigation =
-    useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
   const handleGoHome = () => {
     containerNavigation.dispatch(
@@ -30,30 +39,41 @@ export const SignUpComplete = () => {
     );
   };
 
-  const handleGoRegister = () => {
-    loginStackNavigation.navigate("RegisterCar");
-  };
-
   return (
     <CustomSafeAreaView edges={["top", "bottom"]}>
       <View style={styles.container}>
-        <Image source={signupCompleteImage} style={styles.image} />
+        <Image source={registerCompleteImage} style={styles.image} />
 
-        <CustomText fontSize={24} fontWeight={"600"} marginBottom={12}>
-          회원가입이 완료되었어요!
+        <CustomText fontSize={24} fontWeight={"600"} marginBottom={8}>
+          {route.params.isRegister
+            ? "추가 정보 등록이 완료되었습니다."
+            : "필요할 때 등록할 수 있어요."}
         </CustomText>
 
-        <CustomText textAlign="center" fontSize={16} color={colors.gray7}>
-          올타 회원이 되신 것을 환영해요.
-        </CustomText>
-        <CustomText
-          textAlign="center"
-          fontSize={16}
-          color={colors.gray7}
-          marginBottom={40}
-        >
-          첫 세차를 위해 차량과 카드를 먼저 등록해보세요!
-        </CustomText>
+        {route.params.isRegister ? (
+          <CustomText
+            textAlign="center"
+            fontSize={16}
+            color={colors.gray7}
+            marginBottom={40}
+          >
+            차량,카드 정보는 언제든지 수정할 수 있어요.
+          </CustomText>
+        ) : (
+          <>
+            <CustomText textAlign="center" fontSize={16} color={colors.gray7}>
+              차량과 카드는 마이페이지에서
+            </CustomText>
+            <CustomText
+              textAlign="center"
+              fontSize={16}
+              color={colors.gray7}
+              marginBottom={40}
+            >
+              언제든 등록할 수 있어요.
+            </CustomText>
+          </>
+        )}
 
         <View style={styles.buttonBox}>
           <CustomButton
@@ -64,15 +84,6 @@ export const SignUpComplete = () => {
           >
             <CustomText color={colors.black} fontSize={16} fontWeight={"600"}>
               홈으로 가기
-            </CustomText>
-          </CustomButton>
-          <CustomButton
-            onPress={handleGoRegister}
-            flex={1}
-            backgroundColor={colors.main}
-          >
-            <CustomText color={colors.white} fontSize={16} fontWeight={"600"}>
-              등록하기
             </CustomText>
           </CustomButton>
         </View>
@@ -90,8 +101,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(20),
   },
   image: {
-    width: getResponsiveSize(200),
-    height: getResponsiveSize(200),
+    width: getResponsiveSize(60),
+    height: getResponsiveSize(60),
     marginBottom: getResponsiveSize(20),
   },
   buttonBox: {

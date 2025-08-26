@@ -10,6 +10,8 @@ export const MyPage = () => {
 
   const { data, error } = useUserControllerGetUserProfile();
 
+  console.log(data);
+
   return (
     <View style={styles.container}>
       <Text>내 정보</Text>

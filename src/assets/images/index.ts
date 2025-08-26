@@ -26,6 +26,7 @@ export { default as checkedCheckAllButton } from "./checked-check-all-button.png
 export { default as termsCheckedIcon } from "./terms-checked-icon.png";
 export { default as termsUncheckedIcon } from "./terms-unchecked-icon.png";
 export { default as signupCompleteImage } from "./signup-compelete-image.png";
+export { default as registerCompleteImage } from "./register-complete-image.png";
 
 // 홈
 export { default as alltaHeaderLogo } from "./allta-header-logo.png";

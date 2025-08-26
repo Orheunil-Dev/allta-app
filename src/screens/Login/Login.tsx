@@ -91,7 +91,9 @@ export const Login = () => {
                 },
                 {
                   onSuccess: async (res) => {
-                    const cookies = await CookieManager.getAll();
+                    const cookies = await CookieManager.get(
+                      process.env.EXPO_PUBLIC_API_URL!
+                    );
 
                     const accessToken = cookies.accessToken.value;
                     const refreshToken = cookies.refreshToken.value;
@@ -175,7 +177,9 @@ export const Login = () => {
                   },
                   {
                     onSuccess: async (res) => {
-                      const cookies = await CookieManager.getAll();
+                      const cookies = await CookieManager.get(
+                        process.env.EXPO_PUBLIC_API_URL!
+                      );
 
                       const accessToken = cookies.accessToken?.value;
                       const refreshToken = cookies.refreshToken?.value;
@@ -261,7 +265,9 @@ export const Login = () => {
                 },
                 {
                   onSuccess: async (res) => {
-                    const cookies = await CookieManager.getAll();
+                    const cookies = await CookieManager.get(
+                      process.env.EXPO_PUBLIC_API_URL!
+                    );
 
                     const accessToken = cookies.accessToken.value;
                     const refreshToken = cookies.refreshToken.value;

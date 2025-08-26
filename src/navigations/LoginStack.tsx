@@ -6,7 +6,11 @@ import {
   SignUpTerms,
   SignUpUserInfo,
 } from "@/screens/SignUp";
-import { RegisterCar } from "@/screens/Register";
+import {
+  RegisterCar,
+  RegisterCard,
+  RegisterComplete,
+} from "@/screens/Register";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
 
 export type LoginStackParamList = {
@@ -38,7 +42,7 @@ export type LoginStackParamList = {
     carModel?: string;
     carNumber?: string;
   };
-  RegisterCompelete: {
+  RegisterComplete: {
     isRegister: boolean;
   };
 };
@@ -80,19 +84,26 @@ export const LoginStack = () => {
         name="SignUpComplete"
         component={SignUpComplete}
         options={{
-          header: () => <CustomHeader title="" />,
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="RegisterCar"
         component={RegisterCar}
         options={{
-          headerShown: false,
+          header: () => <CustomHeader title="" showBackButton />,
         }}
       />
       <Stack.Screen
         name="RegisterCard"
-        component={RegisterCar}
+        component={RegisterCard}
+        options={{
+          header: () => <CustomHeader title="" showBackButton />,
+        }}
+      />
+      <Stack.Screen
+        name="RegisterComplete"
+        component={RegisterComplete}
         options={{
           headerShown: false,
         }}

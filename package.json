@@ -44,6 +44,7 @@
     "expo-system-ui": "~5.0.10",
     "expo-web-browser": "~14.2.0",
     "jwt-decode": "^4.0.0",
+    "lodash": "^4.17.21",
     "ramda": "^0.31.3",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -64,6 +65,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@react-native-community/cli": "^19.1.0",
+    "@types/lodash": "^4.17.20",
     "@types/react": "~19.0.10",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
