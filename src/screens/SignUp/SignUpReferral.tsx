@@ -105,8 +105,14 @@ export const SignUpReferral = () => {
                   })
                 );
               },
+              onError: (err) => {
+                console.log(err);
+              },
             }
           );
+        },
+        onError: (err) => {
+          console.log(err);
         },
       }
     );

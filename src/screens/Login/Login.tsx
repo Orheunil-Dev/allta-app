@@ -15,6 +15,7 @@ import * as KakaoLogins from "@react-native-seoul/kakao-login";
 import * as AuthSession from "expo-auth-session";
 import * as Google from "expo-auth-session/providers/google";
 import * as AppleAuthentication from "expo-apple-authentication";
+import { jwtDecode } from "jwt-decode";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import {
   useAuthControllerCheckUserBySocialId,
@@ -114,7 +115,8 @@ export const Login = () => {
                     );
                   },
                   onError: (error: any) => {
-                    Alert.alert("Error", error.message);
+                    console.log(error);
+                    Alert.alert("로그인 중 에러가 발생했습니다.");
                   },
                 }
               );
@@ -122,14 +124,13 @@ export const Login = () => {
           },
           onError: (error: any) => {
             console.log(error);
-
-            Alert.alert("Error", error.message);
+            Alert.alert("로그인 중 에러가 발생했습니다.");
           },
         }
       );
     } catch (error: any) {
       console.log(error);
-      Alert.alert("Login Error", error.message);
+      Alert.alert("로그인 중 에러가 발생했습니다.");
     }
   };
 
@@ -208,12 +209,16 @@ export const Login = () => {
                 );
               }
             },
-            onError: (error: any) => Alert.alert("Error", error.message),
+            onError: (error: any) => {
+              console.log(error);
+              Alert.alert("로그인 중 에러가 발생했습니다.");
+            },
           }
         );
       }
     } catch (error: any) {
-      Alert.alert("Error", error.message);
+      console.log(error);
+      Alert.alert("로그인 중 에러가 발생했습니다.");
     }
   };
 
@@ -227,11 +232,75 @@ export const Login = () => {
         ],
       });
 
-      console.log(data);
-      // signed in
+      if (!data.identityToken) return;
+
+      const payload: any = jwtDecode(data.identityToken);
+
+      checkSocialId(
+        {
+          data: {
+            loginKind: "APPLE",
+            socialId: data.user,
+          },
+        },
+        {
+          onSuccess: (res) => {
+            if (!res.ok) {
+              loginStackNavigation.navigate("SignUpTerms", {
+                loginKind: "APPLE",
+                socialId: data.user,
+                email: payload.email,
+              });
+            } else {
+              loginBySocialId(
+                {
+                  data: {
+                    loginKind: "APPLE",
+                    socialId: data.user,
+                  },
+                },
+                {
+                  onSuccess: async (res) => {
+                    const cookies = await CookieManager.getAll();
+
+                    const accessToken = cookies.accessToken.value;
+                    const refreshToken = cookies.refreshToken.value;
+
+                    await SecureStore.setItemAsync("accessToken", accessToken);
+                    await SecureStore.setItemAsync(
+                      "refreshToken",
+                      refreshToken
+                    );
+
+                    containerNavigation.dispatch(
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [
+                          {
+                            name: "BottomTab",
+                            params: { screen: "HomeStack" },
+                          },
+                        ],
+                      })
+                    );
+                  },
+                  onError: (error: any) => {
+                    console.log(error);
+                    Alert.alert("로그인 중 에러가 발생했습니다.");
+                  },
+                }
+              );
+            }
+          },
+          onError: (error: any) => {
+            console.log(error);
+            Alert.alert("로그인 중 에러가 발생했습니다.");
+          },
+        }
+      );
     } catch (error: any) {
       console.log(error);
-      Alert.alert("Login Error", error.message);
+      Alert.alert("로그인 중 에러가 발생했습니다.");
     }
   };
 
