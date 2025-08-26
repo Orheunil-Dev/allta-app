@@ -90,7 +90,7 @@ export const Home = () => {
   });
 
   return (
-    <CustomSafeAreaView>
+    <CustomSafeAreaView edges={["top"]}>
       <View style={styles.header}>
         <Image source={alltaHeaderLogo} style={styles.headerLogo} />
 

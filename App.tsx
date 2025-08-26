@@ -15,13 +15,12 @@ import * as SplashScreen from "expo-splash-screen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { ContainerStack } from "@/navigations";
 import { Splash } from "@/screens/Splash";
-import { AxiosError } from "axios";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
-  const [showLoginModal, setShowLoginModal] = useState<boolean>(true);
+  const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
 
   const [fontsLoaded] = Font.useFonts({
     "Pretendard-Thin": require("./src/assets/fonts/Pretendard-Thin.otf"),

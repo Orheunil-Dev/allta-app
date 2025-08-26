@@ -14,12 +14,14 @@ import { closeIcon } from "@/assets/images";
 interface Props {
   bottomSheetRef: RefObject<BottomSheetModal | null>;
   title?: string;
+  onClose: () => void;
   children: React.ReactNode;
 }
 
 export const CustomBottomSheet = ({
   bottomSheetRef,
   title,
+  onClose,
   children,
 }: Props) => {
   const snapPoints = useMemo(() => ["60%"], []);
@@ -53,7 +55,7 @@ export const CustomBottomSheet = ({
           <CustomText fontSize={18} fontWeight={"600"}>
             {title}
           </CustomText>
-          <Pressable>
+          <Pressable onPress={onClose}>
             <Image
               source={closeIcon}
               style={{

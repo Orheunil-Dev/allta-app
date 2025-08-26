@@ -1,6 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login } from "@/screens/Login";
-import { SignUpComplete, SignUpTerms, SignUpUserInfo } from "@/screens/SignUp";
+import {
+  SignUpComplete,
+  SignUpReferral,
+  SignUpTerms,
+  SignUpUserInfo,
+} from "@/screens/SignUp";
+import { RegisterCar } from "@/screens/Register";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
 
 export type LoginStackParamList = {
@@ -14,26 +20,27 @@ export type LoginStackParamList = {
     loginKind: string;
     socialId: string;
     email: string;
+    isMarketing: boolean;
+  };
+  SignUpReferral: {
+    loginKind: string;
+    socialId: string;
+    email: string;
+    name: string;
+    phoneNumber: string;
+    isMarketing: boolean;
   };
   SignUpComplete: undefined;
-  // SignUpCarRegist: {
-  //   loginKind: string;
-  //   socialId: string;
-  //   email: string;
-  //   name: string;
-  //   phoneNumber: string;
-  // };
-  // SignUpReferral: {
-  //   loginKind: string;
-  //   socialId: string;
-  //   email: string;
-  //   name: string;
-  //   phoneNumber: string;
-  //   carBrand?: string;
-  //   carModel?: string;
-  //   carType?: string;
-  //   carNumber?: string;
-  // };
+  RegisterCar: undefined;
+  RegisterCard: {
+    carBrand?: string;
+    carType?: string;
+    carModel?: string;
+    carNumber?: string;
+  };
+  RegisterCompelete: {
+    isRegister: boolean;
+  };
 };
 
 const Stack = createNativeStackNavigator();
@@ -63,26 +70,33 @@ export const LoginStack = () => {
         }}
       />
       <Stack.Screen
+        name="SignUpReferral"
+        component={SignUpReferral}
+        options={{
+          header: () => <CustomHeader title="" showBackButton />,
+        }}
+      />
+      <Stack.Screen
         name="SignUpComplete"
         component={SignUpComplete}
         options={{
           header: () => <CustomHeader title="" />,
         }}
       />
-      {/* <Stack.Screen
-        name="SignUpCarRegist"
-        component={SignUpCarRegist}
+      <Stack.Screen
+        name="RegisterCar"
+        component={RegisterCar}
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="SignUpReferral"
-        component={SignUpReferral}
+        name="RegisterCard"
+        component={RegisterCar}
         options={{
-          header: () => <CustomHeader title="" showBackButton />,
+          headerShown: false,
         }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

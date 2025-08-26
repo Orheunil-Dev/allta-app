@@ -1,7 +1,7 @@
 import { Image, SafeAreaView, StyleSheet, View } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ContainerStackParamList } from "@/navigations";
+import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
@@ -12,6 +12,9 @@ import { colors } from "@/styles";
 export const SignUpComplete = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const loginStackNavigation =
+    useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
   const handleGoHome = () => {
     containerNavigation.dispatch(
@@ -28,17 +31,7 @@ export const SignUpComplete = () => {
   };
 
   const handleGoRegister = () => {
-    containerNavigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [
-          {
-            name: "BottomTab",
-            params: { screen: "HomeStack" },
-          },
-        ],
-      })
-    );
+    loginStackNavigation.navigate("RegisterCar");
   };
 
   return (

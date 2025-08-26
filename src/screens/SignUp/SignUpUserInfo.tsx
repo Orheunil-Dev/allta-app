@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import {
   CommonActions,
   RouteProp,
@@ -22,6 +16,7 @@ import { colors } from "@/styles";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { getResponsiveSize, regexName, regexPhoneNumber } from "@/utils";
 import { SignUpTextInput } from "@/components/ui/TextInput";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import {
   useUserControllerCheckPhoneNumber,
@@ -30,6 +25,7 @@ import {
   useUserControllerVerifyPhoneNumber,
 } from "@/api/user/user";
 import { useAuthControllerLoginBySocialId } from "@/api/auth/auth";
+import { CustomError } from "@/types";
 
 type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpUserInfo">;
 
@@ -55,7 +51,7 @@ export const SignUpUserInfo = () => {
   const [isSended, setIsSended] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [seconds, setSeconds] = useState<number>(180);
-  const [signUpForm, setSignUpForm] = useState({
+  const [infoForm, setInfoForm] = useState({
     name: "",
     phoneNumber: "",
   });
@@ -97,10 +93,10 @@ export const SignUpUserInfo = () => {
   } = useAuthControllerLoginBySocialId();
 
   const handleChangeSignUpForm = (
-    key: keyof typeof signUpForm,
+    key: keyof typeof infoForm,
     value: string
   ) => {
-    setSignUpForm((prev) => ({
+    setInfoForm((prev) => ({
       ...prev,
       [key]: value,
     }));
@@ -138,7 +134,7 @@ export const SignUpUserInfo = () => {
     sendVerificationCode(
       {
         data: {
-          phoneNumber: signUpForm.phoneNumber,
+          phoneNumber: infoForm.phoneNumber,
         },
       },
       {
@@ -151,51 +147,16 @@ export const SignUpUserInfo = () => {
     );
   };
 
-  const handleSignUp = () => {
-    createUser(
-      {
-        data: {
-          ...route.params,
-          name: signUpForm.name,
-          phoneNumber: signUpForm.phoneNumber,
-        },
-      },
-      {
-        onSuccess: () => {
-          loginBySocialId(
-            {
-              data: {
-                loginKind: route.params.loginKind,
-                socialId: route.params.socialId,
-              },
-            },
-            {
-              onSuccess: async (res) => {
-                const cookies = await CookieManager.getAll();
-
-                const accessToken = cookies.accessToken.value;
-                const refreshToken = cookies.refreshToken.value;
-
-                await SecureStore.setItemAsync("accessToken", accessToken);
-                await SecureStore.setItemAsync("refreshToken", refreshToken);
-
-                return loginStackNavigation.dispatch(
-                  CommonActions.reset({
-                    index: 0,
-                    routes: [{ name: "SignUpComplete" }],
-                  })
-                );
-              },
-            }
-          );
-        },
-      }
-    );
+  const handleNext = () => {
+    return loginStackNavigation.navigate("SignUpReferral", {
+      ...route.params,
+      ...infoForm,
+    });
   };
 
   // 휴대폰번호 입력 시 자동으로 검증 요청
   useEffect(() => {
-    if (signUpForm.phoneNumber.length !== 13) {
+    if (infoForm.phoneNumber.length !== 13) {
       setIsValid(false);
       return;
     }
@@ -207,7 +168,7 @@ export const SignUpUserInfo = () => {
     debounceRef.current = setTimeout(() => {
       checkPhoneNumber({
         data: {
-          phoneNumber: signUpForm.phoneNumber,
+          phoneNumber: infoForm.phoneNumber,
         },
       });
     }, 500);
@@ -215,15 +176,15 @@ export const SignUpUserInfo = () => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [signUpForm.phoneNumber]);
+  }, [infoForm.phoneNumber]);
 
   // 이름, 휴대폰 번호 입력 완료해야 인증코드 발송 가능
   useEffect(() => {
-    if (signUpForm.phoneNumber.length !== 13) {
+    if (infoForm.phoneNumber.length !== 13) {
       return;
     } else if (
       checkPhoneNumberData &&
-      signUpFormSchema.safeParse(signUpForm).success
+      signUpFormSchema.safeParse(infoForm).success
     ) {
       setIsValid(true);
     } else {
@@ -253,13 +214,13 @@ export const SignUpUserInfo = () => {
       verifyPhoneNumber(
         {
           data: {
-            phoneNumber: signUpForm.phoneNumber,
+            phoneNumber: infoForm.phoneNumber,
             verificationCode,
           },
         },
         {
           onSuccess: () => {
-            handleSignUp();
+            handleNext();
           },
         }
       );
@@ -267,7 +228,7 @@ export const SignUpUserInfo = () => {
   }, [verificationCode]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
         <View style={styles.container}>
           <ScrollView
@@ -282,7 +243,7 @@ export const SignUpUserInfo = () => {
               이름
             </CustomText>
             <SignUpTextInput
-              value={signUpForm.name}
+              value={infoForm.name}
               onChangeText={(text) => handleChangeSignUpForm("name", text)}
               placeholder="이름을 입력해주세요."
             />
@@ -292,7 +253,7 @@ export const SignUpUserInfo = () => {
             </CustomText>
             <View style={styles.inputBox}>
               <SignUpTextInput
-                value={signUpForm.phoneNumber}
+                value={infoForm.phoneNumber}
                 onChangeText={(text) =>
                   handleChangeSignUpForm("phoneNumber", formatPhoneNumber(text))
                 }
@@ -335,7 +296,8 @@ export const SignUpUserInfo = () => {
                     errorMessage={
                       !seconds
                         ? "인증시간이 만료되었습니다."
-                        : String(verifyPhoneNumberError)
+                        : (verifyPhoneNumberError as CustomError)?.message ??
+                          undefined
                     }
                     placeholder="인증번호 6자리"
                   />
@@ -363,7 +325,7 @@ export const SignUpUserInfo = () => {
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

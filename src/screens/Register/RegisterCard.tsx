@@ -14,7 +14,7 @@ import { colors } from "@/styles";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { SignUpTextInput } from "@/components/ui/TextInput";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { z } from "zod";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import {
@@ -26,10 +26,7 @@ import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
 import { carData } from "@/mock";
 
-type SignUpCarRegistRouteProp = RouteProp<
-  LoginStackParamList,
-  "SignUpCarRegist"
->;
+type SignUpCarRegistRouteProp = RouteProp<LoginStackParamList, "RegisterCar">;
 
 // 유효성 검사
 const signUpFormSchema = z.object({
@@ -40,11 +37,12 @@ const signUpFormSchema = z.object({
     .string()
     .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다."),
 });
+
 const carNumberSchema = z
   .string()
   .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다.");
 
-export const SignUpCarRegist = () => {
+export const RegisterCard = () => {
   const route = useRoute<SignUpCarRegistRouteProp>();
 
   const loginStackNavigation =
@@ -53,7 +51,7 @@ export const SignUpCarRegist = () => {
   const brandSelectRef = useRef<BottomSheetModal>(null);
   const modelSelectRef = useRef<BottomSheetModal>(null);
 
-  const [signUpForm, setSignUpForm] = useState({
+  const [registerForm, setRegisterForm] = useState({
     carBrand: "",
     carModel: "",
     carType: "",
@@ -71,7 +69,7 @@ export const SignUpCarRegist = () => {
   // 모델 바텀시트 조작
   const handleOpenModelSelect = () => {
     // 제조사 선택 안했을 경우엔 바텀시트 안열림
-    if (!signUpForm.carBrand) {
+    if (!registerForm.carBrand) {
       return;
     }
 
@@ -82,27 +80,24 @@ export const SignUpCarRegist = () => {
   };
 
   const handleChangeSignUpForm = (
-    key: keyof typeof signUpForm,
+    key: keyof typeof registerForm,
     value: string
   ) => {
-    setSignUpForm((prev) => ({
+    setRegisterForm((prev) => ({
       ...prev,
       [key]: value,
     }));
   };
 
-  const isValid = signUpFormSchema.safeParse(signUpForm).success;
+  const isValid = signUpFormSchema.safeParse(registerForm).success;
 
   const handleSkipRegist = () => {
-    loginStackNavigation.navigate("SignUpReferral", {
-      ...route.params,
-    });
+    loginStackNavigation.navigate("RegisterCard", {});
   };
 
   const handleNextStep = () => {
-    loginStackNavigation.navigate("SignUpReferral", {
-      ...route.params,
-      ...signUpForm,
+    loginStackNavigation.navigate("RegisterCard", {
+      ...registerForm,
     });
   };
 
@@ -113,7 +108,11 @@ export const SignUpCarRegist = () => {
       <SafeAreaView style={styles.safeArea}>
         <CustomKeyboardAvoidingView>
           {/* 제조사 바텀시트 */}
-          <CustomBottomSheet bottomSheetRef={brandSelectRef} title="제조사">
+          <CustomBottomSheet
+            onClose={handleCloseBrandSelect}
+            bottomSheetRef={brandSelectRef}
+            title="제조사"
+          >
             <FlatList
               data={carData}
               keyExtractor={(item) => item.carBrand}
@@ -129,7 +128,7 @@ export const SignUpCarRegist = () => {
                 >
                   <CustomText
                     color={
-                      signUpForm.carBrand === item.carBrand
+                      registerForm.carBrand === item.carBrand
                         ? colors.main
                         : colors.black
                     }
@@ -143,10 +142,14 @@ export const SignUpCarRegist = () => {
           </CustomBottomSheet>
 
           {/* 차량모델 바텀시트 */}
-          <CustomBottomSheet bottomSheetRef={modelSelectRef} title="모델">
+          <CustomBottomSheet
+            onClose={handleCloseModelSelect}
+            bottomSheetRef={modelSelectRef}
+            title="모델"
+          >
             <FlatList
               data={
-                carData.find((item) => item.carBrand === signUpForm.carBrand)
+                carData.find((item) => item.carBrand === registerForm.carBrand)
                   ?.carModels ?? []
               }
               keyExtractor={(item) => item}
@@ -162,7 +165,9 @@ export const SignUpCarRegist = () => {
                 >
                   <CustomText
                     color={
-                      signUpForm.carModel === item ? colors.main : colors.black
+                      registerForm.carModel === item
+                        ? colors.main
+                        : colors.black
                     }
                     fontSize={16}
                   >
@@ -192,7 +197,7 @@ export const SignUpCarRegist = () => {
               >
                 <View pointerEvents="none">
                   <SignUpTextInput
-                    value={signUpForm.carBrand}
+                    value={registerForm.carBrand}
                     onChangeText={() => {}}
                     editable={false}
                     placeholder="선택"
@@ -210,7 +215,7 @@ export const SignUpCarRegist = () => {
               >
                 <View pointerEvents="none">
                   <SignUpTextInput
-                    value={signUpForm.carModel}
+                    value={registerForm.carModel}
                     onChangeText={() => {}}
                     editable={false}
                     placeholder="선택"
@@ -223,14 +228,14 @@ export const SignUpCarRegist = () => {
                 차량번호
               </CustomText>
               <SignUpTextInput
-                value={signUpForm.carNumber}
+                value={registerForm.carNumber}
                 onChangeText={(text) =>
                   handleChangeSignUpForm("carNumber", text)
                 }
                 maxLength={8}
                 errorMessage={
-                  signUpForm.carNumber.length > 6
-                    ? carNumberSchema.safeParse(signUpForm.carNumber).error
+                  registerForm.carNumber.length > 6
+                    ? carNumberSchema.safeParse(registerForm.carNumber).error
                         ?.issues?.[0]?.message
                     : undefined
                 }

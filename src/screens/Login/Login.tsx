@@ -9,9 +9,12 @@ import {
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import * as KakaoLogins from "@react-native-seoul/kakao-login";
 import CookieManager from "@react-native-cookies/cookies";
 import * as SecureStore from "expo-secure-store";
+import * as KakaoLogins from "@react-native-seoul/kakao-login";
+import * as AuthSession from "expo-auth-session";
+import * as Google from "expo-auth-session/providers/google";
+import * as AppleAuthentication from "expo-apple-authentication";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import {
   useAuthControllerCheckUserBySocialId,
@@ -20,14 +23,14 @@ import {
 import { getResponsiveSize } from "@/utils";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import {
   appleLoginIcon,
   closeIcon,
   googleLoginIcon,
   kakaoLoginIcon,
 } from "@/assets/images";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { colors } from "@/styles";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -35,6 +38,12 @@ export const Login = () => {
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+    iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_ID,
+    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_ID,
+  });
 
   const {
     mutate: checkSocialId,
@@ -118,7 +127,112 @@ export const Login = () => {
           },
         }
       );
-    } catch {}
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert("Login Error", error.message);
+    }
+  };
+
+  // 구글 로그인
+  const handleLoginGoogle = async () => {
+    try {
+      const result = await promptAsync();
+
+      if (result.type === "success") {
+        const accessToken = result.authentication?.accessToken;
+
+        if (!accessToken) throw new Error("로그인 중 에러가 발생했습니다.");
+
+        const profileRes = await fetch(
+          "https://www.googleapis.com/oauth2/v2/userinfo",
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+
+        const profile = await profileRes.json();
+
+        const socialId = String(profile.id);
+        const email = profile.email;
+
+        checkSocialId(
+          {
+            data: { loginKind: "GOOGLE", socialId },
+          },
+          {
+            onSuccess: (res) => {
+              if (!res.ok) {
+                loginStackNavigation.navigate("SignUpTerms", {
+                  loginKind: "GOOGLE",
+                  socialId,
+                  email,
+                });
+              } else {
+                loginBySocialId(
+                  {
+                    data: { loginKind: "GOOGLE", socialId },
+                  },
+                  {
+                    onSuccess: async (res) => {
+                      const cookies = await CookieManager.getAll();
+
+                      const accessToken = cookies.accessToken?.value;
+                      const refreshToken = cookies.refreshToken?.value;
+
+                      if (accessToken && refreshToken) {
+                        await SecureStore.setItemAsync(
+                          "accessToken",
+                          accessToken
+                        );
+                        await SecureStore.setItemAsync(
+                          "refreshToken",
+                          refreshToken
+                        );
+                      }
+
+                      containerNavigation.dispatch(
+                        CommonActions.reset({
+                          index: 0,
+                          routes: [
+                            {
+                              name: "BottomTab",
+                              params: { screen: "HomeStack" },
+                            },
+                          ],
+                        })
+                      );
+                    },
+                    onError: (error: any) =>
+                      Alert.alert("Error", error.message),
+                  }
+                );
+              }
+            },
+            onError: (error: any) => Alert.alert("Error", error.message),
+          }
+        );
+      }
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    }
+  };
+
+  // 애플 로그인
+  const handleLoginApple = async () => {
+    try {
+      const data = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      console.log(data);
+      // signed in
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert("Login Error", error.message);
+    }
   };
 
   const handlePressClose = () => {
@@ -136,7 +250,7 @@ export const Login = () => {
   };
 
   return (
-    <CustomSafeAreaView>
+    <CustomSafeAreaView edges={["top", "bottom"]}>
       <View style={styles.container}>
         <Pressable onPress={handlePressClose} style={styles.closeButton}>
           <Image
@@ -160,9 +274,9 @@ export const Login = () => {
         </View>
         {/* 카카오 로그인 */}
         <CustomButton
+          onPress={handleLoginKakao}
           width="100%"
           marginTop={32}
-          onPress={handleLoginKakao}
           backgroundColor="#FEE500"
         >
           <Image
@@ -177,8 +291,10 @@ export const Login = () => {
             카카오로 로그인
           </CustomText>
         </CustomButton>
+
         {/* 구글 로그인 */}
         <CustomButton
+          onPress={handleLoginGoogle}
           width="100%"
           marginTop={getResponsiveSize(12)}
           backgroundColor={colors.white}
@@ -201,9 +317,11 @@ export const Login = () => {
             구글 계정으로 로그인
           </Text>
         </CustomButton>
+
         {/* 애플 로그인 */}
         {Platform.OS === "ios" && (
           <CustomButton
+            onPress={handleLoginApple}
             width="100%"
             marginTop={getResponsiveSize(12)}
             backgroundColor="#141414"
@@ -227,11 +345,6 @@ export const Login = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: colors.white,
-  },
   container: {
     position: "relative",
     justifyContent: "center",
@@ -244,7 +357,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
-    top: 0,
+    top: getResponsiveSize(20),
     right: getResponsiveSize(20),
   },
   image: {

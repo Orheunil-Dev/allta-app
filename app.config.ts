@@ -2,13 +2,15 @@ import { ConfigContext, ExpoConfig } from "@expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "allta-app",
+  name: "올타",
   slug: "allta-app",
+  currentFullName: "@orheunil/allta-user",
+  originalFullName: "@orheunil/allta-user",
+  scheme: "allta-user",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./src/assets/images/icon.png",
-  scheme: "alltaapp",
-  userInterfaceStyle: "automatic",
+  userInterfaceStyle: "light",
   newArchEnabled: true,
   ios: {
     bundleIdentifier: "io.allta.user",
@@ -16,6 +18,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     config: {
       usesNonExemptEncryption: false,
     },
+    usesAppleSignIn: true,
   },
   android: {
     package: "io.allta.user",
@@ -32,6 +35,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   extra: {
     apiUrl: process.env.EXPO_PUBLIC_API_URL,
+    googleClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+    googleIosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_ID,
+    googleAndroidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_ID,
   },
   plugins: [
     // "expo-router",
@@ -69,6 +75,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         overrideKakaoSDKVersion: "2.22.0",
       },
     ],
+    ["expo-apple-authentication"],
   ],
   // experiments: {
   //   typedRoutes: true,

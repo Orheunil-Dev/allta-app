@@ -1,21 +1,28 @@
+import { useEffect, useRef, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import {
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+  CommonActions,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
+import CookieManager from "@react-native-cookies/cookies";
+import * as SecureStore from "expo-secure-store";
+import {
+  useUserControllerCreateUser,
+  useUserControllerVerifyRefferalCode,
+} from "@/api/user/user";
+import { useAuthControllerLoginBySocialId } from "@/api/auth/auth";
+import { getResponsiveSize } from "@/utils";
+import { CustomError } from "@/types";
 import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { SignUpTextInput } from "@/components/ui/TextInput";
-import { useEffect, useRef, useState } from "react";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { useUserControllerVerifyRefferalCode } from "@/api/user/user";
+import { colors } from "@/styles";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 
 type SignUpReferralRouteProp = RouteProp<LoginStackParamList, "SignUpReferral">;
 
@@ -30,6 +37,7 @@ export const SignUpReferral = () => {
   const [referralCode, setReferralCode] = useState("");
   const [isValid, setIsValid] = useState(false);
 
+  // 추천인 코드 검증
   const {
     data: verifyReferralCodeData,
     refetch: fetchVerifyReferralCode,
@@ -48,17 +56,60 @@ export const SignUpReferral = () => {
     }
   );
 
-  const handleSkipRegist = () => {
-    loginStackNavigation.navigate("SignUpServey", {
-      ...route.params,
-    });
-  };
+  // 회원가입
+  const {
+    mutate: createUser,
+    isPending: createUserLoading,
+    isError: createUserError,
+  } = useUserControllerCreateUser();
 
-  const handleNextStep = () => {
-    loginStackNavigation.navigate("SignUpServey", {
-      ...route.params,
-      referralCode,
-    });
+  // 로그인
+  const {
+    mutate: loginBySocialId,
+    isPending: loginBySocialIdLoading,
+    isError: loginBySocialIdError,
+  } = useAuthControllerLoginBySocialId();
+
+  // 회원가입 완료
+  const handleSignUp = () => {
+    createUser(
+      {
+        data: {
+          ...route.params,
+          ...(isValid ? { referrerCode: referralCode } : {}),
+        },
+      },
+      {
+        onSuccess: () => {
+          loginBySocialId(
+            {
+              data: {
+                loginKind: route.params.loginKind,
+                socialId: route.params.socialId,
+              },
+            },
+            {
+              onSuccess: async (res) => {
+                const cookies = await CookieManager.getAll();
+
+                const accessToken = cookies.accessToken.value;
+                const refreshToken = cookies.refreshToken.value;
+
+                await SecureStore.setItemAsync("accessToken", accessToken);
+                await SecureStore.setItemAsync("refreshToken", refreshToken);
+
+                return loginStackNavigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "SignUpComplete" }],
+                  })
+                );
+              },
+            }
+          );
+        },
+      }
+    );
   };
 
   // 추천인 코드 6자 입력 시 자동으로 검증 요청
@@ -87,7 +138,7 @@ export const SignUpReferral = () => {
   useEffect(() => {
     if (referralCode.length !== 6) {
       return;
-    } else if (verifyReferralCodeData) {
+    } else if (verifyReferralCodeData?.ok) {
       setIsValid(true);
     } else {
       setIsValid(false);
@@ -95,7 +146,7 @@ export const SignUpReferral = () => {
   }, [verifyReferralCodeData, referralCode]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
         <View style={styles.container}>
           <ScrollView
@@ -113,12 +164,14 @@ export const SignUpReferral = () => {
               value={referralCode}
               onChangeText={(text) => setReferralCode(text)}
               maxLength={6}
-              errorMessage={String(verifyReferralCodeError)}
+              errorMessage={
+                (verifyReferralCodeError as CustomError)?.message ?? undefined
+              }
               placeholder="추천인 코드 6자리를 입력해주세요."
             />
           </ScrollView>
 
-          <Pressable onPress={handleSkipRegist}>
+          <Pressable onPress={handleSignUp}>
             <CustomText
               color={colors.gray7}
               fontSize={16}
@@ -131,7 +184,7 @@ export const SignUpReferral = () => {
           </Pressable>
 
           <CustomButton
-            onPress={handleNextStep}
+            onPress={handleSignUp}
             isDisabled={!isValid}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
@@ -145,7 +198,7 @@ export const SignUpReferral = () => {
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>
-    </SafeAreaView>
+    </CustomSafeAreaView>
   );
 };
 

@@ -1,6 +1,7 @@
 import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import * as SecureStore from "expo-secure-store";
 import CookieManager from "@react-native-cookies/cookies";
+import { CustomError } from "@/types";
 
 interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
   _retry?: boolean;
@@ -16,10 +17,12 @@ const getNewAccessToken = async (): Promise<void> => {
   const refreshToken = await SecureStore.getItemAsync("refreshToken");
 
   if (!refreshToken) {
-    throw {
+    const error: CustomError = {
       message: "로그인이 만료되었습니다.",
       status: 401,
     };
+
+    throw error;
   }
 
   const response = await AXIOS_INSTANCE.post(
@@ -97,11 +100,13 @@ AXIOS_INSTANCE.interceptors.response.use(
         await getNewAccessToken();
         // 새로운 토큰으로 원래 요청 재시도
         return AXIOS_INSTANCE(originalRequest);
-      } catch (error) {
-        throw {
+      } catch {
+        const error: CustomError = {
           message: "로그인 후 사용해주세요.",
           status: 401,
         };
+
+        throw error;
       }
     }
 
@@ -129,12 +134,12 @@ export const customInstance = <T = any>(
         const message = error.response?.data?.message;
         const status = axiosError.response?.status;
 
-        throw { message, status };
+        throw { message, status } as CustomError;
       } else {
         const message = (error as any)?.message ?? "에러가 발생했습니다.";
         const status = (error as any)?.status ?? 500;
 
-        throw { message, status };
+        throw { message, status } as CustomError;
       }
     });
 

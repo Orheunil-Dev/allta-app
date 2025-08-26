@@ -5,6 +5,7 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
+import type { CreateUserRequestReferrerCode } from './createUserRequestReferrerCode';
 
 export interface CreateUserRequest {
   /** 이름 */
@@ -17,4 +18,8 @@ export interface CreateUserRequest {
   socialId: string;
   /** 전화번호 */
   phoneNumber: string;
+  /** 회원이 등록한 추천인 코드 */
+  referrerCode?: CreateUserRequestReferrerCode;
+  /** 마케팅 수신 여부 */
+  isMarketing: boolean;
 }

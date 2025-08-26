@@ -1,18 +1,19 @@
 import { ReactNode } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, Edges } from "react-native-safe-area-context";
 
 interface Props {
   children: ReactNode;
+  edges: Edges | undefined;
 }
 
-export const CustomSafeAreaView = ({ children }: Props) => {
+export const CustomSafeAreaView = ({ children, edges }: Props) => {
   return (
     <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: "white",
       }}
-      edges={["top", "left", "right"]}
+      edges={edges}
     >
       {children}
     </SafeAreaView>
