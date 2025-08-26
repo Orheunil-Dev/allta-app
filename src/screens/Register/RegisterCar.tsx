@@ -1,30 +1,29 @@
+import { useRef, useState } from "react";
 import {
   FlatList,
   Pressable,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   View,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
-import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { getResponsiveSize, regexCarNumber } from "@/utils";
-import { SignUpTextInput } from "@/components/ui/TextInput";
-import { useRef, useState } from "react";
 import { z } from "zod";
-import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
-  BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { getResponsiveSize, regexCarNumber } from "@/utils";
+import { CustomText } from "@/components/ui/CustomText";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { SignUpTextInput } from "@/components/ui/TextInput";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
 import { carData } from "@/mock";
+import { colors } from "@/styles";
 
 type SignUpCarRegistRouteProp = RouteProp<LoginStackParamList, "RegisterCar">;
 

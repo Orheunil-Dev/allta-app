@@ -3,7 +3,6 @@ import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetView,
-  TouchableWithoutFeedback,
 } from "@gorhom/bottom-sheet";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { colors } from "@/styles";

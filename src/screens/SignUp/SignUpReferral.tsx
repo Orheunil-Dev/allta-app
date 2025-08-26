@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import {
   CommonActions,
   RouteProp,
@@ -21,8 +22,8 @@ import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { SignUpTextInput } from "@/components/ui/TextInput";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { colors } from "@/styles";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { colors } from "@/styles";
 
 type SignUpReferralRouteProp = RouteProp<LoginStackParamList, "SignUpReferral">;
 

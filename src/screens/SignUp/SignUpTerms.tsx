@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Dimensions,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
@@ -16,9 +10,9 @@ import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { terms } from "@/constants/terms";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
+import { terms } from "@/constants/terms";
 import {
   checkAllButton,
   checkedCheckAllButton,
@@ -92,7 +86,11 @@ export const SignUpTerms = () => {
         onClose={handleCloseDetail}
       >
         {termsDetail !== null && (
-          <ScrollView style={styles.termsScrollView}>
+          <ScrollView
+            nestedScrollEnabled={true}
+            keyboardShouldPersistTaps="handled"
+            style={styles.termsScrollView}
+          >
             <RenderHtml
               contentWidth={screenWidth - getResponsiveSize(40)}
               source={{ html: terms[termsDetail].content }}
@@ -103,6 +101,7 @@ export const SignUpTerms = () => {
         <CustomButton
           onPress={handleCloseDetail}
           width={"100%"}
+          marginTop={20}
           backgroundColor={colors.main}
         >
           <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>

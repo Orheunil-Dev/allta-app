@@ -17,6 +17,10 @@ export const MyPage = () => {
       <Pressable onPress={() => containerNavigation.navigate("LoginStack")}>
         <Text>로그인</Text>
       </Pressable>
+
+      <Pressable onPress={() => containerNavigation.navigate("LoginStack")}>
+        <Text>로그아웃</Text>
+      </Pressable>
     </View>
   );
 };

@@ -1,23 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
-import {
-  CommonActions,
-  RouteProp,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { Pressable, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import CookieManager from "@react-native-cookies/cookies";
-import * as SecureStore from "expo-secure-store";
 import { z } from "zod";
-import { LoginStackParamList } from "@/navigations";
-import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { getResponsiveSize, regexName, regexPhoneNumber } from "@/utils";
-import { SignUpTextInput } from "@/components/ui/TextInput";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import {
   useUserControllerCheckPhoneNumber,
   useUserControllerCreateUser,
@@ -25,7 +11,15 @@ import {
   useUserControllerVerifyPhoneNumber,
 } from "@/api/user/user";
 import { useAuthControllerLoginBySocialId } from "@/api/auth/auth";
+import { LoginStackParamList } from "@/navigations";
+import { getResponsiveSize, regexName, regexPhoneNumber } from "@/utils";
 import { CustomError } from "@/types";
+import { CustomText } from "@/components/ui/CustomText";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { SignUpTextInput } from "@/components/ui/TextInput";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
+import { colors } from "@/styles";
 
 type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpUserInfo">;
 

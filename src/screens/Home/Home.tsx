@@ -1,19 +1,24 @@
 import { useState } from "react";
-import {
-  Dimensions,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import Carousel from "react-native-reanimated-carousel";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
   BottomTabParamList,
   ContainerStackParamList,
   HomeStackParamList,
 } from "@/navigations";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useAlarmControllerGetUnreadAlarmCount } from "@/api/alarm/alarm";
+import { getFontSize, getResponsiveSize } from "@/utils";
+import { CustomText } from "@/components/ui/CustomText";
+import { RecommendCard } from "@/components/ui/Card";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { bannerData, myStoreData } from "@/mock";
 import {
   alarmEmpty,
   alarmUnread,
@@ -23,18 +28,7 @@ import {
   homeMoreArrow,
   homeQrScan,
 } from "@/assets/images";
-import { useAlarmControllerGetUnreadAlarmCount } from "@/api/alarm/alarm";
-import { bannerData, myStoreData } from "@/mock";
 import { colors } from "@/styles";
-import Carousel from "react-native-reanimated-carousel";
-import { CustomText } from "@/components/ui/CustomText";
-import { RecommendCard } from "@/components/ui/Card";
-import Animated, {
-  useAnimatedStyle,
-  withTiming,
-} from "react-native-reanimated";
-import { getFontSize, getResponsiveSize } from "@/utils";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 
 const { width: screenWidth } = Dimensions.get("window");
 
