@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import Carousel from "react-native-reanimated-carousel";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
@@ -14,15 +13,12 @@ import {
   HomeStackParamList,
 } from "@/navigations";
 import { useAlarmControllerGetUnreadAlarmCount } from "@/api/alarm/alarm";
-import { getFontSize, getResponsiveSize } from "@/utils";
+import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { RecommendCard } from "@/components/ui/Card";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { bannerData, myStoreData } from "@/mock";
+import { myStoreData } from "@/mock";
 import {
-  alarmEmpty,
-  alarmUnread,
-  alltaHeaderLogo,
   autoWashImage,
   homeFooterArrow,
   homeMoreArrow,
@@ -30,8 +26,8 @@ import {
 } from "@/assets/images";
 import { colors } from "@/styles";
 import { Popup } from "@/components/home/Popup";
-
-const { width: screenWidth } = Dimensions.get("window");
+import { MainBanner } from "@/components/home/MainBanner";
+import { HomeHeader } from "@/components/home/HomeHeader";
 
 export const Home = () => {
   const containerNavigation =
@@ -43,11 +39,10 @@ export const Home = () => {
   const bottomTabNavigation =
     useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 
-  const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
 
   // 미확인 알림 조회
-  const { data: alarmCount, refetch } = useAlarmControllerGetUnreadAlarmCount({
+  const { data: alarmData, refetch } = useAlarmControllerGetUnreadAlarmCount({
     query: {
       retry: false,
       gcTime: 0,
@@ -55,6 +50,11 @@ export const Home = () => {
   });
 
   // 추천 매장 목록 조회
+
+  // 알림 버튼 터치
+  const handlePressAlarm = () => {
+    return containerNavigation.navigate("Alarm");
+  };
 
   // 푸터 애니메이션
   const footerHeight = getResponsiveSize(100);
@@ -86,56 +86,15 @@ export const Home = () => {
 
   return (
     <CustomSafeAreaView edges={["top"]}>
+      {/* 헤더 */}
+      <HomeHeader alarmCount={alarmData} onPressAlarm={handlePressAlarm} />
       {/* 팝업 바텀시트 */}
       <Popup />
 
-      <View style={styles.header}>
-        <Image source={alltaHeaderLogo} style={styles.headerLogo} />
-
-        <Pressable onPress={() => containerNavigation.navigate("Alarm")}>
-          {alarmCount ? (
-            <Image source={alarmUnread} style={styles.alarm} />
-          ) : (
-            <Image source={alarmEmpty} style={styles.alarm} />
-          )}
-        </Pressable>
-      </View>
-
       <ScrollView>
         <View style={styles.container}>
-          {/* 배너 슬라이더 */}
-          <View style={styles.carouselContainer}>
-            <Carousel
-              data={bannerData}
-              width={screenWidth}
-              height={getResponsiveSize(200)}
-              loop
-              autoPlay
-              scrollAnimationDuration={1000}
-              autoPlayInterval={2500}
-              onSnapToItem={(index) => setCurrentSlide(index)}
-              renderItem={({ item, index }) => (
-                <Pressable key={index} style={styles.bannerCard}>
-                  <Image
-                    src={item.image}
-                    resizeMode="cover"
-                    style={styles.bannerImage}
-                  />
-                </Pressable>
-              )}
-            />
+          <MainBanner />
 
-            <View style={styles.indicator}>
-              <CustomText color={colors.white} fontSize={12} fontWeight={"700"}>
-                {currentSlide + 1}
-              </CustomText>
-
-              <CustomText color="rgba(255, 255, 255, 0.7)" fontSize={12}>
-                {" "}
-                / {bannerData.length}
-              </CustomText>
-            </View>
-          </View>
           <View style={styles.mainContainer}>
             {/* 세차 추천 */}
             <View style={styles.washRecommend}>
@@ -292,60 +251,9 @@ export const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: getResponsiveSize(60),
-    paddingHorizontal: getResponsiveSize(20),
-    backgroundColor: colors.white,
-    zIndex: 1,
-  },
-  headerLogo: {
-    width: getResponsiveSize(58),
-    height: getResponsiveSize(28),
-  },
-  alarm: {
-    width: getResponsiveSize(24),
-    height: getResponsiveSize(24),
-  },
   container: {
     height: "100%",
     alignItems: "center",
-  },
-  carouselContainer: {
-    position: "relative",
-    width: "100%",
-    height: getResponsiveSize(200),
-  },
-  bannerCarousel: {
-    width: "100%",
-    height: "100%",
-  },
-  bannerCard: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: getResponsiveSize(200),
-    paddingHorizontal: getResponsiveSize(20),
-  },
-  bannerImage: {
-    width: "100%",
-    height: getResponsiveSize(200),
-    borderRadius: 10,
-  },
-  indicator: {
-    position: "absolute",
-    flexDirection: "row",
-    right: getResponsiveSize(30),
-    bottom: getResponsiveSize(10),
-    width: "auto",
-    height: "auto",
-    paddingVertical: getResponsiveSize(4),
-    paddingHorizontal: getResponsiveSize(8),
-    fontSize: getFontSize(12),
-    backgroundColor: "rgba(38, 38, 39, 0.7)",
-    borderRadius: 40,
   },
   mainContainer: {
     width: "100%",

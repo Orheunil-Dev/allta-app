@@ -1,9 +1,9 @@
 import { View, StyleSheet, Image, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { headerBackArrow } from "@/assets/images";
-import { CustomText } from "@/components/ui/CustomText";
 import { getResponsiveSize } from "@/utils";
+import { CustomText } from "@/components/ui/CustomText";
+import { headerBackArrow } from "@/assets/images";
 import { colors } from "@/styles";
 
 interface CustomHeaderProps {
