@@ -14,6 +14,13 @@ export { default as rigthArrowIcon } from "./right-arrow-icon.png";
 
 // 스플래쉬
 export { default as splashIamge } from "./splash-image.png";
+export { default as emptyImage } from "./empty-image.png";
+
+// 인트로
+export { default as PermissionAlarmIcon } from "./permission-alarm-icon.png";
+export { default as PermissionCameraIcon } from "./permission-camera-icon.png";
+export { default as PermissionLocationIcon } from "./permission-location-icon.png";
+export { default as PermissionPhotoIcon } from "./permission-photo-icon.png";
 
 // 로그인
 export { default as kakaoLoginIcon } from "./kakao-login-icon.png";

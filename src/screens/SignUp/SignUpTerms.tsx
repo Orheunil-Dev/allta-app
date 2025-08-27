@@ -12,7 +12,7 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
-import { terms } from "@/constants/terms";
+import { terms } from "@/constants";
 import {
   checkAllButton,
   checkedCheckAllButton,

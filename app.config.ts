@@ -19,6 +19,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       usesNonExemptEncryption: false,
     },
     usesAppleSignIn: true,
+    infoPlist: {
+      NSCameraUsageDescription: "카메라 접근 권한이 필요합니다.",
+      NSPhotoLibraryUsageDescription: "사진 접근 권한이 필요합니다.",
+      NSLocationWhenInUseUsageDescription: "위치 정보 접근 권한이 필요합니다.",
+      NSUserTrackingUsageDescription:
+        "광고 맞춤화를 위해 추적 허용이 필요합니다.",
+    },
   },
   android: {
     package: "io.allta.user",
@@ -27,6 +34,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: "#ffffff",
     },
     edgeToEdgeEnabled: true,
+    permissions: [
+      "POST_NOTIFICATIONS",
+      "CAMERA",
+      "ACCESS_FINE_LOCATION",
+      "ACCESS_COARSE_LOCATION",
+      "READ_EXTERNAL_STORAGE",
+      "WRITE_EXTERNAL_STORAGE",
+    ],
   },
   web: {
     bundler: "metro",
@@ -44,7 +59,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-splash-screen",
       {
-        image: "./src/assets/images/splash-image.png",
+        image: "./src/assets/images/empty-image.png",
         imageWidth: 154,
         resizeMode: "contain",
         backgroundColor: "#ffffff",

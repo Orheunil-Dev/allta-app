@@ -9,9 +9,12 @@ import { CustomHeader } from "@/components/common/layout/CustomHeader";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
 import { LoginModal } from "@/components/common/modal/LoginModal";
+import { checkIsFirstLaunch } from "@/utils";
+import { IntroStack, IntroStackParamList } from "./IntroStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
+  IntroStack: NavigatorScreenParams<IntroStackParamList>;
   LoginStack: NavigatorScreenParams<LoginStackParamList>;
   Alarm: undefined;
 };
@@ -29,6 +32,8 @@ export const ContainerStack = ({
 }: Props) => {
   const navigationRef = useNavigationContainerRef();
 
+  const isFirstLaunch = checkIsFirstLaunch();
+
   return (
     <NavigationContainer ref={navigationRef}>
       <LoginModal
@@ -37,7 +42,17 @@ export const ContainerStack = ({
         setVisible={setShowLoginModal}
       />
 
-      <Stack.Navigator initialRouteName="BottomTab">
+      <Stack.Navigator
+        initialRouteName={isFirstLaunch ? `IntroStack` : `BottomTab`}
+      >
+        <Stack.Screen
+          name="IntroStack"
+          component={IntroStack}
+          options={{
+            headerShown: false,
+            presentation: "transparentModal",
+          }}
+        />
         <Stack.Screen
           name="BottomTab"
           component={BottomTab}
