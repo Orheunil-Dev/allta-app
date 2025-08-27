@@ -13,7 +13,6 @@ export const CustomSafeAreaView = ({ children, edges }: Props) => {
       style={{
         flex: 1,
         backgroundColor: "white",
-        paddingBottom: getResponsiveSize(20),
       }}
       edges={edges}
     >

@@ -23,15 +23,11 @@ export const Permission = () => {
 
   const handleGoHome = async () => {
     // 알림 권한 요청
-
     await Notifications.requestPermissionsAsync();
-
     // 위치 권한 요청
     await Location.requestForegroundPermissionsAsync();
-
     // 카메라 권한 요청
     await ImagePicker.requestCameraPermissionsAsync();
-
     // 앨범 권한 요청
     await ImagePicker.requestMediaLibraryPermissionsAsync();
 

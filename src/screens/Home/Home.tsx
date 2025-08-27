@@ -29,6 +29,7 @@ import {
   homeQrScan,
 } from "@/assets/images";
 import { colors } from "@/styles";
+import { Popup } from "@/components/home/Popup";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -85,6 +86,9 @@ export const Home = () => {
 
   return (
     <CustomSafeAreaView edges={["top"]}>
+      {/* 팝업 바텀시트 */}
+      <Popup />
+
       <View style={styles.header}>
         <Image source={alltaHeaderLogo} style={styles.headerLogo} />
 
