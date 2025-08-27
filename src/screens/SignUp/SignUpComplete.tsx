@@ -39,7 +39,7 @@ export const SignUpComplete = () => {
       <View style={styles.container}>
         <Image source={signupCompleteImage} style={styles.image} />
 
-        <CustomText fontSize={24} fontWeight={"600"} marginBottom={12}>
+        <CustomText fontSize={22} fontWeight={"600"} marginBottom={12}>
           회원가입이 완료되었어요!
         </CustomText>
 

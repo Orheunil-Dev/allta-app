@@ -7,12 +7,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Alarm } from "@/screens/Alarm";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
-import { LoginStack } from "./LoginStack";
+import { LoginStack, LoginStackParamList } from "./LoginStack";
 import { LoginModal } from "@/components/common/modal/LoginModal";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
-  LoginStack: undefined;
+  LoginStack: NavigatorScreenParams<LoginStackParamList>;
   Alarm: undefined;
 };
 

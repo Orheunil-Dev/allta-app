@@ -1,38 +1,29 @@
 import { useRef, useState } from "react";
-import {
-  FlatList,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { FlatList, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
 import { z } from "zod";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { SignUpTextInput } from "@/components/ui/TextInput";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
-import { CustomHeader } from "@/components/common/layout/CustomHeader";
-import { carData } from "@/mock";
 import { colors } from "@/styles";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-
-type RegisterCarRouteProp = RouteProp<LoginStackParamList, "RegisterCar">;
+import {
+  useCarModelControllerGetCarModels,
+  useCarModelControllerGetCarVendors,
+} from "@/api/car-model/car-model";
 
 // 유효성 검사
 const registerFormSchema = z.object({
   carBrand: z.string(),
   carModel: z.string(),
-  carType: z.enum(["SEDAN", "SUV", "VAN"]),
+  carType: z.string(),
   carNumber: z
     .string()
     .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다."),
@@ -43,19 +34,39 @@ const carNumberSchema = z
   .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다.");
 
 export const RegisterCar = () => {
-  const route = useRoute<RegisterCarRouteProp>();
-
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
   const brandSelectRef = useRef<BottomSheetModal>(null);
   const modelSelectRef = useRef<BottomSheetModal>(null);
 
+  const [carVendor, setCarVendor] = useState<string | null>(null);
   const [registerForm, setRegisterForm] = useState({
     carBrand: "",
     carModel: "",
     carType: "",
     carNumber: "",
+  });
+
+  const {
+    data: carVendorsData,
+    isPending: carVendorsLoading,
+    isError: carVendorsError,
+  } = useCarModelControllerGetCarVendors({
+    query: {
+      gcTime: 0,
+    },
+  });
+
+  const {
+    data: carModelsData,
+    isPending: carModelsLoading,
+    isError: carModelsError,
+  } = useCarModelControllerGetCarModels(carVendor!, {
+    query: {
+      enabled: !!carVendor,
+      gcTime: 0,
+    },
   });
 
   // 제조사 바텀시트 조작
@@ -72,14 +83,13 @@ export const RegisterCar = () => {
     if (!registerForm.carBrand) {
       return;
     }
-
     modelSelectRef?.current?.present();
   };
   const handleCloseModelSelect = () => {
     modelSelectRef?.current?.close();
   };
 
-  const handleChangeSignUpForm = (
+  const handleChangeRegisterForm = (
     key: keyof typeof registerForm,
     value: string
   ) => {
@@ -111,13 +121,14 @@ export const RegisterCar = () => {
           title="제조사"
         >
           <FlatList
-            data={carData}
-            keyExtractor={(item) => item.carBrand}
+            data={carVendorsData?.data}
+            keyExtractor={(item) => item.vendor}
             style={{ width: "100%" }}
             renderItem={({ item, index }) => (
               <Pressable
                 onPress={() => {
-                  handleChangeSignUpForm("carBrand", item.carBrand);
+                  handleChangeRegisterForm("carBrand", item.vendor);
+                  setCarVendor(item.vendor);
                   handleCloseBrandSelect();
                 }}
                 key={index}
@@ -125,13 +136,13 @@ export const RegisterCar = () => {
               >
                 <CustomText
                   color={
-                    registerForm.carBrand === item.carBrand
+                    registerForm.carBrand === item.vendor
                       ? colors.main
                       : colors.black
                   }
                   fontSize={16}
                 >
-                  {item.carBrand}
+                  {item.vendor}
                 </CustomText>
               </Pressable>
             )}
@@ -144,33 +155,35 @@ export const RegisterCar = () => {
           bottomSheetRef={modelSelectRef}
           title="모델"
         >
-          <FlatList
-            data={
-              carData.find((item) => item.carBrand === registerForm.carBrand)
-                ?.carModels ?? []
-            }
-            keyExtractor={(item) => item}
-            style={{ width: "100%" }}
-            renderItem={({ item, index }) => (
-              <Pressable
-                onPress={() => {
-                  handleChangeSignUpForm("carModel", item);
-                  handleCloseModelSelect();
-                }}
-                key={index}
-                style={styles.list}
-              >
-                <CustomText
-                  color={
-                    registerForm.carModel === item ? colors.main : colors.black
-                  }
-                  fontSize={16}
+          {carModelsData?.data && (
+            <FlatList
+              data={carModelsData?.data}
+              keyExtractor={(item) => item.name!}
+              style={{ width: "100%" }}
+              renderItem={({ item, index }) => (
+                <Pressable
+                  onPress={() => {
+                    handleChangeRegisterForm("carModel", item.name!);
+                    handleChangeRegisterForm("carType", item.type!);
+                    handleCloseModelSelect();
+                  }}
+                  key={index}
+                  style={styles.list}
                 >
-                  {item}
-                </CustomText>
-              </Pressable>
-            )}
-          />
+                  <CustomText
+                    color={
+                      registerForm.carModel === item.name
+                        ? colors.main
+                        : colors.black
+                    }
+                    fontSize={16}
+                  >
+                    {item.name}
+                  </CustomText>
+                </Pressable>
+              )}
+            />
+          )}
         </CustomBottomSheet>
 
         <View style={styles.container}>
@@ -224,7 +237,9 @@ export const RegisterCar = () => {
             </CustomText>
             <SignUpTextInput
               value={registerForm.carNumber}
-              onChangeText={(text) => handleChangeSignUpForm("carNumber", text)}
+              onChangeText={(text) =>
+                handleChangeRegisterForm("carNumber", text)
+              }
               maxLength={8}
               errorMessage={
                 registerForm.carNumber.length > 6

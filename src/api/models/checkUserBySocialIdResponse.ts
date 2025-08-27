@@ -7,6 +7,6 @@
  */
 
 export interface CheckUserBySocialIdResponse {
-  /** 회원 가입 여부 */
+  /** 결과 여부 */
   ok: boolean;
 }

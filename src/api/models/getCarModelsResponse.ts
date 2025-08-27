@@ -5,8 +5,11 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
+import type { CarModel } from './carModel';
 
-export interface CheckPhoneNumberResponse {
+export interface GetCarModelsResponse {
   /** 결과 여부 */
   ok: boolean;
+  /** 모델명 목록 */
+  data: CarModel[];
 }

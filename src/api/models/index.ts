@@ -7,6 +7,10 @@
  */
 
 export * from './alarmControllerGetManyAlarmsParams';
+export * from './carModel';
+export * from './carModelName';
+export * from './carModelType';
+export * from './carVendor';
 export * from './checkPhoneNumberRequest';
 export * from './checkPhoneNumberResponse';
 export * from './checkUserBySocialIdRequest';
@@ -14,6 +18,8 @@ export * from './checkUserBySocialIdResponse';
 export * from './createUserRequest';
 export * from './createUserRequestReferrerCode';
 export * from './createUserResponse';
+export * from './getCarModelsResponse';
+export * from './getCarVendorsResponse';
 export * from './getUserProfileResponse';
 export * from './getUserProfileResponseCarNumber';
 export * from './loginBySocialIdRequest';

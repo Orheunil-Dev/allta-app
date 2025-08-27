@@ -6,4 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CreateUserResponse { [key: string]: unknown }
+export interface CreateUserResponse {
+  /** 결과 여부 */
+  ok: boolean;
+}

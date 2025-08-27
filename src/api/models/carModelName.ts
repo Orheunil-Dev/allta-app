@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CheckPhoneNumberResponse {
-  /** 결과 여부 */
-  ok: boolean;
-}
+/**
+ * 모델명
+ */
+export type CarModelName = string | null;

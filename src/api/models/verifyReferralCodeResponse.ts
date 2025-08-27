@@ -6,4 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface VerifyReferralCodeResponse { [key: string]: unknown }
+export interface VerifyReferralCodeResponse {
+  /** 결과 여부 */
+  ok: boolean;
+}

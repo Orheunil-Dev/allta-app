@@ -44,7 +44,7 @@ export const RegisterComplete = () => {
       <View style={styles.container}>
         <Image source={registerCompleteImage} style={styles.image} />
 
-        <CustomText fontSize={24} fontWeight={"600"} marginBottom={8}>
+        <CustomText fontSize={22} fontWeight={"600"} marginBottom={8}>
           {route.params.isRegister
             ? "추가 정보 등록이 완료되었습니다."
             : "필요할 때 등록할 수 있어요."}
@@ -57,7 +57,7 @@ export const RegisterComplete = () => {
             color={colors.gray7}
             marginBottom={40}
           >
-            차량,카드 정보는 언제든지 수정할 수 있어요.
+            차량, 카드 정보는 언제든지 수정할 수 있어요.
           </CustomText>
         ) : (
           <>

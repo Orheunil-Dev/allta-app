@@ -6,4 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface RegisterExtraInfoResponse { [key: string]: unknown }
+export interface RegisterExtraInfoResponse {
+  /** 결과 여부 */
+  ok: boolean;
+}

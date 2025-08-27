@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
   CommonActions,
@@ -29,12 +29,12 @@ type RegisterCardRouteProp = RouteProp<LoginStackParamList, "RegisterCar">;
 
 // 유효성 검사
 const registerFormSchema = z.object({
-  cardNumber: z.string().trim().length(22, "올바른 카드 번호를 입력해주세요."),
+  cardNumber: z.string().trim().length(19, "올바른 카드 번호를 입력해주세요."),
   expiration: z.string().trim().length(7, "올바른 유효 기간을 입력해주세요."),
   cardPassword: z
     .string()
     .trim()
-    .length(22, "올바른 카드 비밀번호를 입력해주세요."),
+    .length(2, "올바른 카드 비밀번호를 입력해주세요."),
   identityNumber: z
     .string()
     .trim()
@@ -103,7 +103,7 @@ export const RegisterCard = () => {
                 cardPassword: registerForm.cardPassword,
                 expirationYear: registerForm.expiration.slice(2, 4),
                 expirationMonth: registerForm.expiration.slice(0, 2),
-                identityNumber: registerForm.expiration,
+                identityNumber: registerForm.identityNumber,
               }
             : {}),
         },
@@ -113,19 +113,24 @@ export const RegisterCard = () => {
           return loginStackNavigation.dispatch(
             CommonActions.reset({
               index: 0,
-              routes: [{ name: "RegisterComplete" }],
+              routes: [
+                {
+                  name: "RegisterComplete",
+                  params: {
+                    isRegister: true,
+                  },
+                },
+              ],
             })
           );
+        },
+        onError: (error: any) => {
+          console.log(error.message ?? error);
+          Alert.alert(error.message ?? error);
         },
       }
     );
   };
-
-  const handleSkipRegist = () => {
-    loginStackNavigation.navigate("RegisterCard", {});
-  };
-
-  const handleNextStep = () => {};
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>

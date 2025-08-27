@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CheckPhoneNumberResponse {
-  /** 결과 여부 */
-  ok: boolean;
+export interface CarVendor {
+  /** 제조사 */
+  vendor: string;
 }

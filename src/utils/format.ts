@@ -27,24 +27,14 @@ export const formatTime = (value: number) => {
 
 // 카드 번호 포맷팅
 export const formatCardNumber = (value: string) => {
-  const digits = value.replace(/\D/g, "");
+  const digits = value.replace(/\D/g, "").slice(0, 16);
 
-  switch (true) {
-    case digits.length <= 4:
-      return digits;
+  const part1 = digits.slice(0, 4);
+  const part2 = digits.slice(4, 8);
+  const part3 = digits.slice(8, 12);
+  const part4 = digits.slice(12, 16);
 
-    case digits.length <= 8:
-      return `${digits.slice(0, 4)}-${digits.slice(4)}`;
-
-    case digits.length <= 12:
-      return `${digits.slice(0, 4)}-${digits.slice(4)}-${digits.slice(8, 12)}`;
-
-    default:
-      return `${digits.slice(0, 4)}-${digits.slice(4, 8)}-${digits.slice(
-        8,
-        12
-      )}-${digits.slice(12, 16)}`;
-  }
+  return [part1, part2, part3, part4].filter(Boolean).join("-");
 };
 
 // 유효기간 포매팅

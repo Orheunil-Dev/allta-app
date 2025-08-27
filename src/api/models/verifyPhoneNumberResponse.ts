@@ -6,4 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface VerifyPhoneNumberResponse { [key: string]: unknown }
+export interface VerifyPhoneNumberResponse {
+  /** 결과 여부 */
+  ok: boolean;
+}

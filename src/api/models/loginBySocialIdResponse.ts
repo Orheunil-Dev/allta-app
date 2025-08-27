@@ -7,6 +7,6 @@
  */
 
 export interface LoginBySocialIdResponse {
-  /** 로그인 성공 여부 */
+  /** 결과 여부 */
   ok: boolean;
 }
