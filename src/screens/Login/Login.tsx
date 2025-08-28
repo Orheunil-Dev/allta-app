@@ -110,7 +110,7 @@ export const Login = () => {
                         routes: [
                           {
                             name: "BottomTab",
-                            params: { screen: "HomeStack" },
+                            params: { screen: "Home" },
                           },
                         ],
                       })
@@ -201,7 +201,7 @@ export const Login = () => {
                           routes: [
                             {
                               name: "BottomTab",
-                              params: { screen: "HomeStack" },
+                              params: { screen: "Home" },
                             },
                           ],
                         })
@@ -284,7 +284,7 @@ export const Login = () => {
                         routes: [
                           {
                             name: "BottomTab",
-                            params: { screen: "HomeStack" },
+                            params: { screen: "Home" },
                           },
                         ],
                       })
@@ -317,7 +317,7 @@ export const Login = () => {
         routes: [
           {
             name: "BottomTab",
-            params: { screen: "HomeStack" },
+            params: { screen: "Home" },
           },
         ],
       })

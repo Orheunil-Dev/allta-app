@@ -37,7 +37,7 @@ export const Permission = () => {
         routes: [
           {
             name: "BottomTab",
-            params: { screen: "HomeStack" },
+            params: { screen: "Home" },
           },
         ],
       })

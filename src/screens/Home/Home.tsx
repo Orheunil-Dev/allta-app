@@ -1,18 +1,17 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
   BottomTabParamList,
   ContainerStackParamList,
-  HomeStackParamList,
+  StoreStackParamList,
 } from "@/navigations";
-import { useAlarmControllerGetUnreadAlarmCount } from "@/api/alarm/alarm";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { RecommendCard } from "@/components/ui/Card";
@@ -28,13 +27,14 @@ import { colors } from "@/styles";
 import { Popup } from "@/components/home/Popup";
 import { MainBanner } from "@/components/home/MainBanner";
 import { HomeHeader } from "@/components/home/HomeHeader";
+import { useNotificationControllerGetUnreadNotificationsCount } from "@/api/notification/notification";
 
 export const Home = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
-  const homeNavigation =
-    useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
+  const storeNavigation =
+    useNavigation<NativeStackNavigationProp<StoreStackParamList>>();
 
   const bottomTabNavigation =
     useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
@@ -42,30 +42,28 @@ export const Home = () => {
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
 
   // 미확인 알림 조회
-  const { data: alarmData, refetch } = useAlarmControllerGetUnreadAlarmCount({
-    query: {
-      retry: false,
-      gcTime: 0,
-    },
-  });
+  const { data: unreadNotificationsData, refetch: unreadNotificationsRefetch } =
+    useNotificationControllerGetUnreadNotificationsCount({
+      query: {
+        retry: false,
+        gcTime: 0,
+      },
+    });
 
   // 추천 매장 목록 조회
 
   // 알림 버튼 터치
   const handlePressAlarm = () => {
-    return containerNavigation.navigate("Alarm");
+    return containerNavigation.navigate("Notification");
   };
 
   // 푸터 애니메이션
-  const footerHeight = getResponsiveSize(100);
-  const footerMarginTop = getResponsiveSize(12);
-
   const openAnimatedStyle = useAnimatedStyle(() => {
     return {
-      height: withTiming(footerOpen ? footerHeight : 0, {
+      height: withTiming(footerOpen ? getResponsiveSize(100) : 0, {
         duration: 300,
       }),
-      marginTop: withTiming(footerOpen ? footerMarginTop : 0, {
+      marginTop: withTiming(footerOpen ? getResponsiveSize(12) : 0, {
         duration: 300,
       }),
       opacity: withTiming(footerOpen ? 1 : 0, { duration: 300 }),
@@ -84,10 +82,23 @@ export const Home = () => {
     };
   });
 
+  useFocusEffect(
+    useCallback(() => {
+      const timer = setTimeout(() => {
+        unreadNotificationsRefetch();
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }, [])
+  );
+
   return (
     <CustomSafeAreaView edges={["top"]}>
       {/* 헤더 */}
-      <HomeHeader alarmCount={alarmData} onPressAlarm={handlePressAlarm} />
+      <HomeHeader
+        unreadCount={unreadNotificationsData?.count}
+        onPressAlarm={handlePressAlarm}
+      />
       {/* 팝업 바텀시트 */}
       <Popup />
 
@@ -114,7 +125,12 @@ export const Home = () => {
             {/* 상품 추천 */}
             <Pressable
               style={styles.productRecommend}
-              onPress={() => homeNavigation.navigate("ExploreStores")}
+              onPress={() =>
+                containerNavigation.navigate("StoreStack", {
+                  screen: "Stores",
+                  params: { serviceType: "AUTO" },
+                })
+              }
             >
               <CustomText color={colors.white} fontSize={18} fontWeight={"700"}>
                 올타 플러스
@@ -127,8 +143,13 @@ export const Home = () => {
             <View style={styles.autoWash}>
               {/* 자동세차 */}
               <Pressable
-                onPress={() => homeNavigation.navigate("ExploreStores")}
-                style={styles.exploreStores}
+                onPress={() =>
+                  containerNavigation.navigate("StoreStack", {
+                    screen: "Stores",
+                    params: { serviceType: "AUTO" },
+                  })
+                }
+                style={styles.stores}
               >
                 <CustomText
                   color={colors.main}
@@ -286,7 +307,7 @@ const styles = StyleSheet.create({
     bottom: getResponsiveSize(12),
     right: getResponsiveSize(12),
   },
-  exploreStores: {
+  stores: {
     flex: 1,
     height: "100%",
     paddingHorizontal: getResponsiveSize(12),

@@ -23,7 +23,7 @@ export const SignUpComplete = () => {
         routes: [
           {
             name: "BottomTab",
-            params: { screen: "HomeStack" },
+            params: { screen: "Home" },
           },
         ],
       })

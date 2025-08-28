@@ -48,7 +48,7 @@ export const LoginModal = ({ visible, setVisible, navigationRef }: Props) => {
         routes: [
           {
             name: "BottomTab",
-            params: { screen: "HomeStack" },
+            params: { screen: "Home" },
           },
         ],
       })

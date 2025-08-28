@@ -9,11 +9,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: "allta-user",
   version: "1.0.0",
   orientation: "portrait",
-  icon: "./src/assets/images/icon.png",
+  icon: "./src/assets/images/app-icon.png",
   userInterfaceStyle: "light",
   newArchEnabled: true,
   ios: {
     bundleIdentifier: "io.allta.user",
+    icon: "./src/assets/images/app-icon.png",
     supportsTablet: true,
     config: {
       usesNonExemptEncryption: false,
@@ -25,6 +26,17 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       NSLocationWhenInUseUsageDescription: "위치 정보 접근 권한이 필요합니다.",
       NSUserTrackingUsageDescription:
         "광고 맞춤화를 위해 추적 허용이 필요합니다.",
+      CFBundleURLTypes: [
+        {
+          CFBundleTypeRole: "Editor",
+          CFBundleURLSchemes: [process.env.EXPO_PUBLIC_KAKAO_APP_KEY],
+        },
+      ],
+      LSApplicationQueriesSchemes: [
+        "kakaokompassauth",
+        "storykompassauth",
+        "kakaolink",
+      ],
     },
   },
   android: {

@@ -4,19 +4,21 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Alarm } from "@/screens/Alarm";
+import { Notification } from "@/screens/Notification";
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
 import { LoginModal } from "@/components/common/modal/LoginModal";
 import { checkIsFirstLaunch } from "@/utils";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
+import { StoreStack, StoreStackParamList } from "./StoreStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
   IntroStack: NavigatorScreenParams<IntroStackParamList>;
+  StoreStack: NavigatorScreenParams<StoreStackParamList>;
   LoginStack: NavigatorScreenParams<LoginStackParamList>;
-  Alarm: undefined;
+  Notification: undefined;
 };
 
 const Stack = createNativeStackNavigator();
@@ -61,10 +63,17 @@ export const ContainerStack = ({
           }}
         />
         <Stack.Screen
-          name="Alarm"
-          component={Alarm}
+          name="Notification"
+          component={Notification}
           options={{
             header: () => <CustomHeader title="알림" showBackButton />,
+          }}
+        />
+        <Stack.Screen
+          name="StoreStack"
+          component={StoreStack}
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen

@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeStack } from "./HomeStack";
 import { QrStack } from "./QrStack";
 import { MyStoreStack } from "./MyStoreStack";
 import { getResponsiveSize } from "@/utils";
@@ -16,9 +15,10 @@ import {
   whiteStoreIcon,
 } from "@/assets/images";
 import { MyPageStack } from "./MyPageStack";
+import { Home } from "@/screens/Home";
 
 export type BottomTabParamList = {
-  HomeStack: undefined;
+  Home: undefined;
   QrStack: undefined;
   MyStoreStack: undefined;
   MyPageStack: undefined;
@@ -52,8 +52,8 @@ export const BottomTab = () => {
       }}
     >
       <Tab.Screen
-        name="HomeStack"
-        component={HomeStack}
+        name="Home"
+        component={Home}
         options={{
           title: "홈",
           headerShown: false,

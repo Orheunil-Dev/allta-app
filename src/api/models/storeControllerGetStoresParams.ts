@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StoreControllerGetManyStoresParams = {
+export type StoreControllerGetStoresParams = {
 /**
  * 위도
  */
@@ -15,6 +15,14 @@ lat?: number;
  * 경도
  */
 lng?: number;
+/**
+ * 서비스 종류
+ */
+serviceType: string;
+/**
+ * 이용권 종류
+ */
+passType?: string;
 /**
  * 가져올 데이터 수
  */

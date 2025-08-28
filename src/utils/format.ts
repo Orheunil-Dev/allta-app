@@ -37,7 +37,7 @@ export const formatCardNumber = (value: string) => {
   return [part1, part2, part3, part4].filter(Boolean).join("-");
 };
 
-// 유효기간 포매팅
+// 유효기간 포맷팅
 export const formatCardExpiration = (value: string) => {
   const digits = value.replace(/\D/g, "");
 
@@ -47,5 +47,28 @@ export const formatCardExpiration = (value: string) => {
 
     default:
       return `${digits.slice(0, 2)} / ${digits.slice(2, 4)}`;
+  }
+};
+
+// 알림 날짜 포맷팅
+export const formatNotificationTime = (value: string) => {
+  const now = new Date();
+  const nowKst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+  const target = new Date(value);
+  const targetKst = new Date(target.getTime() + 9 * 60 * 60 * 1000);
+
+  const diffTime = nowKst.getTime() - targetKst.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  switch (diffDays) {
+    case 0:
+      return "오늘";
+
+    case 1:
+      return "어제";
+
+    default:
+      return `${diffDays}일 전`;
   }
 };

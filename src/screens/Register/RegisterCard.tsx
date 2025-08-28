@@ -25,7 +25,7 @@ import {
 import { colors } from "@/styles";
 import { useUserControllerRegisterExtraInfo } from "@/api/user/user";
 
-type RegisterCardRouteProp = RouteProp<LoginStackParamList, "RegisterCar">;
+type RegisterCardRouteProp = RouteProp<LoginStackParamList, "RegisterCard">;
 
 // 유효성 검사
 const registerFormSchema = z.object({

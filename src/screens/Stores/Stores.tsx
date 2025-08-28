@@ -1,7 +1,36 @@
+import { GetStoresResponse } from "@/api/models";
+import { useStoreControllerGetStores } from "@/api/store/store";
+import { StoreStackParamList } from "@/navigations";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-export const ExploreStores = () => {
+type StoreRouteProp = RouteProp<StoreStackParamList, "Stores">;
+
+export const Stores = () => {
+  const route = useRoute<StoreRouteProp>();
+
+  const [skip, setSkip] = useState<number>(0);
+  const [passType, setPassType] = useState<
+    "TICKET" | "STANDARD" | "PREMIUM" | undefined
+  >(undefined);
+  const [stores, setStores] = useState<GetStoresResponse["data"]>([]);
+
+  const {
+    data: storesData,
+    isLoading: storesLoading,
+    isError: storesError,
+    refetch: storesRefetch,
+  } = useStoreControllerGetStores({
+    take: 20,
+    skip,
+    serviceType: route.params.serviceType,
+    passType,
+  });
+
+  console.log(storesData);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>

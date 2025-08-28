@@ -6,13 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export type AlarmControllerGetManyAlarmsParams = {
 /**
- * 가져올 데이터 수
+ * 이용권 가격
  */
-take: number;
-/**
- * 건너뛸 데이터 수
- */
-skip: number;
-};
+export type StorePassPrice = string | null;

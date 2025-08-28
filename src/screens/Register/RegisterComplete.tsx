@@ -32,7 +32,7 @@ export const RegisterComplete = () => {
         routes: [
           {
             name: "BottomTab",
-            params: { screen: "HomeStack" },
+            params: { screen: "Home" },
           },
         ],
       })

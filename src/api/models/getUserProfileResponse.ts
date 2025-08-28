@@ -12,10 +12,10 @@ export interface GetUserProfileResponse {
   name: string;
   /** 차량 번호 */
   carNumber?: GetUserProfileResponseCarNumber;
-  /** 보유 스탠다드 구독권 개수 */
-  totalStandard: number;
-  /** 보유 프리미엄 구독권 개수 */
-  totalPremium: number;
   /** 보유 일회권 개수 */
   totalTickets: number;
+  /** 보유 스탠다드 구독권 개수 */
+  totalStandards: number;
+  /** 보유 프리미엄 구독권 개수 */
+  totalPremiums: number;
 }

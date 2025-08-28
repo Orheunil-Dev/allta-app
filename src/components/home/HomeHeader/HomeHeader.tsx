@@ -4,17 +4,17 @@ import { alarmEmpty, alarmUnread, alltaHeaderLogo } from "@/assets/images";
 import { colors } from "@/styles";
 
 interface Props {
-  alarmCount?: number;
+  unreadCount?: number;
   onPressAlarm: () => void;
 }
 
-export const HomeHeader = ({ alarmCount, onPressAlarm }: Props) => {
+export const HomeHeader = ({ unreadCount, onPressAlarm }: Props) => {
   return (
     <View style={styles.container}>
       <Image source={alltaHeaderLogo} style={styles.headerLogo} />
 
       <Pressable onPress={onPressAlarm}>
-        {alarmCount ? (
+        {unreadCount ? (
           <Image source={alarmUnread} style={styles.alarm} />
         ) : (
           <Image source={alarmEmpty} style={styles.alarm} />
