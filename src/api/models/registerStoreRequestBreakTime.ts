@@ -5,9 +5,8 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { StorePassPriceOneOf } from './storePassPriceOneOf';
 
 /**
- * 이용권 가격
+ * 휴게 시간
  */
-export type StorePassPrice = StorePassPriceOneOf | null;
+export type RegisterStoreRequestBreakTime = string | null;

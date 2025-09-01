@@ -46,6 +46,7 @@ export const Notification = () => {
     }
   };
 
+  // 무한 스크롤
   useEffect(() => {
     if (notificationsData?.data) {
       setNotifications((prev) => [...prev, ...notificationsData.data]);

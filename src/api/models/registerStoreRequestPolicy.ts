@@ -7,6 +7,6 @@
  */
 
 /**
- * 매장 이미지
+ * 유의사항
  */
-export type StoreStoreImage = string | null;
+export type RegisterStoreRequestPolicy = string | null;

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: getResponsiveSize(60),
     paddingHorizontal: getResponsiveSize(20),
-    backgroundColor: colors.white,
+    backgroundColor: colors.bg,
     zIndex: 1,
   },
   headerLogo: {

@@ -5,9 +5,9 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { StorePassPriceOneOf } from './storePassPriceOneOf';
+import type { StoreBusinessHoursOneOf } from './storeBusinessHoursOneOf';
 
 /**
- * 이용권 가격
+ * 영업 시간
  */
-export type StorePassPrice = StorePassPriceOneOf | null;
+export type StoreBusinessHours = StoreBusinessHoursOneOf | null;

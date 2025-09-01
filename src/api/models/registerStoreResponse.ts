@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-/**
- * 법인 ID
- */
-export type StoreStoreGroupId = string | null;
+export interface RegisterStoreResponse {
+  /** 결과 여부 */
+  ok: boolean;
+}

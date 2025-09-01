@@ -5,8 +5,10 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { StoreStoreImage } from './storeStoreImage';
+import type { StoreMainImage } from './storeMainImage';
 import type { StorePassPrice } from './storePassPrice';
+import type { StoreBusinessHours } from './storeBusinessHours';
+import type { StoreBreakTime } from './storeBreakTime';
 import type { StoreStoreGroupId } from './storeStoreGroupId';
 
 export interface Store {
@@ -20,10 +22,14 @@ export interface Store {
   lat: number;
   /** 경도 */
   lng: number;
-  /** 매장 이미지 */
-  storeImage?: StoreStoreImage;
+  /** 대표 이미지 */
+  mainImage?: StoreMainImage;
   /** 이용권 가격 */
   passPrice?: StorePassPrice;
-  /** 매장 그룹 ID */
+  /** 영업 시간 */
+  businessHours?: StoreBusinessHours;
+  /** 휴게 시간 */
+  breakTime?: StoreBreakTime;
+  /** 법인 ID */
   storeGroupId?: StoreStoreGroupId;
 }

@@ -6,7 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-/**
- * 법인 ID
- */
-export type StoreStoreGroupId = string | null;
+export type RegisterStoreRequestReceiptDiscountOneOf = { [key: string]: unknown };

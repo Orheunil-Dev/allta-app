@@ -93,7 +93,7 @@ export const Home = () => {
   );
 
   return (
-    <CustomSafeAreaView edges={["top"]}>
+    <CustomSafeAreaView backgroundColor={colors.bg} edges={["top"]}>
       {/* 헤더 */}
       <HomeHeader
         unreadCount={unreadNotificationsData?.count}
@@ -275,6 +275,7 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     alignItems: "center",
+    backgroundColor: colors.bg,
   },
   mainContainer: {
     width: "100%",
@@ -360,7 +361,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: getResponsiveSize(20),
     paddingVertical: getResponsiveSize(16),
-    backgroundColor: colors.gray1,
+    backgroundColor: colors.bg,
   },
   footerTop: {
     flexDirection: "row",
