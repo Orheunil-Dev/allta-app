@@ -1,9 +1,14 @@
-import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import Axios, {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 import * as SecureStore from "expo-secure-store";
 import CookieManager from "@react-native-cookies/cookies";
 import { CustomError } from "@/types";
 
-interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
+interface AxiosRequestConfigWithRetry extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
@@ -12,62 +17,84 @@ export const AXIOS_INSTANCE = Axios.create({
   withCredentials: true,
 });
 
+const AXIOS_INSTANCE_REFRESH = Axios.create({
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  withCredentials: true,
+});
+
 // 엑세스 토큰 재발급
 const getNewAccessToken = async (): Promise<void> => {
-  const refreshToken = await SecureStore.getItemAsync("refreshToken");
+  try {
+    const refreshToken = await SecureStore.getItemAsync("refreshToken");
 
-  if (!refreshToken) {
+    if (!refreshToken) {
+      const error: CustomError = {
+        message: "로그인이 만료되었습니다.",
+        status: 401,
+        code: "TOKEN_REFRESH_FAILED",
+      };
+
+      throw error;
+    }
+
+    await AXIOS_INSTANCE_REFRESH.post("auth/token/refresh", {});
+
+    const cookies = await CookieManager.get(process.env.EXPO_PUBLIC_API_URL!);
+    const newAccessToken = cookies.accessToken?.value;
+    const newRefreshToken = cookies.refreshToken?.value;
+
+    if (!newAccessToken || !newRefreshToken) {
+      const error: CustomError = {
+        message: "로그인이 만료되었습니다.",
+        status: 401,
+        code: "TOKEN_REFRESH_FAILED",
+      };
+
+      throw error;
+    }
+
+    // SecureStore 갱신
+    await SecureStore.setItemAsync("accessToken", newAccessToken);
+    await SecureStore.setItemAsync("refreshToken", newRefreshToken);
+
+    // 쿠키 갱신
+    await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
+      name: "accessToken",
+      value: newAccessToken,
+      path: "/",
+    });
+    await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
+      name: "refreshToken",
+      value: newRefreshToken,
+      path: "/",
+    });
+  } catch (e) {
     const error: CustomError = {
       message: "로그인이 만료되었습니다.",
       status: 401,
+      code: "TOKEN_REFRESH_FAILED",
     };
 
     throw error;
   }
-
-  const response = await AXIOS_INSTANCE.post(
-    "/token/refresh",
-    {},
-    {
-      headers: { Cookie: `refreshToken=${refreshToken}` },
-    }
-  );
-
-  const newAccessToken = response.data.accessToken;
-  const newRefreshToken = response.data.refreshToken;
-
-  // SecureStore 갱신
-  await SecureStore.setItemAsync("accessToken", newAccessToken);
-  await SecureStore.setItemAsync("refreshToken", newRefreshToken);
-
-  // 쿠키 갱신
-  await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
-    name: "accessToken",
-    value: newAccessToken,
-    path: "/",
-  });
-
-  await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
-    name: "refreshToken",
-    value: newRefreshToken,
-    path: "/",
-  });
 };
 
 // Request 인터셉터
 AXIOS_INSTANCE.interceptors.request.use(
-  async (config) => {
+  async (config: AxiosRequestConfigWithRetry) => {
     const accessToken = await SecureStore.getItemAsync("accessToken");
     const refreshToken = await SecureStore.getItemAsync("refreshToken");
 
-    if (accessToken && refreshToken) {
+    if (accessToken) {
       await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
         name: "accessToken",
         value: accessToken,
         path: "/",
         httpOnly: false,
       });
+    }
 
+    if (refreshToken) {
       await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
         name: "refreshToken",
         value: refreshToken,
@@ -100,13 +127,14 @@ AXIOS_INSTANCE.interceptors.response.use(
         await getNewAccessToken();
         // 새로운 토큰으로 원래 요청 재시도
         return AXIOS_INSTANCE(originalRequest);
-      } catch {
-        const error: CustomError = {
+      } catch (error: any) {
+        const customError: CustomError = {
           message: "로그인 후 사용해주세요.",
           status: 401,
+          code: "TOKEN_REFRESH_FAILED",
         };
 
-        throw error;
+        return Promise.reject(customError);
       }
     }
 
@@ -127,11 +155,15 @@ export const customInstance = <T = any>(
   })
     .then((response: AxiosResponse<T>) => response.data)
     .catch((error) => {
+      if (error.code === "TOKEN_REFRESH_FAILED") {
+        throw error;
+      }
+
       if ((error as AxiosError).isAxiosError) {
         const axiosError = error as AxiosError;
 
         // 서버 응답 메시지가 있을 경우 error 객체에 추가
-        const message = error.response?.data?.message;
+        const message = (axiosError.response?.data as any)?.message;
         const status = axiosError.response?.status;
 
         throw { message, status } as CustomError;

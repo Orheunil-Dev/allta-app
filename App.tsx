@@ -44,7 +44,7 @@ export default function App() {
     },
     queryCache: new QueryCache({
       onError: (error: any) => {
-        if (error?.status === 401) {
+        if (error?.status === 401 && error.code === "TOKEN_REFRESH_FAILED") {
           (async () => {
             await SecureStore.deleteItemAsync("accessToken");
             await SecureStore.deleteItemAsync("refreshToken");
