@@ -8,7 +8,12 @@ export const MyPage = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
-  const { data, error } = useUserControllerGetUserProfile();
+  const { data, error } = useUserControllerGetUserProfile({
+    query: {
+      retry: false,
+      gcTime: 0,
+    },
+  });
 
   console.log(data);
 
@@ -16,11 +21,19 @@ export const MyPage = () => {
     <View style={styles.container}>
       <Text>내 정보</Text>
 
-      <Pressable onPress={() => containerNavigation.navigate("LoginStack")}>
+      <Pressable
+        onPress={() =>
+          containerNavigation.navigate("LoginStack", { screen: "Login" })
+        }
+      >
         <Text>로그인</Text>
       </Pressable>
 
-      <Pressable onPress={() => containerNavigation.navigate("LoginStack")}>
+      <Pressable
+        onPress={() =>
+          containerNavigation.navigate("LoginStack", { screen: "Login" })
+        }
+      >
         <Text>로그아웃</Text>
       </Pressable>
     </View>

@@ -117,7 +117,7 @@ export const RegisterCar = () => {
         {/* 제조사 바텀시트 */}
         <CustomBottomSheet
           onClose={handleCloseBrandSelect}
-          bottomSheetRef={brandSelectRef}
+          ref={brandSelectRef}
           title="제조사"
         >
           <FlatList
@@ -152,7 +152,7 @@ export const RegisterCar = () => {
         {/* 차량모델 바텀시트 */}
         <CustomBottomSheet
           onClose={handleCloseModelSelect}
-          bottomSheetRef={modelSelectRef}
+          ref={modelSelectRef}
           title="모델"
         >
           {carModelsData?.data && (

@@ -11,6 +11,7 @@ export { default as scanIcon } from "./scan-icon.png";
 export { default as blackMyIcon } from "./black-my-icon.png";
 export { default as whiteMyIcon } from "./white-my-icon.png";
 export { default as rigthArrowIcon } from "./right-arrow-icon.png";
+export { default as blackDownArrow } from "./black-down-arrow.png";
 
 // 스플래쉬
 export { default as splashIamge } from "./splash-image.png";
@@ -48,3 +49,4 @@ export { default as homeFooterArrow } from "./home-footer-arrow.png";
 // 매장
 export { default as defaultStoreImage } from "./default-store-image.png";
 export { default as locationIcon } from "./location-icon.png";
+export { default as myLocationIcon } from "./my-location-icon.png";

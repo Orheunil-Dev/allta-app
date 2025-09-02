@@ -12,12 +12,14 @@ import { LoginModal } from "@/components/common/modal/LoginModal";
 import { checkIsFirstLaunch } from "@/utils";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
 import { StoreStack, StoreStackParamList } from "./StoreStack";
+import { AddressStack, AddressStackParamList } from "./AddressStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
   IntroStack: NavigatorScreenParams<IntroStackParamList>;
   StoreStack: NavigatorScreenParams<StoreStackParamList>;
   LoginStack: NavigatorScreenParams<LoginStackParamList>;
+  AddressStack: NavigatorScreenParams<AddressStackParamList>;
   Notification: undefined;
 };
 
@@ -79,6 +81,14 @@ export const ContainerStack = ({
         <Stack.Screen
           name="LoginStack"
           component={LoginStack}
+          options={{
+            headerShown: false,
+            presentation: "transparentModal",
+          }}
+        />
+        <Stack.Screen
+          name="AddressStack"
+          component={AddressStack}
           options={{
             headerShown: false,
             presentation: "transparentModal",

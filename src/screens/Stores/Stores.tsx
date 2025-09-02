@@ -2,25 +2,20 @@ import { GetStoresResponse } from "@/api/models";
 import { useStoreControllerGetStores } from "@/api/store/store";
 import { StoreStackParamList } from "@/navigations";
 import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
-import {
-  Image,
-  ImageBackground,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import * as Location from "expo-location";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { formatEllipsis, getResponsiveSize } from "@/utils";
+import { formatEllipsis, formatPassType, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 import { useDistanceCalculator } from "@/hooks";
 import { defaultStoreImage, locationIcon } from "@/assets/images";
 import { StoreFilter } from "@/components/store/StoreFilter";
 import { PassType, ServiceType } from "@/types";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { AddressSelectBottomSheet } from "@/components/store/AddressSelectBottomSheet";
 
 type StoreRouteProp = RouteProp<StoreStackParamList, "Stores">;
 
@@ -37,6 +32,8 @@ type StoreServiceType = {
 
 export const Stores = () => {
   const route = useRoute<StoreRouteProp>();
+
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   const [skip, setSkip] = useState<number>(0);
   const [serviceType, setServiceType] = useState<ServiceType>(
@@ -81,6 +78,13 @@ export const Stores = () => {
     }
   };
 
+  const handleOpenAddressModal = () => {
+    bottomSheetRef?.current?.present();
+  };
+  const handleCloseAddressModal = () => {
+    bottomSheetRef?.current?.close();
+  };
+
   const getPassTypes = (priceObject: StoreServiceType): string[] => {
     const passSet = new Set<string>();
 
@@ -116,8 +120,6 @@ export const Stores = () => {
 
     return minPrice;
   };
-
-  const formatPassType = (value: PassType) => () => {};
 
   // 필터 변경 시 데이터 리페칭
   useEffect(() => {
@@ -170,12 +172,19 @@ export const Stores = () => {
 
   return (
     <CustomSafeAreaView backgroundColor={colors.bg} edges={["bottom"]}>
+      <AddressSelectBottomSheet
+        setCoordinate={setCoordinate}
+        ref={bottomSheetRef}
+        onClose={handleCloseAddressModal}
+      />
+
       {/* 검색 필터 */}
       <StoreFilter
         serviceType={serviceType}
         setServiceType={setServiceType}
         passType={passType}
         setPassType={setPassType}
+        handleOpenAddressModal={handleOpenAddressModal}
       />
 
       {stores.length ? (
@@ -244,10 +253,11 @@ export const Stores = () => {
                 {item.passPrice && (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <CustomText color={colors.gray7} fontSize={14}>
-                      이용권 최저가
+                      {passType ? formatPassType(passType) : "이용권 최저가"}
                     </CustomText>
                     <CustomText marginLeft={8} fontSize={18} fontWeight={"600"}>
-                      {getLowestPrice(item.passPrice)}원
+                      {getLowestPrice(item.passPrice)?.toLocaleString()}원{" "}
+                      {!!passType && "~"}
                     </CustomText>
                   </View>
                 )}

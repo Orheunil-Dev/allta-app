@@ -1,3 +1,5 @@
+import { PassType } from "@/types";
+
 // 전화번호 포맷팅 (ex. 010-0000-0000)
 export const formatPhoneNumber = (value: string) => {
   const digits = value.replace(/\D/g, "");
@@ -70,6 +72,19 @@ export const formatNotificationTime = (value: string) => {
 
     default:
       return `${diffDays}일 전`;
+  }
+};
+
+export const formatPassType = (value: PassType): string | null => {
+  switch (value) {
+    case "PREMIUM":
+      return "프리미엄";
+    case "STANDARD":
+      return "스탠다드";
+    case "TICKET":
+      return "일회권";
+    default:
+      return null;
   }
 };
 

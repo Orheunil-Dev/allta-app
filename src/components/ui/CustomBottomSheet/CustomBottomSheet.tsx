@@ -11,19 +11,21 @@ import { getResponsiveSize } from "@/utils";
 import { closeIcon } from "@/assets/images";
 
 interface Props {
-  bottomSheetRef: RefObject<BottomSheetModal | null>;
+  ref: RefObject<BottomSheetModal | null>;
+  height?: string | number;
   title?: string;
   onClose: () => void;
   children: React.ReactNode;
 }
 
 export const CustomBottomSheet = ({
-  bottomSheetRef,
+  ref,
+  height = "60%",
   title,
   onClose,
   children,
 }: Props) => {
-  const snapPoints = useMemo(() => ["60%"], []);
+  const snapPoints = useMemo(() => [height], [height]);
 
   const renderBackdrop = useCallback(
     (props: any) => (
@@ -39,7 +41,7 @@ export const CustomBottomSheet = ({
 
   return (
     <BottomSheetModal
-      ref={bottomSheetRef}
+      ref={ref}
       snapPoints={snapPoints}
       enablePanDownToClose={false}
       enableHandlePanningGesture={false}
@@ -54,6 +56,7 @@ export const CustomBottomSheet = ({
           <CustomText fontSize={18} fontWeight={"600"}>
             {title}
           </CustomText>
+
           <Pressable onPress={onClose}>
             <Image
               source={closeIcon}
@@ -75,8 +78,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     height: "100%",
-    paddingHorizontal: getResponsiveSize(20),
+    paddingTop: getResponsiveSize(4),
     paddingBottom: getResponsiveSize(40),
+    paddingHorizontal: getResponsiveSize(20),
     backgroundColor: colors.white,
     borderTopRightRadius: 32,
     borderTopLeftRadius: 32,

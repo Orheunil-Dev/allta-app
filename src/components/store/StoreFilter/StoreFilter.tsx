@@ -1,22 +1,31 @@
+import { blackDownArrow } from "@/assets/images";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 import { PassType, ServiceType } from "@/types";
 import { getResponsiveSize } from "@/utils";
-import { Pressable, StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface Props {
   serviceType: ServiceType;
   setServiceType: (value: React.SetStateAction<ServiceType>) => void;
   passType: PassType | undefined;
   setPassType: (value: React.SetStateAction<PassType | undefined>) => void;
+  handleOpenAddressModal: () => void;
 }
+
+const { width: screenWidth } = Dimensions.get("window");
 
 export const StoreFilter = ({
   serviceType,
   setServiceType,
   passType,
   setPassType,
+  handleOpenAddressModal,
 }: Props) => {
+  const [scrollEnabled, setScrollEnabled] = useState(false);
+
   const handleServiceType = (value: ServiceType) => () => {
     return setServiceType(value);
   };
@@ -70,61 +79,85 @@ export const StoreFilter = ({
         </Pressable>
       </View>
 
-      <View style={styles.filter}>
-        <Pressable style={styles.filterButton}>
-          <CustomText fontSize={14}>현위치</CustomText>
-        </Pressable>
-
-        <Pressable
-          onPress={handlePassType("PREMIUM")}
-          style={[
-            styles.filterButton,
-            passType === "PREMIUM" && {
-              backgroundColor: colors.main,
-            },
-          ]}
+      <View style={styles.filterWrapper}>
+        <ScrollView
+          horizontal
+          scrollEnabled={scrollEnabled}
+          showsHorizontalScrollIndicator={false}
+          onContentSizeChange={(contentWidth) => {
+            setScrollEnabled(
+              contentWidth > screenWidth - getResponsiveSize(40)
+            );
+          }}
+          contentContainerStyle={styles.filter}
         >
-          <CustomText
-            color={passType === "PREMIUM" ? colors.white : colors.black}
-            fontSize={14}
+          <Pressable
+            onPress={handleOpenAddressModal}
+            style={styles.filterButton}
           >
-            프리미엄
-          </CustomText>
-        </Pressable>
+            <CustomText marginRight={4} fontSize={14}>
+              현위치
+            </CustomText>
+            <Image
+              source={blackDownArrow}
+              style={{
+                width: getResponsiveSize(8),
+                height: getResponsiveSize(4),
+              }}
+            />
+          </Pressable>
 
-        <Pressable
-          onPress={handlePassType("STANDARD")}
-          style={[
-            styles.filterButton,
-            passType === "STANDARD" && {
-              backgroundColor: colors.main,
-            },
-          ]}
-        >
-          <CustomText
-            color={passType === "STANDARD" ? colors.white : colors.black}
-            fontSize={14}
+          <Pressable
+            onPress={handlePassType("PREMIUM")}
+            style={[
+              styles.filterButton,
+              passType === "PREMIUM" && {
+                backgroundColor: colors.main,
+              },
+            ]}
           >
-            스탠다드
-          </CustomText>
-        </Pressable>
+            <CustomText
+              color={passType === "PREMIUM" ? colors.white : colors.black}
+              fontSize={14}
+            >
+              프리미엄
+            </CustomText>
+          </Pressable>
 
-        <Pressable
-          onPress={handlePassType("TICKET")}
-          style={[
-            styles.filterButton,
-            passType === "TICKET" && {
-              backgroundColor: colors.main,
-            },
-          ]}
-        >
-          <CustomText
-            color={passType === "TICKET" ? colors.white : colors.black}
-            fontSize={14}
+          <Pressable
+            onPress={handlePassType("STANDARD")}
+            style={[
+              styles.filterButton,
+              passType === "STANDARD" && {
+                backgroundColor: colors.main,
+              },
+            ]}
           >
-            일회권
-          </CustomText>
-        </Pressable>
+            <CustomText
+              color={passType === "STANDARD" ? colors.white : colors.black}
+              fontSize={14}
+            >
+              스탠다드
+            </CustomText>
+          </Pressable>
+
+          <Pressable
+            onPress={handlePassType("TICKET")}
+            style={[
+              styles.filterButton,
+              passType === "TICKET" && {
+                backgroundColor: colors.main,
+              },
+            ]}
+          >
+            <CustomText
+              color={passType === "TICKET" ? colors.white : colors.black}
+              fontSize={14}
+            >
+              일회권
+            </CustomText>
+          </Pressable>
+        </ScrollView>
       </View>
     </View>
   );
@@ -143,8 +176,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
   },
-  filter: {
-    flexDirection: "row",
+  filterWrapper: {
     alignItems: "center",
     height: getResponsiveSize(58),
     paddingHorizontal: getResponsiveSize(20),
@@ -153,7 +185,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
   },
+  filter: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: getResponsiveSize(8),
+  },
   filterButton: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: getResponsiveSize(6),
     paddingHorizontal: getResponsiveSize(14),
     borderRadius: 20,

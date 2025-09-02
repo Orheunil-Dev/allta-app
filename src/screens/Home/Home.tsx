@@ -57,13 +57,17 @@ export const Home = () => {
     return containerNavigation.navigate("Notification");
   };
 
+  // getResponsive 함수 애니메이션 함수 안에 넣을 시 에러 발생
+  const footerHeight = getResponsiveSize(100);
+  const footerMarginTop = getResponsiveSize(12);
+
   // 푸터 애니메이션
   const openAnimatedStyle = useAnimatedStyle(() => {
     return {
-      height: withTiming(footerOpen ? getResponsiveSize(100) : 0, {
+      height: withTiming(footerOpen ? footerHeight : 0, {
         duration: 300,
       }),
-      marginTop: withTiming(footerOpen ? getResponsiveSize(12) : 0, {
+      marginTop: withTiming(footerOpen ? footerMarginTop : 0, {
         duration: 300,
       }),
       opacity: withTiming(footerOpen ? 1 : 0, { duration: 300 }),

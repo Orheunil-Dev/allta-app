@@ -37,6 +37,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "storykompassauth",
         "kakaolink",
       ],
+      NSAppTransportSecurity: {
+        NSAllowsArbitraryLoads: true,
+      },
     },
   },
   android: {
@@ -90,6 +93,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           extraMavenRepos: [
             "https://devrepo.kakao.com/nexus/content/groups/public/",
           ],
+          usesCleartextTraffic: true,
         },
       },
     ],

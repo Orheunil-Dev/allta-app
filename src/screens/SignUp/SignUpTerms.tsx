@@ -82,7 +82,7 @@ export const SignUpTerms = () => {
     <CustomSafeAreaView edges={["bottom"]}>
       {/* 약관 상세 */}
       <CustomBottomSheet
-        bottomSheetRef={termsBottomSheetRef}
+        ref={termsBottomSheetRef}
         title={termsDetail !== null ? terms[termsDetail].title : ""}
         onClose={handleCloseDetail}
       >
