@@ -65,6 +65,7 @@ export * from './storeBreakTime';
 export * from './storeBusinessHours';
 export * from './storeBusinessHoursOneOf';
 export * from './storeControllerGetStoresParams';
+export * from './storeGroupStoresCount';
 export * from './storeMainImage';
 export * from './storePassPrice';
 export * from './storePassPriceOneOf';

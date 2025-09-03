@@ -10,6 +10,7 @@ import type { StorePassPrice } from './storePassPrice';
 import type { StoreBusinessHours } from './storeBusinessHours';
 import type { StoreBreakTime } from './storeBreakTime';
 import type { StoreStoreGroupId } from './storeStoreGroupId';
+import type { StoreGroupStoresCount } from './storeGroupStoresCount';
 
 export interface Store {
   /** ID */
@@ -32,4 +33,6 @@ export interface Store {
   breakTime?: StoreBreakTime;
   /** 법인 ID */
   storeGroupId?: StoreStoreGroupId;
+  /** 직영 매장 수 */
+  groupStoresCount: StoreGroupStoresCount;
 }

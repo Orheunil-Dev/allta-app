@@ -1,6 +1,6 @@
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
-import { getResponsiveSize } from "@/utils";
+import { formatEllipsis, getResponsiveSize } from "@/utils";
 import { useCallback, useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import axios from "axios";
@@ -64,8 +64,6 @@ export const SearchAddress = () => {
         }
       );
 
-      console.log(response.data.documents);
-
       const data: Address[] = response.data.documents.reduce(
         (acc: Address[], value: any) => {
           const uniqueKey = value.address_name;
@@ -73,7 +71,9 @@ export const SearchAddress = () => {
             acc.push({
               id: value.id,
               fullAddress: uniqueKey,
-              roadName: value.road_address_name ?? value.address_name,
+              roadName: value.road_address_name.trim()
+                ? value.road_address_name
+                : value.address_name,
               lat: parseFloat(value.y),
               lng: parseFloat(value.x),
             });
@@ -126,11 +126,15 @@ export const SearchAddress = () => {
               >
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <CustomText marginRight={10}>지번</CustomText>
-                  <CustomText fontSize={16}>{item.fullAddress}</CustomText>
+                  <CustomText fontSize={16}>
+                    {formatEllipsis(item.fullAddress, 23)}
+                  </CustomText>
                 </View>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <CustomText marginRight={10}>도로명</CustomText>
-                  <CustomText fontSize={16}>{item.roadName}</CustomText>
+                  <CustomText fontSize={16}>
+                    {formatEllipsis(item.roadName, 20)}
+                  </CustomText>
                 </View>
               </Pressable>
             )}

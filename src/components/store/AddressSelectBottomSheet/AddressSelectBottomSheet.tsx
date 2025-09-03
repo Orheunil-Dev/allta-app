@@ -11,11 +11,11 @@ import {
   uncheckedCircleIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
 import { useAddressControllerGetAddresses } from "@/api/address/address";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GetAddressesResponse } from "@/api/models";
 import { FlatList } from "react-native-gesture-handler";
 
@@ -58,6 +58,7 @@ export const AddressSelectBottomSheet = ({
       },
       {
         query: {
+          queryKey: ["addresses"],
           retry: false,
           gcTime: 0,
         },
@@ -111,12 +112,6 @@ export const AddressSelectBottomSheet = ({
       return [...prev, ...addressesData.data];
     });
   }, [addressesData]);
-
-  useFocusEffect(
-    useCallback(() => {
-      addressesRefetch();
-    }, [])
-  );
 
   return (
     <CustomBottomSheet

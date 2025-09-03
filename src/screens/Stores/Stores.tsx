@@ -3,8 +3,13 @@ import { useStoreControllerGetStores } from "@/api/store/store";
 import { StoreStackParamList } from "@/navigations";
 import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Image, ImageBackground, StyleSheet, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import {
+  FlatList,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  View,
+} from "react-native";
 import * as Location from "expo-location";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { formatEllipsis, formatPassType, getResponsiveSize } from "@/utils";

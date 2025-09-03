@@ -18,6 +18,7 @@ import { KakaoMap } from "@/components/store/KakaoMap/KakaoMap";
 import { useAddressControllerRegisterAddresses } from "@/api/address/address";
 import { RegisterAddresssRequest } from "@/api/models";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
+import { useQueryClient } from "@tanstack/react-query";
 
 type RegisterCompleteRouteProp = RouteProp<
   AddressStackParamList,
@@ -29,6 +30,8 @@ export const RegisterAddress = () => {
 
   const addressNavigation =
     useNavigation<NativeStackNavigationProp<AddressStackParamList>>();
+
+  const queryClient = useQueryClient();
 
   const [addressForm, setAddressForm] = useState<RegisterAddresssRequest>({
     nickname: "",
@@ -52,16 +55,19 @@ export const RegisterAddress = () => {
   } = useAddressControllerRegisterAddresses({});
 
   const handleSubmit = () => {
-    registerAddress({
-      data: {
-        ...addressForm,
-      },
-    });
+    registerAddress(
+      { data: { ...addressForm } },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["addresses"] });
 
-    addressNavigation.goBack();
-    setTimeout(() => {
-      addressNavigation.goBack();
-    }, 0);
+          addressNavigation.goBack();
+          setTimeout(() => {
+            addressNavigation.goBack();
+          }, 0);
+        },
+      }
+    );
   };
 
   useEffect(() => {
