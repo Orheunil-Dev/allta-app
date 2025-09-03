@@ -261,13 +261,26 @@ export const Stores = () => {
               </View>
 
               <View style={styles.bottom}>
-                <View></View>
+                <View>
+                  {(item.groupStoresCount ?? 0) > 1 && (
+                    <View style={styles.groupCount}>
+                      <CustomText
+                        color={colors.gray7}
+                        fontSize={12}
+                        fontWeight={"500"}
+                      >
+                        매장 {item.groupStoresCount! - 1}곳 포함
+                      </CustomText>
+                    </View>
+                  )}
+                </View>
 
                 {item.passPrice && (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <CustomText color={colors.gray7} fontSize={14}>
                       {passType ? formatPassType(passType) : "이용권 최저가"}
                     </CustomText>
+
                     <CustomText marginLeft={8} fontSize={18} fontWeight={"600"}>
                       {getLowestPrice(item.passPrice)?.toLocaleString()}원{" "}
                       {!!passType && "~"}
@@ -345,6 +358,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: getResponsiveSize(12),
+  },
+  groupCount: {
+    justifyContent: "center",
+    paddingVertical: getResponsiveSize(6),
+    paddingHorizontal: getResponsiveSize(10),
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 8,
   },
   emptyBox: {
     flex: 1,
