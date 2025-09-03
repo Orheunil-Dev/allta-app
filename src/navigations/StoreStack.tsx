@@ -1,10 +1,9 @@
 import { CustomHeader } from "@/components/common/layout/CustomHeader";
+import { StoreList } from "@/screens/StoreList";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home } from "@/screens/Home";
-import { Stores } from "@/screens/Stores";
 
 export type StoreStackParamList = {
-  Stores: {
+  StoreList: {
     serviceType: "AUTO" | "HANDS";
   };
 };
@@ -13,10 +12,10 @@ const Stack = createNativeStackNavigator();
 
 export const StoreStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Stores">
+    <Stack.Navigator initialRouteName="StoreList">
       <Stack.Screen
-        name="Stores"
-        component={Stores}
+        name="StoreList"
+        component={StoreList}
         options={{
           header: () => <CustomHeader title="매장 둘러보기" showBackButton />,
         }}

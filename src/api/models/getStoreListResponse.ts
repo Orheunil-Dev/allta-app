@@ -8,7 +8,7 @@
 import type { Store } from './store';
 import type { PaginationMetaEntity } from './paginationMetaEntity';
 
-export interface GetStoresResponse {
+export interface GetStoreListResponse {
   /** 결과 여부 */
   ok: boolean;
   /** 매장 목록 */

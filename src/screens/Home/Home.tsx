@@ -131,7 +131,7 @@ export const Home = () => {
               style={styles.productRecommend}
               onPress={() =>
                 containerNavigation.navigate("StoreStack", {
-                  screen: "Stores",
+                  screen: "StoreList",
                   params: { serviceType: "AUTO" },
                 })
               }
@@ -149,7 +149,7 @@ export const Home = () => {
               <Pressable
                 onPress={() =>
                   containerNavigation.navigate("StoreStack", {
-                    screen: "Stores",
+                    screen: "StoreList",
                     params: { serviceType: "AUTO" },
                   })
                 }

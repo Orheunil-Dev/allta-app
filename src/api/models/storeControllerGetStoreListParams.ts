@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StoreControllerGetStoresParams = {
+export type StoreControllerGetStoreListParams = {
 /**
  * 위도
  */

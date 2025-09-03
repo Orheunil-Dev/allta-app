@@ -1,5 +1,3 @@
-import { GetStoresResponse } from "@/api/models";
-import { useStoreControllerGetStores } from "@/api/store/store";
 import { StoreStackParamList } from "@/navigations";
 import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -21,8 +19,10 @@ import { StoreFilter } from "@/components/store/StoreFilter";
 import { PassType, ServiceType } from "@/types";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { AddressSelectBottomSheet } from "@/components/store/AddressSelectBottomSheet";
+import { useStoreControllerGetStoreList } from "@/api/store/store";
+import { GetStoreListResponse } from "@/api/models";
 
-type StoreRouteProp = RouteProp<StoreStackParamList, "Stores">;
+type StoreRouteProp = RouteProp<StoreStackParamList, "StoreList">;
 
 type PassPrice = {
   TICKET?: Record<string, number>;
@@ -35,7 +35,7 @@ type StoreServiceType = {
   HANDS?: PassPrice;
 };
 
-export const Stores = () => {
+export const StoreList = () => {
   const route = useRoute<StoreRouteProp>();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -45,7 +45,7 @@ export const Stores = () => {
     route.params.serviceType
   );
   const [passType, setPassType] = useState<PassType | undefined>(undefined);
-  const [stores, setStores] = useState<GetStoresResponse["data"]>([]);
+  const [stores, setStores] = useState<GetStoreListResponse["data"]>([]);
   const [coordinate, setCoordinate] = useState<{
     id: string | null;
     nickname: string | null;
@@ -63,7 +63,7 @@ export const Stores = () => {
     isLoading: storesLoading,
     isError: storesError,
     refetch: storesRefetch,
-  } = useStoreControllerGetStores(
+  } = useStoreControllerGetStoreList(
     {
       take: 20,
       skip,
