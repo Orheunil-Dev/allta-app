@@ -20,7 +20,7 @@ export const AddressStack = () => {
         name="SearchAddress"
         component={SearchAddress}
         options={{
-          header: () => <CustomHeader title="주소 등록" showBackButton />,
+          header: () => <CustomHeader title="주소 검색" showBackButton />,
           presentation: "transparentModal",
         }}
       />
@@ -29,7 +29,7 @@ export const AddressStack = () => {
         component={RegisterAddress}
         options={{
           header: () => <CustomHeader title="주소 등록" showBackButton />,
-          presentation: "transparentModal",
+          presentation: "card",
         }}
       />
     </Stack.Navigator>

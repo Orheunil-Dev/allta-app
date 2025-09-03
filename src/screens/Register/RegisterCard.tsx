@@ -20,7 +20,6 @@ import {
   formatCardExpiration,
   formatCardNumber,
   getResponsiveSize,
-  regexCarNumber,
 } from "@/utils";
 import { colors } from "@/styles";
 import { useUserControllerRegisterExtraInfo } from "@/api/user/user";

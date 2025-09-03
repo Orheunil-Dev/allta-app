@@ -64,15 +64,24 @@ export const SearchAddress = () => {
         }
       );
 
-      const data: Address[] = response.data.documents.map((value: any) => ({
-        id: value.id,
-        fullAddress: value.address_name,
-        roadName: value.road_address_name.length
-          ? value.road_address_name
-          : value.address_name,
-        lat: parseFloat(value.y),
-        lng: parseFloat(value.x),
-      }));
+      console.log(response.data.documents);
+
+      const data: Address[] = response.data.documents.reduce(
+        (acc: Address[], value: any) => {
+          const uniqueKey = value.address_name;
+          if (!acc.some((item) => item.fullAddress === uniqueKey)) {
+            acc.push({
+              id: value.id,
+              fullAddress: uniqueKey,
+              roadName: value.road_address_name ?? value.address_name,
+              lat: parseFloat(value.y),
+              lng: parseFloat(value.x),
+            });
+          }
+          return acc;
+        },
+        []
+      );
 
       setAddresses(data);
     };
@@ -83,8 +92,6 @@ export const SearchAddress = () => {
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <View style={styles.container}>
-        {/* <KakaoMap lat={coordinate.lat} lng={coordinate.lng} /> */}
-
         <CustomTextInput
           onSubmitEditing={(e) => setKeyword(e.nativeEvent.text)}
         />
@@ -139,11 +146,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: getResponsiveSize(20),
     paddingBottom: getResponsiveSize(40),
-  },
-  input: {
-    padding: getResponsiveSize(10),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.gray2,
   },
   locationIcon: {
     width: getResponsiveSize(20),

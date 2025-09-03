@@ -12,6 +12,9 @@ export { default as blackMyIcon } from "./black-my-icon.png";
 export { default as whiteMyIcon } from "./white-my-icon.png";
 export { default as rigthArrowIcon } from "./right-arrow-icon.png";
 export { default as blackDownArrow } from "./black-down-arrow.png";
+export { default as inputResetButton } from "./input-reset-button.png";
+export { default as checkedCircleIcon } from "./checked-circle-icon.png";
+export { default as uncheckedCircleIcon } from "./unchecked-circle-icon.png";
 
 // 스플래쉬
 export { default as splashIamge } from "./splash-image.png";

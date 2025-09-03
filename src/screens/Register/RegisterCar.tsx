@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: getResponsiveSize(20),
-    paddingVertical: getResponsiveSize(10),
+    paddingBottom: getResponsiveSize(10),
   },
   selectInput: {
     flex: 1,

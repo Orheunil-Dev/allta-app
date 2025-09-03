@@ -2,25 +2,22 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { getResponsiveSize } from "@/utils";
 import { useCallback, useEffect, useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import axios from "axios";
-import { FlatList, Pressable } from "react-native-gesture-handler";
 import { colors } from "@/styles";
-import { CustomTextInput } from "@/components/ui/CustomTextInput";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { myLocationIcon } from "@/assets/images";
-import * as Location from "expo-location";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { AddressStackParamList } from "@/navigations";
-
-type Address = {
-  id: string;
-  fullAddress: string;
-  roadName: string;
-  lat: number;
-  lng: number;
-};
+import { KakaoMap } from "@/components/store/KakaoMap/KakaoMap";
+import { useAddressControllerRegisterAddresses } from "@/api/address/address";
+import { RegisterAddresssRequest } from "@/api/models";
+import { CustomTextInput } from "@/components/ui/CustomTextInput";
 
 type RegisterCompleteRouteProp = RouteProp<
   AddressStackParamList,
@@ -30,114 +27,220 @@ type RegisterCompleteRouteProp = RouteProp<
 export const RegisterAddress = () => {
   const route = useRoute<RegisterCompleteRouteProp>();
 
-  console.log(route.params);
-
   const addressNavigation =
     useNavigation<NativeStackNavigationProp<AddressStackParamList>>();
 
-  const [keyword, setKeyword] = useState<string>("");
-  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [addressForm, setAddressForm] = useState<RegisterAddresssRequest>({
+    nickname: "",
+    buildingName: null,
+    fullAddress: "",
+    lat: route.params.lat,
+    lng: route.params.lng,
+    region1DepthName: "",
+    region2DepthName: "",
+    region3DepthName: "",
+    roadName: null,
+  });
+  const [nicknameType, setNicknameType] = useState<"HOME" | "COMPANY" | "ETC">(
+    "ETC"
+  );
 
-  const setCurrentLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+  const {
+    mutate: registerAddress,
+    isError: registerAddressError,
+    isPending: regiserAddressLoading,
+  } = useAddressControllerRegisterAddresses({});
 
-    if (status !== "granted") {
-      return;
-    }
-
-    const loc = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
+  const handleSubmit = () => {
+    registerAddress({
+      data: {
+        ...addressForm,
+      },
     });
 
-    return addressNavigation.navigate("RegisterAddress", {
-      lat: loc.coords.latitude,
-      lng: loc.coords.longitude,
-    });
+    addressNavigation.goBack();
+    setTimeout(() => {
+      addressNavigation.goBack();
+    }, 0);
   };
 
   useEffect(() => {
-    if (!keyword.trim()) {
-      return;
+    switch (nicknameType) {
+      case "HOME":
+        return setAddressForm((prev) => ({
+          ...prev,
+          nickname: "집",
+        }));
+
+      case "COMPANY":
+        return setAddressForm((prev) => ({
+          ...prev,
+          nickname: "회사",
+        }));
+
+      case "ETC":
+        return setAddressForm((prev) => ({
+          ...prev,
+          nickname: addressForm.buildingName ?? "",
+        }));
     }
+  }, [nicknameType]);
 
-    const getAddresses = async () => {
-      const response = await axios.get(
-        "https://dapi.kakao.com/v2/local/search/keyword.json",
-        {
-          params: {
-            query: keyword,
-          },
-          headers: {
-            Authorization: `KakaoAK ${process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY}`,
-          },
-        }
-      );
+  useFocusEffect(
+    useCallback(() => {
+      const getAddresses = async () => {
+        const response = await axios.get(
+          "https://dapi.kakao.com/v2/local/geo/coord2address.json",
+          {
+            params: {
+              x: route.params.lng,
+              y: route.params.lat,
+            },
+            headers: {
+              Authorization: `KakaoAK ${process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY}`,
+            },
+          }
+        );
 
-      const data: Address[] = response.data.documents.map((value: any) => ({
-        id: value.id,
-        fullAddress: value.address_name,
-        roadName: value.road_address_name.length
-          ? value.road_address_name
-          : value.address_name,
-        lat: parseFloat(value.y),
-        lng: parseFloat(value.x),
-      }));
+        setAddressForm((prev) => ({
+          ...prev,
+          nickname:
+            response.data.documents[0].road_address?.building_name ?? "",
+          buildingName:
+            response.data.documents[0].road_address?.building_name ?? null,
+          fullAddress: response.data.documents[0].address.address_name,
+          region1DepthName:
+            response.data.documents[0].address.region_1depth_name,
+          region2DepthName:
+            response.data.documents[0].address.region_2depth_name,
+          region3DepthName:
+            response.data.documents[0].address.region_3depth_name,
+          roadName:
+            response.data.documents[0].road_address?.address_name ?? null,
+        }));
+      };
 
-      setAddresses(data);
-    };
-
-    getAddresses();
-  }, [keyword]);
+      getAddresses();
+    }, [route.params])
+  );
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <View style={styles.container}>
-        {/* <KakaoMap lat={coordinate.lat} lng={coordinate.lng} /> */}
+        <View style={{ flex: 1 }}>
+          <KakaoMap lat={route.params.lat} lng={route.params.lng} />
 
-        <CustomTextInput
-          onSubmitEditing={(e) => setKeyword(e.nativeEvent.text)}
-        />
+          <CustomText marginTop={20} fontSize={18} fontWeight={"600"}>
+            {addressForm.fullAddress}
+          </CustomText>
+          {addressForm.roadName && (
+            <CustomText marginTop={4} color={colors.gray5} fontSize={16}>
+              [도로명] {addressForm.roadName}
+            </CustomText>
+          )}
+
+          <View style={styles.buttonArea}>
+            <Pressable
+              onPress={() => setNicknameType("HOME")}
+              disabled={nicknameType === "HOME"}
+              style={[
+                nicknameType === "HOME"
+                  ? {
+                      backgroundColor: colors.white,
+                      borderWidth: 1,
+                      borderColor: colors.gray2,
+                    }
+                  : { backgroundColor: colors.gray1 },
+                styles.nicknameButton,
+              ]}
+            >
+              <CustomText
+                color={nicknameType === "HOME" ? colors.black : colors.gray5}
+                fontSize={15}
+                fontWeight={"500"}
+              >
+                집
+              </CustomText>
+            </Pressable>
+
+            <Pressable
+              onPress={() => setNicknameType("COMPANY")}
+              disabled={nicknameType === "COMPANY"}
+              style={[
+                nicknameType === "COMPANY"
+                  ? {
+                      backgroundColor: colors.white,
+                      borderWidth: 1,
+                      borderColor: colors.gray2,
+                    }
+                  : { backgroundColor: colors.gray1 },
+                styles.nicknameButton,
+              ]}
+            >
+              <CustomText
+                color={nicknameType === "COMPANY" ? colors.black : colors.gray5}
+                fontSize={15}
+                fontWeight={"500"}
+              >
+                회사
+              </CustomText>
+            </Pressable>
+
+            <Pressable
+              onPress={() => setNicknameType("ETC")}
+              disabled={nicknameType === "ETC"}
+              style={[
+                nicknameType === "ETC"
+                  ? {
+                      backgroundColor: colors.white,
+                      borderWidth: 1,
+                      borderColor: colors.gray2,
+                    }
+                  : { backgroundColor: colors.gray1 },
+                styles.nicknameButton,
+              ]}
+            >
+              <CustomText
+                color={nicknameType === "ETC" ? colors.black : colors.gray5}
+                fontSize={15}
+                fontWeight={"500"}
+              >
+                기타
+              </CustomText>
+            </Pressable>
+          </View>
+
+          {nicknameType === "ETC" && (
+            <CustomTextInput
+              value={addressForm.nickname}
+              onChangeText={(text) =>
+                setAddressForm((prev) => ({
+                  ...prev,
+                  nickname: text,
+                }))
+              }
+              onReset={() => {
+                setAddressForm((prev) => ({
+                  ...prev,
+                  nickname: "",
+                }));
+              }}
+              maxLength={30}
+              marginTop={12}
+            />
+          )}
+        </View>
 
         <CustomButton
-          onPress={setCurrentLocation}
+          onPress={handleSubmit}
           width={"100%"}
-          marginTop={10}
-          marginBottom={20}
-          borderColor={colors.gray2}
+          marginTop={20}
+          backgroundColor={colors.main}
         >
-          <Image source={myLocationIcon} style={styles.locationIcon} />
-          <CustomText fontSize={15} fontWeight={"500"}>
-            현재 위치로 설정
+          <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
+            확인
           </CustomText>
         </CustomButton>
-
-        {addresses.length > 0 && (
-          <FlatList
-            data={addresses}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={styles.listContainer}
-            renderItem={({ item, index }) => (
-              <Pressable
-                onPress={() => {
-                  return addressNavigation.navigate("RegisterAddress", {
-                    lat: Number(item.lat),
-                    lng: Number(item.lng),
-                  });
-                }}
-                style={styles.card}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <CustomText marginRight={10}>지번</CustomText>
-                  <CustomText fontSize={16}>{item.fullAddress}</CustomText>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <CustomText marginRight={10}>도로명</CustomText>
-                  <CustomText fontSize={16}>{item.roadName}</CustomText>
-                </View>
-              </Pressable>
-            )}
-          />
-        )}
       </View>
     </CustomSafeAreaView>
   );
@@ -147,25 +250,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: getResponsiveSize(20),
-    paddingBottom: getResponsiveSize(40),
+    paddingBottom: getResponsiveSize(10),
   },
-  input: {
-    padding: getResponsiveSize(10),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.gray2,
+  buttonArea: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: getResponsiveSize(32),
+    gap: getResponsiveSize(14),
   },
-  locationIcon: {
-    width: getResponsiveSize(20),
-    height: getResponsiveSize(20),
-    marginRight: getResponsiveSize(4),
-  },
-  listContainer: {
-    gap: getResponsiveSize(8),
-  },
-  card: {
-    padding: getResponsiveSize(16),
-    borderWidth: 1,
-    borderColor: colors.gray2,
+  nicknameButton: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: getResponsiveSize(44),
     borderRadius: 8,
   },
 });

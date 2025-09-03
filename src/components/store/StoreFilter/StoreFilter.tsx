@@ -2,7 +2,7 @@ import { blackDownArrow } from "@/assets/images";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 import { PassType, ServiceType } from "@/types";
-import { getResponsiveSize } from "@/utils";
+import { formatEllipsis, getResponsiveSize } from "@/utils";
 import { useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -12,6 +12,12 @@ interface Props {
   setServiceType: (value: React.SetStateAction<ServiceType>) => void;
   passType: PassType | undefined;
   setPassType: (value: React.SetStateAction<PassType | undefined>) => void;
+  coordinate: {
+    id: string | null;
+    nickname: string | null;
+    lat: number;
+    lng: number;
+  };
   handleOpenAddressModal: () => void;
 }
 
@@ -22,6 +28,7 @@ export const StoreFilter = ({
   setServiceType,
   passType,
   setPassType,
+  coordinate,
   handleOpenAddressModal,
 }: Props) => {
   const [scrollEnabled, setScrollEnabled] = useState(false);
@@ -96,7 +103,9 @@ export const StoreFilter = ({
             style={styles.filterButton}
           >
             <CustomText marginRight={4} fontSize={14}>
-              현위치
+              {coordinate.id
+                ? formatEllipsis(coordinate.nickname as string, 6)
+                : "현위치"}
             </CustomText>
             <Image
               source={blackDownArrow}
@@ -177,7 +186,8 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.line,
   },
   filterWrapper: {
-    alignItems: "center",
+    justifyContent: "center",
+    alignItems: "flex-start",
     height: getResponsiveSize(58),
     paddingHorizontal: getResponsiveSize(20),
     gap: getResponsiveSize(8),

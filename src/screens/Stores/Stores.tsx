@@ -42,9 +42,13 @@ export const Stores = () => {
   const [passType, setPassType] = useState<PassType | undefined>(undefined);
   const [stores, setStores] = useState<GetStoresResponse["data"]>([]);
   const [coordinate, setCoordinate] = useState<{
+    id: string | null;
+    nickname: string | null;
     lat: number;
     lng: number;
   }>({
+    id: null,
+    nickname: null,
     lat: 37.5759785,
     lng: 127.1935115,
   });
@@ -156,6 +160,8 @@ export const Stores = () => {
 
         if (isFocused) {
           setCoordinate({
+            id: null,
+            nickname: null,
             lat: loc.coords.latitude,
             lng: loc.coords.longitude,
           });
@@ -173,9 +179,10 @@ export const Stores = () => {
   return (
     <CustomSafeAreaView backgroundColor={colors.bg} edges={["bottom"]}>
       <AddressSelectBottomSheet
-        setCoordinate={setCoordinate}
         ref={bottomSheetRef}
         onClose={handleCloseAddressModal}
+        coordinate={coordinate}
+        setCoordinate={setCoordinate}
       />
 
       {/* 검색 필터 */}
@@ -184,6 +191,7 @@ export const Stores = () => {
         setServiceType={setServiceType}
         passType={passType}
         setPassType={setPassType}
+        coordinate={coordinate}
         handleOpenAddressModal={handleOpenAddressModal}
       />
 

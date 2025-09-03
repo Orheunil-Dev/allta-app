@@ -19,7 +19,7 @@ export const Notification = () => {
   >([]);
 
   // 알림 목록 조회
-  const { data: notificationsData, refetch } =
+  const { data: notificationsData, refetch: notificationsRefetch } =
     useNotificationControllerGetNotifications(
       {
         take: 20,

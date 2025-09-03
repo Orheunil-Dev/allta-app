@@ -6,6 +6,8 @@
  * OpenAPI spec version: 1.0
  */
 
+export * from './address';
+export * from './addressControllerGetAddressesParams';
 export * from './carModel';
 export * from './carModelName';
 export * from './carModelType';
@@ -17,6 +19,7 @@ export * from './checkUserBySocialIdResponse';
 export * from './createUserRequest';
 export * from './createUserRequestReferrerCode';
 export * from './createUserResponse';
+export * from './getAddressesResponse';
 export * from './getCarModelsResponse';
 export * from './getCarVendorsResponse';
 export * from './getNotificationsResponse';
@@ -31,6 +34,10 @@ export * from './notificationControllerGetNotificationsParams';
 export * from './notificationTag';
 export * from './notificationUrl';
 export * from './paginationMetaEntity';
+export * from './registerAddressResponse';
+export * from './registerAddresssRequest';
+export * from './registerAddresssRequestBuildingName';
+export * from './registerAddresssRequestRoadName';
 export * from './registerExtraInfoRequest';
 export * from './registerExtraInfoResponse';
 export * from './registerStoreRequest';
