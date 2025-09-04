@@ -6,4 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StoreBusinessHoursOneOf = { [key: string]: unknown };
+/**
+ * 직영 매장 수
+ */
+export type StoreListItemGroupStoresCount = number | null;

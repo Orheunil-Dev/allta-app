@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StorePassPriceOneOf = { [key: string]: unknown };
+export type StoreListItemPassPriceOneOf = { [key: string]: unknown };

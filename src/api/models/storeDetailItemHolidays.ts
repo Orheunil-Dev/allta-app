@@ -7,6 +7,6 @@
  */
 
 /**
- * 직영 매장 수
+ * 휴무일
  */
-export type StoreGroupStoresCount = number | null;
+export type StoreDetailItemHolidays = string | null;

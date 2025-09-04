@@ -20,13 +20,13 @@ import { RegisterAddresssRequest } from "@/api/models";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
 import { useQueryClient } from "@tanstack/react-query";
 
-type RegisterCompleteRouteProp = RouteProp<
+type RegisterAddressRouteProp = RouteProp<
   AddressStackParamList,
   "RegisterAddress"
 >;
 
 export const RegisterAddress = () => {
-  const route = useRoute<RegisterCompleteRouteProp>();
+  const route = useRoute<RegisterAddressRouteProp>();
 
   const addressNavigation =
     useNavigation<NativeStackNavigationProp<AddressStackParamList>>();

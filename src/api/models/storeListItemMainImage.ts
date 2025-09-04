@@ -5,9 +5,8 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { StoreBusinessHoursOneOf } from './storeBusinessHoursOneOf';
 
 /**
- * 영업 시간
+ * 대표 이미지
  */
-export type StoreBusinessHours = StoreBusinessHoursOneOf | null;
+export type StoreListItemMainImage = string | null;

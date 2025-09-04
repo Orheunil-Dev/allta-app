@@ -5,10 +5,10 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { Store } from './store';
+import type { StoreDetailItem } from './storeDetailItem';
 
 /**
  * 매장 상세 정보
  * @nullable
  */
-export type GetStoreDetailResponseStore = Store | null;
+export type GetStoreDetailResponseStore = StoreDetailItem | null;

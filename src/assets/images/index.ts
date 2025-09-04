@@ -12,9 +12,11 @@ export { default as blackMyIcon } from "./black-my-icon.png";
 export { default as whiteMyIcon } from "./white-my-icon.png";
 export { default as rigthArrowIcon } from "./right-arrow-icon.png";
 export { default as blackDownArrow } from "./black-down-arrow.png";
+export { default as grayDownArrow } from "./gray-down-arrow.png";
 export { default as inputResetButton } from "./input-reset-button.png";
 export { default as checkedCircleIcon } from "./checked-circle-icon.png";
 export { default as uncheckedCircleIcon } from "./unchecked-circle-icon.png";
+export { default as checkIcon } from "./check-icon.png";
 
 // 스플래쉬
 export { default as splashIamge } from "./splash-image.png";
@@ -52,4 +54,6 @@ export { default as homeFooterArrow } from "./home-footer-arrow.png";
 // 매장
 export { default as defaultStoreImage } from "./default-store-image.png";
 export { default as locationIcon } from "./location-icon.png";
+export { default as clockIcon } from "./clock-icon.png";
 export { default as myLocationIcon } from "./my-location-icon.png";
+export { default as storeNoticeIcon } from "./store-notice-icon.png";

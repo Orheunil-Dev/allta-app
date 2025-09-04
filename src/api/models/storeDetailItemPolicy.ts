@@ -7,6 +7,6 @@
  */
 
 /**
- * 휴게 시간
+ * 유의사항
  */
-export type StoreBreakTime = string | null;
+export type StoreDetailItemPolicy = string | null;

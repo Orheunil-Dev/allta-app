@@ -6,6 +6,8 @@ export const colors = {
   main: "#6865E7",
   bg: "#F6F6F9",
   line: "#ECECEE",
+  point1: "#202046",
+  point2: "#6865E7",
   back1: "#61618A",
   back4: "#F2F2FD",
   gray1: "#F7F7F8",

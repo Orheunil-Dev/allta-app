@@ -7,6 +7,6 @@
  */
 
 /**
- * 법인 ID
+ * 매장 공지
  */
-export type StoreStoreGroupId = string | null;
+export type StoreDetailItemNotice = string | null;

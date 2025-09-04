@@ -1,10 +1,16 @@
 import { StoreStackParamList } from "@/navigations";
-import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   FlatList,
   Image,
   ImageBackground,
+  Pressable,
   StyleSheet,
   View,
 } from "react-native";
@@ -21,6 +27,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { AddressSelectBottomSheet } from "@/components/store/AddressSelectBottomSheet";
 import { useStoreControllerGetStoreList } from "@/api/store/store";
 import { GetStoreListResponse } from "@/api/models";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type StoreRouteProp = RouteProp<StoreStackParamList, "StoreList">;
 
@@ -37,6 +44,9 @@ type StoreServiceType = {
 
 export const StoreList = () => {
   const route = useRoute<StoreRouteProp>();
+
+  const storeNavigation =
+    useNavigation<NativeStackNavigationProp<StoreStackParamList>>();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
@@ -106,6 +116,7 @@ export const StoreList = () => {
     return Array.from(passSet);
   };
 
+  // 이용권 가격 표시
   const getLowestPrice = (priceObject: StoreServiceType): number | null => {
     const service = priceObject[serviceType];
     if (!service) return null;
@@ -208,7 +219,16 @@ export const StoreList = () => {
           onEndReachedThreshold={0.7}
           contentContainerStyle={styles.container}
           renderItem={({ item, index }) => (
-            <View style={styles.card}>
+            <Pressable
+              onPress={() => {
+                storeNavigation.navigate("StoreDetail", {
+                  serviceType,
+                  storeId: item.id,
+                  hasGroup: !!item.groupStoresCount,
+                });
+              }}
+              style={styles.card}
+            >
               <View style={styles.top}>
                 <ImageBackground
                   source={
@@ -288,7 +308,7 @@ export const StoreList = () => {
                   </View>
                 )}
               </View>
-            </View>
+            </Pressable>
           )}
         />
       ) : (
