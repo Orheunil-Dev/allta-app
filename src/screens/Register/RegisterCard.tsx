@@ -143,7 +143,7 @@ export const RegisterCard = () => {
               결제할 카드를 등록해주세요.
             </CustomText>
 
-            <CustomText fontSize={16} marginTop={32}>
+            <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               카드번호
             </CustomText>
             <SignUpTextInput
@@ -156,7 +156,7 @@ export const RegisterCard = () => {
               placeholder="0000-0000-0000-0000"
             />
 
-            <CustomText fontSize={16} marginTop={32}>
+            <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               유효기간
             </CustomText>
             <SignUpTextInput
@@ -169,7 +169,7 @@ export const RegisterCard = () => {
               placeholder="MM / YY"
             />
 
-            <CustomText fontSize={16} marginTop={32}>
+            <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               비밀번호
             </CustomText>
             <SignUpTextInput
@@ -183,7 +183,7 @@ export const RegisterCard = () => {
               placeholder="앞 두자리"
             />
 
-            <CustomText fontSize={16} marginTop={32}>
+            <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               생년월일
             </CustomText>
             <SignUpTextInput
@@ -201,17 +201,17 @@ export const RegisterCard = () => {
             <CustomText
               color={colors.gray7}
               fontSize={16}
-              fontWeight={"600"}
               textAlign="center"
-              marginBottom={20}
+              marginBottom={16}
             >
-              다음에 등록할게요
+              건너뛰기
             </CustomText>
           </Pressable>
 
           <CustomButton
             onPress={handleComplete}
             isDisabled={!isValid}
+            height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
             <CustomText

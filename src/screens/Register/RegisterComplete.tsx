@@ -79,6 +79,7 @@ export const RegisterComplete = () => {
           <CustomButton
             onPress={handleGoHome}
             flex={1}
+            height={getResponsiveSize(53)}
             backgroundColor={colors.white}
             borderColor={colors.gray2}
           >

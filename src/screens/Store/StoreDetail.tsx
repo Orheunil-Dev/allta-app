@@ -9,7 +9,12 @@ import {
   View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -20,7 +25,11 @@ import {
   useStoreControllerGetStoreDetail,
   useStoreControllerGetStoreGroupList,
 } from "@/api/store/store";
-import { StoreStackParamList } from "@/navigations";
+import {
+  ContainerStackParamList,
+  PaymentStackParamList,
+  StoreStackParamList,
+} from "@/navigations";
 import { useDistanceCalculator } from "@/hooks";
 import { getResponsiveSize, getStoreBusinessHours } from "@/utils";
 import { DayKey, PassType } from "@/types";
@@ -38,6 +47,7 @@ import {
   storeNoticeIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type StoreDetailRouteProp = RouteProp<StoreStackParamList, "StoreDetail">;
 
@@ -47,6 +57,12 @@ const accordianHeight = getResponsiveSize(190);
 
 export const StoreDetail = () => {
   const router = useRoute<StoreDetailRouteProp>();
+
+  const paymentNavigation =
+    useNavigation<NativeStackNavigationProp<PaymentStackParamList>>();
+
+  const containerNavigation =
+    useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const [pass, setPass] = useState<PassType | undefined>(undefined);
   const [coordinate, setCoordinate] = useState<{
@@ -137,6 +153,21 @@ export const StoreDetail = () => {
     if (layoutMeasurement.height + contentOffset.y >= contentSize.height - 20) {
       handleLoadMore();
     }
+  };
+
+  const handleRoutePayment = () => {
+    if (!storeData?.store || !storeData?.store?.passPrice || !pass) return;
+
+    containerNavigation.navigate("PaymentStack", {
+      screen: "Payment",
+      params: {
+        storeId: router.params.storeId,
+        storeName: storeData?.store?.name,
+        serviceType: router.params.serviceType,
+        passType: pass,
+        passPrice: storeData?.store?.passPrice,
+      },
+    });
   };
 
   const renderInfo = () => {
@@ -467,6 +498,7 @@ export const StoreDetail = () => {
 
       <BottomButtonArea>
         <CustomButton
+          onPress={handleRoutePayment}
           isDisabled={!pass}
           width={"100%"}
           height={getResponsiveSize(53)}

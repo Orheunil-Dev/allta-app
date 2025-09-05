@@ -59,6 +59,7 @@ export const SignUpComplete = () => {
           <CustomButton
             onPress={handleGoHome}
             flex={1}
+            height={getResponsiveSize(53)}
             backgroundColor={colors.white}
             borderColor={colors.gray2}
           >
@@ -69,6 +70,7 @@ export const SignUpComplete = () => {
           <CustomButton
             onPress={handleGoRegister}
             flex={1}
+            height={getResponsiveSize(53)}
             backgroundColor={colors.main}
           >
             <CustomText color={colors.white} fontSize={16} fontWeight={"600"}>

@@ -184,17 +184,17 @@ export const SignUpReferral = () => {
             <CustomText
               color={colors.gray7}
               fontSize={16}
-              fontWeight={"600"}
               textAlign="center"
-              marginBottom={20}
+              marginBottom={16}
             >
-              다음에 등록할게요
+              건너뛰기
             </CustomText>
           </Pressable>
 
           <CustomButton
             onPress={handleSignUp}
             isDisabled={!isValid}
+            height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
             <CustomText

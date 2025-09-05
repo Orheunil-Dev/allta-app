@@ -6,7 +6,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import RenderHtml from "react-native-render-html";
-import { getResponsiveSize } from "@/utils";
+import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
@@ -83,6 +83,7 @@ export const SignUpTerms = () => {
       {/* 약관 상세 */}
       <CustomBottomSheet
         ref={termsBottomSheetRef}
+        height={getResponsiveSize(600)}
         title={termsDetail !== null ? terms[termsDetail].title : ""}
         onClose={handleCloseDetail}
       >
@@ -95,6 +96,27 @@ export const SignUpTerms = () => {
             <RenderHtml
               contentWidth={screenWidth - getResponsiveSize(40)}
               source={{ html: terms[termsDetail].content }}
+              tagsStyles={{
+                h3: {
+                  fontFamily: "Pretendard-SemiBold",
+                  color: colors.black,
+                  fontSize: getFontSize(16),
+                  fontWeight: "600",
+                  lineHeight: getFontSize(14) * 1.5,
+                },
+                p: {
+                  fontFamily: "Pretendard-Regular",
+                  color: colors.black,
+                  fontSize: getFontSize(14),
+                  lineHeight: getFontSize(14) * 1.5,
+                },
+                li: {
+                  fontFamily: "Pretendard-Regular",
+                  color: colors.black,
+                  fontSize: getFontSize(14),
+                  lineHeight: getFontSize(14) * 1.5,
+                },
+              }}
             />
           </ScrollView>
         )}
@@ -102,6 +124,7 @@ export const SignUpTerms = () => {
         <CustomButton
           onPress={handleCloseDetail}
           width={"100%"}
+          height={getResponsiveSize(53)}
           marginTop={20}
           backgroundColor={colors.main}
         >
@@ -181,6 +204,7 @@ export const SignUpTerms = () => {
           <CustomButton
             onPress={goNextStep}
             isDisabled={!isValid}
+            height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
             <CustomText

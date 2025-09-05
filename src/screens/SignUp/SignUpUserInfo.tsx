@@ -289,6 +289,7 @@ export const SignUpUserInfo = () => {
           <CustomButton
             onPress={() => {}}
             isDisabled={!isValid}
+            height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
             <CustomText

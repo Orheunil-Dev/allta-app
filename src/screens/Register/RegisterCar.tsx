@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { FlatList, Pressable, StyleSheet, View } from "react-native";
+import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -18,6 +18,7 @@ import {
   useCarModelControllerGetCarModels,
   useCarModelControllerGetCarVendors,
 } from "@/api/car-model/car-model";
+import { blackDownArrow } from "@/assets/images";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -196,7 +197,7 @@ export const RegisterCar = () => {
             </CustomText>
 
             {/* 제조사 선택 */}
-            <CustomText fontSize={16} marginTop={32}>
+            <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               제조사
             </CustomText>
             <Pressable
@@ -211,10 +212,12 @@ export const RegisterCar = () => {
                   placeholder="선택"
                 />
               </View>
+
+              <Image source={blackDownArrow} style={styles.arrow} />
             </Pressable>
 
             {/* 차량모델 선택 */}
-            <CustomText fontSize={16} marginTop={32}>
+            <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               모델
             </CustomText>
             <Pressable
@@ -229,10 +232,12 @@ export const RegisterCar = () => {
                   placeholder="선택"
                 />
               </View>
+
+              <Image source={blackDownArrow} style={styles.arrow} />
             </Pressable>
 
             {/* 차량번호 입력 */}
-            <CustomText fontSize={16} marginTop={32}>
+            <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               차량번호
             </CustomText>
             <SignUpTextInput
@@ -255,17 +260,17 @@ export const RegisterCar = () => {
             <CustomText
               color={colors.gray7}
               fontSize={16}
-              fontWeight={"600"}
               textAlign="center"
-              marginBottom={20}
+              marginBottom={16}
             >
-              다음에 등록할게요
+              건너뛰기
             </CustomText>
           </Pressable>
 
           <CustomButton
             onPress={handleNextStep}
             isDisabled={!isValid}
+            height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
             <CustomText
@@ -293,7 +298,15 @@ const styles = StyleSheet.create({
     paddingBottom: getResponsiveSize(10),
   },
   selectInput: {
+    position: "relative",
+    justifyContent: "center",
     flex: 1,
+  },
+  arrow: {
+    position: "absolute",
+    width: getResponsiveSize(10),
+    height: getResponsiveSize(5),
+    right: getResponsiveSize(10),
   },
   list: {
     width: "100%",

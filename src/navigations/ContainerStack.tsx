@@ -13,6 +13,7 @@ import { checkIsFirstLaunch } from "@/utils";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
 import { StoreStack, StoreStackParamList } from "./StoreStack";
 import { AddressStack, AddressStackParamList } from "./AddressStack";
+import { PaymentStack, PaymentStackParamList } from "./PaymentStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -20,6 +21,7 @@ export type ContainerStackParamList = {
   StoreStack: NavigatorScreenParams<StoreStackParamList>;
   LoginStack: NavigatorScreenParams<LoginStackParamList>;
   AddressStack: NavigatorScreenParams<AddressStackParamList>;
+  PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
   Notification: undefined;
 };
 
@@ -92,6 +94,13 @@ export const ContainerStack = ({
           options={{
             headerShown: false,
             presentation: "transparentModal",
+          }}
+        />
+        <Stack.Screen
+          name="PaymentStack"
+          component={PaymentStack}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>
