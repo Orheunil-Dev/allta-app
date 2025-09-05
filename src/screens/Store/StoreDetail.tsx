@@ -25,11 +25,7 @@ import {
   useStoreControllerGetStoreDetail,
   useStoreControllerGetStoreGroupList,
 } from "@/api/store/store";
-import {
-  ContainerStackParamList,
-  PaymentStackParamList,
-  StoreStackParamList,
-} from "@/navigations";
+import { ContainerStackParamList, StoreStackParamList } from "@/navigations";
 import { useDistanceCalculator } from "@/hooks";
 import { getResponsiveSize, getStoreBusinessHours } from "@/utils";
 import { DayKey, PassType } from "@/types";
@@ -57,9 +53,6 @@ const accordianHeight = getResponsiveSize(190);
 
 export const StoreDetail = () => {
   const router = useRoute<StoreDetailRouteProp>();
-
-  const paymentNavigation =
-    useNavigation<NativeStackNavigationProp<PaymentStackParamList>>();
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
@@ -155,10 +148,11 @@ export const StoreDetail = () => {
     }
   };
 
+  // 결제 화면으로 이동
   const handleRoutePayment = () => {
     if (!storeData?.store || !storeData?.store?.passPrice || !pass) return;
 
-    containerNavigation.navigate("PaymentStack", {
+    return containerNavigation.navigate("PaymentStack", {
       screen: "Payment",
       params: {
         storeId: router.params.storeId,

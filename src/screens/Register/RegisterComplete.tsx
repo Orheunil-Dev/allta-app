@@ -11,7 +11,7 @@ import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { registerCompleteImage, signupCompleteImage } from "@/assets/images";
+import { completeIcon } from "@/assets/images";
 import { colors } from "@/styles";
 
 type RegisterCompleteRouteProp = RouteProp<
@@ -42,7 +42,7 @@ export const RegisterComplete = () => {
   return (
     <CustomSafeAreaView edges={["top", "bottom"]}>
       <View style={styles.container}>
-        <Image source={registerCompleteImage} style={styles.image} />
+        <Image source={completeIcon} style={styles.image} />
 
         <CustomText fontSize={22} fontWeight={"600"} marginBottom={8}>
           {route.params.isRegister

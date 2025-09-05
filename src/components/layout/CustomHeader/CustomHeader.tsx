@@ -22,11 +22,13 @@ export const CustomHeader = ({ title, showBackButton }: CustomHeaderProps) => {
         { paddingTop: insets.top + getResponsiveSize(10) },
       ]}
     >
-      {showBackButton && (
-        <Pressable onPress={() => navigation.goBack()}>
-          <Image source={headerBackArrow} style={styles.backButton} />
-        </Pressable>
-      )}
+      <View>
+        {showBackButton && (
+          <Pressable onPress={() => navigation.goBack()}>
+            <Image source={headerBackArrow} style={styles.backButton} />
+          </Pressable>
+        )}
+      </View>
 
       <CustomText fontSize={20} fontWeight={"600"} textAlign="center">
         {title}

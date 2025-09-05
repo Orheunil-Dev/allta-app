@@ -21,6 +21,7 @@ interface Props {
   marginLeft?: number;
   backgroundColor?: string;
   borderColor?: string;
+  borderWidth?: number;
 }
 
 export const CustomButton = ({
@@ -37,6 +38,7 @@ export const CustomButton = ({
   marginLeft = 0,
   backgroundColor = colors.white,
   borderColor = "transparent",
+  borderWidth = 0,
 }: Props) => {
   return (
     <Pressable
@@ -54,6 +56,7 @@ export const CustomButton = ({
           marginLeft: getResponsiveSize(marginLeft),
           backgroundColor,
           borderColor,
+          borderWidth,
         },
         styles.button,
       ]}
@@ -67,7 +70,6 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
     borderRadius: 8,
   },
 });

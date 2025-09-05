@@ -67,6 +67,7 @@ export const SignUpComplete = () => {
               홈으로 가기
             </CustomText>
           </CustomButton>
+
           <CustomButton
             onPress={handleGoRegister}
             flex={1}

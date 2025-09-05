@@ -17,6 +17,7 @@ export { default as inputResetButton } from "./input-reset-button.png";
 export { default as checkedCircleIcon } from "./checked-circle-icon.png";
 export { default as uncheckedCircleIcon } from "./unchecked-circle-icon.png";
 export { default as checkIcon } from "./check-icon.png";
+export { default as completeIcon } from "./complete-icon.png";
 
 // 스플래쉬
 export { default as splashIamge } from "./splash-image.png";
@@ -39,7 +40,6 @@ export { default as checkedCheckAllButton } from "./checked-check-all-button.png
 export { default as termsCheckedIcon } from "./terms-checked-icon.png";
 export { default as termsUncheckedIcon } from "./terms-unchecked-icon.png";
 export { default as signupCompleteImage } from "./signup-compelete-image.png";
-export { default as registerCompleteImage } from "./register-complete-image.png";
 
 // 홈
 export { default as alltaHeaderLogo } from "./allta-header-logo.png";
