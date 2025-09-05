@@ -31,7 +31,7 @@ export interface StoreListItem {
   businessHours?: StoreListItemBusinessHours;
   /** 휴게 시간 */
   breakTime?: StoreListItemBreakTime;
-  /** 법인 ID */
+  /** 직영 ID */
   storeGroupId?: StoreListItemStoreGroupId;
   /** 직영 매장 수 */
   groupStoresCount: StoreListItemGroupStoresCount;

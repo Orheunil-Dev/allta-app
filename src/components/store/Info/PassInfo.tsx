@@ -20,6 +20,8 @@ type PassPrice = {
 
 interface Props {
   serviceType: "AUTO" | "HANDS";
+  pass: PassType | undefined;
+  onPressPass: (passType: PassType) => () => void;
   standardMaxUsage?: number | undefined;
   passPrice: StoreDetailItemPassPrice | undefined;
 }
@@ -28,6 +30,8 @@ const accordianHeight = getResponsiveSize(110);
 
 export const PassInfo = ({
   serviceType,
+  pass,
+  onPressPass,
   standardMaxUsage,
   passPrice,
 }: Props) => {
@@ -69,42 +73,49 @@ export const PassInfo = ({
     <View style={styles.container}>
       <View style={{ gap: getResponsiveSize(16) }}>
         {prices.PREMIUM && (
-          <View style={[styles.card]}>
-            <CustomText fontSize={16} fontWeight={"600"}>
-              프리미엄
-            </CustomText>
-            <CustomText
-              marginTop={4}
-              marginBottom={8}
-              color={colors.point2}
-              fontSize={20}
-              fontWeight={"600"}
-            >
-              월 {Math.min(...Object.values(prices.PREMIUM)).toLocaleString()}원
-              ~
-            </CustomText>
-
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image source={checkIcon} style={styles.check} />
-              <CustomText color={colors.gray7} fontSize={16}>
-                한 달간 매일 세차 가능
+          <View
+            style={[
+              styles.card,
+              pass === "PREMIUM" && {
+                borderWidth: 2,
+                borderColor: colors.point2,
+              },
+            ]}
+          >
+            <Pressable onPress={onPressPass("PREMIUM")}>
+              <CustomText fontSize={16} fontWeight={"600"}>
+                프리미엄
               </CustomText>
-            </View>
-
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image source={checkIcon} style={styles.check} />
-              <CustomText color={colors.gray7} fontSize={16}>
-                월마다 자동 결제
+              <CustomText
+                marginTop={4}
+                marginBottom={8}
+                color={colors.point2}
+                fontSize={20}
+                fontWeight={"600"}
+              >
+                월 {Math.min(...Object.values(prices.PREMIUM)).toLocaleString()}
+                원 ~
               </CustomText>
-            </View>
+
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image source={checkIcon} style={styles.check} />
+                <CustomText color={colors.gray7} fontSize={16}>
+                  한 달간 매일 세차 가능
+                </CustomText>
+              </View>
+
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image source={checkIcon} style={styles.check} />
+                <CustomText color={colors.gray7} fontSize={16}>
+                  월마다 자동 결제
+                </CustomText>
+              </View>
+            </Pressable>
 
             <View style={styles.divider} />
 
-            <View>
-              <Pressable
-                onPress={handleOpenPolicy("PREMIUM")}
-                style={styles.accordianButton}
-              >
+            <Pressable onPress={handleOpenPolicy("PREMIUM")}>
+              <View style={styles.accordianButton}>
                 <CustomText
                   color={colors.gray5}
                   fontSize={15}
@@ -117,60 +128,71 @@ export const PassInfo = ({
                   source={grayDownArrow}
                   style={[styles.arrow, rotateAnimatedStyle("PREMIUM")]}
                 />
-              </Pressable>
-            </View>
+              </View>
 
-            <Animated.View
-              style={[styles.accordianBox, accordianAnimatedStyle("PREMIUM")]}
-            >
-              <CustomText color={colors.gray5} fontSize={14}>
-                이용권은 타인, 또는 다른 아이디(계정)로 양도불가
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                · 이용권에 표기된 매장에서 1일 1회 세차 가능
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                · 이용권당 표기된 차량 1대만 이용가능
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                · 차량번호는 30일 단위로 1회 변경 가능
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                · 추가로 각 매장별 별도 안내사항 참조
-              </CustomText>
-            </Animated.View>
+              <Animated.View
+                style={[styles.accordianBox, accordianAnimatedStyle("PREMIUM")]}
+              >
+                <CustomText color={colors.gray5} fontSize={14}>
+                  이용권은 타인, 또는 다른 아이디(계정)로 양도불가
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  · 이용권에 표기된 매장에서 1일 1회 세차 가능
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  · 이용권당 표기된 차량 1대만 이용가능
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  · 차량번호는 30일 단위로 1회 변경 가능
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  · 추가로 각 매장별 별도 안내사항 참조
+                </CustomText>
+              </Animated.View>
+            </Pressable>
           </View>
         )}
 
         {prices.STANDARD && (
-          <View style={styles.card}>
-            <CustomText fontSize={16} fontWeight={"600"}>
-              스탠다드
-            </CustomText>
-            <CustomText
-              marginTop={4}
-              marginBottom={8}
-              color={colors.point2}
-              fontSize={20}
-              fontWeight={"600"}
-            >
-              월 {Math.min(...Object.values(prices.STANDARD)).toLocaleString()}
-              원 ~
-            </CustomText>
-
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image source={checkIcon} style={styles.check} />
-              <CustomText color={colors.gray7} fontSize={16}>
-                월 {standardMaxUsage}회 세차 가능
+          <View
+            style={[
+              styles.card,
+              pass === "STANDARD" && {
+                borderWidth: 2,
+                borderColor: colors.point2,
+              },
+            ]}
+          >
+            <Pressable onPress={onPressPass("STANDARD")}>
+              <CustomText fontSize={16} fontWeight={"600"}>
+                스탠다드
               </CustomText>
-            </View>
-
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image source={checkIcon} style={styles.check} />
-              <CustomText color={colors.gray7} fontSize={16}>
-                합리적인 가격으로 세차 가능
+              <CustomText
+                marginTop={4}
+                marginBottom={8}
+                color={colors.point2}
+                fontSize={20}
+                fontWeight={"600"}
+              >
+                월{" "}
+                {Math.min(...Object.values(prices.STANDARD)).toLocaleString()}원
+                ~
               </CustomText>
-            </View>
+
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image source={checkIcon} style={styles.check} />
+                <CustomText color={colors.gray7} fontSize={16}>
+                  월 {standardMaxUsage}회 세차 가능
+                </CustomText>
+              </View>
+
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image source={checkIcon} style={styles.check} />
+                <CustomText color={colors.gray7} fontSize={16}>
+                  합리적인 가격으로 세차 가능
+                </CustomText>
+              </View>
+            </Pressable>
 
             <View style={styles.divider} />
 
@@ -220,34 +242,44 @@ export const PassInfo = ({
         )}
 
         {prices.TICKET && (
-          <View style={styles.card}>
-            <CustomText fontSize={16} fontWeight={"600"}>
-              일회권
-            </CustomText>
-            <CustomText
-              marginTop={4}
-              marginBottom={8}
-              color={colors.point2}
-              fontSize={20}
-              fontWeight={"600"}
-            >
-              월 {Math.min(...Object.values(prices.TICKET)).toLocaleString()}원
-              ~
-            </CustomText>
-
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image source={checkIcon} style={styles.check} />
-              <CustomText color={colors.gray7} fontSize={16}>
-                부담 없는 단일 이용권
+          <View
+            style={[
+              styles.card,
+              pass === "TICKET" && {
+                borderWidth: 2,
+                borderColor: colors.point2,
+              },
+            ]}
+          >
+            <Pressable onPress={onPressPass("TICKET")}>
+              <CustomText fontSize={16} fontWeight={"600"}>
+                일회권
               </CustomText>
-            </View>
-
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image source={checkIcon} style={styles.check} />
-              <CustomText color={colors.gray7} fontSize={16}>
-                원하는 날, 1회 세차
+              <CustomText
+                marginTop={4}
+                marginBottom={8}
+                color={colors.point2}
+                fontSize={20}
+                fontWeight={"600"}
+              >
+                월 {Math.min(...Object.values(prices.TICKET)).toLocaleString()}
+                원 ~
               </CustomText>
-            </View>
+
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image source={checkIcon} style={styles.check} />
+                <CustomText color={colors.gray7} fontSize={16}>
+                  부담 없는 단일 이용권
+                </CustomText>
+              </View>
+
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image source={checkIcon} style={styles.check} />
+                <CustomText color={colors.gray7} fontSize={16}>
+                  원하는 날, 1회 세차
+                </CustomText>
+              </View>
+            </Pressable>
 
             <View style={styles.divider} />
 

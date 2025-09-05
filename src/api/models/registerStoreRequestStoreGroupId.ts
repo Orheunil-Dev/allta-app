@@ -7,6 +7,6 @@
  */
 
 /**
- * 법인 ID
+ * 직영 ID
  */
 export type RegisterStoreRequestStoreGroupId = string | null;

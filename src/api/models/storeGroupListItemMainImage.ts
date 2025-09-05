@@ -7,6 +7,6 @@
  */
 
 /**
- * 직영 ID
+ * 대표 이미지
  */
-export type StoreListItemStoreGroupId = string | null;
+export type StoreGroupListItemMainImage = string | null;

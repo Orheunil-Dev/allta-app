@@ -39,7 +39,7 @@ export interface RegisterStoreRequest {
   ceoName: string;
   /** 대표 전화번호 */
   ceoPhoneNumber: string;
-  /** 법인 ID */
+  /** 직영 ID */
   storeGroupId?: RegisterStoreRequestStoreGroupId;
   /** 이용권 가격 */
   passPrice?: RegisterStoreRequestPassPrice;

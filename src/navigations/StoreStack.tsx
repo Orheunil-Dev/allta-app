@@ -7,9 +7,9 @@ export type StoreStackParamList = {
     serviceType: "AUTO" | "HANDS";
   };
   StoreDetail: {
-    hasGroup?: boolean;
     serviceType: "AUTO" | "HANDS";
     storeId: string;
+    storeGroupId?: string;
   };
 };
 

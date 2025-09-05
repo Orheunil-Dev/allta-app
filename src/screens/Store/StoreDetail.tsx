@@ -1,4 +1,7 @@
-import { useStoreControllerGetStoreDetail } from "@/api/store/store";
+import {
+  useStoreControllerGetStoreDetail,
+  useStoreControllerGetStoreGroupList,
+} from "@/api/store/store";
 import {
   clockIcon,
   defaultStoreImage,
@@ -11,10 +14,12 @@ import { CustomText } from "@/components/ui/CustomText";
 import { StoreStackParamList } from "@/navigations";
 import { getResponsiveSize, getStoreBusinessHours } from "@/utils";
 import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Image,
   ImageBackground,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   Pressable,
   StyleSheet,
   View,
@@ -22,15 +27,27 @@ import {
 import * as Location from "expo-location";
 import { useDistanceCalculator } from "@/hooks";
 import { colors } from "@/styles";
-import { PassInfo } from "@/components/store/PassInfo";
 import { ScrollView } from "react-native-gesture-handler";
 import { CustomButton } from "@/components/ui/CustomButton";
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import { dayLabel, dayOrder } from "@/constants";
+import { DayKey, PassType } from "@/types";
+import { GroupInfo, PassInfo } from "@/components/store/Info";
+import { GetStoreGroupListResponse } from "@/api/models";
 
 type StoreDetailRouteProp = RouteProp<StoreStackParamList, "StoreDetail">;
+
+type BusinessHours = Partial<Record<DayKey, { open: string; close: string }>>;
+
+const accordianHeight = getResponsiveSize(190);
 
 export const StoreDetail = () => {
   const router = useRoute<StoreDetailRouteProp>();
 
+  const [pass, setPass] = useState<PassType | undefined>(undefined);
   const [coordinate, setCoordinate] = useState<{
     lat: number;
     lng: number;
@@ -39,7 +56,9 @@ export const StoreDetail = () => {
     lng: 127.1935115,
   });
   const [showBusinessHours, setShowBusinessHours] = useState<boolean>(false);
+  const [group, setGroup] = useState<GetStoreGroupListResponse["data"]>([]);
   const [tab, setTab] = useState<"PASS" | "STORE" | "INFO">("PASS");
+  const [skip, setSkip] = useState(0);
 
   const {
     data: storeData,
@@ -49,10 +68,74 @@ export const StoreDetail = () => {
     query: { enabled: !!router.params.storeId },
   });
 
+  const {
+    data: groupData,
+    isLoading: groupLoading,
+    isError: groupError,
+  } = useStoreControllerGetStoreGroupList(
+    {
+      storeGroupId: router.params.storeGroupId!,
+      skip,
+      take: 20,
+    },
+    {
+      query: {
+        enabled: !!router.params.storeGroupId,
+        gcTime: 0,
+      },
+    }
+  );
+
   const { getDistance } = useDistanceCalculator();
 
+  const rotateAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotate: withTiming(showBusinessHours ? "180deg" : "0deg", {
+            duration: 300,
+          }),
+        },
+      ],
+    };
+  });
+
+  const accordianAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      height: withTiming(showBusinessHours ? accordianHeight : 0, {
+        duration: 300,
+      }),
+    };
+  });
+
+  // 이용권 선택
+  const handlePressPass = (passType: PassType) => () => {
+    if (pass === passType) {
+      return setPass(undefined);
+    }
+
+    return setPass(passType);
+  };
+
+  // 영업 시간 터치
   const handleToggleBusinessHours = () => {
     setShowBusinessHours(!showBusinessHours);
+  };
+
+  // 직영 매장 목록 무한스크롤
+  const handleLoadMore = () => {
+    if (groupData?.meta?.hasNextPage) {
+      setSkip(skip + 20);
+    }
+  };
+
+  // 스크롤 감지
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+
+    if (layoutMeasurement.height + contentOffset.y >= contentSize.height - 20) {
+      handleLoadMore();
+    }
   };
 
   const renderInfo = () => {
@@ -63,13 +146,25 @@ export const StoreDetail = () => {
         return (
           <PassInfo
             serviceType={router.params.serviceType}
-            standardMaxUsage={storeData.store.standardMaxUsage as number}
+            pass={pass}
+            onPressPass={handlePressPass}
+            standardMaxUsage={
+              storeData.store.standardMaxUsage
+                ? (storeData.store.standardMaxUsage as number)
+                : undefined
+            }
             passPrice={storeData.store.passPrice}
           />
         );
 
       case "STORE":
-        return <View></View>;
+        return (
+          <GroupInfo
+            group={group}
+            coordinate={coordinate}
+            getDistance={getDistance}
+          />
+        );
 
       case "INFO":
         return <View></View>;
@@ -78,11 +173,73 @@ export const StoreDetail = () => {
         return (
           <PassInfo
             serviceType={router.params.serviceType}
+            pass={pass}
+            onPressPass={handlePressPass}
+            standardMaxUsage={
+              storeData.store.standardMaxUsage
+                ? (storeData.store.standardMaxUsage as number)
+                : undefined
+            }
             passPrice={storeData.store.passPrice}
           />
         );
     }
   };
+
+  const renderBusinessHours = () => {
+    return (
+      <Animated.View style={[styles.schedules, accordianAnimatedStyle]}>
+        {dayOrder.map((day) => {
+          const businessHours = storeData?.store
+            ?.businessHours as BusinessHours;
+
+          if (!businessHours[day]) {
+            return null;
+          }
+
+          const open = businessHours[day]?.open;
+          const close = businessHours[day]?.close;
+
+          if (!open || !close) return null;
+
+          return (
+            <CustomText
+              key={day}
+              color={colors.gray7}
+              fontSize={15}
+              fontWeight={"500"}
+            >
+              {dayLabel[day]} {open} ~ {close}
+            </CustomText>
+          );
+        })}
+
+        {storeData?.store?.breakTime && (
+          <CustomText
+            marginTop={6}
+            color={colors.gray7}
+            fontSize={15}
+            fontWeight={"500"}
+          >
+            브레이크 타임 {storeData?.store?.breakTime}
+          </CustomText>
+        )}
+      </Animated.View>
+    );
+  };
+
+  // 무한 스크롤
+  useEffect(() => {
+    if (!groupData?.data) return;
+
+    setGroup((prev) => {
+      if (skip === 0) {
+        return groupData.data;
+      }
+
+      return [...prev, ...groupData.data];
+    });
+  }, [groupData]);
 
   // 현위치 가져오기
   useFocusEffect(
@@ -116,7 +273,7 @@ export const StoreDetail = () => {
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
-      <ScrollView>
+      <ScrollView onScroll={handleScroll} scrollEventThrottle={20}>
         <View style={styles.top}>
           <ImageBackground
             source={
@@ -159,37 +316,18 @@ export const StoreDetail = () => {
 
           {/* 영업 시간 */}
           {storeData?.store?.businessHours && (
-            <View style={styles.businessHours}>
-              <Image
-                source={clockIcon}
-                style={{
-                  width: getResponsiveSize(16),
-                  height: getResponsiveSize(16),
-                  marginRight: getResponsiveSize(4),
-                }}
-              />
+            <View>
+              <View style={styles.businessHours}>
+                <Image
+                  source={clockIcon}
+                  style={{
+                    width: getResponsiveSize(16),
+                    height: getResponsiveSize(16),
+                    marginRight: getResponsiveSize(4),
+                  }}
+                />
 
-              <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
-                {
-                  getStoreBusinessHours(
-                    storeData.store.businessHours as Record<
-                      string,
-                      { open: string; close: string }
-                    >,
-                    storeData.store.breakTime,
-                    storeData.store.holidays
-                  ).status
-                }
-              </CustomText>
-
-              <View style={styles.divider} />
-
-              <Pressable
-                style={styles.businessHoursButton}
-                onPress={handleToggleBusinessHours}
-              >
                 <CustomText
-                  marginRight={getResponsiveSize(6)}
                   color={colors.gray7}
                   fontSize={15}
                   fontWeight={"500"}
@@ -202,18 +340,44 @@ export const StoreDetail = () => {
                       >,
                       storeData.store.breakTime,
                       storeData.store.holidays
-                    ).hours
+                    ).status
                   }
                 </CustomText>
 
-                <Image
-                  source={grayDownArrow}
-                  style={{
-                    width: getResponsiveSize(8),
-                    height: getResponsiveSize(4),
-                  }}
-                />
-              </Pressable>
+                <View style={styles.divider} />
+
+                <View>
+                  <Pressable
+                    style={styles.businessHoursButton}
+                    onPress={handleToggleBusinessHours}
+                  >
+                    <CustomText
+                      marginRight={getResponsiveSize(6)}
+                      color={colors.gray7}
+                      fontSize={15}
+                      fontWeight={"500"}
+                    >
+                      {
+                        getStoreBusinessHours(
+                          storeData.store.businessHours as Record<
+                            string,
+                            { open: string; close: string }
+                          >,
+                          storeData.store.breakTime,
+                          storeData.store.holidays
+                        ).hours
+                      }
+                    </CustomText>
+
+                    <Animated.Image
+                      source={grayDownArrow}
+                      style={[styles.arrow, rotateAnimatedStyle]}
+                    />
+                  </Pressable>
+                </View>
+              </View>
+
+              {renderBusinessHours()}
             </View>
           )}
 
@@ -248,7 +412,7 @@ export const StoreDetail = () => {
             </CustomText>
           </Pressable>
 
-          {router.params.hasGroup && (
+          {router.params.storeGroupId && (
             <Pressable
               onPress={() => setTab("STORE")}
               style={[
@@ -294,11 +458,16 @@ export const StoreDetail = () => {
 
       <View style={styles.bottom}>
         <CustomButton
+          isDisabled={!pass}
           height={getResponsiveSize(53)}
           marginTop={12}
-          backgroundColor={colors.point2}
+          backgroundColor={pass ? colors.point2 : colors.gray2}
         >
-          <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
+          <CustomText
+            color={pass ? colors.white : colors.gray5}
+            fontSize={18}
+            fontWeight={"600"}
+          >
             이용권 구매하기
           </CustomText>
         </CustomButton>
@@ -328,6 +497,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: getResponsiveSize(4),
   },
+  schedules: {
+    marginLeft: getResponsiveSize(80),
+    overflow: "hidden",
+  },
   businessHoursButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -337,6 +510,10 @@ const styles = StyleSheet.create({
     height: getResponsiveSize(12),
     marginHorizontal: getResponsiveSize(8),
     backgroundColor: colors.gray2,
+  },
+  arrow: {
+    width: getResponsiveSize(8),
+    height: getResponsiveSize(4),
   },
   notice: {
     flexDirection: "row",

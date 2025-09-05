@@ -224,7 +224,7 @@ export const StoreList = () => {
                 storeNavigation.navigate("StoreDetail", {
                   serviceType,
                   storeId: item.id,
-                  hasGroup: !!item.groupStoresCount,
+                  ...(item.storeGroupId && { storeGroupId: item.storeGroupId }),
                 });
               }}
               style={styles.card}
@@ -336,6 +336,8 @@ const styles = StyleSheet.create({
   card: {
     padding: getResponsiveSize(16),
     backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.line,
     borderRadius: 12,
     shadowColor: colors.black,
     shadowOffset: { width: 0, height: 2 },
@@ -360,11 +362,11 @@ const styles = StyleSheet.create({
   address: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: getResponsiveSize(8),
+    marginTop: getResponsiveSize(4),
   },
   passArea: {
     flexDirection: "row",
-    marginTop: getResponsiveSize(12),
+    marginTop: getResponsiveSize(8),
     gap: getResponsiveSize(6),
   },
   pass: {

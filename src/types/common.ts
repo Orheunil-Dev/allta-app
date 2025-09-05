@@ -3,3 +3,5 @@ export type CustomError = {
   status: number;
   code?: string;
 };
+
+export type DayKey = "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT" | "SUN";
