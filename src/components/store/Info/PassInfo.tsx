@@ -1,14 +1,15 @@
-import { StoreDetailItemPassPrice } from "@/api/models";
-import { checkIcon, grayDownArrow } from "@/assets/images";
-import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
-import { getResponsiveSize } from "@/utils";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
+import { StoreDetailItemPassPrice } from "@/api/models";
+import { getResponsiveSize } from "@/utils";
+import { CustomText } from "@/components/ui/CustomText";
+import { checkIcon, grayDownArrow } from "@/assets/images";
+import { colors } from "@/styles";
+import { ServiceType } from "@/types";
 
 type PassType = "PREMIUM" | "STANDARD" | "TICKET";
 
@@ -19,7 +20,7 @@ type PassPrice = {
 };
 
 interface Props {
-  serviceType: "AUTO" | "HANDS";
+  serviceType: ServiceType;
   pass: PassType | undefined;
   onPressPass: (passType: PassType) => () => void;
   standardMaxUsage?: number | undefined;

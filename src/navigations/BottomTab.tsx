@@ -3,7 +3,7 @@ import { QrStack } from "./QrStack";
 import { MyStoreStack } from "./MyStoreStack";
 import { getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
-import { CustomBottomTab } from "@/components/common/layout/CustomBottomTab";
+import { CustomBottomTab } from "@/components/layout/CustomBottomTab";
 import { Image, Platform } from "react-native";
 import {
   blackHomeIcon,

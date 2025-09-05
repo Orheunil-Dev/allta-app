@@ -1,13 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StoreDetail, StoreList } from "@/screens/Store";
-import { CustomHeader } from "@/components/common/layout/CustomHeader";
+import { CustomHeader } from "@/components/layout/CustomHeader";
+import { ServiceType } from "@/types";
 
 export type StoreStackParamList = {
   StoreList: {
-    serviceType: "AUTO" | "HANDS";
+    serviceType: ServiceType;
   };
   StoreDetail: {
-    serviceType: "AUTO" | "HANDS";
+    serviceType: ServiceType;
     storeId: string;
     storeGroupId?: string;
   };

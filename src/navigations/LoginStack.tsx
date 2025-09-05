@@ -11,7 +11,7 @@ import {
   RegisterCard,
   RegisterComplete,
 } from "@/screens/Register";
-import { CustomHeader } from "@/components/common/layout/CustomHeader";
+import { CustomHeader } from "@/components/layout/CustomHeader";
 
 export type LoginStackParamList = {
   Login: undefined;

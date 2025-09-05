@@ -1,19 +1,3 @@
-import {
-  useStoreControllerGetStoreDetail,
-  useStoreControllerGetStoreGroupList,
-} from "@/api/store/store";
-import {
-  clockIcon,
-  defaultStoreImage,
-  grayDownArrow,
-  locationIcon,
-  storeNoticeIcon,
-} from "@/assets/images";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { CustomText } from "@/components/ui/CustomText";
-import { StoreStackParamList } from "@/navigations";
-import { getResponsiveSize, getStoreBusinessHours } from "@/utils";
-import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import {
   Image,
@@ -24,19 +8,36 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import * as Location from "expo-location";
-import { useDistanceCalculator } from "@/hooks";
-import { colors } from "@/styles";
 import { ScrollView } from "react-native-gesture-handler";
-import { CustomButton } from "@/components/ui/CustomButton";
+import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { dayLabel, dayOrder } from "@/constants";
-import { DayKey, PassType } from "@/types";
-import { GroupInfo, PassInfo } from "@/components/store/Info";
+import * as Location from "expo-location";
 import { GetStoreGroupListResponse } from "@/api/models";
+import {
+  useStoreControllerGetStoreDetail,
+  useStoreControllerGetStoreGroupList,
+} from "@/api/store/store";
+import { StoreStackParamList } from "@/navigations";
+import { useDistanceCalculator } from "@/hooks";
+import { getResponsiveSize, getStoreBusinessHours } from "@/utils";
+import { DayKey, PassType } from "@/types";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { CustomText } from "@/components/ui/CustomText";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { GroupInfo, PassInfo, StoreInfo } from "@/components/store/Info";
+import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
+import { dayLabel, dayOrder } from "@/constants";
+import {
+  clockIcon,
+  defaultStoreImage,
+  grayDownArrow,
+  locationIcon,
+  storeNoticeIcon,
+} from "@/assets/images";
+import { colors } from "@/styles";
 
 type StoreDetailRouteProp = RouteProp<StoreStackParamList, "StoreDetail">;
 
@@ -167,7 +168,15 @@ export const StoreDetail = () => {
         );
 
       case "INFO":
-        return <View></View>;
+        return (
+          <StoreInfo
+            storeName={storeData.store.name}
+            lat={storeData.store.lat}
+            lng={storeData.store.lng}
+            description={storeData.store.descrption}
+            policy={storeData.store.policy}
+          />
+        );
 
       default:
         return (
@@ -456,11 +465,11 @@ export const StoreDetail = () => {
         {renderInfo()}
       </ScrollView>
 
-      <View style={styles.bottom}>
+      <BottomButtonArea>
         <CustomButton
           isDisabled={!pass}
+          width={"100%"}
           height={getResponsiveSize(53)}
-          marginTop={12}
           backgroundColor={pass ? colors.point2 : colors.gray2}
         >
           <CustomText
@@ -471,7 +480,7 @@ export const StoreDetail = () => {
             이용권 구매하기
           </CustomText>
         </CustomButton>
-      </View>
+      </BottomButtonArea>
     </CustomSafeAreaView>
   );
 };
@@ -543,14 +552,5 @@ const styles = StyleSheet.create({
     paddingVertical: getResponsiveSize(14),
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
-  },
-  bottom: {
-    paddingHorizontal: getResponsiveSize(20),
-    backgroundColor: colors.white,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: -2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.1,
-    elevation: 5,
   },
 });

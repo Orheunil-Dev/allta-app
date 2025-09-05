@@ -57,3 +57,4 @@ export { default as locationIcon } from "./location-icon.png";
 export { default as clockIcon } from "./clock-icon.png";
 export { default as myLocationIcon } from "./my-location-icon.png";
 export { default as storeNoticeIcon } from "./store-notice-icon.png";
+export { default as naviIcon } from "./navi-icon.png";

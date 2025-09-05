@@ -1,29 +1,31 @@
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { CustomText } from "@/components/ui/CustomText";
-import { getResponsiveSize } from "@/utils";
 import { useCallback, useEffect, useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, View } from "react-native";
 import axios from "axios";
-import { colors } from "@/styles";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   RouteProp,
   useFocusEffect,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
-import { AddressStackParamList } from "@/navigations";
-import { KakaoMap } from "@/components/store/KakaoMap/KakaoMap";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAddressControllerRegisterAddresses } from "@/api/address/address";
 import { RegisterAddresssRequest } from "@/api/models";
+import { AddressStackParamList } from "@/navigations";
+import { getResponsiveSize } from "@/utils";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
-import { useQueryClient } from "@tanstack/react-query";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomText } from "@/components/ui/CustomText";
+import { KakaoMap } from "@/components/store/KakaoMap";
+import { colors } from "@/styles";
 
 type RegisterAddressRouteProp = RouteProp<
   AddressStackParamList,
   "RegisterAddress"
 >;
+
+const { width: screenWidth } = Dimensions.get("window");
 
 export const RegisterAddress = () => {
   const route = useRoute<RegisterAddressRouteProp>();
@@ -134,7 +136,12 @@ export const RegisterAddress = () => {
     <CustomSafeAreaView edges={["bottom"]}>
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
-          <KakaoMap lat={route.params.lat} lng={route.params.lng} />
+          <KakaoMap
+            width={screenWidth - getResponsiveSize(40)}
+            height={screenWidth - getResponsiveSize(40)}
+            lat={route.params.lat}
+            lng={route.params.lng}
+          />
 
           <CustomText marginTop={20} fontSize={18} fontWeight={"600"}>
             {addressForm.fullAddress}

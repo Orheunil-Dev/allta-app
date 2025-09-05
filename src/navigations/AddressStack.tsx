@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SearchAddress } from "@/screens/SearchAddress";
-import { CustomHeader } from "@/components/common/layout/CustomHeader";
+import { CustomHeader } from "@/components/layout/CustomHeader";
 import { RegisterAddress } from "@/screens/RegisterAddress";
 
 export type AddressStackParamList = {

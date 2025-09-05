@@ -5,10 +5,10 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Notification } from "@/screens/Notification";
-import { CustomHeader } from "@/components/common/layout/CustomHeader";
+import { CustomHeader } from "@/components/layout/CustomHeader";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
-import { LoginModal } from "@/components/common/modal/LoginModal";
+import { LoginModal } from "@/components/modal/LoginModal";
 import { checkIsFirstLaunch } from "@/utils";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
 import { StoreStack, StoreStackParamList } from "./StoreStack";

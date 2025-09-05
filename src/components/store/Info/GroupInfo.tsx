@@ -1,10 +1,9 @@
-import { GetStoreGroupListResponse } from "@/api/models";
-import { defaultStoreImage, locationIcon } from "@/assets/images";
-import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
-import { getResponsiveSize } from "@/utils";
 import { Image, ImageBackground, StyleSheet, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { GetStoreGroupListResponse } from "@/api/models";
+import { getResponsiveSize } from "@/utils";
+import { CustomText } from "@/components/ui/CustomText";
+import { defaultStoreImage, locationIcon } from "@/assets/images";
+import { colors } from "@/styles";
 
 interface Props {
   group: GetStoreGroupListResponse["data"];

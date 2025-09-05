@@ -1,15 +1,14 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { DimensionValue, StyleSheet, View } from "react-native";
 import { WebView } from "react-native-webview";
-import { getResponsiveSize } from "@/utils";
 
 interface Props {
   lat: number;
   lng: number;
+  width?: DimensionValue | undefined;
+  height?: DimensionValue | undefined;
 }
 
-const { width: screenWidth } = Dimensions.get("window");
-
-export const KakaoMap = ({ lat, lng }: Props) => {
+export const KakaoMap = ({ lat, lng, width, height }: Props) => {
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -52,7 +51,12 @@ export const KakaoMap = ({ lat, lng }: Props) => {
   `;
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        width: width ?? "100%",
+        height: height ?? "100%",
+      }}
+    >
       <WebView
         originWhitelist={["*"]}
         source={{ html: htmlContent }}
@@ -65,10 +69,6 @@ export const KakaoMap = ({ lat, lng }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: screenWidth - getResponsiveSize(40),
-    height: screenWidth - getResponsiveSize(40),
-  },
   webview: {
     flex: 1,
   },

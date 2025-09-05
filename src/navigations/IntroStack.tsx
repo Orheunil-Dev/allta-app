@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Permission } from "@/screens/Intro";
-import { CustomHeader } from "@/components/common/layout/CustomHeader";
+import { CustomHeader } from "@/components/layout/CustomHeader";
 
 export type IntroStackParamList = {
   Permission: undefined;
