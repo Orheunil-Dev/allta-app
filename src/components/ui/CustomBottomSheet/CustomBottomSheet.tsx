@@ -14,6 +14,7 @@ interface Props {
   ref: RefObject<BottomSheetModal | null>;
   height?: string | number;
   title?: string;
+  hasCloseButton?: boolean;
   onClose: () => void;
   children: React.ReactNode;
 }
@@ -22,6 +23,7 @@ export const CustomBottomSheet = ({
   ref,
   height = "60%",
   title,
+  hasCloseButton,
   onClose,
   children,
 }: Props) => {
@@ -50,23 +52,33 @@ export const CustomBottomSheet = ({
       backgroundComponent={() => <View />}
     >
       <BottomSheetView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.empty} />
+        {hasCloseButton ? (
+          <View style={styles.header}>
+            <View style={styles.empty} />
 
-          <CustomText fontSize={18} fontWeight={"600"}>
-            {title}
-          </CustomText>
+            <CustomText fontSize={18} fontWeight={"600"}>
+              {title}
+            </CustomText>
 
-          <Pressable onPress={onClose}>
-            <Image
-              source={closeIcon}
-              style={{
-                width: getResponsiveSize(24),
-                height: getResponsiveSize(24),
-              }}
-            />
-          </Pressable>
-        </View>
+            <Pressable onPress={onClose}>
+              <Image
+                source={closeIcon}
+                style={{
+                  width: getResponsiveSize(24),
+                  height: getResponsiveSize(24),
+                }}
+              />
+            </Pressable>
+          </View>
+        ) : (
+          <View style={styles.header}>
+            <CustomText fontSize={18} fontWeight={"600"}>
+              {title}
+            </CustomText>
+
+            <View style={styles.empty} />
+          </View>
+        )}
 
         {children}
       </BottomSheetView>
@@ -78,7 +90,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     height: "100%",
-    paddingTop: getResponsiveSize(4),
+    paddingTop: getResponsiveSize(10),
     paddingBottom: getResponsiveSize(40),
     paddingHorizontal: getResponsiveSize(20),
     backgroundColor: colors.white,

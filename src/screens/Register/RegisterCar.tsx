@@ -117,9 +117,10 @@ export const RegisterCar = () => {
       <CustomKeyboardAvoidingView>
         {/* 제조사 바텀시트 */}
         <CustomBottomSheet
-          onClose={handleCloseBrandSelect}
           ref={brandSelectRef}
           title="제조사"
+          hasCloseButton
+          onClose={handleCloseBrandSelect}
         >
           <FlatList
             data={carVendorsData?.data}
@@ -152,9 +153,10 @@ export const RegisterCar = () => {
 
         {/* 차량모델 바텀시트 */}
         <CustomBottomSheet
-          onClose={handleCloseModelSelect}
           ref={modelSelectRef}
           title="모델"
+          hasCloseButton
+          onClose={handleCloseModelSelect}
         >
           {carModelsData?.data && (
             <FlatList

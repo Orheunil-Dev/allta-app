@@ -6,9 +6,9 @@ import { CustomText } from "@/components/ui/CustomText";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { CustomButton } from "@/components/ui/CustomButton";
 import {
-  checkedCircleIcon,
+  checkedRadioIcon,
   myLocationIcon,
-  uncheckedCircleIcon,
+  uncheckedRadioIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
 import { useNavigation } from "@react-navigation/native";
@@ -118,6 +118,7 @@ export const AddressSelectBottomSheet = ({
       ref={ref}
       height={getResponsiveSize(520)}
       title="주소 선택"
+      hasCloseButton
       onClose={onClose}
     >
       <View style={styles.container}>
@@ -159,8 +160,8 @@ export const AddressSelectBottomSheet = ({
                 <Image
                   source={
                     coordinate.id === item.id
-                      ? checkedCircleIcon
-                      : uncheckedCircleIcon
+                      ? checkedRadioIcon
+                      : uncheckedRadioIcon
                   }
                   style={styles.radioButton}
                 />

@@ -20,14 +20,14 @@ export const CustomSafeAreaView = ({
   paddinBottom = 0,
   backgroundColor = colors.white,
 }: Props) => {
-  const insets = useSafeAreaInsets();
+  // const insets = useSafeAreaInsets();
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
         backgroundColor,
-        paddingBottom: insets.bottom + getResponsiveSize(paddinBottom),
+        paddingBottom: getResponsiveSize(paddinBottom),
       }}
       edges={edges}
     >

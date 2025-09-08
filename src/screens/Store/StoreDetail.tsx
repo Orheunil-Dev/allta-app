@@ -28,7 +28,7 @@ import {
 import { ContainerStackParamList, StoreStackParamList } from "@/navigations";
 import { useDistanceCalculator } from "@/hooks";
 import { getResponsiveSize, getStoreBusinessHours } from "@/utils";
-import { DayKey, PassType } from "@/types";
+import { CarType, DayKey, PassType } from "@/types";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
@@ -152,6 +152,10 @@ export const StoreDetail = () => {
   const handleRoutePayment = () => {
     if (!storeData?.store || !storeData?.store?.passPrice || !pass) return;
 
+    const price = (storeData?.store?.passPrice as any)[
+      router.params.serviceType
+    ][pass] as Record<CarType, number>;
+
     return containerNavigation.navigate("PaymentStack", {
       screen: "Payment",
       params: {
@@ -159,7 +163,10 @@ export const StoreDetail = () => {
         storeName: storeData?.store?.name,
         serviceType: router.params.serviceType,
         passType: pass,
-        passPrice: storeData?.store?.passPrice,
+        price,
+        ...(storeData?.store?.mainImage
+          ? { storeImage: storeData.store.mainImage }
+          : {}),
       },
     });
   };

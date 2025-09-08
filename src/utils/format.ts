@@ -75,12 +75,27 @@ export const formatNotificationTime = (value: string) => {
   }
 };
 
+// 이용권 종류
 export const formatPassType = (value: PassType): string | null => {
   switch (value) {
     case "PREMIUM":
       return "프리미엄";
     case "STANDARD":
       return "스탠다드";
+    case "TICKET":
+      return "일회권";
+    default:
+      return null;
+  }
+};
+
+// 이용권 종류 (결제)
+export const formatPurchaseType = (value: PassType): string | null => {
+  switch (value) {
+    case "PREMIUM":
+      return "프리미엄 구독권";
+    case "STANDARD":
+      return "스탠다드 구독권";
     case "TICKET":
       return "일회권";
     default:

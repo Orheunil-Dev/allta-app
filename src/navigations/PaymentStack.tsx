@@ -1,7 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Payment, PaymentComplete } from "@/screens/Payment";
-import { StoreDetailItemPassPrice } from "@/api/models";
-import { PassType, ServiceType } from "@/types";
+import { PassType, ServiceType, CarType } from "@/types";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 
 export type PaymentStackParamList = {
@@ -11,7 +10,7 @@ export type PaymentStackParamList = {
     storeImage?: string;
     serviceType: ServiceType;
     passType: PassType;
-    passPrice: StoreDetailItemPassPrice;
+    price: Record<CarType, number>;
   };
   PaymentComplete: undefined;
 };
