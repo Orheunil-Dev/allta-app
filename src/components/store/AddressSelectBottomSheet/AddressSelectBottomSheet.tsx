@@ -126,6 +126,7 @@ export const AddressSelectBottomSheet = ({
           width={"100%"}
           marginTop={12}
           borderColor={colors.gray2}
+          borderWidth={1}
         >
           <Image source={myLocationIcon} style={styles.locationIcon} />
           <CustomText fontSize={15} fontWeight={"500"}>

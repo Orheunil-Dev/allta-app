@@ -5,12 +5,18 @@ import { CustomText } from "@/components/ui/CustomText";
 import { PaymentStackParamList } from "@/navigations";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
+type PaymentRouteProp = RouteProp<PaymentStackParamList, "Payment">;
+
 export const Payment = () => {
+  const router = useRoute<PaymentRouteProp>();
+
+  console.log(router);
+
   const paymentNavigation =
     useNavigation<NativeStackNavigationProp<PaymentStackParamList>>();
 

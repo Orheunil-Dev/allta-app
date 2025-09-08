@@ -8,6 +8,7 @@ export type PaymentStackParamList = {
   Payment: {
     storeId: string;
     storeName: string;
+    storeImage?: string;
     serviceType: ServiceType;
     passType: PassType;
     passPrice: StoreDetailItemPassPrice;

@@ -47,7 +47,10 @@ export { default as alarmEmpty } from "./alarm-empty.png";
 export { default as alarmUnread } from "./alarm-unread.png";
 export { default as homeQrScan } from "./home-qr-scan.png";
 export { default as homeMoreArrow } from "./home-more-arrow.png";
-export { default as autoWashImage } from "./auto-wash-image.png";
+export { default as autoWashIcon } from "./auto-wash-icon.png";
+export { default as handsWashIcon } from "./hands-wash-icon.png";
+export { default as receiptIcon } from "./receipt-icon.png";
+export { default as qrIcon } from "./qr-icon.png";
 export { default as homeDistanceIcon } from "./home-distance-icon.png";
 export { default as homeFooterArrow } from "./home-footer-arrow.png";
 

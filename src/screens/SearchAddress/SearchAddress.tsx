@@ -102,6 +102,7 @@ export const SearchAddress = () => {
           marginTop={10}
           marginBottom={20}
           borderColor={colors.gray2}
+          borderWidth={1}
         >
           <Image source={myLocationIcon} style={styles.locationIcon} />
           <CustomText fontSize={15} fontWeight={"500"}>

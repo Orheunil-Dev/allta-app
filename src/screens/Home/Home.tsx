@@ -15,19 +15,22 @@ import {
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { RecommendCard } from "@/components/ui/Card";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { myStoreData } from "@/mock";
 import {
-  autoWashImage,
+  autoWashIcon,
+  handsWashIcon,
   homeFooterArrow,
   homeMoreArrow,
   homeQrScan,
+  qrIcon,
+  receiptIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
 import { Popup } from "@/components/home/Popup";
-import { MainBanner } from "@/components/home/MainBanner";
+import { MainBanner, SubBanner } from "@/components/home/Banner";
 import { HomeHeader } from "@/components/home/HomeHeader";
 import { useNotificationControllerGetUnreadNotificationsCount } from "@/api/notification/notification";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const Home = () => {
   const containerNavigation =
@@ -97,7 +100,7 @@ export const Home = () => {
   );
 
   return (
-    <CustomSafeAreaView backgroundColor={colors.bg} edges={["top"]}>
+    <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
       {/* 헤더 */}
       <HomeHeader
         unreadCount={unreadNotificationsData?.count}
@@ -112,39 +115,16 @@ export const Home = () => {
 
           <View style={styles.mainContainer}>
             {/* 세차 추천 */}
-            <View style={styles.washRecommend}>
+            {/* <View style={styles.washRecommend}>
               <CustomText color={colors.black} fontSize={16}>
                 오늘 미세먼지 '나쁨'
               </CustomText>
-              <CustomText
-                color={colors.black}
-                fontSize={22}
-                fontWeight={"600"}
-                marginTop={5}
-              >
+              <CustomText color={colors.black} fontSize={22} fontWeight={"600"}>
                 세차하기 좋은 날이에요
               </CustomText>
-            </View>
+            </View> */}
 
-            {/* 상품 추천 */}
-            <Pressable
-              style={styles.productRecommend}
-              onPress={() =>
-                containerNavigation.navigate("StoreStack", {
-                  screen: "StoreList",
-                  params: { serviceType: "AUTO" },
-                })
-              }
-            >
-              <CustomText color={colors.white} fontSize={18} fontWeight={"700"}>
-                올타 플러스
-              </CustomText>
-              <CustomText color={colors.white} fontSize={13} marginTop={6}>
-                여럿이 함께, 더 알뜰하게
-              </CustomText>
-            </Pressable>
-
-            <View style={styles.autoWash}>
+            <View style={styles.mainArea}>
               {/* 자동세차 */}
               <Pressable
                 onPress={() =>
@@ -158,18 +138,106 @@ export const Home = () => {
                 <CustomText
                   color={colors.main}
                   fontSize={18}
-                  fontWeight={"700"}
+                  fontWeight={"600"}
                 >
                   자동세차
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={13} marginTop={6}>
-                  최신 세차 기계로 간단하게!
+                <CustomText
+                  color={colors.gray5}
+                  fontSize={13}
+                  fontWeight={"500"}
+                >
+                  최신 기계로 간단하게!
                 </CustomText>
 
-                <Image source={autoWashImage} style={styles.autoWashImage} />
+                <Image source={autoWashIcon} style={styles.buttonIcon} />
               </Pressable>
 
-              {/* QR 스캔 */}
+              <Pressable
+                onPress={() =>
+                  containerNavigation.navigate("StoreStack", {
+                    screen: "StoreList",
+                    params: { serviceType: "AUTO" },
+                  })
+                }
+                style={styles.stores}
+              >
+                <CustomText
+                  color={colors.main}
+                  fontSize={18}
+                  fontWeight={"600"}
+                >
+                  핸즈클리닝
+                </CustomText>
+                <CustomText
+                  color={colors.gray5}
+                  fontSize={13}
+                  fontWeight={"500"}
+                >
+                  손 세차로 구석구석!
+                </CustomText>
+
+                <Image source={handsWashIcon} style={styles.buttonIcon} />
+              </Pressable>
+            </View>
+
+            <View style={styles.mainArea}>
+              <Pressable
+                onPress={() =>
+                  containerNavigation.navigate("StoreStack", {
+                    screen: "StoreList",
+                    params: { serviceType: "AUTO" },
+                  })
+                }
+                style={styles.stores}
+              >
+                <CustomText
+                  color={colors.main}
+                  fontSize={18}
+                  fontWeight={"600"}
+                >
+                  세차 할인
+                </CustomText>
+                <CustomText
+                  color={colors.gray5}
+                  fontSize={13}
+                  fontWeight={"500"}
+                >
+                  제휴매장 쿠폰 받기
+                </CustomText>
+
+                <Image source={receiptIcon} style={styles.buttonIcon} />
+              </Pressable>
+
+              <Pressable
+                onPress={() =>
+                  containerNavigation.navigate("StoreStack", {
+                    screen: "StoreList",
+                    params: { serviceType: "AUTO" },
+                  })
+                }
+                style={styles.qrScan}
+              >
+                <CustomText
+                  color={colors.white}
+                  fontSize={18}
+                  fontWeight={"600"}
+                >
+                  QR 스캔
+                </CustomText>
+                <CustomText
+                  color={colors.white}
+                  fontSize={13}
+                  fontWeight={"500"}
+                >
+                  스캔 후 세차하기
+                </CustomText>
+
+                <Image source={qrIcon} style={styles.buttonIcon} />
+              </Pressable>
+            </View>
+
+            {/* <View style={styles.mainArea}>
               <Pressable
                 onPress={() => bottomTabNavigation.navigate("QrStack")}
                 style={styles.qrScan}
@@ -185,48 +253,44 @@ export const Home = () => {
                   QR 스캔
                 </CustomText>
               </Pressable>
-            </View>
+            </View> */}
 
             {/* 추천 매장 */}
-            <View>
-              <View style={styles.myStore}>
+            <View style={styles.myStore}>
+              <CustomText color={colors.black} fontSize={18} fontWeight={"600"}>
+                내 이용 매장
+              </CustomText>
+
+              <Pressable
+                onPress={() => bottomTabNavigation.navigate("MyStoreStack")}
+                style={styles.moreStore}
+              >
                 <CustomText
-                  color={colors.black}
-                  fontSize={18}
+                  color={colors.gray5}
+                  fontSize={12}
                   fontWeight={"600"}
                 >
-                  내 이용 매장
+                  더보기
                 </CustomText>
 
-                <Pressable
-                  onPress={() => bottomTabNavigation.navigate("MyStoreStack")}
-                  style={styles.moreStore}
-                >
-                  <CustomText
-                    color={colors.gray5}
-                    fontSize={12}
-                    fontWeight={"600"}
-                  >
-                    더보기
-                  </CustomText>
+                <Image source={homeMoreArrow} style={styles.moreIcon} />
+              </Pressable>
+            </View>
 
-                  <Image source={homeMoreArrow} style={styles.moreIcon} />
-                </Pressable>
-              </View>
-
-              <View style={styles.myStoreList}>
-                {myStoreData.map((value, index) => (
-                  <RecommendCard
-                    key={index}
-                    name={value.name}
-                    address={value.address}
-                    image={value.image}
-                    distance={5.2}
-                  />
-                ))}
-              </View>
+            <View style={styles.myStoreList}>
+              {myStoreData.map((value, index) => (
+                <RecommendCard
+                  key={index}
+                  name={value.name}
+                  address={value.address}
+                  image={value.image}
+                  distance={5.2}
+                />
+              ))}
             </View>
           </View>
+
+          <SubBanner />
 
           {/* 푸터 */}
           <View style={styles.footer}>
@@ -271,7 +335,7 @@ export const Home = () => {
           </View>
         </View>
       </ScrollView>
-    </CustomSafeAreaView>
+    </SafeAreaView>
   );
 };
 
@@ -297,31 +361,27 @@ const styles = StyleSheet.create({
     backgroundColor: colors.main,
     borderRadius: 12,
   },
-  autoWash: {
+  mainArea: {
     position: "relative",
     flexDirection: "row",
-    justifyContent: "space-between",
     width: "100%",
-    height: getResponsiveSize(88),
     marginTop: getResponsiveSize(16),
+    gap: getResponsiveSize(16),
   },
-  autoWashImage: {
+  buttonIcon: {
     position: "absolute",
-    width: getResponsiveSize(60),
-    height: getResponsiveSize(46),
-    bottom: getResponsiveSize(12),
-    right: getResponsiveSize(12),
+    width: getResponsiveSize(68),
+    height: getResponsiveSize(68),
+    bottom: 0,
+    right: 0,
   },
   stores: {
     flex: 1,
-    height: "100%",
+    height: getResponsiveSize(112),
+    paddingVertical: getResponsiveSize(8),
     paddingHorizontal: getResponsiveSize(12),
-    paddingVertical: getResponsiveSize(12),
-    marginRight: getResponsiveSize(16),
     backgroundColor: colors.white,
     borderRadius: 12,
-    borderColor: colors.gray2,
-    borderWidth: 1,
     shadowColor: colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
@@ -329,14 +389,17 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   qrScan: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: getResponsiveSize(72),
-    height: "100%",
-    backgroundColor: colors.white,
+    flex: 1,
+    height: getResponsiveSize(112),
+    paddingVertical: getResponsiveSize(8),
+    paddingHorizontal: getResponsiveSize(12),
+    backgroundColor: colors.point1,
     borderRadius: 12,
-    borderColor: colors.gray2,
-    borderWidth: 1,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    shadowOpacity: 0.1,
+    elevation: 2,
   },
   qrScanIcon: {
     width: getResponsiveSize(36),
@@ -348,7 +411,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     width: "100%",
     marginTop: getResponsiveSize(40),
-    marginBottom: getResponsiveSize(8),
+    marginBottom: getResponsiveSize(12),
   },
   moreStore: {
     flexDirection: "row",
@@ -363,6 +426,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     width: "100%",
+    marginTop: getResponsiveSize(40),
     paddingHorizontal: getResponsiveSize(20),
     paddingVertical: getResponsiveSize(16),
     backgroundColor: colors.bg,

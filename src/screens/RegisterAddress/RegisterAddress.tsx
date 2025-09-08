@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: getResponsiveSize(20),
-    paddingBottom: getResponsiveSize(10),
   },
   buttonArea: {
     flexDirection: "row",
