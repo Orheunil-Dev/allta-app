@@ -20,9 +20,10 @@ lng?: number;
  */
 serviceType: string;
 /**
- * 이용권 종류
+ * 매장 태그 목록
+ * @nullable
  */
-passType?: string;
+tags?: string | null;
 /**
  * 가져올 데이터 수
  */

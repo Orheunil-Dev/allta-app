@@ -6,6 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 import type { StoreListItemMainImage } from './storeListItemMainImage';
+import type { StoreListItemTags } from './storeListItemTags';
 import type { StoreListItemPassPrice } from './storeListItemPassPrice';
 import type { StoreListItemBusinessHours } from './storeListItemBusinessHours';
 import type { StoreListItemBreakTime } from './storeListItemBreakTime';
@@ -25,6 +26,8 @@ export interface StoreListItem {
   lng: number;
   /** 대표 이미지 */
   mainImage?: StoreListItemMainImage;
+  /** 태그 */
+  tags?: StoreListItemTags;
   /** 이용권 가격 */
   passPrice?: StoreListItemPassPrice;
   /** 영업 시간 */

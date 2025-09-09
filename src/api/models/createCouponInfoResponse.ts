@@ -5,11 +5,8 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { StoreDetailItem } from './storeDetailItem';
 
-export interface GetStoreDetailResponse {
+export interface CreateCouponInfoResponse {
   /** 결과 여부 */
   ok: boolean;
-  /** 매장 상세 정보 */
-  store: StoreDetailItem;
 }

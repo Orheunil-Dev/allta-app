@@ -54,7 +54,7 @@ export const StoreList = () => {
   const [serviceType, setServiceType] = useState<ServiceType>(
     route.params.serviceType
   );
-  const [passType, setPassType] = useState<PassType | undefined>(undefined);
+  const [tags, setTags] = useState<string[]>([]);
   const [stores, setStores] = useState<GetStoreListResponse["data"]>([]);
   const [coordinate, setCoordinate] = useState<{
     id: string | null;
@@ -78,7 +78,7 @@ export const StoreList = () => {
       take: 20,
       skip,
       serviceType,
-      passType,
+      tags: tags.length > 0 ? tags.join(",") : undefined,
       ...(coordinate ? { lat: coordinate.lat, lng: coordinate.lng } : {}),
     },
     {
@@ -104,18 +104,6 @@ export const StoreList = () => {
     bottomSheetRef?.current?.close();
   };
 
-  const getPassTypes = (priceObject: StoreServiceType): string[] => {
-    const passSet = new Set<string>();
-
-    Object.values(priceObject).forEach((passType) => {
-      if ("TICKET" in passType) passSet.add("일회권");
-      if ("STANDARD" in passType) passSet.add("스탠다드");
-      if ("PREMIUM" in passType) passSet.add("프리미엄");
-    });
-
-    return Array.from(passSet);
-  };
-
   // 이용권 가격 표시
   const getLowestPrice = (priceObject: StoreServiceType): number | null => {
     const service = priceObject[serviceType];
@@ -123,15 +111,12 @@ export const StoreList = () => {
 
     let minPrice: number | null = null;
 
-    // passType이 있으면 해당 타입만, 없으면 모든 타입
-    const passesToCheck = passType
-      ? [service[passType]]
-      : Object.values(service);
+    const prices = Object.values(service);
 
-    passesToCheck.forEach((vehiclePrices) => {
-      if (!vehiclePrices) return;
+    prices.forEach((carType) => {
+      if (!carType) return;
 
-      Object.values(vehiclePrices).forEach((price) => {
+      Object.values(carType).forEach((price) => {
         if (minPrice === null || price < minPrice) {
           minPrice = price;
         }
@@ -145,7 +130,7 @@ export const StoreList = () => {
   useEffect(() => {
     setSkip(0);
     storesRefetch();
-  }, [coordinate, passType]);
+  }, [coordinate, tags]);
 
   // 무한 스크롤
   useEffect(() => {
@@ -205,8 +190,8 @@ export const StoreList = () => {
       <StoreFilter
         serviceType={serviceType}
         setServiceType={setServiceType}
-        passType={passType}
-        setPassType={setPassType}
+        tags={tags}
+        setTags={setTags}
         coordinate={coordinate}
         handleOpenAddressModal={handleOpenAddressModal}
       />
@@ -263,21 +248,36 @@ export const StoreList = () => {
                       )}
                       km
                     </CustomText>
+
+                    <CustomText
+                      marginLeft={4}
+                      color={colors.gray7}
+                      fontSize={14}
+                    >
+                      {formatEllipsis(item.address, 14)}
+                    </CustomText>
                   </View>
 
-                  <View style={styles.passArea}>
-                    {item.passPrice &&
-                      getPassTypes(item.passPrice as StoreServiceType).map(
-                        (value, index) => (
-                          <View style={styles.pass} key={index}>
-                            <CustomText color={colors.back1} fontSize={12}>
-                              {value}
-                            </CustomText>
-                          </View>
-                        )
-                      )}
-                  </View>
+                  <View></View>
                 </View>
+              </View>
+
+              <View style={styles.tagArea}>
+                {item.tags &&
+                  item.tags
+                    .trim()
+                    .split(",")
+                    .map((value, index) => (
+                      <View style={styles.tag} key={index}>
+                        <CustomText
+                          color={colors.back1}
+                          fontSize={10}
+                          fontWeight={"500"}
+                        >
+                          {value.trim()}
+                        </CustomText>
+                      </View>
+                    ))}
               </View>
 
               <View style={styles.bottom}>
@@ -298,12 +298,11 @@ export const StoreList = () => {
                 {item.passPrice && (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <CustomText color={colors.gray7} fontSize={14}>
-                      {passType ? formatPassType(passType) : "이용권 최저가"}
+                      이용권 최저가
                     </CustomText>
 
                     <CustomText marginLeft={8} fontSize={18} fontWeight={"600"}>
-                      {getLowestPrice(item.passPrice)?.toLocaleString()}원{" "}
-                      {!!passType && "~"}
+                      {getLowestPrice(item.passPrice)?.toLocaleString()}원 ~
                     </CustomText>
                   </View>
                 )}
@@ -349,12 +348,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingBottom: getResponsiveSize(12),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line,
   },
   storeImage: {
-    width: getResponsiveSize(96),
-    height: getResponsiveSize(96),
+    width: getResponsiveSize(76),
+    height: getResponsiveSize(76),
     marginRight: getResponsiveSize(12),
     borderRadius: 12,
     overflow: "hidden",
@@ -364,22 +361,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: getResponsiveSize(4),
   },
-  passArea: {
+  tagArea: {
     flexDirection: "row",
-    marginTop: getResponsiveSize(8),
+    marginBottom: getResponsiveSize(10),
     gap: getResponsiveSize(6),
   },
-  pass: {
+  tag: {
     paddingVertical: getResponsiveSize(3),
     paddingHorizontal: getResponsiveSize(6),
     backgroundColor: colors.back4,
-    borderRadius: 20,
+    borderRadius: 4,
   },
   bottom: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: getResponsiveSize(12),
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
   },
   groupCount: {
     justifyContent: "center",

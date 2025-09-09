@@ -1,7 +1,8 @@
 import { blackDownArrow } from "@/assets/images";
 import { CustomText } from "@/components/ui/CustomText";
+import { storeTags } from "@/constants";
 import { colors } from "@/styles";
-import { PassType, ServiceType } from "@/types";
+import { ServiceType } from "@/types";
 import { formatEllipsis, getResponsiveSize } from "@/utils";
 import { useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
@@ -9,9 +10,9 @@ import { ScrollView } from "react-native-gesture-handler";
 
 interface Props {
   serviceType: ServiceType;
-  setServiceType: (value: React.SetStateAction<ServiceType>) => void;
-  passType: PassType | undefined;
-  setPassType: (value: React.SetStateAction<PassType | undefined>) => void;
+  setServiceType: React.Dispatch<React.SetStateAction<ServiceType>>;
+  tags: string[];
+  setTags: React.Dispatch<React.SetStateAction<string[]>>;
   coordinate: {
     id: string | null;
     nickname: string | null;
@@ -26,8 +27,8 @@ const { width: screenWidth } = Dimensions.get("window");
 export const StoreFilter = ({
   serviceType,
   setServiceType,
-  passType,
-  setPassType,
+  tags,
+  setTags,
   coordinate,
   handleOpenAddressModal,
 }: Props) => {
@@ -37,12 +38,12 @@ export const StoreFilter = ({
     return setServiceType(value);
   };
 
-  const handlePassType = (value: PassType) => () => {
-    if (value === passType) {
-      return setPassType(undefined);
-    }
-
-    return setPassType(value);
+  const handleTags = (value: string) => () => {
+    setTags((prev) =>
+      prev.includes(value)
+        ? prev.filter((tag) => tag !== value)
+        : [...prev, value]
+    );
   };
 
   return (
@@ -87,6 +88,21 @@ export const StoreFilter = ({
       </View>
 
       <View style={styles.filterWrapper}>
+        <Pressable onPress={handleOpenAddressModal} style={styles.filterButton}>
+          <CustomText marginRight={4} fontSize={14}>
+            {coordinate.id
+              ? formatEllipsis(coordinate.nickname as string, 6)
+              : "현위치"}
+          </CustomText>
+          <Image
+            source={blackDownArrow}
+            style={{
+              width: getResponsiveSize(8),
+              height: getResponsiveSize(4),
+            }}
+          />
+        </Pressable>
+
         <ScrollView
           horizontal
           scrollEnabled={scrollEnabled}
@@ -98,74 +114,25 @@ export const StoreFilter = ({
           }}
           contentContainerStyle={styles.filter}
         >
-          <Pressable
-            onPress={handleOpenAddressModal}
-            style={styles.filterButton}
-          >
-            <CustomText marginRight={4} fontSize={14}>
-              {coordinate.id
-                ? formatEllipsis(coordinate.nickname as string, 6)
-                : "현위치"}
-            </CustomText>
-            <Image
-              source={blackDownArrow}
-              style={{
-                width: getResponsiveSize(8),
-                height: getResponsiveSize(4),
-              }}
-            />
-          </Pressable>
-
-          <Pressable
-            onPress={handlePassType("PREMIUM")}
-            style={[
-              styles.filterButton,
-              passType === "PREMIUM" && {
-                backgroundColor: colors.main,
-              },
-            ]}
-          >
-            <CustomText
-              color={passType === "PREMIUM" ? colors.white : colors.black}
-              fontSize={14}
+          {storeTags.map((value, index) => (
+            <Pressable
+              key={index}
+              onPress={handleTags(value)}
+              style={[
+                styles.filterButton,
+                tags.includes(value) && {
+                  backgroundColor: colors.main,
+                },
+              ]}
             >
-              프리미엄
-            </CustomText>
-          </Pressable>
-
-          <Pressable
-            onPress={handlePassType("STANDARD")}
-            style={[
-              styles.filterButton,
-              passType === "STANDARD" && {
-                backgroundColor: colors.main,
-              },
-            ]}
-          >
-            <CustomText
-              color={passType === "STANDARD" ? colors.white : colors.black}
-              fontSize={14}
-            >
-              스탠다드
-            </CustomText>
-          </Pressable>
-
-          <Pressable
-            onPress={handlePassType("TICKET")}
-            style={[
-              styles.filterButton,
-              passType === "TICKET" && {
-                backgroundColor: colors.main,
-              },
-            ]}
-          >
-            <CustomText
-              color={passType === "TICKET" ? colors.white : colors.black}
-              fontSize={14}
-            >
-              일회권
-            </CustomText>
-          </Pressable>
+              <CustomText
+                color={tags.includes(value) ? colors.white : colors.black}
+                fontSize={14}
+              >
+                {value}
+              </CustomText>
+            </Pressable>
+          ))}
         </ScrollView>
       </View>
     </View>
@@ -186,8 +153,9 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.line,
   },
   filterWrapper: {
-    justifyContent: "center",
-    alignItems: "flex-start",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
     height: getResponsiveSize(58),
     paddingHorizontal: getResponsiveSize(20),
     gap: getResponsiveSize(8),

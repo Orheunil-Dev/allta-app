@@ -6,6 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 import type { StoreDetailItemMainImage } from './storeDetailItemMainImage';
+import type { StoreDetailItemTags } from './storeDetailItemTags';
 import type { StoreDetailItemNotice } from './storeDetailItemNotice';
 import type { StoreDetailItemDescrption } from './storeDetailItemDescrption';
 import type { StoreDetailItemPolicy } from './storeDetailItemPolicy';
@@ -30,6 +31,8 @@ export interface StoreDetailItem {
   lng: number;
   /** 대표 이미지 */
   mainImage?: StoreDetailItemMainImage;
+  /** 태그 */
+  tags?: StoreDetailItemTags;
   /** 매장 공지 */
   notice?: StoreDetailItemNotice;
   /** 매장 소개 */
