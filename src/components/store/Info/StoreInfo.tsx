@@ -45,6 +45,7 @@ export const StoreInfo = ({
         onPress={handleOpenNavigation}
         height={getResponsiveSize(34)}
         marginTop={8}
+        borderWidth={1}
         borderColor={colors.gray2}
       >
         <Image source={naviIcon} style={styles.naviIcon} />

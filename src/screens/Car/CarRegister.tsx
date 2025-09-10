@@ -3,7 +3,7 @@ import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { LoginStackParamList } from "@/navigations";
+import { CarStackParamList } from "@/navigations";
 import { z } from "zod";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
@@ -14,11 +14,14 @@ import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidi
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { colors } from "@/styles";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { blackDownArrow } from "@/assets/images";
+import { blackDownArrow, grayErrorIcon } from "@/assets/images";
 import {
   useCarControllerGetCarModels,
   useCarControllerGetCarVendors,
+  useCarControllerRegisterCar,
 } from "@/api/car/car";
+import { CustomTextInput } from "@/components/ui/CustomTextInput";
+import { useQueryClient } from "@tanstack/react-query";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -34,9 +37,11 @@ const carNumberSchema = z
   .string()
   .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다.");
 
-export const RegisterCar = () => {
-  const loginStackNavigation =
-    useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
+export const CarRegister = () => {
+  const carStackNavigation =
+    useNavigation<NativeStackNavigationProp<CarStackParamList>>();
+
+  const queryClient = useQueryClient();
 
   const brandSelectRef = useRef<BottomSheetModal>(null);
   const modelSelectRef = useRef<BottomSheetModal>(null);
@@ -49,6 +54,7 @@ export const RegisterCar = () => {
     carNumber: "",
   });
 
+  // 제조사 조회
   const {
     data: carVendorsData,
     isPending: carVendorsLoading,
@@ -59,6 +65,7 @@ export const RegisterCar = () => {
     },
   });
 
+  // 모델명 조회
   const {
     data: carModelsData,
     isPending: carModelsLoading,
@@ -69,6 +76,13 @@ export const RegisterCar = () => {
       gcTime: 0,
     },
   });
+
+  // 차량 등록
+  const {
+    mutate: registerCar,
+    isError: registerCarError,
+    isPending: regiserCarLoading,
+  } = useCarControllerRegisterCar({});
 
   // 제조사 바텀시트 조작
   const handleOpenBrandSelect = () => {
@@ -100,17 +114,20 @@ export const RegisterCar = () => {
     }));
   };
 
+  const handleSubmit = () => {
+    registerCar(
+      { data: { ...registerForm } },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["cars"] });
+
+          return carStackNavigation.goBack();
+        },
+      }
+    );
+  };
+
   const isValid = registerFormSchema.safeParse(registerForm).success;
-
-  const handleSkipRegist = () => {
-    loginStackNavigation.navigate("RegisterCard", {});
-  };
-
-  const handleNextStep = () => {
-    loginStackNavigation.navigate("RegisterCard", {
-      ...registerForm,
-    });
-  };
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
@@ -242,7 +259,7 @@ export const RegisterCar = () => {
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               차량번호
             </CustomText>
-            <SignUpTextInput
+            <CustomTextInput
               value={registerForm.carNumber}
               onChangeText={(text) =>
                 handleChangeRegisterForm("carNumber", text)
@@ -255,22 +272,29 @@ export const RegisterCar = () => {
                   : undefined
               }
               placeholder="12가3456"
+              onReset={() => handleChangeRegisterForm("carNumber", "")}
             />
+
+            <View style={styles.inquiry}>
+              <Image
+                source={grayErrorIcon}
+                style={{
+                  width: getResponsiveSize(20),
+                  height: getResponsiveSize(20),
+                }}
+              />
+
+              <View style={{ flex: 1, marginLeft: getResponsiveSize(8) }}>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  찾으시는 차량 모델이 목록에 없는 경우, 고객센터로 문의해
+                  주세요.
+                </CustomText>
+              </View>
+            </View>
           </ScrollView>
 
-          <Pressable onPress={handleSkipRegist}>
-            <CustomText
-              color={colors.gray7}
-              fontSize={16}
-              textAlign="center"
-              marginBottom={16}
-            >
-              건너뛰기
-            </CustomText>
-          </Pressable>
-
           <CustomButton
-            onPress={handleNextStep}
+            onPress={handleSubmit}
             isDisabled={!isValid}
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
@@ -280,7 +304,7 @@ export const RegisterCar = () => {
               fontSize={16}
               fontWeight={"600"}
             >
-              다음
+              등록하기
             </CustomText>
           </CustomButton>
         </View>
@@ -313,5 +337,15 @@ const styles = StyleSheet.create({
   list: {
     width: "100%",
     paddingVertical: getResponsiveSize(12),
+  },
+  inquiry: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    width: "100%",
+    marginTop: getResponsiveSize(32),
+    paddingVertical: getResponsiveSize(16),
+    paddingHorizontal: getResponsiveSize(20),
+    backgroundColor: colors.gray1,
+    borderRadius: 12,
   },
 });

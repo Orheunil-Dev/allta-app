@@ -25,10 +25,12 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  CouponControllerGetCouponListParams,
   CreateCouponInfoRequest,
   CreateCouponInfoResponse,
   CreateOneCouponRequest,
-  CreateOneCouponResponse
+  CreateOneCouponResponse,
+  GetCouponListResponse
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -39,33 +41,34 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 export const couponControllerGetCouponList = (
-    
+    params?: CouponControllerGetCouponListParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<null>(
-      {url: `/coupon`, method: 'GET', signal
+      return customInstance<GetCouponListResponse>(
+      {url: `/coupon`, method: 'GET',
+        params, signal
     },
       options);
     }
   
 
-export const getCouponControllerGetCouponListQueryKey = () => {
-    return [`/coupon`] as const;
+export const getCouponControllerGetCouponListQueryKey = (params?: CouponControllerGetCouponListParams,) => {
+    return [`/coupon`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getCouponControllerGetCouponListQueryOptions = <TData = Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getCouponControllerGetCouponListQueryOptions = <TData = Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError = unknown>(params?: CouponControllerGetCouponListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getCouponControllerGetCouponListQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getCouponControllerGetCouponListQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof couponControllerGetCouponList>>> = ({ signal }) => couponControllerGetCouponList(requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof couponControllerGetCouponList>>> = ({ signal }) => couponControllerGetCouponList(params, requestOptions, signal);
 
       
 
@@ -79,7 +82,7 @@ export type CouponControllerGetCouponListQueryError = unknown
 
 
 export function useCouponControllerGetCouponList<TData = Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>> & Pick<
+ params: undefined |  CouponControllerGetCouponListParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof couponControllerGetCouponList>>,
           TError,
@@ -89,7 +92,7 @@ export function useCouponControllerGetCouponList<TData = Awaited<ReturnType<type
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useCouponControllerGetCouponList<TData = Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>> & Pick<
+ params?: CouponControllerGetCouponListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof couponControllerGetCouponList>>,
           TError,
@@ -99,16 +102,16 @@ export function useCouponControllerGetCouponList<TData = Awaited<ReturnType<type
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useCouponControllerGetCouponList<TData = Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params?: CouponControllerGetCouponListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useCouponControllerGetCouponList<TData = Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params?: CouponControllerGetCouponListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof couponControllerGetCouponList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getCouponControllerGetCouponListQueryOptions(options)
+  const queryOptions = getCouponControllerGetCouponListQueryOptions(params,options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

@@ -5,22 +5,24 @@ import {
   defaultStoreImage,
   rigthArrowIcon,
 } from "@/assets/images";
+import { PaymentTermsBottomSheet } from "@/components/bottom-sheet/PaymentTermsBottomSheet";
 import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
-import { PaymentTermsBottomSheet } from "@/components/payment/PaymentTermsBottomSheet";
-import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
+import { CardSelectButton } from "@/components/payment/CardSelectButton";
+import { CarSelectButton } from "@/components/payment/CarSelectButton";
+import { CouponSelectButton } from "@/components/payment/CouponSelectButton";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { PaymentStackParamList } from "@/navigations";
 import { colors } from "@/styles";
-import { formatPurchaseType, getFontSize, getResponsiveSize } from "@/utils";
+import { Car, Coupon } from "@/types";
+import { formatPurchaseType, getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useRef, useState } from "react";
 import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import RenderHTML from "react-native-render-html";
 
 type PaymentRouteProp = RouteProp<PaymentStackParamList, "Payment">;
 
@@ -30,14 +32,13 @@ export const Payment = () => {
   const termsBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const [paymentForm, setPaymentForm] = useState({});
+  const [coupon, setCoupon] = useState<Coupon | null>(null);
+  const [car, setCar] = useState<Car | null>(null);
+
   const [agree, setAgree] = useState<boolean>(false);
 
   const paymentNavigation =
     useNavigation<NativeStackNavigationProp<PaymentStackParamList>>();
-
-  const handleOpenTerms = () => {
-    termsBottomSheetRef.current?.present();
-  };
 
   const handlePayment = () => {
     return paymentNavigation.navigate("PaymentComplete");
@@ -70,91 +71,31 @@ export const Payment = () => {
           <View style={styles.price}>
             <CustomText fontSize={14}>이용권 금액</CustomText>
             <CustomText fontSize={14} fontWeight={"600"}>
-              {router.params.price["SEDAN"].toLocaleString()} 원
+              {router.params.price["SEDAN"].toLocaleString()}원
             </CustomText>
           </View>
           <View style={styles.dicount}>
             <CustomText fontSize={14}>쿠폰 할인</CustomText>
             <CustomText fontSize={14} fontWeight={"600"}>
-              - 0 원
+              - 0원
             </CustomText>
           </View>
         </View>
 
         {/* 쿠폰 선택 */}
-        <CustomText marginTop={40} fontSize={18} fontWeight={"600"}>
-          쿠폰
-        </CustomText>
-
-        <CustomButton
-          height={getResponsiveSize(48)}
-          marginTop={12}
-          borderWidth={1}
-          borderColor={colors.line}
-        >
-          <View style={styles.button}>
-            <CustomText fontSize={15} fontWeight={"500"}>
-              사용 가능한 쿠폰이 없습니다
-            </CustomText>
-            <Image
-              source={blackRightArrow}
-              style={{
-                width: getResponsiveSize(24),
-                height: getResponsiveSize(24),
-              }}
-            />
-          </View>
-        </CustomButton>
+        <CouponSelectButton
+          coupon={coupon}
+          setCoupon={setCoupon}
+          storeId={router.params.storeId}
+          serviceType={router.params.serviceType}
+          passType={router.params.passType}
+        />
 
         {/* 차량 선택 */}
-        <CustomText marginTop={40} fontSize={18} fontWeight={"600"}>
-          등록 차량
-        </CustomText>
-
-        <CustomButton
-          height={getResponsiveSize(48)}
-          marginTop={12}
-          borderWidth={1}
-          borderColor={colors.line}
-        >
-          <View style={styles.button}>
-            <CustomText fontSize={15} fontWeight={"500"}>
-              차량을 등록해주세요
-            </CustomText>
-            <Image
-              source={blackRightArrow}
-              style={{
-                width: getResponsiveSize(24),
-                height: getResponsiveSize(24),
-              }}
-            />
-          </View>
-        </CustomButton>
+        <CarSelectButton car={car} setCar={setCar} />
 
         {/* 카드 선택 */}
-        <CustomText marginTop={40} fontSize={18} fontWeight={"600"}>
-          결제 수단
-        </CustomText>
-
-        <CustomButton
-          height={getResponsiveSize(48)}
-          marginTop={12}
-          borderWidth={1}
-          borderColor={colors.line}
-        >
-          <View style={styles.button}>
-            <CustomText fontSize={15} fontWeight={"500"}>
-              카드를 등록해주세요
-            </CustomText>
-            <Image
-              source={blackRightArrow}
-              style={{
-                width: getResponsiveSize(24),
-                height: getResponsiveSize(24),
-              }}
-            />
-          </View>
-        </CustomButton>
+        <CardSelectButton />
 
         <CustomText marginTop={40} fontSize={18} fontWeight={"600"}>
           결제 금액
@@ -166,7 +107,7 @@ export const Payment = () => {
           >
             <CustomText fontSize={16}>이용권 금액</CustomText>
             <CustomText fontSize={16}>
-              {router.params.price["SEDAN"].toLocaleString()} 원
+              {router.params.price["SEDAN"].toLocaleString()}원
             </CustomText>
           </View>
 
@@ -179,7 +120,7 @@ export const Payment = () => {
           >
             <CustomText fontSize={16}>쿠폰 할인</CustomText>
             <CustomText color={colors.point2} fontSize={16}>
-              0 원
+              0원
             </CustomText>
           </View>
         </View>
@@ -189,7 +130,7 @@ export const Payment = () => {
             최종 결제 금액
           </CustomText>
           <CustomText color={colors.point2} fontSize={18} fontWeight={"600"}>
-            {router.params.price["SEDAN"].toLocaleString()} 원
+            {router.params.price["SEDAN"].toLocaleString()}원
           </CustomText>
         </View>
 
@@ -210,7 +151,7 @@ export const Payment = () => {
           </CustomButton>
 
           <CustomButton
-            onPress={handleOpenTerms}
+            onPress={() => termsBottomSheetRef.current?.present()}
             height={getResponsiveSize(48)}
           >
             <Image
@@ -223,7 +164,6 @@ export const Payment = () => {
           </CustomButton>
         </View>
       </ScrollView>
-
       <BottomButtonArea>
         <CustomButton
           isDisabled={!agree}

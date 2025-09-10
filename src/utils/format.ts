@@ -80,10 +80,13 @@ export const formatPassType = (value: PassType): string | null => {
   switch (value) {
     case "PREMIUM":
       return "프리미엄";
+
     case "STANDARD":
       return "스탠다드";
+
     case "TICKET":
       return "일회권";
+
     default:
       return null;
   }
@@ -94,10 +97,13 @@ export const formatPurchaseType = (value: PassType): string | null => {
   switch (value) {
     case "PREMIUM":
       return "프리미엄 구독권";
+
     case "STANDARD":
       return "스탠다드 구독권";
+
     case "TICKET":
       return "일회권";
+
     default:
       return null;
   }
@@ -109,5 +115,21 @@ export const formatEllipsis = (text: string, length: number) => {
     return text.slice(0, length) + "...";
   } else {
     return text;
+  }
+};
+
+export const formatCouponValue = (type: string, value: number) => {
+  switch (type) {
+    case "RATE":
+      return `${value}%`;
+
+    case "PRICE":
+      return `${value}원`;
+
+    case "FIXED":
+      return `${value}원`;
+
+    default:
+      return `${value}원`;
   }
 };

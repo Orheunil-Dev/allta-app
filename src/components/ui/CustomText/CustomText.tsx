@@ -16,6 +16,7 @@ const fontMap: Record<string, string> = {
 
 interface Props {
   children: React.ReactNode;
+  flex?: number;
   color?: string;
   fontSize?: number;
   fontWeight?: TextStyle["fontWeight"];

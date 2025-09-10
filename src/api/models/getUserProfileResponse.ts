@@ -5,13 +5,10 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { GetUserProfileResponseCarNumber } from './getUserProfileResponseCarNumber';
 
 export interface GetUserProfileResponse {
   /** 이름 */
   name: string;
-  /** 차량 번호 */
-  carNumber?: GetUserProfileResponseCarNumber;
   /** 보유 일회권 개수 */
   totalTickets: number;
   /** 보유 스탠다드 구독권 개수 */

@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-/**
- * 차량 번호
- */
-export type GetUserProfileResponseCarNumber = string | null;
+export interface RegisterCarResponse {
+  /** 결과 여부 */
+  ok: boolean;
+}

@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: getResponsiveSize(12),
+    marginBottom: getResponsiveSize(12),
     width: "100%",
   },
   empty: {

@@ -16,18 +16,18 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { formatEllipsis, formatPassType, getResponsiveSize } from "@/utils";
+import { formatEllipsis, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 import { useDistanceCalculator } from "@/hooks";
 import { defaultStoreImage, locationIcon } from "@/assets/images";
 import { StoreFilter } from "@/components/store/StoreFilter";
-import { PassType, ServiceType } from "@/types";
+import { ServiceType } from "@/types";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { AddressSelectBottomSheet } from "@/components/store/AddressSelectBottomSheet";
 import { useStoreControllerGetStoreList } from "@/api/store/store";
 import { GetStoreListResponse } from "@/api/models";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AddressSelectBottomSheet } from "@/components/bottom-sheet/AddressSelectBottomSheet";
 
 type StoreRouteProp = RouteProp<StoreStackParamList, "StoreList">;
 

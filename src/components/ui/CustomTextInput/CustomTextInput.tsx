@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { CustomText } from "../CustomText/CustomText";
 
 const fontMap: Record<string, string> = {
   "100": "Pretendard-Thin",
@@ -32,6 +33,8 @@ interface Props {
     | undefined;
   onReset?: () => void;
   maxLength?: number;
+  placeholder?: string;
+  errorMessage?: string;
   marginTop?: number;
   marginBottom?: number;
   marginRight?: number;
@@ -45,6 +48,8 @@ export const CustomTextInput = ({
   onSubmitEditing,
   onReset,
   maxLength,
+  placeholder,
+  errorMessage,
   marginTop = 0,
   marginBottom = 0,
   marginRight = 0,
@@ -80,6 +85,7 @@ export const CustomTextInput = ({
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
         maxLength={maxLength}
+        placeholder={placeholder ?? undefined}
         style={[
           {
             fontFamily: fontMap[fontWeight],
@@ -90,6 +96,14 @@ export const CustomTextInput = ({
           styles.input,
         ]}
       />
+
+      {errorMessage !== "null" && (
+        <View style={styles.errorMessage}>
+          <CustomText color="#EF3A2F" fontSize={13}>
+            {errorMessage}
+          </CustomText>
+        </View>
+      )}
     </View>
   );
 };
@@ -107,5 +121,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: getResponsiveSize(8),
     zIndex: 1,
+  },
+  errorMessage: {
+    position: "absolute",
+    bottom: getResponsiveSize(-20),
+    left: getResponsiveSize(10),
   },
 });

@@ -14,6 +14,7 @@ import { IntroStack, IntroStackParamList } from "./IntroStack";
 import { StoreStack, StoreStackParamList } from "./StoreStack";
 import { AddressStack, AddressStackParamList } from "./AddressStack";
 import { PaymentStack, PaymentStackParamList } from "./PaymentStack";
+import { CarStack, CarStackParamList } from "./CarStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -22,6 +23,7 @@ export type ContainerStackParamList = {
   LoginStack: NavigatorScreenParams<LoginStackParamList>;
   AddressStack: NavigatorScreenParams<AddressStackParamList>;
   PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
+  CarStack: NavigatorScreenParams<CarStackParamList>;
   Notification: undefined;
 };
 
@@ -99,6 +101,13 @@ export const ContainerStack = ({
         <Stack.Screen
           name="PaymentStack"
           component={PaymentStack}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="CarStack"
+          component={CarStack}
           options={{
             headerShown: false,
           }}
