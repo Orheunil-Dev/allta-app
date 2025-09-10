@@ -15,12 +15,12 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { PaymentStackParamList } from "@/navigations";
 import { colors } from "@/styles";
-import { Car, Coupon } from "@/types";
+import { Car, CarType, Coupon } from "@/types";
 import { formatPurchaseType, getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -32,9 +32,10 @@ export const Payment = () => {
   const termsBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const [paymentForm, setPaymentForm] = useState({});
+  const [price, setPrice] = useState<number>(0);
   const [coupon, setCoupon] = useState<Coupon | null>(null);
   const [car, setCar] = useState<Car | null>(null);
-
+  const [card, setCard] = useState(null);
   const [agree, setAgree] = useState<boolean>(false);
 
   const paymentNavigation =
@@ -43,6 +44,32 @@ export const Payment = () => {
   const handlePayment = () => {
     return paymentNavigation.navigate("PaymentComplete");
   };
+
+  const getDiscountAmount = (type?: string, value?: number) => {
+    if (!price || !type || !value) return 0;
+
+    switch (type) {
+      case "RATE":
+        return price * (value / 100);
+
+      case "PRICE":
+        return value;
+
+      case "FIXED":
+        return Math.max(0, price - value);
+
+      default:
+        return 0;
+    }
+  };
+
+  const isValid = !!agree && !!car;
+
+  useEffect(() => {
+    const carTypeKey: CarType = (car?.carType as CarType) ?? "SEDAN";
+
+    return setPrice(router.params.price[carTypeKey]);
+  }, [car, router.params]);
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
@@ -71,13 +98,18 @@ export const Payment = () => {
           <View style={styles.price}>
             <CustomText fontSize={14}>이용권 금액</CustomText>
             <CustomText fontSize={14} fontWeight={"600"}>
-              {router.params.price["SEDAN"].toLocaleString()}원
+              {(price ?? 0).toLocaleString()}원
             </CustomText>
           </View>
           <View style={styles.dicount}>
             <CustomText fontSize={14}>쿠폰 할인</CustomText>
             <CustomText fontSize={14} fontWeight={"600"}>
-              - 0원
+              -{" "}
+              {getDiscountAmount(
+                coupon?.discountType,
+                coupon?.discountValue
+              ).toLocaleString()}
+              원
             </CustomText>
           </View>
         </View>
@@ -120,7 +152,12 @@ export const Payment = () => {
           >
             <CustomText fontSize={16}>쿠폰 할인</CustomText>
             <CustomText color={colors.point2} fontSize={16}>
-              0원
+              -{" "}
+              {getDiscountAmount(
+                coupon?.discountType,
+                coupon?.discountValue
+              ).toLocaleString()}
+              원
             </CustomText>
           </View>
         </View>
@@ -130,7 +167,11 @@ export const Payment = () => {
             최종 결제 금액
           </CustomText>
           <CustomText color={colors.point2} fontSize={18} fontWeight={"600"}>
-            {router.params.price["SEDAN"].toLocaleString()}원
+            {(
+              (price ?? 0) -
+              getDiscountAmount(coupon?.discountType, coupon?.discountValue)
+            ).toLocaleString()}
+            원
           </CustomText>
         </View>
 
@@ -166,7 +207,7 @@ export const Payment = () => {
       </ScrollView>
       <BottomButtonArea>
         <CustomButton
-          isDisabled={!agree}
+          isDisabled={isValid}
           onPress={handlePayment}
           width={"100%"}
           height={getResponsiveSize(53)}
