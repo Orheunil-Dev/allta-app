@@ -1,9 +1,9 @@
 export type Car = {
   id: string;
-  carBrand: string;
-  carModel: string;
-  carType: string;
-  carNumber: string;
+  vendor: string;
+  model: string;
+  type: string;
+  number: string;
   isMain: boolean;
 };
 

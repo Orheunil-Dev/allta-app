@@ -30,7 +30,9 @@ import type {
   CreateCouponInfoResponse,
   CreateOneCouponRequest,
   CreateOneCouponResponse,
-  GetCouponListResponse
+  GetCouponListResponse,
+  RegisterCouponCodeRequest,
+  RegisterCouponCodeResponse
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -177,6 +179,64 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getCouponControllerCreateOneCouponMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const couponControllerRegisterCouponCode = (
+    registerCouponCodeRequest: RegisterCouponCodeRequest,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<RegisterCouponCodeResponse>(
+      {url: `/coupon/code`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: registerCouponCodeRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getCouponControllerRegisterCouponCodeMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof couponControllerRegisterCouponCode>>, TError,{data: RegisterCouponCodeRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof couponControllerRegisterCouponCode>>, TError,{data: RegisterCouponCodeRequest}, TContext> => {
+
+const mutationKey = ['couponControllerRegisterCouponCode'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof couponControllerRegisterCouponCode>>, {data: RegisterCouponCodeRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  couponControllerRegisterCouponCode(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CouponControllerRegisterCouponCodeMutationResult = NonNullable<Awaited<ReturnType<typeof couponControllerRegisterCouponCode>>>
+    export type CouponControllerRegisterCouponCodeMutationBody = RegisterCouponCodeRequest
+    export type CouponControllerRegisterCouponCodeMutationError = unknown
+
+    export const useCouponControllerRegisterCouponCode = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof couponControllerRegisterCouponCode>>, TError,{data: RegisterCouponCodeRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof couponControllerRegisterCouponCode>>,
+        TError,
+        {data: RegisterCouponCodeRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getCouponControllerRegisterCouponCodeMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }

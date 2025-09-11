@@ -118,6 +118,7 @@ export const formatEllipsis = (text: string, length: number) => {
   }
 };
 
+// 쿠폰 할인 정보
 export const formatCouponValue = (type: string, value: number) => {
   switch (type) {
     case "RATE":

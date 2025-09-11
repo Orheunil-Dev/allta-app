@@ -37,7 +37,7 @@ export type LoginStackParamList = {
   SignUpComplete: undefined;
   RegisterCar: undefined;
   RegisterCard: {
-    carBrand?: string;
+    carVendor?: string;
     carType?: string;
     carModel?: string;
     carNumber?: string;

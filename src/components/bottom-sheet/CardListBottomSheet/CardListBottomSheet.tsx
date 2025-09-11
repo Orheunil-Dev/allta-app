@@ -47,14 +47,14 @@ export const CardListBottomSheet = ({ ref, onPressRegister }: Props) => {
                 <Image source={uncheckedRadioIcon} style={styles.radioButton} />
 
                 <CustomText marginBottom={4} fontSize={18} fontWeight={"600"}>
-                  {item.carNumber}
+                  {item.number}
                 </CustomText>
                 <View style={{ flexDirection: "row" }}>
                   <CustomText color={colors.gray7} fontSize={16}>
-                    {item.carBrand}
+                    {item.vendor}
                   </CustomText>
                   <CustomText marginLeft={6} color={colors.gray7} fontSize={16}>
-                    {item.carModel}
+                    {item.model}
                   </CustomText>
                 </View>
               </Pressable>

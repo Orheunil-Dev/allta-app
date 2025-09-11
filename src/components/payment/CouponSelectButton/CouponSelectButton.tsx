@@ -3,15 +3,16 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
 import { getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { colors } from "@/styles";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ContainerStackParamList } from "@/navigations";
 import { Coupon } from "@/types";
-import { useCouponControllerGetCouponList } from "@/api/coupon/coupon";
+import {
+  useCouponControllerGetCouponList,
+  useCouponControllerRegisterCouponCode,
+} from "@/api/coupon/coupon";
 import { CouponListBottomSheet } from "@/components/bottom-sheet/CouponListBottomSheet";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   coupon: Coupon | null;
@@ -28,11 +29,14 @@ export const CouponSelectButton = ({
   serviceType,
   passType,
 }: Props) => {
-  const containerNavigation =
-    useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+  const queryClient = useQueryClient();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+  const [code, setCode] = useState<string>("");
+
+  // 쿠폰 목록 조회
   const { data: couponData, refetch: couponRefetch } =
     useCouponControllerGetCouponList(
       {
@@ -42,12 +46,47 @@ export const CouponSelectButton = ({
       },
       {
         query: {
-          queryKey: ["coupon"],
+          queryKey: ["coupons"],
           retry: false,
           gcTime: 0,
         },
       }
     );
+
+  // 쿠폰 등록
+  const {
+    mutate: registerCode,
+    isPending: registerCodeLoading,
+    isError: registerCodeError,
+  } = useCouponControllerRegisterCouponCode();
+
+  const handleSubmit = () => {
+    registerCode(
+      {
+        data: { code },
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["coupons"] });
+
+          setCode("");
+        },
+        onError: (error) => {
+          const errorMessage =
+            (error as { message?: string })?.message ?? String(error) ?? "";
+
+          console.log(errorMessage);
+        },
+      }
+    );
+  };
+
+  const handleOpenBottomSheet = () => {
+    setSelectedCoupon(coupon);
+    setCode("");
+
+    return bottomSheetRef.current?.present();
+  };
 
   useEffect(() => {
     if (couponData?.data) {
@@ -55,13 +94,22 @@ export const CouponSelectButton = ({
     }
   }, [couponData?.data]);
 
+  useEffect(() => {
+    setSelectedCoupon(coupon);
+  }, [coupon]);
+
   return (
     <View style={{ marginTop: getResponsiveSize(40) }}>
       <CouponListBottomSheet
         ref={bottomSheetRef}
+        couponData={couponData}
+        code={code}
+        setCode={setCode}
         coupon={coupon}
         setCoupon={setCoupon}
-        couponData={couponData}
+        selectedCoupon={selectedCoupon}
+        setSelectedCoupon={setSelectedCoupon}
+        onSubmit={handleSubmit}
       />
 
       <CustomText fontSize={18} fontWeight={"600"}>
@@ -69,7 +117,7 @@ export const CouponSelectButton = ({
       </CustomText>
 
       <CustomButton
-        onPress={() => bottomSheetRef.current?.present()}
+        onPress={handleOpenBottomSheet}
         height={getResponsiveSize(48)}
         marginTop={12}
         borderWidth={1}
@@ -77,7 +125,7 @@ export const CouponSelectButton = ({
       >
         <View style={styles.button}>
           <CustomText fontSize={15} fontWeight={"500"}>
-            {coupon ? coupon.discountValue : "사용 가능한 쿠폰이 없습니다."}
+            {coupon ? coupon.name : "사용 가능한 쿠폰이 없습니다."}
           </CustomText>
           <Image
             source={blackRightArrow}

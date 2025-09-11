@@ -44,6 +44,11 @@ export const CustomBottomSheet = ({
   return (
     <BottomSheetModal
       ref={ref}
+      onChange={(index) => {
+        if (index === -1) {
+          onClose();
+        }
+      }}
       snapPoints={snapPoints}
       enablePanDownToClose={false}
       enableHandlePanningGesture={false}

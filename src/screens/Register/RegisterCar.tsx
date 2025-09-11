@@ -22,7 +22,7 @@ import {
 
 // 유효성 검사
 const registerFormSchema = z.object({
-  carBrand: z.string(),
+  carVendor: z.string(),
   carModel: z.string(),
   carType: z.string(),
   carNumber: z
@@ -43,7 +43,7 @@ export const RegisterCar = () => {
 
   const [carVendor, setCarVendor] = useState<string | null>(null);
   const [registerForm, setRegisterForm] = useState({
-    carBrand: "",
+    carVendor: "",
     carModel: "",
     carType: "",
     carNumber: "",
@@ -81,7 +81,7 @@ export const RegisterCar = () => {
   // 모델 바텀시트 조작
   const handleOpenModelSelect = () => {
     // 제조사 선택 안했을 경우엔 바텀시트 안열림
-    if (!registerForm.carBrand) {
+    if (!registerForm.carVendor) {
       return;
     }
     modelSelectRef?.current?.present();
@@ -129,7 +129,7 @@ export const RegisterCar = () => {
             renderItem={({ item, index }) => (
               <Pressable
                 onPress={() => {
-                  handleChangeRegisterForm("carBrand", item.vendor);
+                  handleChangeRegisterForm("carVendor", item.vendor);
                   setCarVendor(item.vendor);
                   handleCloseBrandSelect();
                 }}
@@ -138,7 +138,7 @@ export const RegisterCar = () => {
               >
                 <CustomText
                   color={
-                    registerForm.carBrand === item.vendor
+                    registerForm.carVendor === item.vendor
                       ? colors.main
                       : colors.black
                   }
@@ -208,7 +208,7 @@ export const RegisterCar = () => {
             >
               <View pointerEvents="none">
                 <SignUpTextInput
-                  value={registerForm.carBrand}
+                  value={registerForm.carVendor}
                   onChangeText={() => {}}
                   editable={false}
                   placeholder="선택"

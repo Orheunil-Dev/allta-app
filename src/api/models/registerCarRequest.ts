@@ -8,11 +8,11 @@
 
 export interface RegisterCarRequest {
   /** 제조사 */
-  carBrand: string;
+  carVendor: string;
+  /** 차종 */
+  carType: string;
   /** 모델명 */
   carModel: string;
-  /** 차량 종류 */
-  carType: string;
   /** 차량 번호 */
   carNumber: string;
 }

@@ -66,7 +66,7 @@ export const Payment = () => {
   const isValid = !!agree && !!car;
 
   useEffect(() => {
-    const carTypeKey: CarType = (car?.carType as CarType) ?? "SEDAN";
+    const carTypeKey: CarType = (car?.type as CarType) ?? "SEDAN";
 
     return setPrice(router.params.price[carTypeKey]);
   }, [car, router.params]);

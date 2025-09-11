@@ -10,13 +10,13 @@ export interface Car {
   /** ID */
   id: string;
   /** 제조사 */
-  carBrand: string;
-  /** 모델명 */
-  carModel: string;
+  vendor: string;
   /** 차량 종류 */
-  carType: string;
+  type: string;
+  /** 모델명 */
+  model: string;
   /** 차량 번호 */
-  carNumber: string;
+  number: string;
   /** 대표 차량 여부 */
   isMain: boolean;
 }

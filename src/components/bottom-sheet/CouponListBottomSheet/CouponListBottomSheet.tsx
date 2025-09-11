@@ -7,49 +7,99 @@ import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
-import { Car, Coupon } from "@/types";
-import { formatCouponValue, getResponsiveSize } from "@/utils";
+import { Coupon } from "@/types";
+import { formatCouponValue, getFontSize, getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View, TextInput } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { useEffect, useState } from "react";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
+  couponData: GetCouponListResponse | undefined;
+  code: string;
+  setCode: React.Dispatch<React.SetStateAction<string>>;
   coupon: Coupon | null;
   setCoupon: React.Dispatch<React.SetStateAction<Coupon | null>>;
-  couponData: GetCouponListResponse | undefined;
+  selectedCoupon: Coupon | null;
+  setSelectedCoupon: React.Dispatch<React.SetStateAction<Coupon | null>>;
+  onSubmit: () => void;
 }
 
 export const CouponListBottomSheet = ({
   ref,
+  couponData,
+  code,
+  setCode,
   coupon,
   setCoupon,
-  couponData,
+  selectedCoupon,
+  setSelectedCoupon,
+  onSubmit,
 }: Props) => {
+  // 쿠폰 선택
   const handleSelectCoupon = (value: Coupon) => () => {
-    if (coupon?.id === value.id) {
-      return setCoupon(null);
+    if (selectedCoupon?.id === value.id) {
+      return setSelectedCoupon(null);
     }
 
-    return setCoupon(value);
+    return setSelectedCoupon(value);
+  };
+
+  // 쿠폰 적용
+  const handleApply = () => {
+    setCoupon(selectedCoupon);
+
+    return ref?.current?.close();
   };
 
   const handleClose = () => {
+    setSelectedCoupon(coupon);
+
     return ref?.current?.close();
   };
+
+  useEffect(() => {
+    setSelectedCoupon(coupon);
+  }, [coupon]);
 
   return (
     <CustomBottomSheet
       ref={ref}
-      height={getResponsiveSize(500)}
+      height={getResponsiveSize(650)}
       title="쿠폰 선택"
       onClose={handleClose}
       hasCloseButton
     >
       <View style={styles.container}>
+        <View style={styles.codeArea}>
+          <TextInput
+            defaultValue={code}
+            onChangeText={(text) => {
+              setCode(text);
+            }}
+            keyboardType="default"
+            autoCorrect={false}
+            autoCapitalize="none"
+            placeholder="쿠폰번호 입력"
+            style={styles.codeInput}
+          />
+          <CustomButton
+            onPress={onSubmit}
+            width={getResponsiveSize(74)}
+            height={getResponsiveSize(45)}
+            borderWidth={1}
+            borderColor={colors.gray2}
+          >
+            <CustomText fontSize={15} fontWeight={"500"}>
+              쿠폰등록
+            </CustomText>
+          </CustomButton>
+        </View>
+
         {couponData?.data.length ? (
           <FlatList
             data={couponData?.data}
@@ -60,7 +110,7 @@ export const CouponListBottomSheet = ({
                 onPress={handleSelectCoupon(item)}
                 style={[
                   styles.card,
-                  item.id === coupon?.id && {
+                  item.id === selectedCoupon?.id && {
                     borderWidth: 2,
                     borderColor: colors.point2,
                   },
@@ -68,22 +118,14 @@ export const CouponListBottomSheet = ({
               >
                 <Image
                   source={
-                    coupon?.id === item.id
+                    selectedCoupon?.id === item.id
                       ? checkedRadioIcon
                       : uncheckedRadioIcon
                   }
                   style={styles.radioButton}
                 />
 
-                <CustomText
-                  color={colors.point2}
-                  fontSize={20}
-                  fontWeight={"600"}
-                >
-                  {formatCouponValue(item.discountType, item.discountValue)}
-                </CustomText>
-
-                <CustomText fontSize={16} fontWeight={"600"}>
+                <CustomText fontSize={20} fontWeight={"600"}>
                   {item.name}
                 </CustomText>
 
@@ -112,6 +154,7 @@ export const CouponListBottomSheet = ({
       </View>
 
       <CustomButton
+        onPress={handleApply}
         width={"100%"}
         height={getResponsiveSize(53)}
         marginTop={20}
@@ -129,6 +172,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
+  },
+  codeArea: {
+    flexDirection: "row",
+    marginBottom: getResponsiveSize(24),
+    gap: getResponsiveSize(12),
+  },
+  codeInput: {
+    flex: 1,
+    fontSize: getFontSize(15),
+    fontWeight: "500",
+    paddingHorizontal: getResponsiveSize(12),
+    borderWidth: 1,
+    borderColor: colors.gray2,
+    borderRadius: 8,
   },
   card: {
     position: "relative",
