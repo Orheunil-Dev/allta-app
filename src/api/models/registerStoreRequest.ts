@@ -9,7 +9,6 @@ import type { RegisterStoreRequestMainImage } from './registerStoreRequestMainIm
 import type { RegisterStoreRequestDescrption } from './registerStoreRequestDescrption';
 import type { RegisterStoreRequestPolicy } from './registerStoreRequestPolicy';
 import type { RegisterStoreRequestBreakTime } from './registerStoreRequestBreakTime';
-import type { RegisterStoreRequestStoreGroupId } from './registerStoreRequestStoreGroupId';
 import type { RegisterStoreRequestPassPrice } from './registerStoreRequestPassPrice';
 import type { RegisterStoreRequestReceiptDiscount } from './registerStoreRequestReceiptDiscount';
 import type { RegisterStoreRequestBusinessHours } from './registerStoreRequestBusinessHours';
@@ -39,8 +38,11 @@ export interface RegisterStoreRequest {
   ceoName: string;
   /** 대표 전화번호 */
   ceoPhoneNumber: string;
-  /** 직영 ID */
-  storeGroupId?: RegisterStoreRequestStoreGroupId;
+  /**
+   * 직영 ID
+   * @nullable
+   */
+  storeGroupId?: string | null;
   /** 이용권 가격 */
   passPrice?: RegisterStoreRequestPassPrice;
   /** 주유 할인 가격 */

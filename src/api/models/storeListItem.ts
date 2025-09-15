@@ -10,7 +10,6 @@ import type { StoreListItemTags } from './storeListItemTags';
 import type { StoreListItemPassPrice } from './storeListItemPassPrice';
 import type { StoreListItemBusinessHours } from './storeListItemBusinessHours';
 import type { StoreListItemBreakTime } from './storeListItemBreakTime';
-import type { StoreListItemStoreGroupId } from './storeListItemStoreGroupId';
 import type { StoreListItemGroupStoresCount } from './storeListItemGroupStoresCount';
 
 export interface StoreListItem {
@@ -34,8 +33,11 @@ export interface StoreListItem {
   businessHours?: StoreListItemBusinessHours;
   /** 휴게 시간 */
   breakTime?: StoreListItemBreakTime;
-  /** 직영 ID */
-  storeGroupId?: StoreListItemStoreGroupId;
+  /**
+   * 직영 ID
+   * @nullable
+   */
+  storeGroupId?: string | null;
   /** 직영 매장 수 */
   groupStoresCount: StoreListItemGroupStoresCount;
 }

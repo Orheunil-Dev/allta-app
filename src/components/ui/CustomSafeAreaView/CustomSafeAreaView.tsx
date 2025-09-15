@@ -1,9 +1,5 @@
 import { ReactNode } from "react";
-import {
-  SafeAreaView,
-  Edges,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { SafeAreaView, Edges } from "react-native-safe-area-context";
 import { getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
 

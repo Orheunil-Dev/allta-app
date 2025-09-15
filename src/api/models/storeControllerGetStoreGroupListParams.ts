@@ -5,13 +5,13 @@
  * Allta의 REST API 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { Object } from './object';
 
 export type StoreControllerGetStoreGroupListParams = {
 /**
  * 직영 ID
+ * @nullable
  */
-storeGroupId?: Object;
+storeGroupId?: string | null;
 /**
  * 가져올 데이터 수
  */

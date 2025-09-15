@@ -16,8 +16,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  RegisterCarResponse,
-  RegisterCardRequest
+  RegisterCardRequest,
+  RegisterCardResponse
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -33,7 +33,7 @@ export const cardControllerRegisterCard = (
 ) => {
       
       
-      return customInstance<RegisterCarResponse>(
+      return customInstance<RegisterCardResponse>(
       {url: `/card`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: registerCardRequest, signal

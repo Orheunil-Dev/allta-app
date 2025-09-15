@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -20,6 +20,7 @@ import { useCardControllerRegisterCard } from "@/api/card/card";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/recoil";
+import * as Progress from "react-native-progress";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -174,13 +175,14 @@ export const CardRegister = () => {
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
-            <CustomText
+            <Progress.Circle size={30} indeterminate={true} color="#007AFF" />
+            {/* <CustomText
               color={isValid ? colors.white : colors.gray5}
               fontSize={16}
               fontWeight={"600"}
             >
               등록하기
-            </CustomText>
+            </CustomText> */}
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>

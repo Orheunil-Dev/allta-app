@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-/**
- * 직영 ID
- */
-export type StoreListItemStoreGroupId = string | null;
+export interface RegisterCardResponse {
+  /** 결과 여부 */
+  ok: boolean;
+}
