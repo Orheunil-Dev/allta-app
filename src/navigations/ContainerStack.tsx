@@ -15,6 +15,8 @@ import { StoreStack, StoreStackParamList } from "./StoreStack";
 import { AddressStack, AddressStackParamList } from "./AddressStack";
 import { PaymentStack, PaymentStackParamList } from "./PaymentStack";
 import { CarStack, CarStackParamList } from "./CarStack";
+import { CardStack, CardStackParamList } from "./CardStack";
+import { ErrorModal } from "@/components/modal/ErrorModal";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -24,6 +26,7 @@ export type ContainerStackParamList = {
   AddressStack: NavigatorScreenParams<AddressStackParamList>;
   PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
   CarStack: NavigatorScreenParams<CarStackParamList>;
+  CardStack: NavigatorScreenParams<CardStackParamList>;
   Notification: undefined;
 };
 
@@ -49,6 +52,8 @@ export const ContainerStack = ({
         visible={showLoginModal}
         setVisible={setShowLoginModal}
       />
+
+      <ErrorModal />
 
       <Stack.Navigator
         initialRouteName={isFirstLaunch ? `IntroStack` : `BottomTab`}
@@ -108,6 +113,13 @@ export const ContainerStack = ({
         <Stack.Screen
           name="CarStack"
           component={CarStack}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="CardStack"
+          component={CardStack}
           options={{
             headerShown: false,
           }}

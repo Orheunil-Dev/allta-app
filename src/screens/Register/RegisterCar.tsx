@@ -14,7 +14,7 @@ import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidi
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { colors } from "@/styles";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { blackDownArrow } from "@/assets/images";
+import { blackDownArrow, grayErrorIcon } from "@/assets/images";
 import {
   useCarControllerGetCarModels,
   useCarControllerGetCarVendors,
@@ -256,6 +256,23 @@ export const RegisterCar = () => {
               }
               placeholder="12가3456"
             />
+
+            <View style={styles.inquiry}>
+              <Image
+                source={grayErrorIcon}
+                style={{
+                  width: getResponsiveSize(20),
+                  height: getResponsiveSize(20),
+                }}
+              />
+
+              <View style={{ flex: 1, marginLeft: getResponsiveSize(8) }}>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  찾으시는 차량 모델이 목록에 없는 경우, 고객센터로 문의해
+                  주세요.
+                </CustomText>
+              </View>
+            </View>
           </ScrollView>
 
           <Pressable onPress={handleSkipRegist}>
@@ -313,5 +330,15 @@ const styles = StyleSheet.create({
   list: {
     width: "100%",
     paddingVertical: getResponsiveSize(12),
+  },
+  inquiry: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    width: "100%",
+    marginTop: getResponsiveSize(32),
+    paddingVertical: getResponsiveSize(16),
+    paddingHorizontal: getResponsiveSize(20),
+    backgroundColor: colors.gray1,
+    borderRadius: 12,
   },
 });

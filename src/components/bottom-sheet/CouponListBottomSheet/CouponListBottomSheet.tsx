@@ -130,7 +130,7 @@ export const CouponListBottomSheet = ({
                 </CustomText>
 
                 {item.expiredAt && (
-                  <CustomText marginTop={8} color={colors.gray7} fontSize={14}>
+                  <CustomText marginTop={4} color={colors.gray7} fontSize={14}>
                     {dayjs(item.expiredAt)
                       .tz("Asia/Seoul")
                       .format("YYYY. MM. DD 까지")}

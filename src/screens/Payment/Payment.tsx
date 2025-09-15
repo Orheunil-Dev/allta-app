@@ -7,6 +7,7 @@ import {
 } from "@/assets/images";
 import { PaymentTermsBottomSheet } from "@/components/bottom-sheet/PaymentTermsBottomSheet";
 import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
+import { ErrorModal } from "@/components/modal/ErrorModal";
 import { CardSelectButton } from "@/components/payment/CardSelectButton";
 import { CarSelectButton } from "@/components/payment/CarSelectButton";
 import { CouponSelectButton } from "@/components/payment/CouponSelectButton";

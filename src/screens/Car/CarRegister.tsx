@@ -211,12 +211,8 @@ export const CarRegister = () => {
             showsVerticalScrollIndicator={false}
             scrollEnabled={false}
           >
-            <CustomText fontSize={24} fontWeight={"600"}>
-              대표 차량을 등록해주세요.
-            </CustomText>
-
             {/* 제조사 선택 */}
-            <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
+            <CustomText fontSize={16} fontWeight={"500"}>
               제조사
             </CustomText>
             <Pressable

@@ -8,5 +8,6 @@
 
 /**
  * 쿠폰 사용기간
+ * @nullable
  */
-export type CreateCouponInfoRequestValidDays = number | null;
+export type CreateCouponInfoRequestValidDays = { [key: string]: unknown } | null;

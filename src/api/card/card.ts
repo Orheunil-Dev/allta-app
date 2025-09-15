@@ -16,7 +16,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  CreateCardDto
+  RegisterCarResponse,
+  RegisterCardRequest
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -26,27 +27,27 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 
-export const cardControllerCreate = (
-    createCardDto: CreateCardDto,
+export const cardControllerRegisterCard = (
+    registerCardRequest: RegisterCardRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<null>(
+      return customInstance<RegisterCarResponse>(
       {url: `/card`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: createCardDto, signal
+      data: registerCardRequest, signal
     },
       options);
     }
   
 
 
-export const getCardControllerCreateMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cardControllerCreate>>, TError,{data: CreateCardDto}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof cardControllerCreate>>, TError,{data: CreateCardDto}, TContext> => {
+export const getCardControllerRegisterCardMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cardControllerRegisterCard>>, TError,{data: RegisterCardRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof cardControllerRegisterCard>>, TError,{data: RegisterCardRequest}, TContext> => {
 
-const mutationKey = ['cardControllerCreate'];
+const mutationKey = ['cardControllerRegisterCard'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -56,10 +57,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof cardControllerCreate>>, {data: CreateCardDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof cardControllerRegisterCard>>, {data: RegisterCardRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  cardControllerCreate(data,requestOptions)
+          return  cardControllerRegisterCard(data,requestOptions)
         }
 
         
@@ -67,20 +68,20 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type CardControllerCreateMutationResult = NonNullable<Awaited<ReturnType<typeof cardControllerCreate>>>
-    export type CardControllerCreateMutationBody = CreateCardDto
-    export type CardControllerCreateMutationError = unknown
+    export type CardControllerRegisterCardMutationResult = NonNullable<Awaited<ReturnType<typeof cardControllerRegisterCard>>>
+    export type CardControllerRegisterCardMutationBody = RegisterCardRequest
+    export type CardControllerRegisterCardMutationError = unknown
 
-    export const useCardControllerCreate = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cardControllerCreate>>, TError,{data: CreateCardDto}, TContext>, request?: SecondParameter<typeof customInstance>}
+    export const useCardControllerRegisterCard = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cardControllerRegisterCard>>, TError,{data: RegisterCardRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof cardControllerCreate>>,
+        Awaited<ReturnType<typeof cardControllerRegisterCard>>,
         TError,
-        {data: CreateCardDto},
+        {data: RegisterCardRequest},
         TContext
       > => {
 
-      const mutationOptions = getCardControllerCreateMutationOptions(options);
+      const mutationOptions = getCardControllerRegisterCardMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }

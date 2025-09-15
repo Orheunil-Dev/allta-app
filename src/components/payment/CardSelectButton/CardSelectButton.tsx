@@ -21,9 +21,9 @@ export const CardSelectButton = () => {
   const handleRouteCardRegister = () => {
     cardListBottomSheetRef.current?.close();
 
-    // return containerNavigation.navigate("CarStack", {
-    //   screen: "CarRegister",
-    // });
+    return containerNavigation.navigate("CardStack", {
+      screen: "CardRegister",
+    });
   };
 
   return (

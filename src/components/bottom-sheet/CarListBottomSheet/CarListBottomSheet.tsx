@@ -26,9 +26,12 @@ export const CarListBottomSheet = ({
   onPressRegister,
 }: Props) => {
   const handleSelectCar = (value: Car) => () => {
-    if (car?.id === value.id) return;
-
-    return setCar(value);
+    if (car?.id === value.id) {
+      return;
+    } else {
+      setCar(value);
+      return ref?.current?.close();
+    }
   };
 
   const handleClose = () => {

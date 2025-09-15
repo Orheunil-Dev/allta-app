@@ -10,8 +10,8 @@ import type { CreateCouponInfoRequestServiceType } from './createCouponInfoReque
 import type { CreateCouponInfoRequestCode } from './createCouponInfoRequestCode';
 import type { CreateCouponInfoRequestStartDate } from './createCouponInfoRequestStartDate';
 import type { CreateCouponInfoRequestEndDate } from './createCouponInfoRequestEndDate';
-import type { CreateCouponInfoRequestValidDays } from './createCouponInfoRequestValidDays';
 import type { CreateCouponInfoRequestMaxQuantity } from './createCouponInfoRequestMaxQuantity';
+import type { CreateCouponInfoRequestValidDays } from './createCouponInfoRequestValidDays';
 import type { CreateCouponInfoRequestTargetStoreIds } from './createCouponInfoRequestTargetStoreIds';
 
 export interface CreateCouponInfoRequest {
@@ -33,10 +33,13 @@ export interface CreateCouponInfoRequest {
   startDate: CreateCouponInfoRequestStartDate;
   /** 쿠폰 등록 종료일 */
   endDate: CreateCouponInfoRequestEndDate;
-  /** 쿠폰 사용기간 */
-  validDays: CreateCouponInfoRequestValidDays;
   /** 최대 발급 수량 */
   maxQuantity: CreateCouponInfoRequestMaxQuantity;
+  /**
+   * 쿠폰 사용기간
+   * @nullable
+   */
+  validDays?: CreateCouponInfoRequestValidDays;
   /** 적용 매장 ID 목록 */
   targetStoreIds?: CreateCouponInfoRequestTargetStoreIds;
 }

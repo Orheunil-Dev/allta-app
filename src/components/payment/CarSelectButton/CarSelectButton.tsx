@@ -32,8 +32,8 @@ export const CarSelectButton = ({ car, setCar }: Props) => {
     },
   });
 
-  // 차량 등록
-  const handleRouteCarRegister = () => {
+  // 카드등록
+  const handleRouteCardRegister = () => {
     bottomSheetRef.current?.close();
 
     return containerNavigation.navigate("CarStack", {
@@ -58,7 +58,7 @@ export const CarSelectButton = ({ car, setCar }: Props) => {
         car={car}
         setCar={setCar}
         carData={carData}
-        onPressRegister={handleRouteCarRegister}
+        onPressRegister={handleRouteCardRegister}
       />
 
       <CustomText fontSize={18} fontWeight={"600"}>
@@ -74,7 +74,7 @@ export const CarSelectButton = ({ car, setCar }: Props) => {
       >
         <View style={styles.button}>
           <CustomText fontSize={15} fontWeight={"500"}>
-            {car ? car.carNumber : "차량을 등록해주세요"}
+            {car ? car.number : "차량을 등록해주세요"}
           </CustomText>
           <Image
             source={blackRightArrow}
