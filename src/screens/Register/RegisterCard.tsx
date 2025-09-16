@@ -23,6 +23,8 @@ import {
 } from "@/utils";
 import { colors } from "@/styles";
 import { useUserControllerRegisterExtraInfo } from "@/api/user/user";
+import { useSetAtom } from "jotai";
+import { errorModalAtom } from "@/recoil";
 
 type RegisterCardRouteProp = RouteProp<LoginStackParamList, "RegisterCard">;
 
@@ -48,6 +50,8 @@ export const RegisterCard = () => {
 
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
+
+  const setErrorModal = useSetAtom(errorModalAtom);
 
   const [registerForm, setRegisterForm] = useState({
     cardNumber: "",
@@ -124,8 +128,10 @@ export const RegisterCard = () => {
           );
         },
         onError: (error: any) => {
-          console.log(error.message ?? error);
-          Alert.alert(error.message ?? error);
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "추가정보 등록에 실패했습니다.",
+          });
         },
       }
     );

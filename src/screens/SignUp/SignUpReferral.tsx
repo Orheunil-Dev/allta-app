@@ -24,6 +24,8 @@ import { SignUpTextInput } from "@/components/ui/TextInput";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { colors } from "@/styles";
+import { useSetAtom } from "jotai";
+import { errorModalAtom } from "@/recoil";
 
 type SignUpReferralRouteProp = RouteProp<LoginStackParamList, "SignUpReferral">;
 
@@ -34,6 +36,8 @@ export const SignUpReferral = () => {
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  const setErrorModal = useSetAtom(errorModalAtom);
 
   const [referralCode, setReferralCode] = useState("");
   const [isValid, setIsValid] = useState(false);
@@ -108,14 +112,20 @@ export const SignUpReferral = () => {
                   })
                 );
               },
-              onError: (err) => {
-                console.log(err);
+              onError: (error: any) => {
+                setErrorModal({
+                  visible: true,
+                  message: error?.message ?? "로그인에 실패했습니다.",
+                });
               },
             }
           );
         },
-        onError: (err) => {
-          console.log(err);
+        onError: (error: any) => {
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "회원가입에 실패했습니다.",
+          });
         },
       }
     );

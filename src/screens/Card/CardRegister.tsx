@@ -95,7 +95,7 @@ export const CardRegister = () => {
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "알 수 없는 오류가 발생했습니다.",
+            message: error?.message ?? "카드 등록에 실패했습니다.",
           });
         },
       }
