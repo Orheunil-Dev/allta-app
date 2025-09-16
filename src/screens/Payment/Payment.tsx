@@ -7,7 +7,6 @@ import {
 } from "@/assets/images";
 import { PaymentTermsBottomSheet } from "@/components/bottom-sheet/PaymentTermsBottomSheet";
 import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
-import { ErrorModal } from "@/components/modal/ErrorModal";
 import { CardSelectButton } from "@/components/payment/CardSelectButton";
 import { CarSelectButton } from "@/components/payment/CarSelectButton";
 import { CouponSelectButton } from "@/components/payment/CouponSelectButton";
@@ -16,7 +15,7 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { PaymentStackParamList } from "@/navigations";
 import { colors } from "@/styles";
-import { Car, CarType, Coupon } from "@/types";
+import { Car, Card, CarType, Coupon } from "@/types";
 import { formatPurchaseType, getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
@@ -36,7 +35,7 @@ export const Payment = () => {
   const [price, setPrice] = useState<number>(0);
   const [coupon, setCoupon] = useState<Coupon | null>(null);
   const [car, setCar] = useState<Car | null>(null);
-  const [card, setCard] = useState(null);
+  const [card, setCard] = useState<Card | null>(null);
   const [agree, setAgree] = useState<boolean>(false);
 
   const paymentNavigation =
@@ -128,7 +127,7 @@ export const Payment = () => {
         <CarSelectButton car={car} setCar={setCar} />
 
         {/* 카드 선택 */}
-        <CardSelectButton />
+        <CardSelectButton card={card} setCard={setCard} />
 
         <CustomText marginTop={40} fontSize={18} fontWeight={"600"}>
           결제 금액
@@ -272,7 +271,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: getResponsiveSize(40),
-    marginBottom: getResponsiveSize(66),
+    marginBottom: getResponsiveSize(20),
     paddingTop: getResponsiveSize(12),
     borderTopWidth: getResponsiveSize(6),
     borderTopColor: colors.gray1,

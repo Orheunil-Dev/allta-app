@@ -5,11 +5,11 @@
  * Allta API 서버 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { StoreDetailItem } from './storeDetailItem';
+import type { Card } from './card';
 
-export interface GetStoreDetailResponse {
+export interface GetCardListResponse {
   /** 결과 여부 */
   ok: boolean;
-  /** 매장 상세 정보 */
-  store: StoreDetailItem;
+  /** 차량 목록 */
+  data: Card[];
 }

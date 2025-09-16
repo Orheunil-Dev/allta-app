@@ -7,6 +7,13 @@ export type Car = {
   isMain: boolean;
 };
 
+export type Card = {
+  id: string;
+  cardCompany: string;
+  cardDisplayNumber: string;
+  isMain: boolean;
+};
+
 export type Coupon = {
   id: string;
   name: string;

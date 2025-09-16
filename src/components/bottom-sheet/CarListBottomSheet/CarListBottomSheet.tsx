@@ -25,6 +25,7 @@ export const CarListBottomSheet = ({
   carData,
   onPressRegister,
 }: Props) => {
+  // 차량 선택
   const handleSelectCar = (value: Car) => () => {
     if (car?.id === value.id) {
       return;

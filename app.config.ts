@@ -84,10 +84,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "expo-build-properties",
       {
         android: {
-          compileSdkVersion: 35,
-          targetSdkVersion: 35,
+          compileSdkVersion: 36,
+          targetSdkVersion: 36,
           minSdkVersion: 25,
-          buildToolsVersion: "35.0.0",
+          buildToolsVersion: "36.0.0",
           kotlinVersion: "2.0.21",
           gradlePluginVersion: "8.4.0",
           extraMavenRepos: [

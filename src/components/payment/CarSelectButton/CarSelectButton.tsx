@@ -42,11 +42,13 @@ export const CarSelectButton = ({ car, setCar }: Props) => {
   };
 
   useEffect(() => {
-    if (carData?.data) {
+    if (carData?.data && carData.data.length > 0) {
       const mainCar = carData.data.find((car) => car.isMain);
 
       if (mainCar) {
         setCar(mainCar);
+      } else {
+        setCar(carData.data[0]);
       }
     }
   }, [carData?.data]);

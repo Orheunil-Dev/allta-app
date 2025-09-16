@@ -20,7 +20,7 @@ import { useCardControllerRegisterCard } from "@/api/card/card";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/recoil";
-import * as Progress from "react-native-progress";
+import { Spinner } from "@/components/ui/Spinner";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -58,7 +58,7 @@ export const CardRegister = () => {
   const {
     mutate: registerCard,
     isError: registerCardError,
-    isPending: regiserCardLoading,
+    isPending: registerCardLoading,
   } = useCardControllerRegisterCard({});
 
   const handleChangeRegisterForm = (
@@ -171,18 +171,21 @@ export const CardRegister = () => {
 
           <CustomButton
             onPress={handleSubmit}
-            isDisabled={!isValid}
+            isDisabled={!isValid || registerCardLoading}
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
-            <Progress.Circle size={30} indeterminate={true} color="#007AFF" />
-            {/* <CustomText
-              color={isValid ? colors.white : colors.gray5}
-              fontSize={16}
-              fontWeight={"600"}
-            >
-              등록하기
-            </CustomText> */}
+            {registerCardLoading ? (
+              <Spinner />
+            ) : (
+              <CustomText
+                color={isValid ? colors.white : colors.gray5}
+                fontSize={16}
+                fontWeight={"600"}
+              >
+                등록하기
+              </CustomText>
+            )}
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>

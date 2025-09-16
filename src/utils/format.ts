@@ -27,18 +27,6 @@ export const formatTime = (value: number) => {
   return `0${min}:${sec < 10 ? "0" + sec : sec}`;
 };
 
-// 카드 번호 포맷팅
-export const formatCardNumber = (value: string) => {
-  const digits = value.replace(/\D/g, "").slice(0, 16);
-
-  const part1 = digits.slice(0, 4);
-  const part2 = digits.slice(4, 8);
-  const part3 = digits.slice(8, 12);
-  const part4 = digits.slice(12, 16);
-
-  return [part1, part2, part3, part4].filter(Boolean).join("-");
-};
-
 // 유효기간 포맷팅
 export const formatCardExpiration = (value: string) => {
   const digits = value.replace(/\D/g, "");
@@ -133,4 +121,42 @@ export const formatCouponValue = (type: string, value: number) => {
     default:
       return `${value}원`;
   }
+};
+
+// 카드번호 포맷팅
+export const formatCardNumber = (value: string) => {
+  return `****-****-****-${value}`;
+};
+
+// 카드사 포맷팅
+export const formatCardCompany = (value: string) => {
+  const cardCompanyMap: Record<string, string> = {
+    "01": "BC",
+    "02": "신한",
+    "03": "삼성",
+    "04": "현대",
+    "05": "롯데",
+    "06": "JCB",
+    "07": "KB국민",
+    "08": "하나",
+    "09": "해외",
+    "10": "우리",
+    "11": "수협",
+    "12": "농협",
+    "13": "시티",
+    "14": "우리",
+    "15": "시티",
+    "17": "신협",
+    "18": "은련",
+    "19": "롯데",
+    "22": "제주",
+    "23": "광주",
+    "24": "전북",
+    "25": "조흥",
+    "26": "주택",
+    "27": "하나",
+    "30": "시티",
+  };
+
+  return cardCompanyMap[value] ?? value;
 };
