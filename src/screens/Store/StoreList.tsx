@@ -1,10 +1,5 @@
 import { StoreStackParamList } from "@/navigations";
-import {
-  RouteProp,
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import * as Location from "expo-location";

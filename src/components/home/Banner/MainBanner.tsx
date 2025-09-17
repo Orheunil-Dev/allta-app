@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     bottom: getResponsiveSize(10),
     width: "auto",
     height: "auto",
-    paddingVertical: getResponsiveSize(4),
+    paddingVertical: getResponsiveSize(2),
     paddingHorizontal: getResponsiveSize(8),
     backgroundColor: "rgba(38, 38, 39, 0.7)",
     borderRadius: 40,

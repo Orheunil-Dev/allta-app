@@ -1,19 +1,24 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { CustomText } from "../CustomText";
-import { homeDistanceIcon } from "@/assets/images";
+import { defaultStoreImage, homeDistanceIcon } from "@/assets/images";
 import { colors } from "@/styles";
 
 interface Props {
   name: string;
-  distance: number;
+  distance: string;
   address: string;
-  image: string;
+  mainImage?: string | null;
 }
 
-export const RecommendCard = ({ name, distance, address, image }: Props) => {
+export const RecommendCard = ({
+  name,
+  distance,
+  address,
+  mainImage,
+}: Props) => {
   return (
     <Pressable style={styles.container}>
-      <Image src={image} style={styles.storeImage} />
+      <Image src={mainImage ?? defaultStoreImage} style={styles.storeImage} />
 
       <View>
         <CustomText fontSize={16} fontWeight={"600"}>

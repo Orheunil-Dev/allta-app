@@ -19,8 +19,9 @@ lat?: number | null;
 lng?: number | null;
 /**
  * 서비스 종류
+ * @nullable
  */
-serviceType: string;
+serviceType?: string | null;
 /**
  * 매장 태그 목록
  * @nullable

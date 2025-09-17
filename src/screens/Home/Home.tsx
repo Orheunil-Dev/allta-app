@@ -7,21 +7,13 @@ import Animated, {
 } from "react-native-reanimated";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import {
-  BottomTabParamList,
-  ContainerStackParamList,
-  StoreStackParamList,
-} from "@/navigations";
+import { ContainerStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
-import { RecommendCard } from "@/components/ui/Card";
-import { myStoreData } from "@/mock";
 import {
   autoWashIcon,
   handsWashIcon,
   homeFooterArrow,
-  homeMoreArrow,
-  homeQrScan,
   qrIcon,
   receiptIcon,
 } from "@/assets/images";
@@ -31,16 +23,11 @@ import { MainBanner, SubBanner } from "@/components/home/Banner";
 import { HomeHeader } from "@/components/home/HomeHeader";
 import { useNotificationControllerGetUnreadNotificationsCount } from "@/api/notification/notification";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StoreRecommend } from "@/components/home/StoreRecommend";
 
 export const Home = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
-
-  const storeNavigation =
-    useNavigation<NativeStackNavigationProp<StoreStackParamList>>();
-
-  const bottomTabNavigation =
-    useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
 
@@ -52,8 +39,6 @@ export const Home = () => {
         gcTime: 0,
       },
     });
-
-  // 추천 매장 목록 조회
 
   // 알림 버튼 터치
   const handlePressAlarm = () => {
@@ -238,39 +223,7 @@ export const Home = () => {
               </Pressable>
             </View>
 
-            {/* 추천 매장 */}
-            <View style={styles.myStore}>
-              <CustomText color={colors.black} fontSize={18} fontWeight={"600"}>
-                내 이용 매장
-              </CustomText>
-
-              <Pressable
-                onPress={() => bottomTabNavigation.navigate("MyStoreStack")}
-                style={styles.moreStore}
-              >
-                <CustomText
-                  color={colors.gray5}
-                  fontSize={12}
-                  fontWeight={"600"}
-                >
-                  더보기
-                </CustomText>
-
-                <Image source={homeMoreArrow} style={styles.moreIcon} />
-              </Pressable>
-            </View>
-
-            <View style={styles.myStoreList}>
-              {myStoreData.map((value, index) => (
-                <RecommendCard
-                  key={index}
-                  name={value.name}
-                  address={value.address}
-                  image={value.image}
-                  distance={5.2}
-                />
-              ))}
-            </View>
+            <StoreRecommend />
           </View>
 
           <SubBanner />

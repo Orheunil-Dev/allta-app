@@ -19,7 +19,11 @@ import { PaymentStackParamList } from "@/navigations";
 import { errorModalAtom } from "@/recoil";
 import { colors } from "@/styles";
 import { Car, Card, CarType, Coupon } from "@/types";
-import { formatPurchaseType, getResponsiveSize } from "@/utils";
+import {
+  formatPurchaseType,
+  formatServiceType,
+  getResponsiveSize,
+} from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -147,6 +151,7 @@ export const Payment = () => {
 
           <View>
             <CustomText fontSize={16} fontWeight={"600"}>
+              {formatServiceType(router.params.serviceType)}{" "}
               {formatPurchaseType(router.params.passType)}
             </CustomText>
             <CustomText fontSize={14}>{router.params.storeName}</CustomText>
