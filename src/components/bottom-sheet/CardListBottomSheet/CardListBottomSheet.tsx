@@ -1,4 +1,3 @@
-import { useCarControllerGetCarList } from "@/api/car/car";
 import { GetCardListResponse } from "@/api/models";
 import { checkedRadioIcon, uncheckedRadioIcon } from "@/assets/images";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
@@ -8,11 +7,11 @@ import { colors } from "@/styles";
 import { Card } from "@/types";
 import {
   formatCardCompany,
-  formatCardNumber,
+  formatCardDisplayNumber,
   getResponsiveSize,
 } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 interface Props {
@@ -81,7 +80,7 @@ export const CardListBottomSheet = ({
                 </CustomText>
                 <View style={{ flexDirection: "row" }}>
                   <CustomText color={colors.gray7} fontSize={16}>
-                    {formatCardNumber(item.cardDisplayNumber)}
+                    {formatCardDisplayNumber(item.cardDisplayNumber)}
                   </CustomText>
                 </View>
               </Pressable>

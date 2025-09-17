@@ -1,3 +1,4 @@
+import { usePurchaseControllerPurchasePass } from "@/api/purchase/purchase";
 import {
   blackRightArrow,
   checkAllButton,
@@ -13,13 +14,16 @@ import { CouponSelectButton } from "@/components/payment/CouponSelectButton";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
+import { Spinner } from "@/components/ui/Spinner";
 import { PaymentStackParamList } from "@/navigations";
+import { errorModalAtom } from "@/recoil";
 import { colors } from "@/styles";
 import { Car, Card, CarType, Coupon } from "@/types";
 import { formatPurchaseType, getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useSetAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -29,7 +33,12 @@ type PaymentRouteProp = RouteProp<PaymentStackParamList, "Payment">;
 export const Payment = () => {
   const router = useRoute<PaymentRouteProp>();
 
+  const paymentNavigation =
+    useNavigation<NativeStackNavigationProp<PaymentStackParamList>>();
+
   const termsBottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const setErrorModal = useSetAtom(errorModalAtom);
 
   const [paymentForm, setPaymentForm] = useState({});
   const [price, setPrice] = useState<number>(0);
@@ -38,11 +47,61 @@ export const Payment = () => {
   const [card, setCard] = useState<Card | null>(null);
   const [agree, setAgree] = useState<boolean>(false);
 
-  const paymentNavigation =
-    useNavigation<NativeStackNavigationProp<PaymentStackParamList>>();
+  const {
+    mutate: purchasePass,
+    isPending: purchasePassLoading,
+    isError: purchasePassError,
+  } = usePurchaseControllerPurchasePass();
 
+  // 이용권 결제
   const handlePayment = () => {
-    return paymentNavigation.navigate("PaymentComplete");
+    if (!car) {
+      return setErrorModal({
+        visible: true,
+        message: "이용할 차량을 선택해주세요.",
+      });
+    }
+
+    if (!card) {
+      return setErrorModal({
+        visible: true,
+        message: "결제할 카드를 선택해주세요.",
+      });
+    }
+
+    purchasePass(
+      {
+        data: {
+          productType: router.params.passType,
+          serviceType: router.params.serviceType,
+          storeId: router.params.storeId,
+          couponId: coupon?.id,
+          carBrand: car.vendor,
+          carType: car.type,
+          carModel: car.model,
+          carNumber: car.number,
+          cardId: card.id,
+        },
+      },
+      {
+        onSuccess: (res) => {
+          return paymentNavigation.navigate("PaymentComplete", {
+            serviceType: res.data.serviceType,
+            productType: res.data.productType,
+            storeName: res.data.storeName,
+            carNumber: res.data.carNumber,
+            approvedAt: res.data.approvedAt,
+            amount: res.data.amount,
+          });
+        },
+        onError: (error: any) => {
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "결제 요청 중 오류가 발생했습니다.",
+          });
+        },
+      }
+    );
   };
 
   const getDiscountAmount = (type?: string, value?: number) => {
@@ -207,19 +266,23 @@ export const Payment = () => {
       </ScrollView>
       <BottomButtonArea>
         <CustomButton
-          isDisabled={isValid}
+          isDisabled={!isValid || purchasePassLoading}
           onPress={handlePayment}
           width={"100%"}
           height={getResponsiveSize(53)}
           backgroundColor={agree ? colors.point2 : colors.gray2}
         >
-          <CustomText
-            color={agree ? colors.white : colors.gray5}
-            fontSize={18}
-            fontWeight={"600"}
-          >
-            결제하기
-          </CustomText>
+          {purchasePassLoading ? (
+            <Spinner />
+          ) : (
+            <CustomText
+              color={agree ? colors.white : colors.gray5}
+              fontSize={18}
+              fontWeight={"600"}
+            >
+              결제하기
+            </CustomText>
+          )}
         </CustomButton>
       </BottomButtonArea>
     </CustomSafeAreaView>

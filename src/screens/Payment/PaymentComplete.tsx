@@ -2,14 +2,23 @@ import { completeIcon } from "@/assets/images";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
-import { ContainerStackParamList } from "@/navigations";
+import { ContainerStackParamList, PaymentStackParamList } from "@/navigations";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StyleSheet, View } from "react-native";
 
+type PaymentRouteProp = RouteProp<PaymentStackParamList, "PaymentComplete">;
+
 export const PaymentComplete = () => {
+  const router = useRoute<PaymentRouteProp>();
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -80,42 +89,44 @@ export const PaymentComplete = () => {
             <CustomText color={colors.gray5} fontSize={16}>
               세차 서비스
             </CustomText>
-            <CustomText fontSize={16}>자동세차</CustomText>
+            <CustomText fontSize={16}>{router.params.serviceType}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
               이용권
             </CustomText>
-            <CustomText fontSize={16}>프리미엄</CustomText>
+            <CustomText fontSize={16}>{router.params.productType}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
               매장
             </CustomText>
-            <CustomText fontSize={16}>서하남 배다리 주유소</CustomText>
+            <CustomText fontSize={16}>{router.params.storeName}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
               차량번호
             </CustomText>
-            <CustomText fontSize={16}>12가3456</CustomText>
+            <CustomText fontSize={16}>{router.params.carNumber}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
               결제일시
             </CustomText>
-            <CustomText fontSize={16}>2025. 07. 25 12:00:24</CustomText>
+            <CustomText fontSize={16}>{router.params.approvedAt}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
               결제금액
             </CustomText>
-            <CustomText fontSize={16}>28,000원</CustomText>
+            <CustomText fontSize={16}>
+              {router.params.amount.toLocaleString()}원
+            </CustomText>
           </View>
         </View>
       </View>

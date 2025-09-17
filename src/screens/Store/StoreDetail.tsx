@@ -375,10 +375,9 @@ export const StoreDetail = () => {
                 >
                   {
                     getStoreBusinessHours(
-                      storeData.store.businessHours as Record<
-                        string,
-                        { open: string; close: string }
-                      >,
+                      JSON.parse(
+                        storeData.store.businessHours as string
+                      ) as Record<string, { open: string; close: string }>,
                       storeData.store.breakTime,
                       storeData.store.holidays
                     ).status
@@ -400,10 +399,9 @@ export const StoreDetail = () => {
                     >
                       {
                         getStoreBusinessHours(
-                          storeData.store.businessHours as Record<
-                            string,
-                            { open: string; close: string }
-                          >,
+                          JSON.parse(
+                            storeData.store.businessHours as string
+                          ) as Record<string, { open: string; close: string }>,
                           storeData.store.breakTime,
                           storeData.store.holidays
                         ).hours

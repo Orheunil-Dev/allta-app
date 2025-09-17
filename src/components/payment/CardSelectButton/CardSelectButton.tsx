@@ -4,7 +4,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { CustomButton } from "@/components/ui/CustomButton";
 import {
   formatCardCompany,
-  formatCardNumber,
+  formatCardDisplayNumber,
   getResponsiveSize,
 } from "@/utils";
 import { colors } from "@/styles";
@@ -36,8 +36,6 @@ export const CardSelectButton = ({ card, setCard }: Props) => {
         gcTime: 0,
       },
     });
-
-  console.log(cardData);
 
   // 카드 등록
   const handleRouteCardRegister = () => {
@@ -84,9 +82,9 @@ export const CardSelectButton = ({ card, setCard }: Props) => {
         <View style={styles.button}>
           <CustomText fontSize={15} fontWeight={"500"}>
             {card
-              ? `${formatCardCompany(card.cardCompany)} ${formatCardNumber(
-                  card.cardDisplayNumber
-                )}`
+              ? `${formatCardCompany(
+                  card.cardCompany
+                )} ${formatCardDisplayNumber(card.cardDisplayNumber)}`
               : "카드를 등록해주세요"}
           </CustomText>
           <Image

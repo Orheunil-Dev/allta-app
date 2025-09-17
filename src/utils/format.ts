@@ -19,6 +19,18 @@ export const formatPhoneNumber = (value: string) => {
   }
 };
 
+// 카드 번호 포맷팅
+export const formatCardNumber = (value: string) => {
+  const digits = value.replace(/\D/g, "").slice(0, 16);
+
+  const part1 = digits.slice(0, 4);
+  const part2 = digits.slice(4, 8);
+  const part3 = digits.slice(8, 12);
+  const part4 = digits.slice(12, 16);
+
+  return [part1, part2, part3, part4].filter(Boolean).join("-");
+};
+
 // 시간 포맷팅 (ex. 03:00)
 export const formatTime = (value: number) => {
   const min = Math.floor(value / 60);
@@ -124,7 +136,7 @@ export const formatCouponValue = (type: string, value: number) => {
 };
 
 // 카드번호 포맷팅
-export const formatCardNumber = (value: string) => {
+export const formatCardDisplayNumber = (value: string) => {
   return `****-****-****-${value}`;
 };
 

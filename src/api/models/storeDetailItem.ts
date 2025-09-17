@@ -53,7 +53,7 @@ export interface StoreDetailItem {
    * 스탠다드 구독권 최대 사용 횟수
    * @nullable
    */
-  standardMaxUsage?: string | null;
+  standardMaxUsage?: number | null;
   /**
    * 영업 시간
    * @nullable

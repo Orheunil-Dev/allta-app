@@ -12,7 +12,14 @@ export type PaymentStackParamList = {
     passType: PassType;
     price: Record<CarType, number>;
   };
-  PaymentComplete: undefined;
+  PaymentComplete: {
+    serviceType: string;
+    productType: string;
+    storeName: string;
+    carNumber: string;
+    approvedAt: string;
+    amount: number;
+  };
 };
 
 const Stack = createNativeStackNavigator();
