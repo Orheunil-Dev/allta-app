@@ -1,10 +1,11 @@
+import dayjs from "dayjs";
 import { completeIcon } from "@/assets/images";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { ContainerStackParamList, PaymentStackParamList } from "@/navigations";
 import { colors } from "@/styles";
-import { getResponsiveSize } from "@/utils";
+import { formatPassType, formatServiceType, getResponsiveSize } from "@/utils";
 import {
   CommonActions,
   RouteProp,
@@ -53,9 +54,6 @@ export const PaymentComplete = () => {
         <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
           이용권 결제가 완료되었습니다.
         </CustomText>
-        <CustomText color={colors.gray7} fontSize={16}>
-          서하남 배다리 주유소에 세차를 이용할 수 있어요.
-        </CustomText>
 
         <View style={styles.buttonArea}>
           <CustomButton
@@ -89,14 +87,18 @@ export const PaymentComplete = () => {
             <CustomText color={colors.gray5} fontSize={16}>
               세차 서비스
             </CustomText>
-            <CustomText fontSize={16}>{router.params.serviceType}</CustomText>
+            <CustomText fontSize={16}>
+              {formatServiceType(router.params.serviceType)}
+            </CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
               이용권
             </CustomText>
-            <CustomText fontSize={16}>{router.params.productType}</CustomText>
+            <CustomText fontSize={16}>
+              {formatPassType(router.params.productType)}
+            </CustomText>
           </View>
 
           <View style={styles.row}>
@@ -117,7 +119,9 @@ export const PaymentComplete = () => {
             <CustomText color={colors.gray5} fontSize={16}>
               결제일시
             </CustomText>
-            <CustomText fontSize={16}>{router.params.approvedAt}</CustomText>
+            <CustomText fontSize={16}>
+              {dayjs(router.params.approvedAt).format("YYYY. MM. DD HH:mm")}
+            </CustomText>
           </View>
 
           <View style={styles.row}>

@@ -34,7 +34,12 @@ export const CustomHeader = ({ title, showBackButton }: CustomHeaderProps) => {
         {title}
       </CustomText>
 
-      <View style={styles.side} />
+      <View
+        style={{
+          width: showBackButton ? getResponsiveSize(24) : 0,
+          height: getResponsiveSize(24),
+        }}
+      />
     </View>
   );
 };
@@ -52,5 +57,5 @@ const styles = StyleSheet.create({
     width: getResponsiveSize(24),
     height: getResponsiveSize(24),
   },
-  side: { width: getResponsiveSize(24), height: getResponsiveSize(24) },
+  side: { height: getResponsiveSize(24) },
 });

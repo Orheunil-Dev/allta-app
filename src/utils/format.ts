@@ -75,9 +75,23 @@ export const formatNotificationTime = (value: string) => {
   }
 };
 
+// 서비스 종류
+export const formatServiceType = (text: string): string | null => {
+  switch (text) {
+    case "AUTO":
+      return "자동세차";
+
+    case "HANDS":
+      return "핸즈클리닝";
+
+    default:
+      return text;
+  }
+};
+
 // 이용권 종류
-export const formatPassType = (value: PassType): string | null => {
-  switch (value) {
+export const formatPassType = (text: string): string | null => {
+  switch (text) {
     case "PREMIUM":
       return "프리미엄";
 
@@ -88,13 +102,13 @@ export const formatPassType = (value: PassType): string | null => {
       return "일회권";
 
     default:
-      return null;
+      return text;
   }
 };
 
 // 이용권 종류 (결제)
-export const formatPurchaseType = (value: PassType): string | null => {
-  switch (value) {
+export const formatPurchaseType = (text: string): string | null => {
+  switch (text) {
     case "PREMIUM":
       return "프리미엄 구독권";
 
@@ -105,7 +119,7 @@ export const formatPurchaseType = (value: PassType): string | null => {
       return "일회권";
 
     default:
-      return null;
+      return text;
   }
 };
 

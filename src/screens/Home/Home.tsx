@@ -106,6 +106,7 @@ export const Home = () => {
         unreadCount={unreadNotificationsData?.count}
         onPressAlarm={handlePressAlarm}
       />
+
       {/* 팝업 바텀시트 */}
       <Popup />
 
@@ -157,7 +158,7 @@ export const Home = () => {
                 onPress={() =>
                   containerNavigation.navigate("StoreStack", {
                     screen: "StoreList",
-                    params: { serviceType: "AUTO" },
+                    params: { serviceType: "HANDS" },
                   })
                 }
                 style={styles.stores}
@@ -236,24 +237,6 @@ export const Home = () => {
                 <Image source={qrIcon} style={styles.buttonIcon} />
               </Pressable>
             </View>
-
-            {/* <View style={styles.mainArea}>
-              <Pressable
-                onPress={() => bottomTabNavigation.navigate("QrStack")}
-                style={styles.qrScan}
-              >
-                <Image source={homeQrScan} style={styles.qrScanIcon} />
-
-                <CustomText
-                  color={colors.black}
-                  fontSize={16}
-                  fontWeight={"500"}
-                  marginTop={5}
-                >
-                  QR 스캔
-                </CustomText>
-              </Pressable>
-            </View> */}
 
             {/* 추천 매장 */}
             <View style={styles.myStore}>

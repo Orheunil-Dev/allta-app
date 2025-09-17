@@ -8,11 +8,11 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 import { Coupon } from "@/types";
-import { formatCouponValue, getFontSize, getResponsiveSize } from "@/utils";
+import { getFontSize, getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Image, Pressable, StyleSheet, View, TextInput } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
