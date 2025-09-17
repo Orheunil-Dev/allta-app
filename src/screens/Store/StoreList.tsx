@@ -6,47 +6,24 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  FlatList,
-  Image,
-  ImageBackground,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import * as Location from "expo-location";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { formatEllipsis, getResponsiveSize } from "@/utils";
+import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
-import { useDistanceCalculator } from "@/hooks";
-import { defaultStoreImage, locationIcon } from "@/assets/images";
 import { StoreFilter } from "@/components/store/StoreFilter";
 import { ServiceType } from "@/types";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useStoreControllerGetStoreList } from "@/api/store/store";
 import { GetStoreListResponse } from "@/api/models";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AddressSelectBottomSheet } from "@/components/bottom-sheet/AddressSelectBottomSheet";
+import { StoreCard } from "@/components/ui/Card";
 
 type StoreRouteProp = RouteProp<StoreStackParamList, "StoreList">;
 
-type PassPrice = {
-  TICKET?: Record<string, number>;
-  STANDARD?: Record<string, number>;
-  PREMIUM?: Record<string, number>;
-};
-
-type StoreServiceType = {
-  AUTO?: PassPrice;
-  HANDS?: PassPrice;
-};
-
 export const StoreList = () => {
   const route = useRoute<StoreRouteProp>();
-
-  const storeNavigation =
-    useNavigation<NativeStackNavigationProp<StoreStackParamList>>();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
@@ -89,8 +66,6 @@ export const StoreList = () => {
     }
   );
 
-  const { getDistance } = useDistanceCalculator();
-
   const handleLoadMore = () => {
     if (storesData?.meta?.hasNextPage) {
       setSkip(skip + 20);
@@ -102,28 +77,6 @@ export const StoreList = () => {
   };
   const handleCloseAddressModal = () => {
     bottomSheetRef?.current?.close();
-  };
-
-  // 이용권 가격 표시
-  const getLowestPrice = (priceObject: StoreServiceType): number | null => {
-    const service = priceObject[serviceType];
-    if (!service) return null;
-
-    let minPrice: number | null = null;
-
-    const prices = Object.values(service);
-
-    prices.forEach((carType) => {
-      if (!carType) return;
-
-      Object.values(carType).forEach((price) => {
-        if (minPrice === null || price < minPrice) {
-          minPrice = price;
-        }
-      });
-    });
-
-    return minPrice;
   };
 
   // 필터 변경 시 데이터 리페칭
@@ -204,110 +157,12 @@ export const StoreList = () => {
           onEndReachedThreshold={0.7}
           contentContainerStyle={styles.container}
           renderItem={({ item, index }) => (
-            <Pressable
-              onPress={() => {
-                storeNavigation.navigate("StoreDetail", {
-                  serviceType,
-                  storeId: item.id,
-                  ...(item.storeGroupId && { storeGroupId: item.storeGroupId }),
-                });
-              }}
-              style={styles.card}
-            >
-              <View style={styles.top}>
-                <ImageBackground
-                  source={
-                    item?.mainImage
-                      ? { uri: item.mainImage }
-                      : defaultStoreImage
-                  }
-                  style={styles.storeImage}
-                ></ImageBackground>
-
-                <View>
-                  <CustomText fontSize={18} fontWeight={"600"}>
-                    {formatEllipsis(item.name, 14)}
-                  </CustomText>
-
-                  <View style={styles.address}>
-                    <Image
-                      source={locationIcon}
-                      style={{
-                        width: getResponsiveSize(16),
-                        height: getResponsiveSize(16),
-                        marginRight: getResponsiveSize(2),
-                      }}
-                    />
-
-                    <CustomText color={colors.gray7} fontSize={14}>
-                      {getDistance(
-                        coordinate?.lat,
-                        coordinate?.lng,
-                        item.lat,
-                        item.lng
-                      )}
-                      km
-                    </CustomText>
-
-                    <CustomText
-                      marginLeft={4}
-                      color={colors.gray7}
-                      fontSize={14}
-                    >
-                      {formatEllipsis(item.address, 14)}
-                    </CustomText>
-                  </View>
-
-                  <View></View>
-                </View>
-              </View>
-
-              <View style={styles.tagArea}>
-                {item.tags &&
-                  item.tags
-                    .trim()
-                    .split(",")
-                    .map((value, index) => (
-                      <View style={styles.tag} key={index}>
-                        <CustomText
-                          color={colors.back1}
-                          fontSize={10}
-                          fontWeight={"500"}
-                        >
-                          {value.trim()}
-                        </CustomText>
-                      </View>
-                    ))}
-              </View>
-
-              <View style={styles.bottom}>
-                <View>
-                  {(item.groupStoresCount ?? 0) > 1 && (
-                    <View style={styles.groupCount}>
-                      <CustomText
-                        color={colors.gray7}
-                        fontSize={12}
-                        fontWeight={"500"}
-                      >
-                        매장 {item.groupStoresCount! - 1}곳 포함
-                      </CustomText>
-                    </View>
-                  )}
-                </View>
-
-                {item.passPrice && (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <CustomText color={colors.gray7} fontSize={14}>
-                      이용권 최저가
-                    </CustomText>
-
-                    <CustomText marginLeft={8} fontSize={18} fontWeight={"600"}>
-                      {getLowestPrice(item.passPrice)?.toLocaleString()}원 ~
-                    </CustomText>
-                  </View>
-                )}
-              </View>
-            </Pressable>
+            <StoreCard
+              store={item}
+              serviceType={serviceType}
+              lat={coordinate.lat}
+              lng={coordinate.lng}
+            />
           )}
         />
       ) : (
@@ -331,62 +186,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(20),
     paddingVertical: getResponsiveSize(16),
     gap: getResponsiveSize(16),
-  },
-  card: {
-    padding: getResponsiveSize(16),
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 12,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.1,
-    elevation: 2,
-  },
-  top: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingBottom: getResponsiveSize(12),
-  },
-  storeImage: {
-    width: getResponsiveSize(76),
-    height: getResponsiveSize(76),
-    marginRight: getResponsiveSize(12),
-    borderRadius: 12,
-    overflow: "hidden",
-  },
-  address: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: getResponsiveSize(4),
-  },
-  tagArea: {
-    flexDirection: "row",
-    marginBottom: getResponsiveSize(10),
-    gap: getResponsiveSize(6),
-  },
-  tag: {
-    paddingVertical: getResponsiveSize(3),
-    paddingHorizontal: getResponsiveSize(6),
-    backgroundColor: colors.back4,
-    borderRadius: 4,
-  },
-  bottom: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingTop: getResponsiveSize(12),
-    borderTopWidth: 1,
-    borderTopColor: colors.line,
-  },
-  groupCount: {
-    justifyContent: "center",
-    paddingVertical: getResponsiveSize(6),
-    paddingHorizontal: getResponsiveSize(10),
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 8,
   },
   emptyBox: {
     flex: 1,
