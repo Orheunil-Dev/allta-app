@@ -86,21 +86,31 @@ AXIOS_INSTANCE.interceptors.request.use(
     const refreshToken = await SecureStore.getItemAsync("refreshToken");
 
     if (accessToken) {
-      await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
+      await CookieManager.set(process.env.EXPO_PUBLIC_API_URL, {
         name: "accessToken",
         value: accessToken,
         path: "/",
         httpOnly: false,
       });
+    } else {
+      await CookieManager.clearByName(
+        process.env.EXPO_PUBLIC_API_URL,
+        "accessToken"
+      );
     }
 
     if (refreshToken) {
-      await CookieManager.set(process.env.EXPO_PUBLIC_API_URL!, {
+      await CookieManager.set(process.env.EXPO_PUBLIC_API_URL, {
         name: "refreshToken",
         value: refreshToken,
         path: "/",
         httpOnly: false,
       });
+    } else {
+      await CookieManager.clearByName(
+        process.env.EXPO_PUBLIC_API_URL,
+        "refreshToken"
+      );
     }
 
     return config;

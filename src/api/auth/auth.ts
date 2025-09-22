@@ -6,20 +6,28 @@
  * OpenAPI spec version: 1.0
  */
 import {
-  useMutation
+  useMutation,
+  useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
-  UseMutationResult
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult
 } from '@tanstack/react-query';
 
 import type {
-  CheckUserBySocialIdRequest,
-  CheckUserBySocialIdResponse,
   LoginBySocialIdRequest,
-  LoginBySocialIdResponse
+  LoginBySocialIdResponse,
+  SocialLoginCallbackRequest
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -29,27 +37,189 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 
-export const authControllerCheckUserBySocialId = (
-    checkUserBySocialIdRequest: CheckUserBySocialIdRequest,
+export const authControllerKakaoLoginCallback = (
+    
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<CheckUserBySocialIdResponse>(
-      {url: `/auth/social/check`, method: 'POST',
+      return customInstance<null>(
+      {url: `/auth/kakao`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getAuthControllerKakaoLoginCallbackQueryKey = () => {
+    return [`/auth/kakao`] as const;
+    }
+
+    
+export const getAuthControllerKakaoLoginCallbackQueryOptions = <TData = Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAuthControllerKakaoLoginCallbackQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>> = ({ signal }) => authControllerKakaoLoginCallback(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type AuthControllerKakaoLoginCallbackQueryResult = NonNullable<Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>>
+export type AuthControllerKakaoLoginCallbackQueryError = unknown
+
+
+export function useAuthControllerKakaoLoginCallback<TData = Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>,
+          TError,
+          Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAuthControllerKakaoLoginCallback<TData = Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>,
+          TError,
+          Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAuthControllerKakaoLoginCallback<TData = Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useAuthControllerKakaoLoginCallback<TData = Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerKakaoLoginCallback>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getAuthControllerKakaoLoginCallbackQueryOptions(options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const authControllerGoogleLoginCallback = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<null>(
+      {url: `/auth/google`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getAuthControllerGoogleLoginCallbackQueryKey = () => {
+    return [`/auth/google`] as const;
+    }
+
+    
+export const getAuthControllerGoogleLoginCallbackQueryOptions = <TData = Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAuthControllerGoogleLoginCallbackQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>> = ({ signal }) => authControllerGoogleLoginCallback(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type AuthControllerGoogleLoginCallbackQueryResult = NonNullable<Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>>
+export type AuthControllerGoogleLoginCallbackQueryError = unknown
+
+
+export function useAuthControllerGoogleLoginCallback<TData = Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>,
+          TError,
+          Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAuthControllerGoogleLoginCallback<TData = Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>,
+          TError,
+          Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAuthControllerGoogleLoginCallback<TData = Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useAuthControllerGoogleLoginCallback<TData = Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authControllerGoogleLoginCallback>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getAuthControllerGoogleLoginCallbackQueryOptions(options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const authControllerAppleLoginCallback = (
+    socialLoginCallbackRequest: SocialLoginCallbackRequest,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<null>(
+      {url: `/auth/apple`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: checkUserBySocialIdRequest, signal
+      data: socialLoginCallbackRequest, signal
     },
       options);
     }
   
 
 
-export const getAuthControllerCheckUserBySocialIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, TError,{data: CheckUserBySocialIdRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, TError,{data: CheckUserBySocialIdRequest}, TContext> => {
+export const getAuthControllerAppleLoginCallbackMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, TError,{data: SocialLoginCallbackRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, TError,{data: SocialLoginCallbackRequest}, TContext> => {
 
-const mutationKey = ['authControllerCheckUserBySocialId'];
+const mutationKey = ['authControllerAppleLoginCallback'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -59,10 +229,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, {data: CheckUserBySocialIdRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, {data: SocialLoginCallbackRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  authControllerCheckUserBySocialId(data,requestOptions)
+          return  authControllerAppleLoginCallback(data,requestOptions)
         }
 
         
@@ -70,20 +240,20 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AuthControllerCheckUserBySocialIdMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>>
-    export type AuthControllerCheckUserBySocialIdMutationBody = CheckUserBySocialIdRequest
-    export type AuthControllerCheckUserBySocialIdMutationError = unknown
+    export type AuthControllerAppleLoginCallbackMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>>
+    export type AuthControllerAppleLoginCallbackMutationBody = SocialLoginCallbackRequest
+    export type AuthControllerAppleLoginCallbackMutationError = unknown
 
-    export const useAuthControllerCheckUserBySocialId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>, TError,{data: CheckUserBySocialIdRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+    export const useAuthControllerAppleLoginCallback = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, TError,{data: SocialLoginCallbackRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerCheckUserBySocialId>>,
+        Awaited<ReturnType<typeof authControllerAppleLoginCallback>>,
         TError,
-        {data: CheckUserBySocialIdRequest},
+        {data: SocialLoginCallbackRequest},
         TContext
       > => {
 
-      const mutationOptions = getAuthControllerCheckUserBySocialIdMutationOptions(options);
+      const mutationOptions = getAuthControllerAppleLoginCallbackMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }
@@ -198,6 +368,62 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getAuthControllerGetNewAccessTokenMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const authControllerLogout = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<null>(
+      {url: `/auth/logout`, method: 'POST', signal
+    },
+      options);
+    }
+  
+
+
+export const getAuthControllerLogoutMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLogout>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authControllerLogout>>, TError,void, TContext> => {
+
+const mutationKey = ['authControllerLogout'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerLogout>>, void> = () => {
+          
+
+          return  authControllerLogout(requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AuthControllerLogoutMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerLogout>>>
+    
+    export type AuthControllerLogoutMutationError = unknown
+
+    export const useAuthControllerLogout = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLogout>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof authControllerLogout>>,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getAuthControllerLogoutMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }

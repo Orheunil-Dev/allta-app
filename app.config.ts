@@ -7,12 +7,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   currentFullName: "@orheunil/allta-user",
   originalFullName: "@orheunil/allta-user",
   scheme: "allta-user",
-  version: "1.0.0",
+  version: "1.2.2",
   orientation: "portrait",
   icon: "./src/assets/images/app-icon.png",
   userInterfaceStyle: "light",
   newArchEnabled: true,
   ios: {
+    jsEngine: "hermes",
     bundleIdentifier: "io.allta.user",
     icon: "./src/assets/images/app-icon.png",
     supportsTablet: true,
@@ -36,6 +37,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "kakaokompassauth",
         "storykompassauth",
         "kakaolink",
+        "kakaoplus",
+        "kakaotalk",
       ],
       NSAppTransportSecurity: {
         NSAllowsArbitraryLoads: true,
@@ -43,6 +46,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
   },
   android: {
+    jsEngine: "hermes",
     package: "io.allta.user",
     adaptiveIcon: {
       foregroundImage: "./src/assets/images/adaptive-icon.png",
@@ -68,9 +72,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     googleClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
     googleIosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_ID,
     googleAndroidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_ID,
+    eas: {
+      projectId: "ab52a19e-7d67-49bf-a87d-60ce99c3e048",
+    },
   },
   plugins: [
-    // "expo-router",
+    "expo-router",
     [
       "expo-splash-screen",
       {
@@ -98,16 +105,17 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     ["expo-secure-store"],
-    [
-      "@react-native-seoul/kakao-login",
-      {
-        kakaoAppKey: process.env.EXPO_PUBLIC_KAKAO_APP_KEY,
-        kotlinVersion: "2.0.21",
-        overrideKakaoSDKVersion: "2.22.0",
-      },
-    ],
+    // [
+    //   "@react-native-seoul/kakao-login",
+    //   {
+    //     kakaoAppKey: "cd357339ed71156f7c21e1f0c9290306",
+    //     kotlinVersion: "2.0.21",
+    //     overrideKakaoSDKVersion: "2.22.0",
+    //   },
+    // ],
     ["expo-apple-authentication"],
   ],
+  owner: "orheunil-dev",
   // experiments: {
   //   typedRoutes: true,
   // },

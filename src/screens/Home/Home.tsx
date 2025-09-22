@@ -170,9 +170,8 @@ export const Home = () => {
             <View style={styles.mainArea}>
               <Pressable
                 onPress={() =>
-                  containerNavigation.navigate("StoreStack", {
-                    screen: "StoreList",
-                    params: { serviceType: "AUTO" },
+                  containerNavigation.navigate("ReceiptStack", {
+                    screen: "ReceiptScanner",
                   })
                 }
                 style={styles.stores}

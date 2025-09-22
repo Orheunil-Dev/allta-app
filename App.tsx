@@ -11,12 +11,10 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import * as Font from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import * as SecureStore from "expo-secure-store";
-import * as SplashScreen from "expo-splash-screen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { ContainerStack } from "@/navigations";
 import { Splash } from "@/screens/Splash";
-
-SplashScreen.preventAutoHideAsync();
+import "react-native-get-random-values";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
@@ -59,8 +57,6 @@ export default function App() {
   useEffect(() => {
     const prepare = async () => {
       try {
-        await SplashScreen.hideAsync();
-
         await new Promise((resolve) => setTimeout(resolve, 1250));
       } catch (e) {
         console.warn(e);
@@ -77,9 +73,9 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <QueryClientProvider client={queryClient}>
-        <SafeAreaProvider>
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <QueryClientProvider client={queryClient}>
           <KeyboardProvider>
             <BottomSheetModalProvider>
               <ContainerStack
@@ -89,8 +85,8 @@ export default function App() {
               <StatusBar style="auto" />
             </BottomSheetModalProvider>
           </KeyboardProvider>
-        </SafeAreaProvider>
-      </QueryClientProvider>
-    </GestureHandlerRootView>
+        </QueryClientProvider>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
 }

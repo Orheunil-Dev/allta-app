@@ -25,6 +25,7 @@ import { colors } from "@/styles";
 import { useUserControllerRegisterExtraInfo } from "@/api/user/user";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/recoil";
+import { Spinner } from "@/components/ui/Spinner";
 
 type RegisterCardRouteProp = RouteProp<LoginStackParamList, "RegisterCard">;
 
@@ -104,8 +105,12 @@ export const RegisterCard = () => {
             ? {
                 cardNumber: registerForm.cardNumber.replace(/-/g, ""),
                 cardPassword: registerForm.cardPassword,
-                expirationYear: registerForm.expiration.slice(2, 4),
-                expirationMonth: registerForm.expiration.slice(0, 2),
+                expirationYear: registerForm.expiration
+                  .replace(/\s/g, "")
+                  .slice(3, 5),
+                expirationMonth: registerForm.expiration
+                  .replace(/\s/g, "")
+                  .slice(0, 2),
                 identityNumber: registerForm.identityNumber,
               }
             : {}),
@@ -216,17 +221,21 @@ export const RegisterCard = () => {
 
           <CustomButton
             onPress={handleComplete}
-            isDisabled={!isValid}
+            isDisabled={!isValid || registerInfoLoading}
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
-            <CustomText
-              color={isValid ? colors.white : colors.gray5}
-              fontSize={16}
-              fontWeight={"600"}
-            >
-              다음
-            </CustomText>
+            {registerInfoLoading ? (
+              <Spinner />
+            ) : (
+              <CustomText
+                color={isValid ? colors.white : colors.gray5}
+                fontSize={16}
+                fontWeight={"600"}
+              >
+                다음
+              </CustomText>
+            )}
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>

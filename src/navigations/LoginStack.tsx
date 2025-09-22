@@ -18,18 +18,18 @@ export type LoginStackParamList = {
   SignUpTerms: {
     loginKind: string;
     socialId: string;
-    email: string;
+    email: string | null;
   };
   SignUpUserInfo: {
     loginKind: string;
     socialId: string;
-    email: string;
+    email: string | null;
     isMarketing: boolean;
   };
   SignUpReferral: {
     loginKind: string;
     socialId: string;
-    email: string;
+    email: string | null;
     name: string;
     phoneNumber: string;
     isMarketing: boolean;

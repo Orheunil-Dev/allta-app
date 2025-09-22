@@ -1,6 +1,7 @@
 // 공통
 export { default as headerBackArrow } from "./header-back-arrow.png";
 export { default as closeIcon } from "./close-icon.png";
+export { default as whiteCloseIcon } from "./white-close-icon.png";
 export { default as radioIcon } from "./radio-icon.png";
 export { default as checkedRadioIcon } from "./checked-radio-icon.png";
 export { default as uncheckedRadioIcon } from "./unchecked-radio-icon.png";
@@ -63,3 +64,11 @@ export { default as clockIcon } from "./clock-icon.png";
 export { default as myLocationIcon } from "./my-location-icon.png";
 export { default as storeNoticeIcon } from "./store-notice-icon.png";
 export { default as naviIcon } from "./navi-icon.png";
+
+// 영수증 스캔
+export { default as receptFrame } from "./receipt-frame.png";
+export { default as receptFrame1 } from "./receipt-frame-1.png";
+export { default as receptFrame2 } from "./receipt-frame-2.png";
+export { default as receptFrame3 } from "./receipt-frame-3.png";
+export { default as receptFrame4 } from "./receipt-frame-4.png";
+export { default as cameraButton } from "./camera-button.png";

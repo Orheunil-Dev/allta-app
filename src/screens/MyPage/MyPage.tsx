@@ -1,8 +1,12 @@
+import { useAuthControllerLogout } from "@/api/auth/auth";
 import { useUserControllerGetUserProfile } from "@/api/user/user";
 import { ContainerStackParamList } from "@/navigations";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { CustomText } from "@/components/ui/CustomText";
+import CookieManager from "@react-native-cookies/cookies";
 
 export const MyPage = () => {
   const containerNavigation =
@@ -15,6 +19,29 @@ export const MyPage = () => {
     },
   });
 
+  console.log(data);
+
+  const { mutateAsync: logout, isPending: logoutLoading } =
+    useAuthControllerLogout();
+
+  const handleLogout = async () => {
+    await logout();
+
+    await SecureStore.deleteItemAsync("accessToken");
+    await SecureStore.deleteItemAsync("refreshToken");
+
+    await CookieManager.clearByName(
+      process.env.EXPO_PUBLIC_API_URL,
+      "accessToken"
+    );
+    await CookieManager.clearByName(
+      process.env.EXPO_PUBLIC_API_URL,
+      "refreshToken"
+    );
+
+    return containerNavigation.navigate("LoginStack", { screen: "Login" });
+  };
+
   return (
     <View style={styles.container}>
       <Text>내 정보</Text>
@@ -24,15 +51,13 @@ export const MyPage = () => {
           containerNavigation.navigate("LoginStack", { screen: "Login" })
         }
       >
-        <Text>로그인</Text>
+        <CustomText fontSize={20} marginBottom={20}>
+          로그인
+        </CustomText>
       </Pressable>
 
-      <Pressable
-        onPress={() =>
-          containerNavigation.navigate("LoginStack", { screen: "Login" })
-        }
-      >
-        <Text>로그아웃</Text>
+      <Pressable onPress={handleLogout}>
+        <CustomText fontSize={20}>로그아웃</CustomText>
       </Pressable>
     </View>
   );

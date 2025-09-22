@@ -1,5 +1,4 @@
 import {
-  Alert,
   Image,
   Platform,
   Pressable,
@@ -11,14 +10,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import CookieManager from "@react-native-cookies/cookies";
 import * as SecureStore from "expo-secure-store";
-import * as KakaoLogins from "@react-native-seoul/kakao-login";
-import * as AuthSession from "expo-auth-session";
-import * as Google from "expo-auth-session/providers/google";
-import * as AppleAuthentication from "expo-apple-authentication";
-import { jwtDecode } from "jwt-decode";
+import * as WebBrowser from "expo-web-browser";
+import * as Linking from "expo-linking";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import {
-  useAuthControllerCheckUserBySocialId,
+  useAuthControllerAppleLoginCallback,
   useAuthControllerLoginBySocialId,
 } from "@/api/auth/auth";
 import { getResponsiveSize } from "@/utils";
@@ -32,6 +28,10 @@ import {
   kakaoLoginIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
+import { useSetAtom } from "jotai";
+import { errorModalAtom } from "@/recoil";
+import * as AppleAuthentication from "expo-apple-authentication";
+import { jwtDecode } from "jwt-decode";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -40,189 +40,164 @@ export const Login = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
-    iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_ID,
-    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_ID,
-  });
+  const setErrorModal = useSetAtom(errorModalAtom);
 
-  const {
-    mutate: checkSocialId,
-    isPending: checkSocialIdLoading,
-    isError: checkSocialIdError,
-  } = useAuthControllerCheckUserBySocialId();
-
+  // 소셜 로그인
   const {
     mutate: loginBySocialId,
     isPending: loginBySocialIdLoading,
     isError: loginBySocialIdError,
   } = useAuthControllerLoginBySocialId();
 
+  // 애플 로그인
+  const {
+    mutate: appleLoginCallback,
+    isPending: appleLoginCallbackLoading,
+    isError: appleLoginCallbackError,
+  } = useAuthControllerAppleLoginCallback();
+
   // 카카오 로그인
   const handleLoginKakao = async () => {
     try {
-      await KakaoLogins.login();
-      const profile = await KakaoLogins.getProfile();
-      const socialId = String(profile.id);
-      const email = profile.email;
+      const KAKAO_REDIRECT_URI = `${process.env.EXPO_PUBLIC_API_URL}/auth/kakao`;
+      const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY;
+      const redirectUri = Linking.createURL("/");
 
-      checkSocialId(
-        {
-          data: {
-            loginKind: "KAKAO",
-            socialId,
-          },
-        },
-        {
-          onSuccess: (res) => {
-            if (!res.ok) {
-              loginStackNavigation.navigate("SignUpTerms", {
-                loginKind: "KAKAO",
-                socialId,
-                email,
-              });
-            } else {
-              loginBySocialId(
-                {
-                  data: {
-                    loginKind: "KAKAO",
-                    socialId,
-                  },
+      try {
+        const result = await WebBrowser.openAuthSessionAsync(
+          `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}`,
+          redirectUri
+        );
+
+        if (result.type === "success") {
+          const { queryParams } = Linking.parse(result.url);
+
+          const socialId = queryParams?.socialId;
+          const email = queryParams?.email;
+          const message = queryParams?.message;
+
+          // 기존 회원
+          if (queryParams?.ok === "true") {
+            loginBySocialId(
+              {
+                data: { socialId: socialId as string, loginKind: "KAKAO" },
+              },
+              {
+                onSuccess: async () => {
+                  const cookies = await CookieManager.get(
+                    process.env.EXPO_PUBLIC_API_URL
+                  );
+
+                  const accessToken = cookies.accessToken.value;
+                  const refreshToken = cookies.refreshToken.value;
+
+                  await SecureStore.setItemAsync("accessToken", accessToken);
+                  await SecureStore.setItemAsync("refreshToken", refreshToken);
+
+                  return containerNavigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [
+                        {
+                          name: "BottomTab",
+                          params: { screen: "Home" },
+                        },
+                      ],
+                    })
+                  );
                 },
-                {
-                  onSuccess: async (res) => {
-                    const cookies = await CookieManager.get(
-                      process.env.EXPO_PUBLIC_API_URL!
-                    );
-
-                    const accessToken = cookies.accessToken.value;
-                    const refreshToken = cookies.refreshToken.value;
-
-                    await SecureStore.setItemAsync("accessToken", accessToken);
-                    await SecureStore.setItemAsync(
-                      "refreshToken",
-                      refreshToken
-                    );
-
-                    containerNavigation.dispatch(
-                      CommonActions.reset({
-                        index: 0,
-                        routes: [
-                          {
-                            name: "BottomTab",
-                            params: { screen: "Home" },
-                          },
-                        ],
-                      })
-                    );
-                  },
-                  onError: (error: any) => {
-                    console.log(error);
-                    Alert.alert("로그인 중 에러가 발생했습니다.");
-                  },
-                }
-              );
-            }
-          },
-          onError: (error: any) => {
-            console.log(error);
-            Alert.alert("로그인 중 에러가 발생했습니다.");
-          },
+              }
+            );
+          } else if (socialId) {
+            return loginStackNavigation.navigate("SignUpTerms", {
+              loginKind: "KAKAO",
+              socialId: socialId as string,
+              email: email as string,
+            });
+          } else {
+            setErrorModal({
+              visible: true,
+              message: message ? (message as string) : "로그인에 실패했습니다.",
+            });
+          }
         }
-      );
-    } catch (error: any) {
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
       console.log(error);
-      Alert.alert("로그인 중 에러가 발생했습니다.");
     }
   };
 
   // 구글 로그인
   const handleLoginGoogle = async () => {
     try {
-      const result = await promptAsync();
+      const GOOGLE_REDIRECT_URI = `${process.env.EXPO_PUBLIC_API_URL}/auth/google`;
+      const GOOGLE_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID;
+      const redirectUri = Linking.createURL("/");
 
-      if (result.type === "success") {
-        const accessToken = result.authentication?.accessToken;
-
-        if (!accessToken) throw new Error("로그인 중 에러가 발생했습니다.");
-
-        const profileRes = await fetch(
-          "https://www.googleapis.com/oauth2/v2/userinfo",
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
+      try {
+        const result = await WebBrowser.openAuthSessionAsync(
+          `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile&access_type=offline&state=1234_purpleGoogle&prompt=consent`,
+          redirectUri
         );
 
-        const profile = await profileRes.json();
+        if (result.type === "success") {
+          const { queryParams } = Linking.parse(result.url);
 
-        const socialId = String(profile.id);
-        const email = profile.email;
+          const socialId = queryParams?.socialId;
+          const email = queryParams?.email;
+          const message = queryParams?.message;
 
-        checkSocialId(
-          {
-            data: { loginKind: "GOOGLE", socialId },
-          },
-          {
-            onSuccess: (res) => {
-              if (!res.ok) {
-                loginStackNavigation.navigate("SignUpTerms", {
-                  loginKind: "GOOGLE",
-                  socialId,
-                  email,
-                });
-              } else {
-                loginBySocialId(
-                  {
-                    data: { loginKind: "GOOGLE", socialId },
-                  },
-                  {
-                    onSuccess: async (res) => {
-                      const cookies = await CookieManager.get(
-                        process.env.EXPO_PUBLIC_API_URL!
-                      );
+          if (queryParams?.ok === "true") {
+            loginBySocialId(
+              {
+                data: { socialId: socialId as string, loginKind: "GOOGLE" },
+              },
+              {
+                onSuccess: async () => {
+                  const cookies = await CookieManager.get(
+                    process.env.EXPO_PUBLIC_API_URL
+                  );
 
-                      const accessToken = cookies.accessToken?.value;
-                      const refreshToken = cookies.refreshToken?.value;
+                  const accessToken = cookies.accessToken.value;
+                  const refreshToken = cookies.refreshToken.value;
 
-                      if (accessToken && refreshToken) {
-                        await SecureStore.setItemAsync(
-                          "accessToken",
-                          accessToken
-                        );
-                        await SecureStore.setItemAsync(
-                          "refreshToken",
-                          refreshToken
-                        );
-                      }
+                  await SecureStore.setItemAsync("accessToken", accessToken);
+                  await SecureStore.setItemAsync("refreshToken", refreshToken);
 
-                      containerNavigation.dispatch(
-                        CommonActions.reset({
-                          index: 0,
-                          routes: [
-                            {
-                              name: "BottomTab",
-                              params: { screen: "Home" },
-                            },
-                          ],
-                        })
-                      );
-                    },
-                    onError: (error: any) =>
-                      Alert.alert("Error", error.message),
-                  }
-                );
+                  return containerNavigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [
+                        {
+                          name: "BottomTab",
+                          params: { screen: "Home" },
+                        },
+                      ],
+                    })
+                  );
+                },
               }
-            },
-            onError: (error: any) => {
-              console.log(error);
-              Alert.alert("로그인 중 에러가 발생했습니다.");
-            },
+            );
+          } else if (socialId) {
+            return loginStackNavigation.navigate("SignUpTerms", {
+              loginKind: "GOOGLE",
+              socialId: socialId as string,
+              email: email as string,
+            });
+          } else {
+            setErrorModal({
+              visible: true,
+              message: message ? (message as string) : "로그인에 실패했습니다.",
+            });
           }
-        );
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
-      Alert.alert("로그인 중 에러가 발생했습니다.");
     }
   };
 
@@ -240,73 +215,55 @@ export const Login = () => {
 
       const payload: any = jwtDecode(data.identityToken);
 
-      checkSocialId(
+      appleLoginCallback(
         {
           data: {
             loginKind: "APPLE",
             socialId: data.user,
+            email: data.email,
           },
         },
         {
-          onSuccess: (res) => {
-            if (!res.ok) {
-              loginStackNavigation.navigate("SignUpTerms", {
+          onSuccess: async (res: any) => {
+            if (!res) return;
+
+            if (res.ok) {
+              const cookies = await CookieManager.get(
+                process.env.EXPO_PUBLIC_API_URL
+              );
+
+              const accessToken = cookies.accessToken.value;
+              const refreshToken = cookies.refreshToken.value;
+
+              await SecureStore.setItemAsync("accessToken", accessToken);
+              await SecureStore.setItemAsync("refreshToken", refreshToken);
+
+              return containerNavigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: "BottomTab",
+                      params: { screen: "Home" },
+                    },
+                  ],
+                })
+              );
+            } else {
+              return loginStackNavigation.navigate("SignUpTerms", {
                 loginKind: "APPLE",
                 socialId: data.user,
-                email: payload.email,
+                email: data.email,
               });
-            } else {
-              loginBySocialId(
-                {
-                  data: {
-                    loginKind: "APPLE",
-                    socialId: data.user,
-                  },
-                },
-                {
-                  onSuccess: async (res) => {
-                    const cookies = await CookieManager.get(
-                      process.env.EXPO_PUBLIC_API_URL!
-                    );
-
-                    const accessToken = cookies.accessToken.value;
-                    const refreshToken = cookies.refreshToken.value;
-
-                    await SecureStore.setItemAsync("accessToken", accessToken);
-                    await SecureStore.setItemAsync(
-                      "refreshToken",
-                      refreshToken
-                    );
-
-                    containerNavigation.dispatch(
-                      CommonActions.reset({
-                        index: 0,
-                        routes: [
-                          {
-                            name: "BottomTab",
-                            params: { screen: "Home" },
-                          },
-                        ],
-                      })
-                    );
-                  },
-                  onError: (error: any) => {
-                    console.log(error);
-                    Alert.alert("로그인 중 에러가 발생했습니다.");
-                  },
-                }
-              );
             }
-          },
-          onError: (error: any) => {
-            console.log(error);
-            Alert.alert("로그인 중 에러가 발생했습니다.");
           },
         }
       );
     } catch (error: any) {
-      console.log(error);
-      Alert.alert("로그인 중 에러가 발생했습니다.");
+      setErrorModal({
+        visible: true,
+        message: error?.message ?? "로그인에 실패했습니다.",
+      });
     }
   };
 
@@ -353,6 +310,7 @@ export const Login = () => {
           width="100%"
           marginTop={32}
           backgroundColor="#FEE500"
+          borderRadius={12}
         >
           <Image
             source={kakaoLoginIcon}
@@ -373,7 +331,9 @@ export const Login = () => {
           width="100%"
           marginTop={getResponsiveSize(12)}
           backgroundColor={colors.white}
+          borderWidth={1}
           borderColor={colors.gray2}
+          borderRadius={12}
         >
           <Image
             source={googleLoginIcon}
@@ -400,6 +360,7 @@ export const Login = () => {
             width="100%"
             marginTop={getResponsiveSize(12)}
             backgroundColor="#141414"
+            borderRadius={12}
           >
             <Image
               source={appleLoginIcon}

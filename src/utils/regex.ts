@@ -1,3 +1,5 @@
+import { areaCodes } from "@/constants";
+
 // 이름
 export const regexName = /^[가-힣a-zA-Z0-9 ]+$/;
 
@@ -10,3 +12,12 @@ export const regexPhoneNumber = /^\d{3}-\d{4}-\d{4}$/;
 
 // 차량 번호
 export const regexCarNumber = /^\d{1,3}[가-힣]{1,2}\d{4}$/;
+
+// 매장 번호
+export const regexStorePhoneNumber = new RegExp(
+  `\\b(${areaCodes.join("|")})[-]?\\d{3,4}[-]?\\d{4}\\b`,
+  "g"
+);
+
+// 영수증 승인 시간
+export const regexReceiptApproveTime = /\b\d{2}:\d{2}:\d{2}\b/;

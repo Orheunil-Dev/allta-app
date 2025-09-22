@@ -61,6 +61,7 @@ export const SignUpComplete = () => {
             flex={1}
             height={getResponsiveSize(53)}
             backgroundColor={colors.white}
+            borderWidth={1}
             borderColor={colors.gray2}
           >
             <CustomText color={colors.black} fontSize={16} fontWeight={"600"}>

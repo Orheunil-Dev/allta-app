@@ -1,7 +1,5 @@
 import { GetCouponListResponse } from "@/api/models";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import { checkedRadioIcon, uncheckedRadioIcon } from "@/assets/images";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { CustomButton } from "@/components/ui/CustomButton";
@@ -13,9 +11,6 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Image, Pressable, StyleSheet, View, TextInput } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { useEffect } from "react";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
@@ -131,9 +126,7 @@ export const CouponListBottomSheet = ({
 
                 {item.expiredAt && (
                   <CustomText marginTop={4} color={colors.gray7} fontSize={14}>
-                    {dayjs(item.expiredAt)
-                      .tz("Asia/Seoul")
-                      .format("YYYY. MM. DD 까지")}
+                    {dayjs(item.expiredAt).format("YYYY. MM. DD 까지")}
                   </CustomText>
                 )}
               </Pressable>

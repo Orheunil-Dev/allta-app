@@ -6,7 +6,6 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CheckUserBySocialIdResponse {
-  /** 결과 여부 */
-  ok: boolean;
-}
+export type ReceiptControllerVerifyReceiptBody = {
+  file?: Blob;
+};

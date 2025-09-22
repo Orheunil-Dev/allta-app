@@ -9,8 +9,11 @@
 export interface CreateUserRequest {
   /** 이름 */
   name: string;
-  /** 이메일 */
-  email: string;
+  /**
+   * 이메일
+   * @nullable
+   */
+  email?: string | null;
   /** 로그인 종류 */
   loginKind: string;
   /** 소셜 로그인 ID */

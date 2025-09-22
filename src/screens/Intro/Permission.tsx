@@ -141,7 +141,11 @@ export const Permission = () => {
           </View>
         </View>
 
-        <CustomButton onPress={handleGoHome} backgroundColor={colors.main}>
+        <CustomButton
+          onPress={handleGoHome}
+          height={getResponsiveSize(53)}
+          backgroundColor={colors.main}
+        >
           <CustomText color={colors.white} fontSize={16} fontWeight={"600"}>
             확인
           </CustomText>
@@ -157,6 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: "100%",
     paddingHorizontal: getResponsiveSize(20),
+    paddingBottom: getResponsiveSize(20),
   },
   box: {
     flexDirection: "row",

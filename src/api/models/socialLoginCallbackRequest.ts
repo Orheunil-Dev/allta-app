@@ -6,7 +6,12 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CheckUserBySocialIdRequest {
+export interface SocialLoginCallbackRequest {
+  /**
+   * 이메일
+   * @nullable
+   */
+  email?: string | null;
   /** 로그인 종류 */
   loginKind: string;
   /** 소셜 로그인 ID */

@@ -17,6 +17,7 @@ import { PaymentStack, PaymentStackParamList } from "./PaymentStack";
 import { CarStack, CarStackParamList } from "./CarStack";
 import { CardStack, CardStackParamList } from "./CardStack";
 import { ErrorModal } from "@/components/modal/ErrorModal";
+import { ReceiptStack, ReceiptStackParamList } from "./ReceiptStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -27,6 +28,7 @@ export type ContainerStackParamList = {
   PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
   CarStack: NavigatorScreenParams<CarStackParamList>;
   CardStack: NavigatorScreenParams<CardStackParamList>;
+  ReceiptStack: NavigatorScreenParams<ReceiptStackParamList>;
   Notification: undefined;
 };
 
@@ -122,6 +124,14 @@ export const ContainerStack = ({
           component={CardStack}
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ReceiptStack"
+          component={ReceiptStack}
+          options={{
+            headerShown: false,
+            presentation: "transparentModal",
           }}
         />
       </Stack.Navigator>
