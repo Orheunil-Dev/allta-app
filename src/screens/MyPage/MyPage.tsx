@@ -25,7 +25,9 @@ export const MyPage = () => {
     useAuthControllerLogout();
 
   const handleLogout = async () => {
-    await logout();
+    try {
+      await logout();
+    } catch (e) {}
 
     await SecureStore.deleteItemAsync("accessToken");
     await SecureStore.deleteItemAsync("refreshToken");

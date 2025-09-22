@@ -36,11 +36,16 @@ import { useReceiptControllerVerifyReceipt } from "@/api/receipt/receipt";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ReceiptStackParamList } from "@/navigations";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 export const ReceiptScanner = () => {
   const navigation = useNavigation();
+
+  const receiptNavigation =
+    useNavigation<NativeStackNavigationProp<ReceiptStackParamList>>();
 
   const [permission, requestPermission] = useCameraPermissions();
 
@@ -139,12 +144,16 @@ export const ReceiptScanner = () => {
         }
 
         if (
-          receipt.amount > 0 &&
-          receipt.phoneNumber.length > 0 &&
-          receipt.billNumber.length > 0 &&
-          receipt.approveDate
-        )
-          break;
+          receipt.amount === 0 ||
+          !receipt.phoneNumber.trim() ||
+          !receipt.billNumber.trim() ||
+          !receipt.approveDate.trim()
+        ) {
+          return receiptNavigation.navigate("ReceiptScanError", {
+            code: "001",
+          });
+        }
+        return true;
       }
 
       console.log(receipt);

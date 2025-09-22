@@ -44,7 +44,6 @@ export const Payment = () => {
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
-  const [paymentForm, setPaymentForm] = useState({});
   const [price, setPrice] = useState<number>(0);
   const [coupon, setCoupon] = useState<Coupon | null>(null);
   const [car, setCar] = useState<Car | null>(null);
