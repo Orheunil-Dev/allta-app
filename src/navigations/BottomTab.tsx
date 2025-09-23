@@ -73,6 +73,7 @@ export const BottomTab = () => {
         component={MyStoreStack}
         options={{
           title: "내 매장",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
               source={focused ? blackStoreIcon : whiteStoreIcon}

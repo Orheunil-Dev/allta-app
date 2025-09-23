@@ -141,7 +141,6 @@ export const CarRegister = () => {
         >
           <FlatList
             data={carVendorsData?.data}
-            keyExtractor={(item) => item.vendor}
             style={{ width: "100%" }}
             renderItem={({ item, index }) => (
               <Pressable
@@ -178,7 +177,6 @@ export const CarRegister = () => {
           {carModelsData?.data && (
             <FlatList
               data={carModelsData?.data}
-              keyExtractor={(item) => item.name!}
               style={{ width: "100%" }}
               renderItem={({ item, index }) => (
                 <Pressable
@@ -220,7 +218,7 @@ export const CarRegister = () => {
               onPress={handleOpenBrandSelect}
             >
               <View pointerEvents="none">
-                <SignUpTextInput
+                <CustomTextInput
                   value={registerForm.carVendor}
                   onChangeText={() => {}}
                   editable={false}
@@ -240,7 +238,7 @@ export const CarRegister = () => {
               onPress={handleOpenModelSelect}
             >
               <View pointerEvents="none">
-                <SignUpTextInput
+                <CustomTextInput
                   value={registerForm.carModel}
                   onChangeText={() => {}}
                   editable={false}

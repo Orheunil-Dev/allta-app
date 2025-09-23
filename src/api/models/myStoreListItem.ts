@@ -42,9 +42,6 @@ export interface MyStoreListItem {
    * @nullable
    */
   storeGroupId?: string | null;
-  /**
-   * 보유 이용권 종류
-   * @nullable
-   */
-  passTypes: number | null;
+  /** 보유 이용권 종류 */
+  passTypes: string;
 }

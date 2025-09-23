@@ -1,16 +1,20 @@
 import { GetMyStoreListResponse } from "@/api/models";
 import { useStoreControllerGetMyStoreList } from "@/api/store/store";
+import { MyStoreFilter } from "@/components/store/StoreFilter";
+import { MyStoreCard } from "@/components/ui/Card";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 import { PassType, ServiceType } from "@/types";
+import { getResponsiveSize } from "@/utils";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
-export const MyStore = () => {
+export const MyStoreList = () => {
   const [skip, setSkip] = useState<number>(0);
   const [serviceType, setServiceType] = useState<ServiceType>("AUTO");
-  const [passType, setPassType] = useState<PassType>("STANDARD");
+  const [passType, setPassType] = useState<PassType | null>(null);
   const [stores, setStores] = useState<GetMyStoreListResponse["data"]>([]);
   const [coordinate, setCoordinate] = useState<{
     id: string | null;
@@ -45,6 +49,18 @@ export const MyStore = () => {
     }
   );
 
+  const handleLoadMore = () => {
+    if (storesData?.meta?.hasNextPage) {
+      setSkip(skip + 20);
+    }
+  };
+
+  // 필터 변경 시 데이터 리페칭
+  useEffect(() => {
+    setSkip(0);
+    storesRefetch();
+  }, [passType]);
+
   // 무한 스크롤
   useEffect(() => {
     if (!storesData?.data) return;
@@ -58,52 +74,48 @@ export const MyStore = () => {
     });
   }, [storesData]);
 
-  console.log(stores.length);
-
   return (
-    <View style={styles.container}>
+    <CustomSafeAreaView backgroundColor={colors.bg} edges={[]}>
+      <MyStoreFilter
+        serviceType={serviceType}
+        setServiceType={setServiceType}
+        passType={passType}
+        setPassType={setPassType}
+        coordinate={coordinate}
+      />
+
       {stores.length ? (
         <FlatList
           data={stores}
           keyExtractor={(item) => item.id}
-          // onEndReached={handleLoadMore}
+          onEndReached={handleLoadMore}
           onEndReachedThreshold={0.7}
           contentContainerStyle={styles.container}
           renderItem={({ item, index }) => (
-            <View>
-              <CustomText>{item.name}</CustomText>
-              <CustomText>{item.passTypes}</CustomText>
-            </View>
-            // <StoreCard
-            //   store={item}
-            //   serviceType={serviceType}
-            //   lat={coordinate.lat}
-            //   lng={coordinate.lng}
-            // />
+            <MyStoreCard
+              store={item}
+              serviceType={serviceType}
+              lat={coordinate.lat}
+              lng={coordinate.lng}
+            />
           )}
         />
       ) : (
         <View style={styles.emptyBox}>
-          <CustomText
-            marginBottom={4}
-            color={colors.gray5}
-            fontSize={20}
-            fontWeight={"600"}
-          >
-            근처에 올타 제휴점이 없습니다.
+          <CustomText color={colors.gray5} fontSize={20} fontWeight={"600"}>
+            보유한 이용권이 없습니다.
           </CustomText>
         </View>
       )}
-    </View>
+    </CustomSafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    backgroundColor: "#fff",
+    paddingHorizontal: getResponsiveSize(20),
+    paddingVertical: getResponsiveSize(16),
+    gap: getResponsiveSize(16),
   },
   emptyBox: {
     flex: 1,

@@ -1,3 +1,6 @@
+// 이용권 종류
+export const passTypes = ["TICKET", "STANDARD", "PREMIUM"];
+
 // 태그
 export const storeTags = [
   "브러시",

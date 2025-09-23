@@ -38,7 +38,7 @@ export const StoreInfo = ({
       </CustomText>
 
       <View style={styles.map}>
-        <KakaoMap lat={lat} lng={lng} height={getResponsiveSize(124)} />
+        <KakaoMap lat={lat} lng={lng} height={getResponsiveSize(168)} />
       </View>
 
       <CustomButton

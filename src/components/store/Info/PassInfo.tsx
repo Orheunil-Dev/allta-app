@@ -4,7 +4,6 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { StoreDetailItemPassPrice } from "@/api/models";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { checkIcon, grayDownArrow } from "@/assets/images";
@@ -100,7 +99,7 @@ export const PassInfo = ({
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={16}>
+                <CustomText color={colors.gray7} fontSize={13}>
                   한 달간 매일 세차 가능
                 </CustomText>
               </View>
@@ -134,19 +133,19 @@ export const PassInfo = ({
               <Animated.View
                 style={[styles.accordianBox, accordianAnimatedStyle("PREMIUM")]}
               >
-                <CustomText color={colors.gray5} fontSize={14}>
+                <CustomText color={colors.gray5} fontSize={13}>
                   이용권은 타인, 또는 다른 아이디(계정)로 양도불가
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={14}>
+                <CustomText color={colors.gray5} fontSize={13}>
                   · 이용권에 표기된 매장에서 1일 1회 세차 가능
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={14}>
+                <CustomText color={colors.gray5} fontSize={13}>
                   · 이용권당 표기된 차량 1대만 이용가능
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={14}>
+                <CustomText color={colors.gray5} fontSize={13}>
                   · 차량번호는 30일 단위로 1회 변경 가능
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={14}>
+                <CustomText color={colors.gray5} fontSize={13}>
                   · 추가로 각 매장별 별도 안내사항 참조
                 </CustomText>
               </Animated.View>
@@ -182,14 +181,14 @@ export const PassInfo = ({
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={16}>
+                <CustomText color={colors.gray7} fontSize={14}>
                   월 {standardMaxUsage}회 세차 가능
                 </CustomText>
               </View>
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={16}>
+                <CustomText color={colors.gray7} fontSize={14}>
                   합리적인 가격으로 세차 가능
                 </CustomText>
               </View>
@@ -222,19 +221,19 @@ export const PassInfo = ({
                   accordianAnimatedStyle("STANDARD"),
                 ]}
               >
-                <CustomText color={colors.gray5} fontSize={14}>
-                  이용권은 타인, 또는 다른 아이디(계정)로 양도불가
+                <CustomText color={colors.gray5} fontSize={13}>
+                  · 이용권은 타인, 또는 다른 아이디(계정)로 양도불가
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={14}>
+                <CustomText color={colors.gray5} fontSize={13}>
                   · 이용권에 표기된 매장에서 1일 1회 세차 가능
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={14}>
+                <CustomText color={colors.gray5} fontSize={13}>
                   · 이용권당 표기된 차량 1대만 이용가능
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={14}>
+                <CustomText color={colors.gray5} fontSize={13}>
                   · 차량번호는 30일 단위로 1회 변경 가능
                 </CustomText>
-                <CustomText color={colors.gray5} fontSize={14}>
+                <CustomText color={colors.gray5} fontSize={13}>
                   · 추가로 각 매장별 별도 안내사항 참조
                 </CustomText>
               </Animated.View>
@@ -269,14 +268,14 @@ export const PassInfo = ({
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={16}>
+                <CustomText color={colors.gray7} fontSize={14}>
                   부담 없는 단일 이용권
                 </CustomText>
               </View>
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={16}>
+                <CustomText color={colors.gray7} fontSize={14}>
                   원하는 날, 1회 세차
                 </CustomText>
               </View>
@@ -349,8 +348,8 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   check: {
-    width: getResponsiveSize(16),
-    height: getResponsiveSize(16),
+    width: getResponsiveSize(14),
+    height: getResponsiveSize(14),
     marginRight: getResponsiveSize(6),
   },
   divider: {
@@ -366,6 +365,7 @@ const styles = StyleSheet.create({
   },
   accordianBox: {
     overflow: "hidden",
+    paddingTop: getResponsiveSize(4),
   },
   arrow: {
     width: getResponsiveSize(10),

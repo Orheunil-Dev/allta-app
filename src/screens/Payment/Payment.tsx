@@ -226,10 +226,10 @@ export const Payment = () => {
         </View>
 
         <View style={styles.totalAmount}>
-          <CustomText fontSize={18} fontWeight={"600"}>
+          <CustomText fontSize={16} fontWeight={"600"}>
             최종 결제 금액
           </CustomText>
-          <CustomText color={colors.point2} fontSize={18} fontWeight={"600"}>
+          <CustomText color={colors.point2} fontSize={20} fontWeight={"600"}>
             {(
               (price ?? 0) -
               getDiscountAmount(coupon?.discountType, coupon?.discountValue)
@@ -329,6 +329,7 @@ const styles = StyleSheet.create({
   totalAmount: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     marginTop: getResponsiveSize(12),
     paddingTop: getResponsiveSize(12),
     borderTopWidth: 1,
@@ -337,7 +338,7 @@ const styles = StyleSheet.create({
   terms: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: getResponsiveSize(40),
+    marginTop: getResponsiveSize(24),
     marginBottom: getResponsiveSize(20),
     paddingTop: getResponsiveSize(12),
     borderTopWidth: getResponsiveSize(6),

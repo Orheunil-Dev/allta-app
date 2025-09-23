@@ -21,6 +21,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/recoil";
 import { Spinner } from "@/components/ui/Spinner";
+import { CustomTextInput } from "@/components/ui/CustomTextInput";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -115,7 +116,7 @@ export const CardRegister = () => {
             <CustomText fontSize={16} fontWeight={"500"}>
               카드번호
             </CustomText>
-            <SignUpTextInput
+            <CustomTextInput
               value={registerForm.cardNumber}
               onChangeText={(value) =>
                 handleChangeRegisterForm("cardNumber", formatCardNumber(value))
@@ -123,12 +124,13 @@ export const CardRegister = () => {
               maxLength={19}
               keyboardType="number-pad"
               placeholder="0000-0000-0000-0000"
+              onReset={() => handleChangeRegisterForm("cardNumber", "")}
             />
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               유효기간
             </CustomText>
-            <SignUpTextInput
+            <CustomTextInput
               value={registerForm.expiration}
               onChangeText={(value) =>
                 handleChangeRegisterForm(
@@ -139,12 +141,13 @@ export const CardRegister = () => {
               maxLength={7}
               keyboardType="number-pad"
               placeholder="MM / YY"
+              onReset={() => handleChangeRegisterForm("expiration", "")}
             />
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               비밀번호
             </CustomText>
-            <SignUpTextInput
+            <CustomTextInput
               value={registerForm.cardPassword}
               onChangeText={(value) =>
                 handleChangeRegisterForm("cardPassword", value)
@@ -152,19 +155,21 @@ export const CardRegister = () => {
               maxLength={2}
               keyboardType="number-pad"
               secureTextEntry={true}
+              onReset={() => handleChangeRegisterForm("cardPassword", "")}
               placeholder="앞 두자리"
             />
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               생년월일
             </CustomText>
-            <SignUpTextInput
+            <CustomTextInput
               value={registerForm.identityNumber}
               onChangeText={(value) =>
                 handleChangeRegisterForm("identityNumber", value)
               }
               maxLength={10}
               keyboardType="number-pad"
+              onReset={() => handleChangeRegisterForm("identityNumber", "")}
               placeholder="생년월일 또는 사업자등록번호"
             />
           </ScrollView>

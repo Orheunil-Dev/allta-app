@@ -3,15 +3,16 @@ import { colors } from "@/styles";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import {
   Image,
-  NativeSyntheticEvent,
+  KeyboardTypeOptions,
   Pressable,
   StyleSheet,
-  TextInputSubmitEditingEventData,
+  TextInputSubmitEditingEvent,
   TextStyle,
   View,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { CustomText } from "../CustomText/CustomText";
+import { useState } from "react";
 
 const fontMap: Record<string, string> = {
   "100": "Pretendard-Thin",
@@ -28,9 +29,7 @@ const fontMap: Record<string, string> = {
 interface Props {
   value?: string | undefined;
   onChangeText?: ((text: string) => void) | undefined;
-  onSubmitEditing?:
-    | ((e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void)
-    | undefined;
+  onSubmitEditing?: ((e: TextInputSubmitEditingEvent) => void) | undefined;
   onReset?: () => void;
   maxLength?: number;
   placeholder?: string;
@@ -40,6 +39,9 @@ interface Props {
   marginRight?: number;
   marginLeft?: number;
   fontWeight?: TextStyle["fontWeight"];
+  keyboardType?: KeyboardTypeOptions | undefined;
+  secureTextEntry?: boolean;
+  editable?: boolean;
 }
 
 export const CustomTextInput = ({
@@ -55,7 +57,12 @@ export const CustomTextInput = ({
   marginRight = 0,
   marginLeft = 0,
   fontWeight = "400",
+  keyboardType,
+  secureTextEntry,
+  editable = true,
 }: Props) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <View
       style={[
@@ -68,7 +75,7 @@ export const CustomTextInput = ({
         styles.container,
       ]}
     >
-      {onReset && (
+      {onReset && value && value?.length > 0 && (
         <Pressable onPress={onReset} style={styles.resetButton}>
           <Image
             source={inputResetButton}
@@ -86,6 +93,11 @@ export const CustomTextInput = ({
         onSubmitEditing={onSubmitEditing}
         maxLength={maxLength}
         placeholder={placeholder ?? undefined}
+        keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        editable
         style={[
           {
             fontFamily: fontMap[fontWeight],
