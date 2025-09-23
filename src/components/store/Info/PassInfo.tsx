@@ -41,8 +41,6 @@ export const PassInfo = ({
     return setShowPolicy(passType);
   };
 
-  console.log(passPrice);
-
   const rotateAnimatedStyle = (passType: PassType) =>
     useAnimatedStyle(() => {
       return {

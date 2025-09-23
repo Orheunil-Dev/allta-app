@@ -2,77 +2,45 @@ import { defaultStoreImage, locationIcon } from "@/assets/images";
 import {
   Image,
   ImageBackground,
-  Pressable,
+  Linking,
   StyleSheet,
   View,
 } from "react-native";
 import { CustomText } from "../CustomText";
 import { formatEllipsis, formatPassType, getResponsiveSize } from "@/utils";
 import { MyStoreListItem } from "@/api/models";
-import { PassPrice, ServiceType } from "@/types";
 import { useDistanceCalculator } from "@/hooks";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StoreStackParamList } from "@/navigations";
+import { MyStoreStackParamList, StoreStackParamList } from "@/navigations";
 import { colors } from "@/styles";
 import { CustomButton } from "../CustomButton";
 
-type StoreServiceType = {
-  AUTO?: PassPrice;
-  HANDS?: PassPrice;
-};
-
 interface Props {
   store: MyStoreListItem;
-  serviceType: ServiceType;
   lat?: number;
   lng?: number;
 }
 
 export const MyStoreCard = ({
   store,
-  serviceType,
   lat = 37.5759785,
   lng = 127.1935115,
 }: Props) => {
-  const storeNavigation =
-    useNavigation<NativeStackNavigationProp<StoreStackParamList>>();
+  const myStoreNavigation =
+    useNavigation<NativeStackNavigationProp<MyStoreStackParamList>>();
 
   const { getDistance } = useDistanceCalculator();
 
-  // 이용권 가격 표시
-  const getLowestPrice = (priceObject: StoreServiceType): number | null => {
-    const service = priceObject[serviceType];
-    if (!service) return null;
+  const handleOpenNavigation = () => {
+    const destination = encodeURIComponent(store.name);
+    const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${store.lng}&rGoY=${store.lat}`;
 
-    let minPrice: number | null = null;
-
-    const prices = Object.values(service);
-
-    prices.forEach((carType) => {
-      if (!carType) return;
-
-      Object.values(carType).forEach((price) => {
-        if (minPrice === null || price < minPrice) {
-          minPrice = price;
-        }
-      });
-    });
-
-    return minPrice;
+    return Linking.openURL(tmapScheme);
   };
 
   return (
-    <Pressable
-      onPress={() => {
-        storeNavigation.navigate("StoreDetail", {
-          serviceType,
-          storeId: store.id,
-          ...(store.storeGroupId && { storeGroupId: store.storeGroupId }),
-        });
-      }}
-      style={styles.card}
-    >
+    <View style={styles.card}>
       <View style={styles.top}>
         <ImageBackground
           source={
@@ -129,6 +97,12 @@ export const MyStoreCard = ({
 
       <View style={styles.bottom}>
         <CustomButton
+          onPress={() =>
+            myStoreNavigation.navigate("MyStoreDetail", {
+              storeId: store.id,
+              storeName: store.name,
+            })
+          }
           flex={1}
           height={getResponsiveSize(34)}
           borderWidth={1}
@@ -140,6 +114,7 @@ export const MyStoreCard = ({
         </CustomButton>
 
         <CustomButton
+          onPress={handleOpenNavigation}
           flex={1}
           height={getResponsiveSize(34)}
           backgroundColor={colors.point2}
@@ -149,7 +124,7 @@ export const MyStoreCard = ({
           </CustomText>
         </CustomButton>
       </View>
-    </Pressable>
+    </View>
   );
 };
 

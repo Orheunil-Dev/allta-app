@@ -28,7 +28,7 @@ import {
 import { ContainerStackParamList, StoreStackParamList } from "@/navigations";
 import { useDistanceCalculator } from "@/hooks";
 import { getResponsiveSize, getStoreBusinessHours } from "@/utils";
-import { CarType, DayKey, PassType } from "@/types";
+import { CarType, DayKey, PassType, StoreDetailItemPassPrice } from "@/types";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
@@ -186,7 +186,7 @@ export const StoreDetail = () => {
                 ? (storeData.store.standardMaxUsage as number)
                 : undefined
             }
-            passPrice={storeData.store.passPrice}
+            passPrice={storeData.store.passPrice as StoreDetailItemPassPrice}
           />
         );
 
@@ -221,7 +221,7 @@ export const StoreDetail = () => {
                 ? (storeData.store.standardMaxUsage as number)
                 : undefined
             }
-            passPrice={storeData.store.passPrice}
+            passPrice={storeData.store.passPrice as StoreDetailItemPassPrice}
           />
         );
     }

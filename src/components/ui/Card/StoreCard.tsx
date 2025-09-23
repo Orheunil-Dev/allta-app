@@ -67,6 +67,7 @@ export const StoreCard = ({
         storeNavigation.navigate("StoreDetail", {
           serviceType,
           storeId: store.id,
+          storeName: store.name,
           ...(store.storeGroupId && { storeGroupId: store.storeGroupId }),
         });
       }}

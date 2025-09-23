@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StoreDetail, StoreList } from "@/screens/Store";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { ServiceType } from "@/types";
+import { formatEllipsis } from "@/utils";
 
 export type StoreStackParamList = {
   StoreList: {
@@ -10,11 +11,12 @@ export type StoreStackParamList = {
   StoreDetail: {
     serviceType: ServiceType;
     storeId: string;
+    storeName: string;
     storeGroupId?: string;
   };
 };
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<StoreStackParamList>();
 
 export const StoreStack = () => {
   return (
@@ -29,9 +31,14 @@ export const StoreStack = () => {
       <Stack.Screen
         name="StoreDetail"
         component={StoreDetail}
-        options={{
-          header: () => <CustomHeader title="" showBackButton />,
-        }}
+        options={({ route }) => ({
+          header: () => (
+            <CustomHeader
+              title={formatEllipsis(route.params.storeName, 12)}
+              showBackButton
+            />
+          ),
+        })}
       />
     </Stack.Navigator>
   );

@@ -11,3 +11,4 @@ export * from "./PaymentStack";
 export * from "./CarStack";
 export * from "./CardStack";
 export * from "./ReceiptStack";
+export * from "./MyStoreStack";

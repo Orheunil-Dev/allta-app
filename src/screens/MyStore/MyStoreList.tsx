@@ -8,7 +8,7 @@ import { colors } from "@/styles";
 import { PassType, ServiceType } from "@/types";
 import { getResponsiveSize } from "@/utils";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 export const MyStoreList = () => {
@@ -94,7 +94,7 @@ export const MyStoreList = () => {
           renderItem={({ item, index }) => (
             <MyStoreCard
               store={item}
-              serviceType={serviceType}
+              storeName={item.name}
               lat={coordinate.lat}
               lng={coordinate.lng}
             />
