@@ -38,7 +38,7 @@ export interface StoreDetailItem {
    * 매장 소개
    * @nullable
    */
-  descrption?: string | null;
+  description?: string | null;
   /**
    * 유의사항
    * @nullable

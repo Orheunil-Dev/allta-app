@@ -1,3 +1,4 @@
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { QrStack } from "./QrStack";
 import { MyStoreStack } from "./MyStoreStack";
@@ -71,18 +72,32 @@ export const BottomTab = () => {
       <Tab.Screen
         name="MyStoreStack"
         component={MyStoreStack}
-        options={{
-          title: "내 매장",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={focused ? blackStoreIcon : whiteStoreIcon}
-              style={{
-                width: getResponsiveSize(24),
-                height: getResponsiveSize(24),
-              }}
-            />
-          ),
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route);
+          const hideTabBar = routeName === "MyStoreDetail";
+
+          return {
+            title: "내 매장",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <Image
+                source={focused ? blackStoreIcon : whiteStoreIcon}
+                style={{
+                  width: getResponsiveSize(24),
+                  height: getResponsiveSize(24),
+                }}
+              />
+            ),
+            tabBarStyle: hideTabBar
+              ? { display: "none" }
+              : {
+                  height:
+                    Platform.OS === "ios"
+                      ? getResponsiveSize(60)
+                      : getResponsiveSize(90),
+                  backgroundColor: colors.white,
+                },
+          };
         }}
       />
       <Tab.Screen

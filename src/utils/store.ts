@@ -21,6 +21,7 @@ const findNextOpenHour = (
   return null;
 };
 
+// 영업 상태
 export const getStoreBusinessHours = (
   businessHours: Record<string, { open: string; close: string }>,
   breakTime?: string | null,
@@ -75,5 +76,5 @@ export const getStoreBusinessHours = (
     }
   }
 
-  return { status: "영업 중", hours: `${hours.open} ~ ${hours.close}` };
+  return { status: "영업중", hours: `${hours.open} ~ ${hours.close}` };
 };

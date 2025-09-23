@@ -1,61 +1,52 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
+  Dimensions,
   Image,
   ImageBackground,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
+  Linking,
   Pressable,
   StyleSheet,
   View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import {
-  RouteProp,
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
 import * as Location from "expo-location";
 import { GetStoreGroupListResponse } from "@/api/models";
-import {
-  useStoreControllerGetStoreDetail,
-  useStoreControllerGetStoreGroupList,
-} from "@/api/store/store";
-import { ContainerStackParamList, StoreStackParamList } from "@/navigations";
+import { useStoreControllerGetStoreDetail } from "@/api/store/store";
+import { MyStoreStackParamList } from "@/navigations";
 import { useDistanceCalculator } from "@/hooks";
-import { getResponsiveSize, getStoreBusinessHours } from "@/utils";
-import { CarType, DayKey, PassType, StoreDetailItemPassPrice } from "@/types";
+import { getFontSize, getResponsiveSize, getStoreBusinessHours } from "@/utils";
+import { DayKey, PassType } from "@/types";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { GroupInfo, PassInfo, StoreInfo } from "@/components/store/Info";
-import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
 import { dayLabel, dayOrder } from "@/constants";
 import {
   clockIcon,
   defaultStoreImage,
   grayDownArrow,
   locationIcon,
+  naviIcon,
   storeNoticeIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import RenderHTML from "react-native-render-html";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { KakaoMap } from "@/components/store/KakaoMap";
 
-type StoreDetailRouteProp = RouteProp<StoreStackParamList, "StoreDetail">;
+type StoreDetailRouteProp = RouteProp<MyStoreStackParamList, "MyStoreDetail">;
 
 type BusinessHours = Partial<Record<DayKey, { open: string; close: string }>>;
 
+const { width: screenWidth } = Dimensions.get("window");
+
 const accordianHeight = getResponsiveSize(190);
 
-export const StoreDetail = () => {
+export const MyStoreDetail = () => {
   const router = useRoute<StoreDetailRouteProp>();
-
-  const containerNavigation =
-    useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const [pass, setPass] = useState<PassType | undefined>(undefined);
   const [coordinate, setCoordinate] = useState<{
@@ -77,24 +68,6 @@ export const StoreDetail = () => {
   } = useStoreControllerGetStoreDetail(router.params.storeId, {
     query: { enabled: !!router.params.storeId },
   });
-
-  const {
-    data: groupData,
-    isLoading: groupLoading,
-    isError: groupError,
-  } = useStoreControllerGetStoreGroupList(
-    {
-      storeGroupId: router.params.storeGroupId!,
-      skip,
-      take: 20,
-    },
-    {
-      query: {
-        enabled: !!router.params.storeGroupId,
-        gcTime: 0,
-      },
-    }
-  );
 
   const { getDistance } = useDistanceCalculator();
 
@@ -118,113 +91,17 @@ export const StoreDetail = () => {
     };
   });
 
-  // 이용권 선택
-  const handlePressPass = (passType: PassType) => () => {
-    if (pass === passType) {
-      return setPass(undefined);
-    }
-
-    return setPass(passType);
-  };
-
   // 영업 시간 터치
   const handleToggleBusinessHours = () => {
     setShowBusinessHours(!showBusinessHours);
   };
 
-  // 직영 매장 목록 무한스크롤
-  const handleLoadMore = () => {
-    if (groupData?.meta?.hasNextPage) {
-      setSkip(skip + 20);
-    }
-  };
+  // 티맵 열기
+  const handleOpenNavigation = () => {
+    const destination = encodeURIComponent(storeData?.store.name ?? "");
+    const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${storeData?.store.lng}&rGoY=${storeData?.store.lat}`;
 
-  // 스크롤 감지
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
-
-    if (layoutMeasurement.height + contentOffset.y >= contentSize.height - 20) {
-      handleLoadMore();
-    }
-  };
-
-  // 결제 화면으로 이동
-  const handleRoutePayment = () => {
-    if (!storeData?.store || !storeData?.store?.passPrice || !pass) return;
-
-    const price = (storeData?.store?.passPrice as any)[
-      router.params.serviceType
-    ][pass] as Record<CarType, number>;
-
-    return containerNavigation.navigate("PaymentStack", {
-      screen: "Payment",
-      params: {
-        storeId: router.params.storeId,
-        storeName: storeData?.store?.name,
-        serviceType: router.params.serviceType,
-        passType: pass,
-        price,
-        ...(storeData?.store?.mainImage
-          ? { storeImage: storeData.store.mainImage }
-          : {}),
-      },
-    });
-  };
-
-  const renderInfo = () => {
-    if (!storeData?.store) return null;
-
-    switch (tab) {
-      case "PASS":
-        return (
-          <PassInfo
-            serviceType={router.params.serviceType}
-            pass={pass}
-            onPressPass={handlePressPass}
-            standardMaxUsage={
-              storeData.store.standardMaxUsage
-                ? (storeData.store.standardMaxUsage as number)
-                : undefined
-            }
-            passPrice={storeData.store.passPrice as StoreDetailItemPassPrice}
-          />
-        );
-
-      case "STORE":
-        return (
-          <GroupInfo
-            group={group}
-            coordinate={coordinate}
-            getDistance={getDistance}
-          />
-        );
-
-      case "INFO":
-        return (
-          <StoreInfo
-            storeName={storeData.store.name}
-            lat={storeData.store.lat}
-            lng={storeData.store.lng}
-            description={storeData.store.description}
-            policy={storeData.store.policy}
-          />
-        );
-
-      default:
-        return (
-          <PassInfo
-            serviceType={router.params.serviceType}
-            pass={pass}
-            onPressPass={handlePressPass}
-            standardMaxUsage={
-              storeData.store.standardMaxUsage
-                ? (storeData.store.standardMaxUsage as number)
-                : undefined
-            }
-            passPrice={storeData.store.passPrice as StoreDetailItemPassPrice}
-          />
-        );
-    }
+    return Linking.openURL(tmapScheme);
   };
 
   const renderBusinessHours = () => {
@@ -269,19 +146,6 @@ export const StoreDetail = () => {
     );
   };
 
-  // 무한 스크롤
-  useEffect(() => {
-    if (!groupData?.data) return;
-
-    setGroup((prev) => {
-      if (skip === 0) {
-        return groupData.data;
-      }
-
-      return [...prev, ...groupData.data];
-    });
-  }, [groupData]);
-
   // 현위치 가져오기
   useFocusEffect(
     useCallback(() => {
@@ -314,7 +178,7 @@ export const StoreDetail = () => {
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
-      <ScrollView onScroll={handleScroll} scrollEventThrottle={20}>
+      <ScrollView>
         <View style={styles.top}>
           <ImageBackground
             source={
@@ -433,87 +297,85 @@ export const StoreDetail = () => {
           )}
         </View>
 
-        <View style={styles.tabArea}>
-          <Pressable
-            onPress={() => setTab("PASS")}
-            style={[
-              styles.tabButton,
-              tab === "PASS" && {
-                borderBottomWidth: 2,
-                borderBottomColor: colors.black,
-              },
-            ]}
-          >
-            <CustomText
-              color={tab === "PASS" ? colors.black : colors.gray5}
-              fontSize={16}
-              fontWeight={tab === "PASS" ? "600" : "400"}
-            >
-              이용권
-            </CustomText>
-          </Pressable>
+        <View style={styles.infoArea}>
+          <CustomText fontSize={18} fontWeight={"600"}>
+            위치
+          </CustomText>
 
-          {router.params.storeGroupId && (
-            <Pressable
-              onPress={() => setTab("STORE")}
-              style={[
-                styles.tabButton,
-                tab === "STORE" && {
-                  borderBottomWidth: 2,
-                  borderBottomColor: colors.black,
-                },
-              ]}
-            >
+          <View style={styles.map}>
+            <KakaoMap
+              lat={storeData?.store.lat}
+              lng={storeData?.store.lng}
+              height={getResponsiveSize(168)}
+            />
+          </View>
+
+          <CustomButton
+            onPress={handleOpenNavigation}
+            height={getResponsiveSize(34)}
+            marginTop={8}
+            borderWidth={1}
+            borderColor={colors.gray2}
+          >
+            <Image source={naviIcon} style={styles.naviIcon} />
+            <CustomText fontSize={13} fontWeight={"500"}>
+              길찾기
+            </CustomText>
+          </CustomButton>
+
+          {storeData?.store.description?.trim() && (
+            <View>
               <CustomText
-                color={tab === "STORE" ? colors.black : colors.gray5}
-                fontSize={16}
-                fontWeight={tab === "STORE" ? "600" : "400"}
+                marginTop={40}
+                marginBottom={12}
+                fontSize={18}
+                fontWeight={"600"}
               >
-                이용 가능 매장
+                매장 소개
               </CustomText>
-            </Pressable>
+
+              <RenderHTML
+                source={{ html: storeData?.store.description }}
+                contentWidth={screenWidth - getResponsiveSize(40)}
+                tagsStyles={{
+                  p: {
+                    fontFamily: "Pretendard-Regular",
+                    color: colors.black,
+                    fontSize: getFontSize(16),
+                    lineHeight: getFontSize(16) * 1.5,
+                  },
+                }}
+              />
+            </View>
           )}
 
-          <Pressable
-            onPress={() => setTab("INFO")}
-            style={[
-              styles.tabButton,
-              tab === "INFO" && {
-                borderBottomWidth: 2,
-                borderBottomColor: colors.black,
-              },
-            ]}
-          >
-            <CustomText
-              color={tab === "INFO" ? colors.black : colors.gray5}
-              fontSize={16}
-              fontWeight={tab === "INFO" ? "600" : "400"}
-            >
-              정보
-            </CustomText>
-          </Pressable>
+          {storeData?.store.policy?.trim() && (
+            <View>
+              <CustomText
+                marginTop={40}
+                marginBottom={12}
+                fontSize={18}
+                fontWeight={"600"}
+              >
+                매장 유의사항
+              </CustomText>
+
+              <RenderHTML
+                source={{ html: storeData.store.policy }}
+                contentWidth={screenWidth - getResponsiveSize(40)}
+                tagsStyles={{
+                  p: {
+                    fontFamily: "Pretendard-Regular",
+                    color: colors.black,
+                    fontSize: getFontSize(16),
+                    lineHeight: getFontSize(16) * 1.5,
+                  },
+                }}
+              />
+            </View>
+          )}
         </View>
-
-        {renderInfo()}
       </ScrollView>
-
-      <BottomButtonArea>
-        <CustomButton
-          onPress={handleRoutePayment}
-          isDisabled={!pass}
-          width={"100%"}
-          height={getResponsiveSize(53)}
-          backgroundColor={pass ? colors.point2 : colors.gray2}
-        >
-          <CustomText
-            color={pass ? colors.white : colors.gray5}
-            fontSize={18}
-            fontWeight={"600"}
-          >
-            이용권 구매하기
-          </CustomText>
-        </CustomButton>
-      </BottomButtonArea>
     </CustomSafeAreaView>
   );
 };
@@ -573,17 +435,22 @@ const styles = StyleSheet.create({
     marginRight: getResponsiveSize(4),
     marginLeft: getResponsiveSize(2),
   },
-  tabArea: {
-    flexDirection: "row",
+  infoArea: {
+    paddingVertical: getResponsiveSize(24),
+    paddingHorizontal: getResponsiveSize(20),
     borderTopWidth: getResponsiveSize(6),
     borderTopColor: colors.gray1,
   },
-  tabButton: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: getResponsiveSize(14),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line,
+  map: {
+    marginTop: getResponsiveSize(12),
+    borderWidth: 1,
+    borderColor: colors.gray2,
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  naviIcon: {
+    width: getResponsiveSize(16),
+    height: getResponsiveSize(16),
+    marginRight: getResponsiveSize(4),
   },
 });

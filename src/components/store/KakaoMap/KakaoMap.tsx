@@ -2,13 +2,18 @@ import { DimensionValue, StyleSheet, View } from "react-native";
 import { WebView } from "react-native-webview";
 
 interface Props {
-  lat: number;
-  lng: number;
+  lat?: number;
+  lng?: number;
   width?: DimensionValue | undefined;
   height?: DimensionValue | undefined;
 }
 
-export const KakaoMap = ({ lat, lng, width, height }: Props) => {
+export const KakaoMap = ({
+  lat = 37.5759785,
+  lng = 127.1935115,
+  width,
+  height,
+}: Props) => {
   const htmlContent = `
     <!DOCTYPE html>
     <html>

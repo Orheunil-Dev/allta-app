@@ -1,5 +1,5 @@
 import { CustomHeader } from "@/components/layout/CustomHeader";
-import { MyStoreList } from "@/screens/MyStore";
+import { MyStoreDetail, MyStoreList } from "@/screens/MyStore";
 import { formatEllipsis } from "@/utils";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -25,7 +25,7 @@ export const MyStoreStack = () => {
       />
       <Stack.Screen
         name="MyStoreDetail"
-        component={MyStoreList}
+        component={MyStoreDetail}
         options={({ route }) => ({
           header: () => (
             <CustomHeader
