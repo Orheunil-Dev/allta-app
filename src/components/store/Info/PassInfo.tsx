@@ -8,15 +8,9 @@ import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { checkIcon, grayDownArrow } from "@/assets/images";
 import { colors } from "@/styles";
-import { ServiceType } from "@/types";
+import { PassPrice, ServiceType, StoreDetailItemPassPrice } from "@/types";
 
 type PassType = "PREMIUM" | "STANDARD" | "TICKET";
-
-type PassPrice = {
-  TICKET?: Record<string, number>;
-  STANDARD?: Record<string, number>;
-  PREMIUM?: Record<string, number>;
-};
 
 interface Props {
   serviceType: ServiceType;
@@ -46,6 +40,8 @@ export const PassInfo = ({
 
     return setShowPolicy(passType);
   };
+
+  console.log(passPrice);
 
   const rotateAnimatedStyle = (passType: PassType) =>
     useAnimatedStyle(() => {

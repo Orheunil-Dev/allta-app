@@ -9,3 +9,11 @@ export type PassPrice = {
   STANDARD?: Record<string, number>;
   PREMIUM?: Record<string, number>;
 };
+
+export type StoreDetailItemPassPrice = {
+  [key in ServiceType]?: {
+    [key in PassType]?: {
+      [key in CarType]?: number;
+    };
+  };
+};
