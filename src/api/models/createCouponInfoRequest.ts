@@ -47,6 +47,8 @@ export interface CreateCouponInfoRequest {
    * @nullable
    */
   maxQuantity?: number | null;
+  /** 중복 수령 가능 여부 */
+  isMultiple: boolean;
   /** 적용 매장 ID 목록 */
   targetStoreIds?: string[];
 }

@@ -1,14 +1,22 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Payment, PaymentComplete } from "@/screens/Payment";
-import { PassType, ServiceType, CarType } from "@/types";
-import { CustomHeader } from "@/components/layout/CustomHeader";
-import { ReceiptScanError, ReceiptScanner } from "@/screens/Receipt";
+import {
+  ReceiptScanComplete,
+  ReceiptScanError,
+  ReceiptScanner,
+} from "@/screens/Receipt";
 
 export type ReceiptStackParamList = {
   ReceiptScanner: undefined;
-  ScanComplete: undefined;
   ReceiptScanError: {
     code: string;
+    message: string;
+  };
+  ReceiptScanComplete: {
+    storeName: string;
+    discountType: string;
+    discountValue: number;
+    createdAt: string;
+    expiredAt: string;
   };
 };
 
@@ -32,10 +40,10 @@ export const ReceiptStack = () => {
         }}
       />
       <Stack.Screen
-        name="ScanComplete"
-        component={PaymentComplete}
+        name="ReceiptScanComplete"
+        component={ReceiptScanComplete}
         options={{
-          header: () => <CustomHeader title="영수증 할인" />,
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

@@ -38,6 +38,7 @@ import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ReceiptStackParamList } from "@/navigations";
+import { ReceiptCouponData } from "@/api/models";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -67,13 +68,6 @@ export const ReceiptScanner = () => {
 
     const base64Data = photo.base64;
 
-    const receipt = {
-      amount: 0,
-      billNumber: "",
-      phoneNumber: "",
-      approveDate: "",
-    };
-
     try {
       const res = await axios.post(
         `${process.env.EXPO_PUBLIC_CLOVA_OCR_API_URL}`,
@@ -97,68 +91,56 @@ export const ReceiptScanner = () => {
         }
       );
 
-      console.log(res.data);
+      const raw = res.data.images[0].receipt.result;
 
-      const fields = await res.data.images[0].fields;
+      const receiptData = {
+        amount: Number(raw.totalPrice.price.text.replace(/\D/g, "")),
+        confirmNumber: raw.paymentInfo.confirmNum.text ?? "",
+        storePhoneNumber: raw.storeInfo.tel?.[0]?.text.replace(/\D/g, "") ?? "",
+        approvalDate: (
+          raw.paymentInfo.date.text + raw.paymentInfo.time.text
+        ).replace(/\D/g, ""),
+      };
 
-      for (let i = 0; i < fields.length; i++) {
-        const text = fields[i].inferText.replace(/\s/g, "").toLowerCase();
-
-        // 승인번호 추출
-        if (
-          !receipt.billNumber.length &&
-          (text.includes("승인번호") || text.includes("승인no"))
-        ) {
-          if (fields[i + 1]) {
-            receipt.billNumber = fields[i + 1].inferText.replace(/[^0-9]/g, "");
-          }
+      verifyReceipt(
+        {
+          data: {
+            ...receiptData,
+          },
+        },
+        {
+          onSuccess: (res) => {
+            if (!res.ok) {
+              return receiptNavigation.navigate("ReceiptScanError", {
+                code: res.code,
+                message: res.message,
+              });
+            }
+            if (res.ok && res.data) {
+              return receiptNavigation.navigate("ReceiptScanComplete", {
+                storeName: res.data.storeName,
+                discountType: res.data.discountType,
+                discountValue: res.data.discountValue,
+                createdAt: res.data.createdAt,
+                expiredAt: res.data.expiredAt,
+              });
+            }
+          },
+          onError: () => {
+            return receiptNavigation.navigate("ReceiptScanError", {
+              code: "001",
+              message: "영수증 인식에 실패했습니다.",
+            });
+          },
         }
-
-        // 승인시간 추출
-        if (
-          !receipt.approveDate.length &&
-          text.match(regexReceiptApproveTime)
-        ) {
-          if (fields[i - 1]) {
-            const datePart = fields[i - 1].inferText.replace(/[^0-9]/g, "");
-            const timePart = fields[i].inferText.replace(/[^0-9]/g, "");
-
-            receipt.approveDate = datePart + timePart;
-          }
-        }
-
-        // 합계금액 추출
-        if (receipt.amount === 0 && text.includes("합계금액")) {
-          if (fields[i + 1]) {
-            receipt.amount = fields[i + 1].inferText.replace(/[^0-9]/g, "");
-          }
-        }
-
-        // 매장 전화번호 추출
-        if (!receipt.phoneNumber.length) {
-          const match = text.match(regexStorePhoneNumber);
-
-          if (match) {
-            receipt.phoneNumber = match[0].replace(/-/g, "");
-          }
-        }
-
-        if (
-          receipt.amount === 0 ||
-          !receipt.phoneNumber.trim() ||
-          !receipt.billNumber.trim() ||
-          !receipt.approveDate.trim()
-        ) {
-          return receiptNavigation.navigate("ReceiptScanError", {
-            code: "001",
-          });
-        }
-        return true;
+      );
+    } catch (error: any) {
+      if (!error.code) {
+        return receiptNavigation.navigate("ReceiptScanError", {
+          code: "001",
+          message: "영수증 인식에 실패했습니다.",
+        });
       }
-
-      console.log(receipt);
-    } catch (error) {
-      console.error("OCR error:", error);
     }
   };
 

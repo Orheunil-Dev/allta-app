@@ -1,9 +1,8 @@
-import dayjs from "dayjs";
-import { closeIcon, completeIcon, grayErrorIcon } from "@/assets/images";
+import { closeIcon, grayErrorIcon } from "@/assets/images";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
-import { ContainerStackParamList, PaymentStackParamList } from "@/navigations";
+import { ContainerStackParamList, ReceiptStackParamList } from "@/navigations";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
 import {
@@ -15,10 +14,10 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
-type PaymentRouteProp = RouteProp<PaymentStackParamList, "PaymentComplete">;
+type ReceiptRouteProps = RouteProp<ReceiptStackParamList, "ReceiptScanError">;
 
 export const ReceiptScanError = () => {
-  const router = useRoute<PaymentRouteProp>();
+  const router = useRoute<ReceiptRouteProps>();
 
   const navigation = useNavigation();
 
@@ -37,6 +36,126 @@ export const ReceiptScanError = () => {
         ],
       })
     );
+  };
+
+  const renderErrorMessage = () => {
+    switch (router.params.code) {
+      case "001":
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              영수증 인식에 실패했습니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              깨끗한한 배경에 영수증을 놓고
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={16}>
+              전체가 잘 나오도록 촬영해 주세요.
+            </CustomText>
+          </View>
+        );
+
+      case "002":
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              이미 등록된 영수증입니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              해당 영수증은 이미 쿠폰이 발급되었습니다.
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={16}>
+              영수증 당 1회만 쿠폰이 발급됩니다.
+            </CustomText>
+          </View>
+        );
+
+      case "003":
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              올타 제휴 매장이 아닙니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              영수증 할인은 제휴 매장에서만 적용 가능합니다.
+            </CustomText>
+          </View>
+        );
+
+      case "004":
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              주유 할인 대상 매장이 아닙니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              해당 매장은 주유 할인 혜택을 제공하지 않습니다.
+            </CustomText>
+          </View>
+        );
+
+      case "005":
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              주유 금액이 부족합니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              주유 금액이 최소 {router.params.message}원 이상일 경우에만
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={16}>
+              할인 쿠폰이 발급됩니다.
+            </CustomText>
+          </View>
+        );
+
+      case "006":
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              주유 할인 대상 매장이 아닙니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              해당 매장은 주유 할인 혜택을 제공하지 않습니다.
+            </CustomText>
+          </View>
+        );
+
+      case "007":
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              영수증 유효기간이 지났습니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              {router.params.message}
+            </CustomText>
+          </View>
+        );
+
+      default:
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              영수증 인식에 실패했습니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              깨끗한한 배경에 영수증을 놓고
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={16}>
+              전체가 잘 나오도록 촬영해 주세요.
+            </CustomText>
+          </View>
+        );
+    }
   };
 
   return (
@@ -59,13 +178,8 @@ export const ReceiptScanError = () => {
             height: getResponsiveSize(60),
           }}
         />
-        <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-          영수증 인식에 실패했습니다.
-        </CustomText>
 
-        <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-          이용권 결제가 완료되었습니다.
-        </CustomText>
+        {renderErrorMessage()}
 
         <View style={styles.buttonArea}>
           <CustomButton
@@ -112,6 +226,9 @@ const styles = StyleSheet.create({
     gap: getResponsiveSize(12),
     backgroundColor: colors.gray1,
     borderRadius: 12,
+  },
+  errorMessage: {
+    alignItems: "center",
   },
   row: {
     flexDirection: "row",

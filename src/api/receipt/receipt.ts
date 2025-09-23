@@ -16,7 +16,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  ReceiptControllerVerifyReceiptBody
+  VerifyReceiptRequest,
+  VerifyReceiptResponse
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -27,19 +28,15 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 export const receiptControllerVerifyReceipt = (
-    receiptControllerVerifyReceiptBody: ReceiptControllerVerifyReceiptBody,
+    verifyReceiptRequest: VerifyReceiptRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
-      const formData = new FormData();
-if(receiptControllerVerifyReceiptBody.file !== undefined) {
- formData.append(`file`, receiptControllerVerifyReceiptBody.file)
- }
-
-      return customInstance<null>(
+      
+      return customInstance<VerifyReceiptResponse>(
       {url: `/receipt/verify`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData, signal
+      headers: {'Content-Type': 'application/json', },
+      data: verifyReceiptRequest, signal
     },
       options);
     }
@@ -47,8 +44,8 @@ if(receiptControllerVerifyReceiptBody.file !== undefined) {
 
 
 export const getReceiptControllerVerifyReceiptMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>, TError,{data: ReceiptControllerVerifyReceiptBody}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>, TError,{data: ReceiptControllerVerifyReceiptBody}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>, TError,{data: VerifyReceiptRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>, TError,{data: VerifyReceiptRequest}, TContext> => {
 
 const mutationKey = ['receiptControllerVerifyReceipt'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -60,7 +57,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>, {data: ReceiptControllerVerifyReceiptBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>, {data: VerifyReceiptRequest}> = (props) => {
           const {data} = props ?? {};
 
           return  receiptControllerVerifyReceipt(data,requestOptions)
@@ -72,15 +69,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type ReceiptControllerVerifyReceiptMutationResult = NonNullable<Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>>
-    export type ReceiptControllerVerifyReceiptMutationBody = ReceiptControllerVerifyReceiptBody
+    export type ReceiptControllerVerifyReceiptMutationBody = VerifyReceiptRequest
     export type ReceiptControllerVerifyReceiptMutationError = unknown
 
     export const useReceiptControllerVerifyReceipt = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>, TError,{data: ReceiptControllerVerifyReceiptBody}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>, TError,{data: VerifyReceiptRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof receiptControllerVerifyReceipt>>,
         TError,
-        {data: ReceiptControllerVerifyReceiptBody},
+        {data: VerifyReceiptRequest},
         TContext
       > => {
 

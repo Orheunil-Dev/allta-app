@@ -27,11 +27,8 @@ export interface CouponListItem {
   discountType: string;
   /** 할인 금액 */
   discountValue: number;
-  /**
-   * 만료일
-   * @nullable
-   */
-  expiredAt?: string | null;
+  /** 만료일 */
+  expiredAt: string;
   /**
    * 적용 매장 수
    * @nullable
