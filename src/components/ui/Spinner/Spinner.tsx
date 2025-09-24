@@ -1,6 +1,23 @@
 import * as Progress from "react-native-progress";
 import { colors } from "@/styles";
 
-export const Spinner = () => {
-  return <Progress.CircleSnail size={40} color={colors.white} duration={750} />;
+interface Props {
+  size?: number;
+  thickness?: number;
+  color?: string;
+}
+
+export const Spinner = ({
+  size = 40,
+  thickness = 3,
+  color = colors.white,
+}: Props) => {
+  return (
+    <Progress.CircleSnail
+      size={size}
+      color={color}
+      thickness={thickness}
+      duration={750}
+    />
+  );
 };

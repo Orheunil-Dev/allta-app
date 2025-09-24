@@ -186,3 +186,27 @@ export const formatCardCompany = (value: string) => {
 
   return cardCompanyMap[value] ?? value;
 };
+
+// 매장 전화번호 포맷팅
+export const formatStorePhoneNumber = (value: string): string => {
+  const digits = value.replace(/\D/g, "");
+
+  // 서울 번호 (2자리 지역번호)
+  if (digits.startsWith("02")) {
+    if (digits.length === 9) {
+      return digits.replace(/(\d{2})(\d{3})(\d{4})/, "$1-$2-$3");
+    } else if (digits.length === 10) {
+      return digits.replace(/(\d{2})(\d{4})(\d{4})/, "$1-$2-$3");
+    }
+  }
+  // 나머지 지역번호 (3자리 지역번호)
+  else {
+    if (digits.length === 10) {
+      return digits.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+    } else if (digits.length === 11) {
+      return digits.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    }
+  }
+
+  return value;
+};

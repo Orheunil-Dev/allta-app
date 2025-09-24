@@ -9,13 +9,9 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { colors } from "@/styles";
-import {
-  getResponsiveSize,
-  regexReceiptApproveTime,
-  regexStorePhoneNumber,
-} from "@/utils";
+import { formatStorePhoneNumber, getResponsiveSize } from "@/utils";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   cameraButton,
@@ -38,7 +34,7 @@ import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ReceiptStackParamList } from "@/navigations";
-import { ReceiptCouponData } from "@/api/models";
+import { Spinner } from "@/components/ui/Spinner";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -48,9 +44,11 @@ export const ReceiptScanner = () => {
   const receiptNavigation =
     useNavigation<NativeStackNavigationProp<ReceiptStackParamList>>();
 
+  const cameraRef = useRef<CameraView>(null);
+
   const [permission, requestPermission] = useCameraPermissions();
 
-  const cameraRef = useRef<CameraView>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     mutate: verifyReceipt,
@@ -69,6 +67,8 @@ export const ReceiptScanner = () => {
     const base64Data = photo.base64;
 
     try {
+      setIsLoading(true);
+
       const res = await axios.post(
         `${process.env.EXPO_PUBLIC_CLOVA_OCR_API_URL}`,
         {
@@ -95,8 +95,10 @@ export const ReceiptScanner = () => {
 
       const receiptData = {
         amount: Number(raw.totalPrice.price.text.replace(/\D/g, "")),
-        confirmNumber: raw.paymentInfo.confirmNum.text ?? "",
-        storePhoneNumber: raw.storeInfo.tel?.[0]?.text.replace(/\D/g, "") ?? "",
+        confirmNumber: raw.paymentInfo.confirmNum.text.replace(/\D/g, ""),
+        storePhoneNumber: formatStorePhoneNumber(
+          raw.storeInfo.tel?.[0]?.text.replace(/\D/g, "")
+        ),
         approvalDate: (
           raw.paymentInfo.date.text + raw.paymentInfo.time.text
         ).replace(/\D/g, ""),
@@ -110,6 +112,8 @@ export const ReceiptScanner = () => {
         },
         {
           onSuccess: (res) => {
+            setIsLoading(false);
+
             if (!res.ok) {
               return receiptNavigation.navigate("ReceiptScanError", {
                 code: res.code,
@@ -127,6 +131,8 @@ export const ReceiptScanner = () => {
             }
           },
           onError: () => {
+            setIsLoading(false);
+
             return receiptNavigation.navigate("ReceiptScanError", {
               code: "001",
               message: "영수증 인식에 실패했습니다.",
@@ -135,7 +141,14 @@ export const ReceiptScanner = () => {
         }
       );
     } catch (error: any) {
-      if (!error.code) {
+      setIsLoading(false);
+
+      if (error.code && error.message) {
+        return receiptNavigation.navigate("ReceiptScanError", {
+          code: error.code,
+          message: error.message,
+        });
+      } else {
         return receiptNavigation.navigate("ReceiptScanError", {
           code: "001",
           message: "영수증 인식에 실패했습니다.",
@@ -197,6 +210,12 @@ export const ReceiptScanner = () => {
 
   return (
     <SafeAreaProvider>
+      {isLoading && (
+        <View style={styles.loadingView}>
+          <Spinner size={60} thickness={5} />
+        </View>
+      )}
+
       <CameraView style={styles.cameraView} ref={cameraRef}>
         <View style={styles.frame}>
           <View style={styles.frameTop}>
@@ -274,6 +293,15 @@ export const ReceiptScanner = () => {
 };
 
 const styles = StyleSheet.create({
+  loadingView: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(38, 38, 39, 0.7)",
+    zIndex: 2,
+  },
   cameraView: {
     position: "relative",
     flex: 1,

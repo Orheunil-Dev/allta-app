@@ -120,7 +120,7 @@ export const PaymentComplete = () => {
               결제일시
             </CustomText>
             <CustomText fontSize={16}>
-              {dayjs(router.params.approvedAt).format("YYYY. MM. DD HH:mm")}
+              {dayjs(router.params.approvedAt).format("YYYY.MM.DD HH:mm")}
             </CustomText>
           </View>
 
