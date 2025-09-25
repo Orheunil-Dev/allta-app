@@ -105,14 +105,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     ["expo-secure-store"],
-    // [
-    //   "@react-native-seoul/kakao-login",
-    //   {
-    //     kakaoAppKey: "cd357339ed71156f7c21e1f0c9290306",
-    //     kotlinVersion: "2.0.21",
-    //     overrideKakaoSDKVersion: "2.22.0",
-    //   },
-    // ],
     ["expo-apple-authentication"],
   ],
   owner: "orheunil-dev",

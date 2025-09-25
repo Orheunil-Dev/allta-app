@@ -1,6 +1,5 @@
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { QrStack } from "./QrStack";
 import { MyStoreStack } from "./MyStoreStack";
 import { getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
@@ -17,10 +16,11 @@ import {
 } from "@/assets/images";
 import { MyPageStack } from "./MyPageStack";
 import { Home } from "@/screens/Home";
+import { QrScanStack } from "./QrScanStack";
 
 export type BottomTabParamList = {
   Home: undefined;
-  QrStack: undefined;
+  QrScanStack: undefined;
   MyStoreStack: undefined;
   MyPageStack: undefined;
 };
@@ -101,10 +101,11 @@ export const BottomTab = () => {
         }}
       />
       <Tab.Screen
-        name="QrStack"
-        component={QrStack}
+        name="QrScanStack"
+        component={QrScanStack}
         options={{
           title: "QR 스캔",
+          headerShown: false,
           tabBarIcon: () => (
             <Image
               source={scanIcon}

@@ -101,14 +101,14 @@ export const Home = () => {
 
           <View style={styles.mainContainer}>
             {/* 세차 추천 */}
-            {/* <View style={styles.washRecommend}>
+            <View style={styles.washRecommend}>
               <CustomText color={colors.black} fontSize={16}>
                 오늘 미세먼지 '나쁨'
               </CustomText>
               <CustomText color={colors.black} fontSize={22} fontWeight={"600"}>
                 세차하기 좋은 날이에요
               </CustomText>
-            </View> */}
+            </View>
 
             <View style={styles.mainArea}>
               {/* 자동세차 */}
@@ -170,8 +170,8 @@ export const Home = () => {
             <View style={styles.mainArea}>
               <Pressable
                 onPress={() =>
-                  containerNavigation.navigate("ReceiptStack", {
-                    screen: "ReceiptScanner",
+                  containerNavigation.navigate("ReceiptScanStack", {
+                    screen: "ReceiptScan",
                   })
                 }
                 style={styles.stores}
@@ -196,9 +196,8 @@ export const Home = () => {
 
               <Pressable
                 onPress={() =>
-                  containerNavigation.navigate("StoreStack", {
-                    screen: "StoreList",
-                    params: { serviceType: "AUTO" },
+                  containerNavigation.navigate("ReceiptScanStack", {
+                    screen: "ReceiptScan",
                   })
                 }
                 style={styles.qrScan}

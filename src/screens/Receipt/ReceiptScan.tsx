@@ -33,16 +33,16 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ReceiptStackParamList } from "@/navigations";
+import { ReceiptScanStackParamList } from "@/navigations";
 import { Spinner } from "@/components/ui/Spinner";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-export const ReceiptScanner = () => {
+export const ReceiptScan = () => {
   const navigation = useNavigation();
 
   const receiptNavigation =
-    useNavigation<NativeStackNavigationProp<ReceiptStackParamList>>();
+    useNavigation<NativeStackNavigationProp<ReceiptScanStackParamList>>();
 
   const cameraRef = useRef<CameraView>(null);
 
@@ -216,7 +216,7 @@ export const ReceiptScanner = () => {
         </View>
       )}
 
-      <CameraView style={styles.cameraView} ref={cameraRef}>
+      <CameraView ref={cameraRef} style={styles.cameraView}>
         <View style={styles.frame}>
           <View style={styles.frameTop}>
             <Image

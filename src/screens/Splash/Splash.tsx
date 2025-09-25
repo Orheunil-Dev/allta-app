@@ -1,4 +1,4 @@
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -10,9 +10,13 @@ import { useEffect, useState } from "react";
 export const Splash = () => {
   const [visible, setVisible] = useState(false);
 
+  const logoY = getResponsiveSize(80);
+
   const splashAnimatedStyle = useAnimatedStyle(() => {
+    "worklet";
+
     return {
-      marginTop: withTiming(visible ? 0 : getResponsiveSize(80), {
+      marginTop: withTiming(visible ? 0 : logoY, {
         duration: 300,
       }),
       opacity: withTiming(visible ? 1 : 0, { duration: 300 }),
@@ -20,7 +24,7 @@ export const Splash = () => {
   });
 
   useEffect(() => {
-    setVisible(true); // 마운트되면 opacity 0 → 1
+    setVisible(true);
   }, []);
 
   return (

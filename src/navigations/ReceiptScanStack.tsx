@@ -2,11 +2,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   ReceiptScanComplete,
   ReceiptScanError,
-  ReceiptScanner,
+  ReceiptScan,
 } from "@/screens/Receipt";
 
-export type ReceiptStackParamList = {
-  ReceiptScanner: undefined;
+export type ReceiptScanStackParamList = {
+  ReceiptScan: undefined;
   ReceiptScanError: {
     code: string;
     message: string;
@@ -22,12 +22,12 @@ export type ReceiptStackParamList = {
 
 const Stack = createNativeStackNavigator();
 
-export const ReceiptStack = () => {
+export const ReceiptScanStack = () => {
   return (
-    <Stack.Navigator initialRouteName="ReceiptScanner">
+    <Stack.Navigator initialRouteName="ReceiptScan">
       <Stack.Screen
-        name="ReceiptScanner"
-        component={ReceiptScanner}
+        name="ReceiptScan"
+        component={ReceiptScan}
         options={{
           headerShown: false,
         }}

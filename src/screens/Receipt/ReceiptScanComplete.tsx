@@ -2,7 +2,10 @@ import { completeIcon } from "@/assets/images";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
-import { ContainerStackParamList, ReceiptStackParamList } from "@/navigations";
+import {
+  ContainerStackParamList,
+  ReceiptScanStackParamList,
+} from "@/navigations";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
 import {
@@ -16,7 +19,7 @@ import { Image, StyleSheet, View } from "react-native";
 import dayjs from "dayjs";
 
 type ReceiptRouteProps = RouteProp<
-  ReceiptStackParamList,
+  ReceiptScanStackParamList,
   "ReceiptScanComplete"
 >;
 

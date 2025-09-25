@@ -2,7 +2,10 @@ import { closeIcon, grayErrorIcon } from "@/assets/images";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
-import { ContainerStackParamList, ReceiptStackParamList } from "@/navigations";
+import {
+  ContainerStackParamList,
+  ReceiptScanStackParamList,
+} from "@/navigations";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
 import {
@@ -14,7 +17,10 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
-type ReceiptRouteProps = RouteProp<ReceiptStackParamList, "ReceiptScanError">;
+type ReceiptRouteProps = RouteProp<
+  ReceiptScanStackParamList,
+  "ReceiptScanError"
+>;
 
 export const ReceiptScanError = () => {
   const router = useRoute<ReceiptRouteProps>();

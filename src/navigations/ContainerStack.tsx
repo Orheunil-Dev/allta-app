@@ -17,7 +17,11 @@ import { PaymentStack, PaymentStackParamList } from "./PaymentStack";
 import { CarStack, CarStackParamList } from "./CarStack";
 import { CardStack, CardStackParamList } from "./CardStack";
 import { ErrorModal } from "@/components/modal/ErrorModal";
-import { ReceiptStack, ReceiptStackParamList } from "./ReceiptStack";
+import {
+  ReceiptScanStack,
+  ReceiptScanStackParamList,
+} from "./ReceiptScanStack";
+import { QrScanStack, QrScanStackParamList } from "./QrScanStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -28,7 +32,8 @@ export type ContainerStackParamList = {
   PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
   CarStack: NavigatorScreenParams<CarStackParamList>;
   CardStack: NavigatorScreenParams<CardStackParamList>;
-  ReceiptStack: NavigatorScreenParams<ReceiptStackParamList>;
+  ReceiptScanStack: NavigatorScreenParams<ReceiptScanStackParamList>;
+  QrScanStack: NavigatorScreenParams<QrScanStackParamList>;
   Notification: undefined;
 };
 
@@ -127,8 +132,16 @@ export const ContainerStack = ({
           }}
         />
         <Stack.Screen
-          name="ReceiptStack"
-          component={ReceiptStack}
+          name="ReceiptScanStack"
+          component={ReceiptScanStack}
+          options={{
+            headerShown: false,
+            presentation: "transparentModal",
+          }}
+        />
+        <Stack.Screen
+          name="QrScanStack"
+          component={QrScanStack}
           options={{
             headerShown: false,
             presentation: "transparentModal",

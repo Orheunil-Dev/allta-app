@@ -10,7 +10,6 @@ import {
   useUserControllerSendVerificationCode,
   useUserControllerVerifyPhoneNumber,
 } from "@/api/user/user";
-import { useAuthControllerLoginBySocialId } from "@/api/auth/auth";
 import { LoginStackParamList } from "@/navigations";
 import {
   formatPhoneNumber,
@@ -85,13 +84,6 @@ export const SignUpUserInfo = () => {
     isError: createUserError,
   } = useUserControllerCreateUser();
 
-  // 로그인
-  const {
-    mutate: loginBySocialId,
-    isPending: loginBySocialIdLoading,
-    isError: loginBySocialIdError,
-  } = useAuthControllerLoginBySocialId();
-
   const handleChangeSignUpForm = (
     key: keyof typeof infoForm,
     value: string
@@ -121,10 +113,22 @@ export const SignUpUserInfo = () => {
   };
 
   const handleNext = () => {
-    return loginStackNavigation.navigate("SignUpReferral", {
-      ...route.params,
-      ...infoForm,
-    });
+    verifyPhoneNumber(
+      {
+        data: {
+          phoneNumber: infoForm.phoneNumber,
+          verificationCode,
+        },
+      },
+      {
+        onSuccess: () => {
+          return loginStackNavigation.navigate("SignUpReferral", {
+            ...route.params,
+            ...infoForm,
+          });
+        },
+      }
+    );
   };
 
   // 휴대폰번호 입력 시 자동으로 검증 요청
@@ -184,19 +188,7 @@ export const SignUpUserInfo = () => {
   // 인증코드 입력 완료 시 자동으로 검증 후 화면 이동
   useEffect(() => {
     if (verificationCode.length === 6) {
-      verifyPhoneNumber(
-        {
-          data: {
-            phoneNumber: infoForm.phoneNumber,
-            verificationCode,
-          },
-        },
-        {
-          onSuccess: () => {
-            handleNext();
-          },
-        }
-      );
+      handleNext();
     }
   }, [verificationCode]);
 
@@ -232,6 +224,12 @@ export const SignUpUserInfo = () => {
                     "phoneNumber",
                     formatPhoneNumber(value)
                   )
+                }
+                errorMessage={
+                  infoForm.phoneNumber.length === 13
+                    ? (checkPhoneNumberError as CustomError)?.message ??
+                      undefined
+                    : undefined
                 }
                 maxLength={13}
                 keyboardType="number-pad"
@@ -287,7 +285,7 @@ export const SignUpUserInfo = () => {
           </ScrollView>
 
           <CustomButton
-            onPress={() => {}}
+            onPress={handleNext}
             isDisabled={!isValid}
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
