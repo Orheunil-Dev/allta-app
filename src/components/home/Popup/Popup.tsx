@@ -21,7 +21,10 @@ export const Popup = () => {
 
   const popupRef = useRef<BottomSheetModal>(null);
 
-  const snapPoints = useMemo(() => [getResponsiveSize(380)], []);
+  const snapPoints = useMemo(
+    () => [insets.bottom + getResponsiveSize(350)],
+    []
+  );
 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
@@ -65,12 +68,7 @@ export const Popup = () => {
       backdropComponent={renderBackdrop}
       backgroundComponent={() => <View />}
     >
-      <BottomSheetView
-        style={[
-          styles.container,
-          { paddingBottom: insets.bottom + getResponsiveSize(20) },
-        ]}
-      >
+      <BottomSheetView style={styles.container}>
         <View style={styles.carouselContainer}>
           <Carousel
             data={popupData}
