@@ -93,14 +93,14 @@ export const PassInfo = ({
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={14}>
+                <CustomText color={colors.gray7} fontSize={13}>
                   한 달간 매일 세차 가능
                 </CustomText>
               </View>
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={14}>
+                <CustomText color={colors.gray7} fontSize={13}>
                   월마다 자동 결제
                 </CustomText>
               </View>
@@ -175,14 +175,14 @@ export const PassInfo = ({
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={14}>
+                <CustomText color={colors.gray7} fontSize={13}>
                   월 {standardMaxUsage}회 세차 가능
                 </CustomText>
               </View>
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={14}>
+                <CustomText color={colors.gray7} fontSize={13}>
                   합리적인 가격으로 세차 가능
                 </CustomText>
               </View>
@@ -262,14 +262,14 @@ export const PassInfo = ({
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={14}>
+                <CustomText color={colors.gray7} fontSize={13}>
                   부담 없는 단일 이용권
                 </CustomText>
               </View>
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={14}>
+                <CustomText color={colors.gray7} fontSize={13}>
                   원하는 날, 1회 세차
                 </CustomText>
               </View>
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
   },
   card: {
     paddingTop: getResponsiveSize(14),
-    paddingBottom: getResponsiveSize(10),
+    paddingBottom: getResponsiveSize(8),
     paddingHorizontal: getResponsiveSize(16),
     backgroundColor: colors.white,
     borderWidth: 1,
