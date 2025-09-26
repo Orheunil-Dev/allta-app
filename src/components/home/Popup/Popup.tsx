@@ -12,10 +12,13 @@ import { popupData } from "@/mock";
 import { colors } from "@/styles";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { POPUP_CLOSE_DATE } from "@/constants";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 export const Popup = () => {
+  const insets = useSafeAreaInsets();
+
   const popupRef = useRef<BottomSheetModal>(null);
 
   const snapPoints = useMemo(() => [getResponsiveSize(380)], []);
@@ -62,7 +65,12 @@ export const Popup = () => {
       backdropComponent={renderBackdrop}
       backgroundComponent={() => <View />}
     >
-      <BottomSheetView style={styles.container}>
+      <BottomSheetView
+        style={[
+          styles.container,
+          { paddingBottom: insets.bottom + getResponsiveSize(20) },
+        ]}
+      >
         <View style={styles.carouselContainer}>
           <Carousel
             data={popupData}

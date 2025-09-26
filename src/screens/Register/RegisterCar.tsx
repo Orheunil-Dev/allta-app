@@ -9,7 +9,6 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { SignUpTextInput } from "@/components/ui/TextInput";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { colors } from "@/styles";
@@ -19,6 +18,8 @@ import {
   useCarControllerGetCarModels,
   useCarControllerGetCarVendors,
 } from "@/api/car/car";
+import { CustomTextInput } from "@/components/ui/CustomTextInput";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -41,6 +42,8 @@ export const RegisterCar = () => {
   const brandSelectRef = useRef<BottomSheetModal>(null);
   const modelSelectRef = useRef<BottomSheetModal>(null);
 
+  const insets = useSafeAreaInsets();
+
   const [carVendor, setCarVendor] = useState<string | null>(null);
   const [registerForm, setRegisterForm] = useState({
     carVendor: "",
@@ -49,6 +52,7 @@ export const RegisterCar = () => {
     carNumber: "",
   });
 
+  // 제조사 조회
   const {
     data: carVendorsData,
     isPending: carVendorsLoading,
@@ -59,6 +63,7 @@ export const RegisterCar = () => {
     },
   });
 
+  // 모델명 조회
   const {
     data: carModelsData,
     isPending: carModelsLoading,
@@ -207,7 +212,7 @@ export const RegisterCar = () => {
               onPress={handleOpenBrandSelect}
             >
               <View pointerEvents="none">
-                <SignUpTextInput
+                <CustomTextInput
                   value={registerForm.carVendor}
                   onChangeText={() => {}}
                   editable={false}
@@ -227,7 +232,7 @@ export const RegisterCar = () => {
               onPress={handleOpenModelSelect}
             >
               <View pointerEvents="none">
-                <SignUpTextInput
+                <CustomTextInput
                   value={registerForm.carModel}
                   onChangeText={() => {}}
                   editable={false}
@@ -242,7 +247,7 @@ export const RegisterCar = () => {
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
               차량번호
             </CustomText>
-            <SignUpTextInput
+            <CustomTextInput
               value={registerForm.carNumber}
               onChangeText={(text) =>
                 handleChangeRegisterForm("carNumber", text)
@@ -255,6 +260,7 @@ export const RegisterCar = () => {
                   : undefined
               }
               placeholder="12가3456"
+              onReset={() => handleChangeRegisterForm("carNumber", "")}
             />
 
             <View style={styles.inquiry}>
@@ -275,17 +281,6 @@ export const RegisterCar = () => {
             </View>
           </ScrollView>
 
-          <Pressable onPress={handleSkipRegist}>
-            <CustomText
-              color={colors.gray7}
-              fontSize={16}
-              textAlign="center"
-              marginBottom={16}
-            >
-              건너뛰기
-            </CustomText>
-          </Pressable>
-
           <CustomButton
             onPress={handleNextStep}
             isDisabled={!isValid}
@@ -302,6 +297,24 @@ export const RegisterCar = () => {
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>
+
+      <Pressable
+        onPress={handleSkipRegist}
+        style={{
+          position: "absolute",
+          bottom: insets.bottom + getResponsiveSize(60),
+          alignSelf: "center",
+        }}
+      >
+        <CustomText
+          color={colors.gray7}
+          fontSize={16}
+          textAlign="center"
+          marginBottom={16}
+        >
+          건너뛰기
+        </CustomText>
+      </Pressable>
     </CustomSafeAreaView>
   );
 };

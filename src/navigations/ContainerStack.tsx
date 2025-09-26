@@ -99,7 +99,6 @@ export const ContainerStack = ({
           component={LoginStack}
           options={{
             headerShown: false,
-            presentation: "transparentModal",
           }}
         />
         <Stack.Screen

@@ -9,7 +9,6 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { SignUpTextInput } from "@/components/ui/TextInput";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { colors } from "@/styles";

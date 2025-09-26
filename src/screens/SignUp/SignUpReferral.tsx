@@ -26,6 +26,7 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { colors } from "@/styles";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/recoil";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type SignUpReferralRouteProp = RouteProp<LoginStackParamList, "SignUpReferral">;
 
@@ -36,6 +37,8 @@ export const SignUpReferral = () => {
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  const insets = useSafeAreaInsets();
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
@@ -190,17 +193,6 @@ export const SignUpReferral = () => {
             />
           </ScrollView>
 
-          <Pressable onPress={handleSignUp}>
-            <CustomText
-              color={colors.gray7}
-              fontSize={16}
-              textAlign="center"
-              marginBottom={16}
-            >
-              건너뛰기
-            </CustomText>
-          </Pressable>
-
           <CustomButton
             onPress={handleSignUp}
             isDisabled={!isValid}
@@ -217,6 +209,24 @@ export const SignUpReferral = () => {
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>
+
+      <Pressable
+        onPress={handleSignUp}
+        style={{
+          position: "absolute",
+          bottom: insets.bottom + getResponsiveSize(60),
+          alignSelf: "center",
+        }}
+      >
+        <CustomText
+          color={colors.gray7}
+          fontSize={16}
+          textAlign="center"
+          marginBottom={16}
+        >
+          건너뛰기
+        </CustomText>
+      </Pressable>
     </CustomSafeAreaView>
   );
 };
