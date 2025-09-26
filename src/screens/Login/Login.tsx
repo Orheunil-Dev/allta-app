@@ -32,6 +32,8 @@ import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/recoil";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { jwtDecode } from "jwt-decode";
+import { useVideoPlayer, VideoView } from "expo-video";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -39,6 +41,8 @@ export const Login = () => {
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const insets = useSafeAreaInsets();
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
@@ -55,6 +59,14 @@ export const Login = () => {
     isPending: appleLoginCallbackLoading,
     isError: appleLoginCallbackError,
   } = useAuthControllerAppleLoginCallback();
+
+  const player = useVideoPlayer(
+    require("@/assets/video/login-video.mp4"),
+    (player) => {
+      player.loop = true;
+      player.play();
+    }
+  );
 
   // 카카오 로그인
   const handleLoginKakao = async () => {
@@ -134,7 +146,7 @@ export const Login = () => {
     try {
       const GOOGLE_REDIRECT_URI = `${process.env.EXPO_PUBLIC_API_URL}/auth/google`;
       const GOOGLE_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID;
-      const redirectUri = Linking.createURL("/");
+      const redirectUri = Linking.createURL("");
 
       try {
         const result = await WebBrowser.openAuthSessionAsync(
@@ -148,6 +160,8 @@ export const Login = () => {
           const socialId = queryParams?.socialId;
           const email = queryParams?.email;
           const message = queryParams?.message;
+
+          console.log(queryParams);
 
           if (queryParams?.ok === "true") {
             loginBySocialId(
@@ -282,9 +296,12 @@ export const Login = () => {
   };
 
   return (
-    <CustomSafeAreaView edges={["top", "bottom"]}>
-      <View style={styles.container}>
-        <Pressable onPress={handlePressClose} style={styles.closeButton}>
+    <CustomSafeAreaView edges={["bottom"]}>
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <Pressable
+          onPress={handlePressClose}
+          style={[styles.closeButton, { top: insets.top }]}
+        >
           <Image
             source={closeIcon}
             style={{
@@ -301,9 +318,12 @@ export const Login = () => {
           세차를 시작하세요!
         </CustomText>
 
-        <View style={styles.image}>
-          <CustomText>이미지 들어갈 자리</CustomText>
-        </View>
+        <VideoView
+          style={styles.video}
+          player={player}
+          nativeControls={false}
+        />
+
         {/* 카카오 로그인 */}
         <CustomButton
           onPress={handleLoginKakao}
@@ -345,7 +365,7 @@ export const Login = () => {
           />
           <Text
             style={{
-              fontFamily: "Roboto-Light",
+              fontFamily: "Roboto-Medium",
               fontSize: getResponsiveSize(15),
             }}
           >
@@ -393,15 +413,14 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
-    top: getResponsiveSize(20),
     right: getResponsiveSize(20),
   },
-  image: {
+  video: {
     justifyContent: "center",
     alignItems: "center",
     width: getResponsiveSize(204),
     height: getResponsiveSize(204),
     marginTop: getResponsiveSize(16),
-    backgroundColor: colors.main,
+    marginRight: getResponsiveSize(20),
   },
 });

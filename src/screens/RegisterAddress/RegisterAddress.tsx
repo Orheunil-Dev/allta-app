@@ -19,6 +19,7 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
 import { KakaoMap } from "@/components/store/KakaoMap";
 import { colors } from "@/styles";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type RegisterAddressRouteProp = RouteProp<
   AddressStackParamList,
@@ -34,6 +35,8 @@ export const RegisterAddress = () => {
     useNavigation<NativeStackNavigationProp<AddressStackParamList>>();
 
   const queryClient = useQueryClient();
+
+  const insets = useSafeAreaInsets();
 
   const [addressForm, setAddressForm] = useState<RegisterAddresssRequest>({
     nickname: "",
@@ -133,8 +136,13 @@ export const RegisterAddress = () => {
   );
 
   return (
-    <CustomSafeAreaView edges={["bottom"]}>
-      <View style={styles.container}>
+    <CustomSafeAreaView edges={[]}>
+      <View
+        style={[
+          styles.container,
+          { paddingBottom: insets.bottom + getResponsiveSize(10) },
+        ]}
+      >
         <View style={{ flex: 1 }}>
           <KakaoMap
             width={screenWidth - getResponsiveSize(40)}

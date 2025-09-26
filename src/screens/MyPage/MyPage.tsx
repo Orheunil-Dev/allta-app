@@ -28,19 +28,24 @@ export const MyPage = () => {
   const handleLogout = async () => {
     try {
       await logout();
-    } catch (e) {}
+    } catch (e) {
+      console.log("aaaaa");
+    }
 
     await SecureStore.deleteItemAsync("accessToken");
     await SecureStore.deleteItemAsync("refreshToken");
 
-    await CookieManager.clearByName(
-      process.env.EXPO_PUBLIC_API_URL,
-      "accessToken"
-    );
-    await CookieManager.clearByName(
-      process.env.EXPO_PUBLIC_API_URL,
-      "refreshToken"
-    );
+    await CookieManager.clearAll();
+
+    // await CookieManager.clearByName(
+    //   process.env.EXPO_PUBLIC_API_URL,
+    //   "accessToken"
+    // );
+
+    // await CookieManager.clearByName(
+    //   process.env.EXPO_PUBLIC_API_URL,
+    //   "refreshToken"
+    // );
 
     return containerNavigation.navigate("LoginStack", { screen: "Login" });
   };

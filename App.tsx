@@ -31,6 +31,7 @@ export default function App() {
     "Pretendard-Bold": require("./src/assets/fonts/Pretendard-Bold.otf"),
     "Pretendard-ExtraBold": require("./src/assets/fonts/Pretendard-ExtraBold.otf"),
     "Pretendard-Black": require("./src/assets/fonts/Pretendard-Black.otf"),
+    "Roboto-Medium": require("./src/assets/fonts/Roboto-Medium.ttf"),
     "Roboto-Regular": require("./src/assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Light": require("./src/assets/fonts/Roboto-Light.ttf"),
   });
