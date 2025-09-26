@@ -10,6 +10,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import * as Font from "expo-font";
 import { StatusBar } from "expo-status-bar";
+import { SystemBars } from "react-native-edge-to-edge";
 import * as SecureStore from "expo-secure-store";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { ContainerStack } from "@/navigations";
@@ -73,7 +74,7 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ backgroundColor: "#FFFFFF" }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <KeyboardProvider>
@@ -82,6 +83,7 @@ export default function App() {
                 showLoginModal={showLoginModal}
                 setShowLoginModal={setShowLoginModal}
               />
+              <SystemBars style="dark" />
               <StatusBar style="auto" />
             </BottomSheetModalProvider>
           </KeyboardProvider>

@@ -104,7 +104,7 @@ export const StoreCard = ({
             <View style={styles.divider} />
 
             <CustomText color={colors.gray7} fontSize={14}>
-              {formatEllipsis(store.address, 14)}
+              {formatEllipsis(store.address, 13)}
             </CustomText>
           </View>
         </View>

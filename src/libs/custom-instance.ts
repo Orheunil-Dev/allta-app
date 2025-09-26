@@ -92,12 +92,13 @@ AXIOS_INSTANCE.interceptors.request.use(
         path: "/",
         httpOnly: false,
       });
-    } else {
-      await CookieManager.clearByName(
-        process.env.EXPO_PUBLIC_API_URL,
-        "accessToken"
-      );
     }
+    // else {
+    //   await CookieManager.clearByName(
+    //     process.env.EXPO_PUBLIC_API_URL,
+    //     "accessToken"
+    //   );
+    // }
 
     if (refreshToken) {
       await CookieManager.set(process.env.EXPO_PUBLIC_API_URL, {
@@ -106,12 +107,13 @@ AXIOS_INSTANCE.interceptors.request.use(
         path: "/",
         httpOnly: false,
       });
-    } else {
-      await CookieManager.clearByName(
-        process.env.EXPO_PUBLIC_API_URL,
-        "refreshToken"
-      );
     }
+    // else {
+    //   await CookieManager.clearByName(
+    //     process.env.EXPO_PUBLIC_API_URL,
+    //     "refreshToken"
+    //   );
+    // }
 
     return config;
   },

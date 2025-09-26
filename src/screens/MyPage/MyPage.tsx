@@ -7,6 +7,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { CustomText } from "@/components/ui/CustomText";
 import CookieManager from "@react-native-cookies/cookies";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 
 export const MyPage = () => {
   const containerNavigation =
@@ -45,7 +46,7 @@ export const MyPage = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <CustomSafeAreaView edges={["top"]}>
       <Text>내 정보</Text>
 
       <Pressable
@@ -61,7 +62,7 @@ export const MyPage = () => {
       <Pressable onPress={handleLogout}>
         <CustomText fontSize={20}>로그아웃</CustomText>
       </Pressable>
-    </View>
+    </CustomSafeAreaView>
   );
 };
 

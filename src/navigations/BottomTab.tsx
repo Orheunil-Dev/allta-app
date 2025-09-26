@@ -17,6 +17,7 @@ import {
 import { MyPageStack } from "./MyPageStack";
 import { Home } from "@/screens/Home";
 import { QrScanStack } from "./QrScanStack";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export type BottomTabParamList = {
   Home: undefined;
@@ -28,15 +29,14 @@ export type BottomTabParamList = {
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 export const BottomTab = () => {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tab.Navigator
       tabBar={(props) => <CustomBottomTab {...props} />}
       screenOptions={{
         tabBarStyle: {
-          height:
-            Platform.OS === "ios"
-              ? getResponsiveSize(60)
-              : getResponsiveSize(90),
+          height: getResponsiveSize(30) + insets.bottom,
           backgroundColor: colors.white,
         },
         tabBarIconStyle: {
@@ -91,10 +91,7 @@ export const BottomTab = () => {
             tabBarStyle: hideTabBar
               ? { display: "none" }
               : {
-                  height:
-                    Platform.OS === "ios"
-                      ? getResponsiveSize(60)
-                      : getResponsiveSize(90),
+                  height: getResponsiveSize(30) + insets.bottom,
                   backgroundColor: colors.white,
                 },
           };
@@ -123,6 +120,7 @@ export const BottomTab = () => {
         component={MyPageStack}
         options={{
           title: "내 정보",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
               source={focused ? blackMyIcon : whiteMyIcon}

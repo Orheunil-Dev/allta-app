@@ -177,7 +177,7 @@ export const MyStoreDetail = () => {
   );
 
   return (
-    <CustomSafeAreaView edges={["bottom"]}>
+    <CustomSafeAreaView edges={[]}>
       <ScrollView>
         <View style={styles.top}>
           <ImageBackground

@@ -9,6 +9,7 @@ import { colors } from "@/styles";
 import { CustomText } from "../CustomText";
 import { getResponsiveSize } from "@/utils";
 import { closeIcon } from "@/assets/images";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
   ref: RefObject<BottomSheetModal | null>;
@@ -27,6 +28,8 @@ export const CustomBottomSheet = ({
   onClose,
   children,
 }: Props) => {
+  const insets = useSafeAreaInsets();
+
   const snapPoints = useMemo(() => [height], [height]);
 
   const renderBackdrop = useCallback(
@@ -56,7 +59,12 @@ export const CustomBottomSheet = ({
       backdropComponent={renderBackdrop}
       backgroundComponent={() => <View />}
     >
-      <BottomSheetView style={styles.container}>
+      <BottomSheetView
+        style={[
+          styles.container,
+          { paddingBottom: insets.bottom + getResponsiveSize(20) },
+        ]}
+      >
         {hasCloseButton ? (
           <View style={styles.header}>
             <View style={styles.empty} />
@@ -96,7 +104,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "100%",
     paddingTop: getResponsiveSize(10),
-    paddingBottom: getResponsiveSize(40),
     paddingHorizontal: getResponsiveSize(20),
     backgroundColor: colors.white,
     borderTopRightRadius: 32,

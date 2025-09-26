@@ -70,7 +70,7 @@ export const CouponListBottomSheet = ({
       hasCloseButton
     >
       <View style={styles.container}>
-        <View style={styles.codeArea}>
+        {/* <View style={styles.codeArea}>
           <TextInput
             defaultValue={code}
             onChangeText={(text) => {
@@ -93,7 +93,7 @@ export const CouponListBottomSheet = ({
               쿠폰등록
             </CustomText>
           </CustomButton>
-        </View>
+        </View> */}
 
         {couponData?.data.length ? (
           <FlatList

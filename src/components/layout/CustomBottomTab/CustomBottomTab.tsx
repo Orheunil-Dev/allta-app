@@ -1,13 +1,19 @@
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { BottomTabBar, BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { colors } from "@/styles";
-import { Platform } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
+import { getResponsiveSize } from "@/utils";
 
 export const CustomBottomTab = (props: BottomTabBarProps) => {
+  const insets = useSafeAreaInsets();
+
   return (
     <SafeAreaView
-      edges={Platform.OS === "ios" ? ["bottom"] : []}
-      style={{ backgroundColor: colors.white }}
+      edges={Platform.OS === "ios" ? [] : []}
+      style={{ paddingBottom: insets.bottom, backgroundColor: colors.white }}
     >
       <BottomTabBar {...props} />
     </SafeAreaView>

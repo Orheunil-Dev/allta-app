@@ -93,14 +93,14 @@ export const PassInfo = ({
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={13}>
+                <CustomText color={colors.gray7} fontSize={14}>
                   한 달간 매일 세차 가능
                 </CustomText>
               </View>
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Image source={checkIcon} style={styles.check} />
-                <CustomText color={colors.gray7} fontSize={16}>
+                <CustomText color={colors.gray7} fontSize={14}>
                   월마다 자동 결제
                 </CustomText>
               </View>
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     paddingTop: getResponsiveSize(4),
   },
   arrow: {
-    width: getResponsiveSize(10),
-    height: getResponsiveSize(5),
+    width: getResponsiveSize(24),
+    height: getResponsiveSize(24),
   },
 });

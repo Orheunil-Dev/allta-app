@@ -30,7 +30,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       CFBundleURLTypes: [
         {
           CFBundleTypeRole: "Editor",
-          CFBundleURLSchemes: [process.env.EXPO_PUBLIC_KAKAO_APP_KEY],
+          CFBundleURLSchemes: [
+            process.env.EXPO_PUBLIC_KAKAO_APP_KEY,
+            "allta-user",
+          ],
         },
       ],
       LSApplicationQueriesSchemes: [
@@ -52,7 +55,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: "./src/assets/images/adaptive-icon.png",
       backgroundColor: "#ffffff",
     },
-    edgeToEdgeEnabled: true,
     permissions: [
       "POST_NOTIFICATIONS",
       "CAMERA",
@@ -75,6 +77,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     eas: {
       projectId: "ab52a19e-7d67-49bf-a87d-60ce99c3e048",
     },
+  },
+  updates: {
+    checkAutomatically: "ON_LOAD",
+    fallbackToCacheTimeout: 0,
+    url: "https://u.expo.dev/ab52a19e-7d67-49bf-a87d-60ce99c3e048",
   },
   plugins: [
     "expo-router",
@@ -106,6 +113,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ],
     ["expo-secure-store"],
     ["expo-apple-authentication"],
+    [
+      "react-native-edge-to-edge",
+      {
+        android: {
+          parentTheme: "Default",
+        },
+      },
+    ],
   ],
   owner: "orheunil-dev",
   // experiments: {

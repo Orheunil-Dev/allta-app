@@ -49,8 +49,6 @@ type StoreDetailRouteProp = RouteProp<StoreStackParamList, "StoreDetail">;
 
 type BusinessHours = Partial<Record<DayKey, { open: string; close: string }>>;
 
-const accordianHeight = getResponsiveSize(190);
-
 export const StoreDetail = () => {
   const router = useRoute<StoreDetailRouteProp>();
 
@@ -97,6 +95,24 @@ export const StoreDetail = () => {
   );
 
   const { getDistance } = useDistanceCalculator();
+
+  const calculateBussinessHoursHeight = () => {
+    let height = 0;
+
+    if (storeData?.store.businessHours) {
+      height +=
+        Object.keys(storeData.store.businessHours).length *
+        getResponsiveSize(23);
+    }
+
+    if (storeData?.store.breakTime) {
+      height += getResponsiveSize(25);
+    }
+
+    return height;
+  };
+
+  const accordianHeight = calculateBussinessHoursHeight();
 
   const rotateAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -554,8 +570,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray2,
   },
   arrow: {
-    width: getResponsiveSize(8),
-    height: getResponsiveSize(4),
+    width: getResponsiveSize(20),
+    height: getResponsiveSize(20),
   },
   notice: {
     flexDirection: "row",
