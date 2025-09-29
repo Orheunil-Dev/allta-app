@@ -16,9 +16,10 @@ import { Car } from "@/types";
 interface Props {
   car: Car | null;
   setCar: React.Dispatch<React.SetStateAction<Car | null>>;
+  showRegister?: boolean;
 }
 
-export const CarSelectButton = ({ car, setCar }: Props) => {
+export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -54,23 +55,19 @@ export const CarSelectButton = ({ car, setCar }: Props) => {
   }, [carData?.data]);
 
   return (
-    <View style={{ marginTop: getResponsiveSize(40) }}>
+    <View>
       <CarListBottomSheet
         ref={bottomSheetRef}
         car={car}
         setCar={setCar}
         carData={carData}
         onPressRegister={handleRouteCardRegister}
+        showRegister={showRegister}
       />
-
-      <CustomText fontSize={18} fontWeight={"600"}>
-        등록 차량
-      </CustomText>
 
       <CustomButton
         onPress={() => bottomSheetRef.current?.present()}
         height={getResponsiveSize(48)}
-        marginTop={12}
         borderWidth={1}
         borderColor={colors.line}
       >

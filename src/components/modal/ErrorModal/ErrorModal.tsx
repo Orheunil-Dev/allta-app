@@ -31,7 +31,9 @@ export const ErrorModal = () => {
           <View style={styles.modal}>
             <Image source={errorModalIcon} style={styles.errorIcon} />
 
-            <CustomText fontSize={16}>{modal.message}</CustomText>
+            <CustomText fontSize={16} textAlign="center">
+              {modal.message}
+            </CustomText>
 
             <CustomButton
               width={"100%"}

@@ -41,7 +41,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const ReceiptScan = () => {
   const navigation = useNavigation();
 
-  const receiptNavigation =
+  const receiptScanNavigation =
     useNavigation<NativeStackNavigationProp<ReceiptScanStackParamList>>();
 
   const cameraRef = useRef<CameraView>(null);
@@ -115,13 +115,13 @@ export const ReceiptScan = () => {
             setIsLoading(false);
 
             if (!res.ok) {
-              return receiptNavigation.navigate("ReceiptScanError", {
+              return receiptScanNavigation.navigate("ReceiptScanError", {
                 code: res.code,
                 message: res.message,
               });
             }
             if (res.ok && res.data) {
-              return receiptNavigation.navigate("ReceiptScanComplete", {
+              return receiptScanNavigation.navigate("ReceiptScanComplete", {
                 storeName: res.data.storeName,
                 discountType: res.data.discountType,
                 discountValue: res.data.discountValue,
@@ -133,7 +133,7 @@ export const ReceiptScan = () => {
           onError: () => {
             setIsLoading(false);
 
-            return receiptNavigation.navigate("ReceiptScanError", {
+            return receiptScanNavigation.navigate("ReceiptScanError", {
               code: "001",
               message: "영수증 인식에 실패했습니다.",
             });
@@ -144,12 +144,12 @@ export const ReceiptScan = () => {
       setIsLoading(false);
 
       if (error.code && error.message) {
-        return receiptNavigation.navigate("ReceiptScanError", {
+        return receiptScanNavigation.navigate("ReceiptScanError", {
           code: error.code,
           message: error.message,
         });
       } else {
-        return receiptNavigation.navigate("ReceiptScanError", {
+        return receiptScanNavigation.navigate("ReceiptScanError", {
           code: "001",
           message: "영수증 인식에 실패했습니다.",
         });

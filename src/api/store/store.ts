@@ -289,7 +289,65 @@ export function useStoreControllerGetMyStoreList<TData = Awaited<ReturnType<type
 
 
 
-export const storeControllerGetStoreDetail = (
+export const storeControllerRegisterStore = (
+    registerStoreRequest: RegisterStoreRequest,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<RegisterStoreResponse>(
+      {url: `/store/register`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: registerStoreRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getStoreControllerRegisterStoreMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof storeControllerRegisterStore>>, TError,{data: RegisterStoreRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof storeControllerRegisterStore>>, TError,{data: RegisterStoreRequest}, TContext> => {
+
+const mutationKey = ['storeControllerRegisterStore'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof storeControllerRegisterStore>>, {data: RegisterStoreRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  storeControllerRegisterStore(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StoreControllerRegisterStoreMutationResult = NonNullable<Awaited<ReturnType<typeof storeControllerRegisterStore>>>
+    export type StoreControllerRegisterStoreMutationBody = RegisterStoreRequest
+    export type StoreControllerRegisterStoreMutationError = unknown
+
+    export const useStoreControllerRegisterStore = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof storeControllerRegisterStore>>, TError,{data: RegisterStoreRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof storeControllerRegisterStore>>,
+        TError,
+        {data: RegisterStoreRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getStoreControllerRegisterStoreMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const storeControllerGetStoreDetail = (
     id: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
@@ -370,62 +428,3 @@ export function useStoreControllerGetStoreDetail<TData = Awaited<ReturnType<type
 
 
 
-export const storeControllerRegisterStore = (
-    registerStoreRequest: RegisterStoreRequest,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<RegisterStoreResponse>(
-      {url: `/store/register`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: registerStoreRequest, signal
-    },
-      options);
-    }
-  
-
-
-export const getStoreControllerRegisterStoreMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof storeControllerRegisterStore>>, TError,{data: RegisterStoreRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof storeControllerRegisterStore>>, TError,{data: RegisterStoreRequest}, TContext> => {
-
-const mutationKey = ['storeControllerRegisterStore'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof storeControllerRegisterStore>>, {data: RegisterStoreRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  storeControllerRegisterStore(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type StoreControllerRegisterStoreMutationResult = NonNullable<Awaited<ReturnType<typeof storeControllerRegisterStore>>>
-    export type StoreControllerRegisterStoreMutationBody = RegisterStoreRequest
-    export type StoreControllerRegisterStoreMutationError = unknown
-
-    export const useStoreControllerRegisterStore = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof storeControllerRegisterStore>>, TError,{data: RegisterStoreRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof storeControllerRegisterStore>>,
-        TError,
-        {data: RegisterStoreRequest},
-        TContext
-      > => {
-
-      const mutationOptions = getStoreControllerRegisterStoreMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    

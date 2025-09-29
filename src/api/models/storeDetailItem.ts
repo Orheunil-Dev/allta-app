@@ -69,4 +69,9 @@ export interface StoreDetailItem {
    * @nullable
    */
   holidays?: string | null;
+  /**
+   * 직영 ID
+   * @nullable
+   */
+  storeGroupId?: string | null;
 }

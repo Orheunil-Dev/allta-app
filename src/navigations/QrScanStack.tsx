@@ -1,8 +1,17 @@
-import { QrScan } from "@/screens/QrScan/QrScan";
+import { CustomHeader } from "@/components/layout/CustomHeader";
+import { QrScan, QrScanComplete, QrScanError } from "@/screens/QrScan";
+import { formatEllipsis } from "@/utils";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export type QrScanStackParamList = {
   QrScan: undefined;
+  QrScanError: {
+    storeId: string;
+  };
+  QrScanCompelete: {
+    storeId: string;
+    storeName: string;
+  };
 };
 
 const Stack = createNativeStackNavigator<QrScanStackParamList>();
@@ -16,6 +25,25 @@ export const QrScanStack = () => {
         options={{
           headerShown: false,
         }}
+      />
+      <Stack.Screen
+        name="QrScanError"
+        component={QrScanError}
+        options={{
+          header: () => <CustomHeader title="이용권 확인" showCloseButton />,
+        }}
+      />
+      <Stack.Screen
+        name="QrScanCompelete"
+        component={QrScanComplete}
+        options={({ route }) => ({
+          header: () => (
+            <CustomHeader
+              title={formatEllipsis(route.params.storeName, 12)}
+              showBackButton
+            />
+          ),
+        })}
       />
     </Stack.Navigator>
   );

@@ -7,7 +7,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ContainerStackParamList } from "@/navigations";
+import { BottomTabParamList, ContainerStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import {
@@ -28,6 +28,9 @@ import { StoreRecommend } from "@/components/home/StoreRecommend";
 export const Home = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const bottomTabNavigation =
+    useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
 
@@ -196,8 +199,8 @@ export const Home = () => {
 
               <Pressable
                 onPress={() =>
-                  containerNavigation.navigate("ReceiptScanStack", {
-                    screen: "ReceiptScan",
+                  bottomTabNavigation.navigate("QrScanStack", {
+                    screen: "QrScan",
                   })
                 }
                 style={styles.qrScan}

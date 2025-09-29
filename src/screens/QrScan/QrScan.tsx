@@ -30,6 +30,9 @@ import Animated, {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { QrScanStackParamList } from "@/navigations";
 import { Spinner } from "@/components/ui/Spinner";
+import { usePassControllerVerifyQrCode } from "@/api/pass/pass";
+import { errorModalAtom } from "@/recoil";
+import { useSetAtom } from "jotai";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -43,7 +46,15 @@ export const QrScan = () => {
 
   const [permission, requestPermission] = useCameraPermissions();
 
+  const setErrorModal = useSetAtom(errorModalAtom);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const {
+    mutate: verifyQrCode,
+    isError: verifyQrCodeError,
+    isPending: verifyQrCodeLoading,
+  } = usePassControllerVerifyQrCode();
 
   // 카메라 및 앨범 권한 확인
   const checkPermissions = async () => {
@@ -72,6 +83,46 @@ export const QrScan = () => {
         requestPermission();
       }
     }
+  };
+
+  // QR코드 스캔
+  const scanQrCode = (id: string) => {
+    verifyQrCode(
+      {
+        data: {
+          id,
+        },
+      },
+      {
+        onSuccess: (res) => {
+          if (!res.ok) {
+            if (res.code === "002") {
+              return qrScanNavigation.navigate("QrScanError", {
+                storeId: id,
+              });
+            }
+
+            return setErrorModal({
+              visible: true,
+              message: "유효하지 않은 QR입니다.\nQR코드를 다시 확인해주세요.",
+            });
+          }
+
+          if (res.ok) {
+            return qrScanNavigation.navigate("QrScanCompelete", {
+              storeId: id,
+              storeName: res.storeName,
+            });
+          }
+        },
+        onError: (error: any) => {
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "QR코드 스캔에 실패했습니다.",
+          });
+        },
+      }
+    );
   };
 
   // 오버레이 애니메이션
@@ -108,6 +159,11 @@ export const QrScan = () => {
         ref={cameraRef}
         barcodeScannerSettings={{
           barcodeTypes: ["qr"],
+        }}
+        onBarcodeScanned={({ data }) => {
+          if (!data) return;
+
+          scanQrCode(data);
         }}
         style={styles.cameraView}
       >

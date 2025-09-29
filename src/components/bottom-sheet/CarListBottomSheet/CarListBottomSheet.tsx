@@ -16,6 +16,7 @@ interface Props {
   setCar: React.Dispatch<React.SetStateAction<Car | null>>;
   carData: GetCarListResponse | undefined;
   onPressRegister: () => void;
+  showRegister?: boolean;
 }
 
 export const CarListBottomSheet = ({
@@ -24,6 +25,7 @@ export const CarListBottomSheet = ({
   setCar,
   carData,
   onPressRegister,
+  showRegister,
 }: Props) => {
   // 차량 선택
   const handleSelectCar = (value: Car) => () => {
@@ -99,17 +101,19 @@ export const CarListBottomSheet = ({
         )}
       </View>
 
-      <CustomButton
-        onPress={onPressRegister}
-        width={"100%"}
-        height={getResponsiveSize(53)}
-        marginTop={20}
-        backgroundColor={colors.main}
-      >
-        <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-          차량 추가하기
-        </CustomText>
-      </CustomButton>
+      {showRegister && (
+        <CustomButton
+          onPress={onPressRegister}
+          width={"100%"}
+          height={getResponsiveSize(53)}
+          marginTop={20}
+          backgroundColor={colors.main}
+        >
+          <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
+            차량 추가하기
+          </CustomText>
+        </CustomButton>
+      )}
     </CustomBottomSheet>
   );
 };

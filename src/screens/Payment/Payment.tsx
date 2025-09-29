@@ -187,6 +187,15 @@ export const Payment = () => {
         />
 
         {/* 차량 선택 */}
+        <CustomText
+          marginTop={40}
+          marginBottom={12}
+          fontSize={18}
+          fontWeight={"600"}
+        >
+          등록 차량
+        </CustomText>
+
         <CarSelectButton car={car} setCar={setCar} />
 
         {/* 카드 선택 */}
