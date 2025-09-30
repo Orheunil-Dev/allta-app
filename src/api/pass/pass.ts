@@ -25,6 +25,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetAvailablePassesResponse,
   PassControllerGetAvailablePassesParams,
   UseSubscriptionRequest,
   UseSubscriptionResponse,
@@ -47,7 +48,7 @@ export const passControllerGetAvailablePasses = (
 ) => {
       
       
-      return customInstance<null>(
+      return customInstance<GetAvailablePassesResponse>(
       {url: `/pass/available`, method: 'GET',
         params, signal
     },

@@ -21,6 +21,7 @@ export { default as checkIcon } from "./check-icon.png";
 export { default as completeIcon } from "./complete-icon.png";
 export { default as grayErrorIcon } from "./gray-error-icon.png";
 export { default as errorModalIcon } from "./error-modal-icon.png";
+export { default as uncheckedIconGray2 } from "./unchecked-icon-gray2.png";
 
 // 스플래쉬
 export { default as splashIamge } from "./splash-image.png";

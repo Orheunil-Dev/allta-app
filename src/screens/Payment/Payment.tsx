@@ -277,6 +277,7 @@ export const Payment = () => {
           </CustomButton>
         </View>
       </ScrollView>
+
       <BottomButtonArea>
         <CustomButton
           isDisabled={!isValid || purchasePassLoading}

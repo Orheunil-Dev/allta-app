@@ -210,3 +210,11 @@ export const formatStorePhoneNumber = (value: string): string => {
 
   return value;
 };
+
+// 영수증 승인 날짜 포맷팅
+export const formatApprovalDate = (date: string, time: string): string => {
+  const dateFormat = date.length === 6 ? `20${date}` : date;
+  const timeFormat = time.length === 4 ? `${time}00` : time;
+
+  return dateFormat + timeFormat;
+};

@@ -1,5 +1,10 @@
 import { CustomHeader } from "@/components/layout/CustomHeader";
-import { QrScan, QrScanComplete, QrScanError } from "@/screens/QrScan";
+import {
+  QrScan,
+  QrScanComplete,
+  QrScanError,
+  UsePassComplete,
+} from "@/screens/QrScan";
 import { formatEllipsis } from "@/utils";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -12,6 +17,13 @@ export type QrScanStackParamList = {
   QrScanCompelete: {
     storeId: string;
     storeName: string;
+  };
+  UsePassCompelete: {
+    passType: string;
+    serviceType: string;
+    approvedAt: string;
+    storeName: string;
+    carNumber: string;
   };
 };
 
@@ -45,6 +57,13 @@ export const QrScanStack = () => {
             />
           ),
         })}
+      />
+      <Stack.Screen
+        name="UsePassCompelete"
+        component={UsePassComplete}
+        options={{
+          header: () => <CustomHeader title="" showCloseButton />,
+        }}
       />
     </Stack.Navigator>
   );

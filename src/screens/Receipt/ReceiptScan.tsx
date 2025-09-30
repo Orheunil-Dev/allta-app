@@ -11,7 +11,11 @@ import {
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { colors } from "@/styles";
-import { formatStorePhoneNumber, getResponsiveSize } from "@/utils";
+import {
+  formatApprovalDate,
+  formatStorePhoneNumber,
+  getResponsiveSize,
+} from "@/utils";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   cameraButton,
@@ -93,15 +97,18 @@ export const ReceiptScan = () => {
 
       const raw = res.data.images[0].receipt.result;
 
+      const approvalDate = formatApprovalDate(
+        raw.paymentInfo.date.text.replace(/\D/g, ""),
+        raw.paymentInfo.time.text
+      ).replace(/\D/g, "");
+
       const receiptData = {
         amount: Number(raw.totalPrice.price.text.replace(/\D/g, "")),
         confirmNumber: raw.paymentInfo.confirmNum.text.replace(/\D/g, ""),
         storePhoneNumber: formatStorePhoneNumber(
           raw.storeInfo.tel?.[0]?.text.replace(/\D/g, "")
         ),
-        approvalDate: (
-          raw.paymentInfo.date.text + raw.paymentInfo.time.text
-        ).replace(/\D/g, ""),
+        approvalDate,
       };
 
       verifyReceipt(
