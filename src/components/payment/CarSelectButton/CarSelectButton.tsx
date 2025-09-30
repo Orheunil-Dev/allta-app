@@ -33,8 +33,8 @@ export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
     },
   });
 
-  // 카드등록
-  const handleRouteCardRegister = () => {
+  // 차량 등록
+  const handleRouteCarRegister = () => {
     bottomSheetRef.current?.close();
 
     return containerNavigation.navigate("CarStack", {
@@ -61,7 +61,7 @@ export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
         car={car}
         setCar={setCar}
         carData={carData}
-        onPressRegister={handleRouteCardRegister}
+        onPressRegister={handleRouteCarRegister}
         showRegister={showRegister}
       />
 

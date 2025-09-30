@@ -29,12 +29,9 @@ export const CarListBottomSheet = ({
 }: Props) => {
   // 차량 선택
   const handleSelectCar = (value: Car) => () => {
-    if (car?.id === value.id) {
-      return;
-    } else {
-      setCar(value);
-      return ref?.current?.close();
-    }
+    setCar(value);
+
+    return ref?.current?.close();
   };
 
   const handleClose = () => {
