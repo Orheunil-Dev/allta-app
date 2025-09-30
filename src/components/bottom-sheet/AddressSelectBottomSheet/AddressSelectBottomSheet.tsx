@@ -1,4 +1,11 @@
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Linking,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
 import * as Location from "expo-location";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { getResponsiveSize } from "@/utils";
@@ -73,14 +80,34 @@ export const AddressSelectBottomSheet = ({
 
   // 현재 위치로 설정
   const setCurrentLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    let { status, canAskAgain } =
+      await Location.requestForegroundPermissionsAsync();
 
     if (status !== "granted") {
-      return onClose();
+      if (canAskAgain) {
+        const res = await Location.requestForegroundPermissionsAsync();
+
+        status = res.status;
+      }
+
+      if (status !== "granted") {
+        Alert.alert(
+          "위치정보 이용에 대한 엑세스 권한이 없습니다",
+          "앱 설정에서 엑세스 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          [
+            { text: "닫기", style: "cancel", onPress: onClose },
+            {
+              text: "설정",
+              onPress: () => Linking.openSettings(),
+            },
+          ]
+        );
+        return;
+      }
     }
 
     const loc = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
+      accuracy: Location.Accuracy.Low,
     });
 
     setCoordinate({

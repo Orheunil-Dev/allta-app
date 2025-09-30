@@ -2,7 +2,7 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { formatEllipsis, getResponsiveSize } from "@/utils";
 import { useCallback, useEffect, useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Alert, Image, Linking, StyleSheet, View } from "react-native";
 import axios from "axios";
 import { FlatList, Pressable } from "react-native-gesture-handler";
 import { colors } from "@/styles";
@@ -30,14 +30,41 @@ export const SearchAddress = () => {
   const [addresses, setAddresses] = useState<Address[]>([]);
 
   const setCurrentLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    let { status, canAskAgain } =
+      await Location.requestForegroundPermissionsAsync();
 
     if (status !== "granted") {
-      return;
+      if (canAskAgain) {
+        const res = await Location.requestForegroundPermissionsAsync();
+
+        status = res.status;
+      }
+
+      if (status !== "granted") {
+        Alert.alert(
+          "위치정보 이용에 대한 엑세스 권한이 없습니다",
+          "앱 설정에서 엑세스 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          [
+            {
+              text: "닫기",
+              style: "cancel",
+              onPress: () => {
+                return;
+              },
+            },
+            {
+              text: "설정",
+              onPress: () => Linking.openSettings(),
+            },
+          ]
+        );
+
+        return;
+      }
     }
 
     const loc = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
+      accuracy: Location.Accuracy.Low,
     });
 
     return addressNavigation.navigate("RegisterAddress", {
