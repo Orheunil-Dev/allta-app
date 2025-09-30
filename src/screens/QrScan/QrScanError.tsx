@@ -1,5 +1,5 @@
 import { useStoreControllerGetStoreDetail } from "@/api/store/store";
-import { closeIcon, grayErrorIcon } from "@/assets/images";
+import { grayErrorIcon } from "@/assets/images";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
@@ -13,7 +13,7 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
 type QrScanRouteProps = RouteProp<QrScanStackParamList, "QrScanError">;
 
@@ -88,6 +88,51 @@ export const QrScanError = () => {
     );
   };
 
+  const renderErrorMessage = () => {
+    switch (router.params.code) {
+      case "001":
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              유효하지 않은 QR코드입니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              QR코드를 다시 확인해주세요.
+            </CustomText>
+          </View>
+        );
+
+      case "002":
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              이용 가능한 이용권이 없습니다.
+            </CustomText>
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              해당 주유소에서 사용할 수 있는 이용권이 없습니다.
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={16}>
+              이용권을 구매하거나, 다른 매장을 이용해 주세요.
+            </CustomText>
+          </View>
+        );
+
+      default:
+        return (
+          <View style={styles.errorMessage}>
+            <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
+              QR스캔 중 에러가 발생했습니다.
+            </CustomText>
+
+            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
+              QR코드를 다시 확인해주세요.
+            </CustomText>
+          </View>
+        );
+    }
+  };
+
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <View style={styles.container}>
@@ -99,33 +144,39 @@ export const QrScanError = () => {
           }}
         />
 
-        <View style={styles.errorMessage}>
-          <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-            사용 가능한 이용권이 없습니다.
-          </CustomText>
+        {renderErrorMessage()}
 
-          <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-            해당 주유소에서 사용할 수 있는 이용권이 없습니다.
-          </CustomText>
-          <CustomText color={colors.gray7} fontSize={16}>
-            이용권을 구매하거나, 다른 매장을 이용해 주세요.
-          </CustomText>
-        </View>
-
-        <View style={styles.buttonArea}>
-          <CustomButton
-            onPress={handleRouteStoreDetail}
-            flex={1}
-            height={getResponsiveSize(53)}
-            backgroundColor={colors.white}
-            borderColor={colors.gray2}
-            borderWidth={1}
-          >
-            <CustomText fontSize={18} fontWeight={"600"}>
-              이용권 구매하러 가기
-            </CustomText>
-          </CustomButton>
-        </View>
+        {router.params.code === "002" ? (
+          <View style={styles.buttonArea}>
+            <CustomButton
+              onPress={handleRouteStoreDetail}
+              flex={1}
+              height={getResponsiveSize(53)}
+              backgroundColor={colors.white}
+              borderColor={colors.gray2}
+              borderWidth={1}
+            >
+              <CustomText fontSize={18} fontWeight={"600"}>
+                이용권 구매하러 가기
+              </CustomText>
+            </CustomButton>
+          </View>
+        ) : (
+          <View style={styles.buttonArea}>
+            <CustomButton
+              onPress={() => navigation.goBack()}
+              flex={1}
+              height={getResponsiveSize(53)}
+              backgroundColor={colors.white}
+              borderColor={colors.gray2}
+              borderWidth={1}
+            >
+              <CustomText fontSize={18} fontWeight={"600"}>
+                다시 촬영하기
+              </CustomText>
+            </CustomButton>
+          </View>
+        )}
       </View>
     </CustomSafeAreaView>
   );
@@ -139,6 +190,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingHorizontal: getResponsiveSize(20),
+    paddingBottom: getResponsiveSize(100),
   },
   closeButton: {
     position: "absolute",

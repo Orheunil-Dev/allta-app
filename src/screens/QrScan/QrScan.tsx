@@ -31,8 +31,6 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { QrScanStackParamList } from "@/navigations";
 import { Spinner } from "@/components/ui/Spinner";
 import { usePassControllerVerifyQrCode } from "@/api/pass/pass";
-import { errorModalAtom } from "@/recoil";
-import { useSetAtom } from "jotai";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -45,8 +43,6 @@ export const QrScan = () => {
   const cameraRef = useRef<CameraView>(null);
 
   const [permission, requestPermission] = useCameraPermissions();
-
-  const setErrorModal = useSetAtom(errorModalAtom);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -96,15 +92,9 @@ export const QrScan = () => {
       {
         onSuccess: (res) => {
           if (!res.ok) {
-            if (res.code === "002") {
-              return qrScanNavigation.navigate("QrScanError", {
-                storeId: id,
-              });
-            }
-
-            return setErrorModal({
-              visible: true,
-              message: "유효하지 않은 QR입니다.\nQR코드를 다시 확인해주세요.",
+            return qrScanNavigation.navigate("QrScanError", {
+              code: res.code,
+              storeId: id,
             });
           }
 
@@ -116,9 +106,9 @@ export const QrScan = () => {
           }
         },
         onError: (error: any) => {
-          setErrorModal({
-            visible: true,
-            message: error?.message ?? "QR코드 스캔에 실패했습니다.",
+          return qrScanNavigation.navigate("QrScanError", {
+            code: "",
+            storeId: id,
           });
         },
       }

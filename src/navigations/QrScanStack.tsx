@@ -7,6 +7,7 @@ export type QrScanStackParamList = {
   QrScan: undefined;
   QrScanError: {
     storeId: string;
+    code: string;
   };
   QrScanCompelete: {
     storeId: string;

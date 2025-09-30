@@ -16,6 +16,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type ReceiptRouteProps = RouteProp<
   ReceiptScanStackParamList,
@@ -29,6 +30,8 @@ export const ReceiptScanError = () => {
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const insets = useSafeAreaInsets();
 
   const handleRouteHome = () => {
     return containerNavigation.dispatch(
@@ -165,44 +168,45 @@ export const ReceiptScanError = () => {
   };
 
   return (
-    <CustomSafeAreaView edges={["top", "bottom"]}>
-      <View style={styles.container}>
-        <Pressable onPress={handleRouteHome} style={styles.closeButton}>
-          <Image
-            source={closeIcon}
-            style={{
-              width: getResponsiveSize(28),
-              height: getResponsiveSize(28),
-            }}
-          />
-        </Pressable>
-
+    <View style={styles.container}>
+      <Pressable
+        onPress={handleRouteHome}
+        style={[styles.closeButton, { top: insets.top }]}
+      >
         <Image
-          source={grayErrorIcon}
+          source={closeIcon}
           style={{
-            width: getResponsiveSize(60),
-            height: getResponsiveSize(60),
+            width: getResponsiveSize(28),
+            height: getResponsiveSize(28),
           }}
         />
+      </Pressable>
 
-        {renderErrorMessage()}
+      <Image
+        source={grayErrorIcon}
+        style={{
+          width: getResponsiveSize(60),
+          height: getResponsiveSize(60),
+        }}
+      />
 
-        <View style={styles.buttonArea}>
-          <CustomButton
-            onPress={() => navigation.goBack()}
-            flex={1}
-            height={getResponsiveSize(53)}
-            backgroundColor={colors.white}
-            borderColor={colors.gray2}
-            borderWidth={1}
-          >
-            <CustomText fontSize={18} fontWeight={"600"}>
-              다시 촬영하기
-            </CustomText>
-          </CustomButton>
-        </View>
+      {renderErrorMessage()}
+
+      <View style={styles.buttonArea}>
+        <CustomButton
+          onPress={() => navigation.goBack()}
+          flex={1}
+          height={getResponsiveSize(53)}
+          backgroundColor={colors.white}
+          borderColor={colors.gray2}
+          borderWidth={1}
+        >
+          <CustomText fontSize={18} fontWeight={"600"}>
+            다시 촬영하기
+          </CustomText>
+        </CustomButton>
       </View>
-    </CustomSafeAreaView>
+    </View>
   );
 };
 
@@ -214,10 +218,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingHorizontal: getResponsiveSize(20),
+    backgroundColor: colors.white,
   },
   closeButton: {
     position: "absolute",
-    top: getResponsiveSize(20),
     right: getResponsiveSize(20),
   },
   buttonArea: {
