@@ -59,8 +59,8 @@ export const QrScan = () => {
     if (permission.status !== "granted") {
       if (!permission.canAskAgain) {
         Alert.alert(
-          "카메라 이용에 대한 엑세스 권한이 없습니다",
-          "앱 설정에서 엑세스 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          "카메라 접근 권한이 없습니다",
+          "앱 설정에서 카메라 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
           [
             {
               text: "취소",

@@ -11,14 +11,9 @@ import {
 } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { colors } from "@/styles";
-import {
-  formatApprovalDate,
-  formatStorePhoneNumber,
-  getResponsiveSize,
-} from "@/utils";
+import { getResponsiveSize } from "@/utils";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
-  cameraButton,
   receptFrame1,
   receptFrame2,
   receptFrame3,
@@ -32,13 +27,11 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useReceiptControllerVerifyReceipt } from "@/api/receipt/receipt";
-import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
-import dayjs from "dayjs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ReceiptScanStackParamList } from "@/navigations";
 import { Spinner } from "@/components/ui/Spinner";
+import { ReceiptUploadButton } from "@/components/receipt/ReceiptUploadButton";
+import { ReceiptPhotoButton } from "@/components/receipt/ReceiptPhotoButton";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -54,116 +47,6 @@ export const ReceiptScan = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const {
-    mutate: verifyReceipt,
-    isPending: verifyReceiptLoading,
-    isError: verifyReceiptError,
-  } = useReceiptControllerVerifyReceipt();
-
-  // 영수증 촬영
-  const handleTakePhoto = async () => {
-    if (!cameraRef.current) return;
-
-    const photo = await cameraRef.current.takePictureAsync({
-      base64: true,
-    });
-
-    const base64Data = photo.base64;
-
-    try {
-      setIsLoading(true);
-
-      const res = await axios.post(
-        `${process.env.EXPO_PUBLIC_CLOVA_OCR_API_URL}`,
-        {
-          version: "V2",
-          requestId: uuidv4(),
-          timestamp: dayjs().format("YYYYMMDDHHmmss"),
-          images: [
-            {
-              format: "jpg",
-              name: "test",
-              data: base64Data,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-OCR-SECRET": process.env.EXPO_PUBLIC_CLOVA_OCR_SECRET_KEY,
-          },
-        }
-      );
-
-      const raw = res.data.images[0].receipt.result;
-
-      const approvalDate = formatApprovalDate(
-        raw.paymentInfo.date.text.replace(/\D/g, ""),
-        raw.paymentInfo.time.text
-      ).replace(/\D/g, "");
-
-      const receiptData = {
-        amount: Number(raw.totalPrice.price.text.replace(/\D/g, "")),
-        confirmNumber: raw.paymentInfo.confirmNum.text.replace(/\D/g, ""),
-        storePhoneNumber: formatStorePhoneNumber(
-          raw.storeInfo.tel?.[0]?.text.replace(/\D/g, "")
-        ),
-        approvalDate,
-      };
-
-      verifyReceipt(
-        {
-          data: {
-            ...receiptData,
-          },
-        },
-        {
-          onSuccess: (res) => {
-            setIsLoading(false);
-
-            if (!res.ok) {
-              return receiptScanNavigation.navigate("ReceiptScanError", {
-                code: res.code,
-                message: res.message,
-              });
-            }
-            if (res.ok && res.data) {
-              return receiptScanNavigation.navigate("ReceiptScanComplete", {
-                storeName: res.data.storeName,
-                discountType: res.data.discountType,
-                discountValue: res.data.discountValue,
-                createdAt: res.data.createdAt,
-                expiredAt: res.data.expiredAt,
-              });
-            }
-          },
-          onError: () => {
-            setIsLoading(false);
-
-            return receiptScanNavigation.navigate("ReceiptScanError", {
-              code: "001",
-              message: "영수증 인식에 실패했습니다.",
-            });
-          },
-        }
-      );
-    } catch (error: any) {
-      setIsLoading(false);
-
-      if (error.code && error.message) {
-        return receiptScanNavigation.navigate("ReceiptScanError", {
-          code: error.code,
-          message: error.message,
-        });
-      } else {
-        return receiptScanNavigation.navigate("ReceiptScanError", {
-          code: "001",
-          message: "영수증 인식에 실패했습니다.",
-        });
-      }
-    }
-  };
-
   // 카메라 권한 확인
   const checkCameraPermission = async () => {
     if (!permission) return;
@@ -171,16 +54,16 @@ export const ReceiptScan = () => {
     if (permission.status !== "granted") {
       if (!permission.canAskAgain) {
         Alert.alert(
-          "카메라 이용에 대한 엑세스 권한이 없습니다",
-          "앱 설정에서 엑세스 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          "카메라 접근 권한이 없습니다",
+          "앱 설정에서 카메라 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
           [
             {
-              text: "취소",
+              text: "닫기",
               style: "cancel",
               onPress: () => navigation.goBack(),
             },
             {
-              text: "설정 열기",
+              text: "설정",
               onPress: () => {
                 Linking.openSettings();
               },
@@ -291,15 +174,17 @@ export const ReceiptScan = () => {
                 />
               </Pressable>
 
-              <Pressable onPress={handleTakePhoto} style={styles.cameraButton}>
-                <Image
-                  source={cameraButton}
-                  style={{
-                    width: getResponsiveSize(66),
-                    height: getResponsiveSize(66),
-                  }}
-                />
-              </Pressable>
+              <ReceiptPhotoButton
+                cameraRef={cameraRef}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                receiptScanNavigation={receiptScanNavigation}
+              />
+
+              <ReceiptUploadButton
+                setIsLoading={setIsLoading}
+                receiptScanNavigation={receiptScanNavigation}
+              />
             </View>
           </SafeAreaView>
         </CameraView>
