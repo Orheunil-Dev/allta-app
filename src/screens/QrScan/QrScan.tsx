@@ -9,7 +9,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -20,7 +20,7 @@ import {
   receptFrame4,
   whiteCloseIcon,
 } from "@/assets/images";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -52,30 +52,31 @@ export const QrScan = () => {
     isPending: verifyQrCodeLoading,
   } = usePassControllerVerifyQrCode();
 
-  // 카메라 및 앨범 권한 확인
-  const checkPermissions = async () => {
-    if (!permission) return; // 권한 정보가 없으면 리턴
+  // 카메라 권한 확인
+  const checkCameraPermission = async () => {
+    if (!permission) return;
 
     if (permission.status !== "granted") {
-      // 권한이 거부되었을 때
       if (!permission.canAskAgain) {
-        // 권한을 다시 물어볼 수 없을 때 설정을 엽니다.
         Alert.alert(
-          "권한 필요",
-          "앱 설정에서 카메라 권한을 변경해주세요.",
+          "카메라 이용에 대한 엑세스 권한이 없습니다",
+          "앱 설정에서 엑세스 권한을 허용할 수 있습니다. 이동하시겠습니까?",
           [
-            { text: "취소", style: "cancel" },
+            {
+              text: "취소",
+              style: "cancel",
+              onPress: () => navigation.goBack(),
+            },
             {
               text: "설정 열기",
               onPress: () => {
-                Linking.openSettings(); // 설정을 여는 기능
+                Linking.openSettings();
               },
             },
           ],
           { cancelable: false }
         );
       } else {
-        // 권한을 다시 요청할 수 있을 때
         requestPermission();
       }
     }
@@ -122,9 +123,15 @@ export const QrScan = () => {
     opacity: overlayOpacity.value,
   }));
 
-  useEffect(() => {
-    checkPermissions(); // 컴포넌트가 마운트될 때 권한 상태 확인
-  }, [permission]);
+  useFocusEffect(
+    useCallback(() => {
+      const checkPermission = async () => {
+        await checkCameraPermission();
+      };
+
+      checkPermission();
+    }, [permission])
+  );
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -138,83 +145,85 @@ export const QrScan = () => {
   }, []);
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ backgroundColor: colors.black }}>
       {isLoading && (
         <View style={styles.loadingView}>
           <Spinner size={60} thickness={5} />
         </View>
       )}
 
-      <CameraView
-        ref={cameraRef}
-        barcodeScannerSettings={{
-          barcodeTypes: ["qr"],
-        }}
-        onBarcodeScanned={({ data }) => {
-          if (!data) return;
+      {permission?.status === "granted" && (
+        <CameraView
+          ref={cameraRef}
+          barcodeScannerSettings={{
+            barcodeTypes: ["qr"],
+          }}
+          onBarcodeScanned={({ data }) => {
+            if (!data) return;
 
-          scanQrCode(data);
-        }}
-        style={styles.cameraView}
-      >
-        <View style={styles.frame}>
-          <View style={styles.frameTop}>
-            <Image
-              source={receptFrame1}
-              style={{
-                width: getResponsiveSize(32),
-                height: getResponsiveSize(32),
-              }}
-            />
-            <Image
-              source={receptFrame2}
-              style={{
-                width: getResponsiveSize(32),
-                height: getResponsiveSize(32),
-              }}
-            />
-          </View>
-          <View style={styles.frameBottom}>
-            <Image
-              source={receptFrame3}
-              style={{
-                width: getResponsiveSize(32),
-                height: getResponsiveSize(32),
-              }}
-            />
-            <Image
-              source={receptFrame4}
-              style={{
-                width: getResponsiveSize(32),
-                height: getResponsiveSize(32),
-              }}
-            />
-          </View>
-        </View>
-
-        <Animated.View style={[styles.overlay, overlayAnimatedStyle]}>
-          <CustomText color={colors.white} fontSize={20} fontWeight={"600"}>
-            매장의 QR코드를 스캔해주세요
-          </CustomText>
-        </Animated.View>
-
-        <SafeAreaView edges={["top"]}>
-          <View style={styles.container}>
-            <Pressable
-              onPress={() => navigation.goBack()}
-              style={styles.closeButton}
-            >
+            scanQrCode(data);
+          }}
+          style={styles.cameraView}
+        >
+          <View style={styles.frame}>
+            <View style={styles.frameTop}>
               <Image
-                source={whiteCloseIcon}
+                source={receptFrame1}
                 style={{
-                  width: getResponsiveSize(28),
-                  height: getResponsiveSize(28),
+                  width: getResponsiveSize(32),
+                  height: getResponsiveSize(32),
                 }}
               />
-            </Pressable>
+              <Image
+                source={receptFrame2}
+                style={{
+                  width: getResponsiveSize(32),
+                  height: getResponsiveSize(32),
+                }}
+              />
+            </View>
+            <View style={styles.frameBottom}>
+              <Image
+                source={receptFrame3}
+                style={{
+                  width: getResponsiveSize(32),
+                  height: getResponsiveSize(32),
+                }}
+              />
+              <Image
+                source={receptFrame4}
+                style={{
+                  width: getResponsiveSize(32),
+                  height: getResponsiveSize(32),
+                }}
+              />
+            </View>
           </View>
-        </SafeAreaView>
-      </CameraView>
+
+          <Animated.View style={[styles.overlay, overlayAnimatedStyle]}>
+            <CustomText color={colors.white} fontSize={20} fontWeight={"600"}>
+              매장의 QR코드를 스캔해주세요
+            </CustomText>
+          </Animated.View>
+
+          <SafeAreaView edges={["top"]}>
+            <View style={styles.container}>
+              <Pressable
+                onPress={() => navigation.goBack()}
+                style={styles.closeButton}
+              >
+                <Image
+                  source={whiteCloseIcon}
+                  style={{
+                    width: getResponsiveSize(28),
+                    height: getResponsiveSize(28),
+                  }}
+                />
+              </Pressable>
+            </View>
+          </SafeAreaView>
+        </CameraView>
+      )}
     </SafeAreaProvider>
   );
 };
