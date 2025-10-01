@@ -196,7 +196,7 @@ export const Payment = () => {
           등록 차량
         </CustomText>
 
-        <CarSelectButton car={car} setCar={setCar} />
+        <CarSelectButton car={car} setCar={setCar} showRegister />
 
         {/* 카드 선택 */}
         <CardSelectButton card={card} setCard={setCard} />
