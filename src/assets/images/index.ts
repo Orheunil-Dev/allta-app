@@ -73,3 +73,4 @@ export { default as receptFrame2 } from "./receipt-frame-2.png";
 export { default as receptFrame3 } from "./receipt-frame-3.png";
 export { default as receptFrame4 } from "./receipt-frame-4.png";
 export { default as cameraButton } from "./camera-button.png";
+export { default as albumIcon } from "./album-icon.png";

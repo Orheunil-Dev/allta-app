@@ -150,7 +150,10 @@ export const ReceiptScan = () => {
             </View>
           </View>
 
-          <Animated.View style={[styles.overlay, overlayAnimatedStyle]}>
+          <Animated.View
+            style={[styles.overlay, overlayAnimatedStyle]}
+            pointerEvents="none"
+          >
             <CustomText color={colors.white} fontSize={20} fontWeight={"600"}>
               영수증의 매장정보와 결제 정보가
             </CustomText>

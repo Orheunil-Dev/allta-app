@@ -60,6 +60,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "CAMERA",
       "ACCESS_FINE_LOCATION",
       "ACCESS_COARSE_LOCATION",
+      "READ_MEDIA_IMAGES",
       "READ_EXTERNAL_STORAGE",
       "WRITE_EXTERNAL_STORAGE",
     ],
@@ -126,6 +127,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         supportsBackgroundPlayback: true,
         supportsPictureInPicture: true,
+      },
+    ],
+    [
+      "expo-image-picker",
+      {
+        photosPermission:
+          "영수증 사진 업로드를 위해 사진 접근 권한이 필요합니다.",
       },
     ],
   ],

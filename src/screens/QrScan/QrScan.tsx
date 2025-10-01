@@ -200,7 +200,10 @@ export const QrScan = () => {
             </View>
           </View>
 
-          <Animated.View style={[styles.overlay, overlayAnimatedStyle]}>
+          <Animated.View
+            style={[styles.overlay, overlayAnimatedStyle]}
+            pointerEvents="none"
+          >
             <CustomText color={colors.white} fontSize={20} fontWeight={"600"}>
               매장의 QR코드를 스캔해주세요
             </CustomText>

@@ -22,6 +22,7 @@ import {
 } from "@/utils";
 import { useEffect, useState } from "react";
 import { colors } from "@/styles";
+import { albumIcon } from "@/assets/images";
 
 interface Props {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -213,7 +214,13 @@ export const ReceiptUploadButton = ({
       {firstPhoto ? (
         <Image source={{ uri: firstPhoto }} style={styles.photo} />
       ) : (
-        <View style={styles.photo} />
+        <Image
+          source={albumIcon}
+          style={{
+            width: getResponsiveSize(40),
+            height: getResponsiveSize(40),
+          }}
+        />
       )}
     </Pressable>
   );
@@ -231,6 +238,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.black,
     borderWidth: 1,
     borderColor: colors.white,
-    borderRadius: 8,
+    borderRadius: 20,
   },
 });
