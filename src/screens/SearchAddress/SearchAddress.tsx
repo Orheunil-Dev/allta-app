@@ -121,6 +121,7 @@ export const SearchAddress = () => {
       <View style={styles.container}>
         <CustomTextInput
           onSubmitEditing={(e) => setKeyword(e.nativeEvent.text)}
+          justifyContent="flex-start"
         />
 
         <CustomButton
