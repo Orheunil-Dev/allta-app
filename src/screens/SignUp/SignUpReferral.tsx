@@ -20,13 +20,13 @@ import { getResponsiveSize } from "@/utils";
 import { CustomError } from "@/types";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { SignUpTextInput } from "@/components/ui/TextInput";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { colors } from "@/styles";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/recoil";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { CustomTextInput } from "@/components/ui/CustomTextInput";
 
 type SignUpReferralRouteProp = RouteProp<LoginStackParamList, "SignUpReferral">;
 
@@ -182,7 +182,7 @@ export const SignUpReferral = () => {
             <CustomText fontSize={16} marginTop={32}>
               추천인 코드
             </CustomText>
-            <SignUpTextInput
+            <CustomTextInput
               value={referralCode}
               onChangeText={(text) => setReferralCode(text)}
               maxLength={6}

@@ -1,12 +1,9 @@
-import { useAuthControllerLogout } from "@/api/auth/auth";
 import { useUserControllerGetUserProfile } from "@/api/user/user";
 import { ContainerStackParamList } from "@/navigations";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import * as SecureStore from "expo-secure-store";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { CustomText } from "@/components/ui/CustomText";
-import CookieManager from "@react-native-cookies/cookies";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { colors } from "@/styles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -39,24 +36,6 @@ export const MyPage = () => {
       gcTime: 0,
     },
   });
-
-  console.log(data);
-
-  const { mutateAsync: logout, isPending: logoutLoading } =
-    useAuthControllerLogout();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (e) {}
-
-    await SecureStore.deleteItemAsync("accessToken");
-    await SecureStore.deleteItemAsync("refreshToken");
-
-    await CookieManager.clearAll();
-
-    return containerNavigation.navigate("LoginStack", { screen: "Login" });
-  };
 
   return (
     <CustomSafeAreaView edges={["top"]}>
@@ -135,11 +114,30 @@ export const MyPage = () => {
             )}
           </View>
         ) : (
-          <View>
-            <View>
-              <CustomText>로그인</CustomText>
-              <CustomText>로그인하고 더 많은 기능을 이용해보세요!</CustomText>
+          <View style={styles.box}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <CustomText
+                color={colors.point2}
+                fontSize={20}
+                fontWeight={"600"}
+              >
+                로그인
+              </CustomText>
+
+              <Pressable>
+                <Image source={rigthArrowIcon} style={styles.icon} />
+              </Pressable>
             </View>
+
+            <CustomText color={colors.gray5} fontSize={16}>
+              로그인하고 더 많은 기능을 이용해보세요!
+            </CustomText>
           </View>
         )}
 

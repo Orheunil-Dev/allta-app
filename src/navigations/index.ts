@@ -12,3 +12,4 @@ export * from "./CardStack";
 export * from "./ReceiptScanStack";
 export * from "./MyStoreStack";
 export * from "./QrScanStack";
+export * from "./SettingStack";

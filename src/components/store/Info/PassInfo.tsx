@@ -66,7 +66,7 @@ export const PassInfo = ({
   return (
     <View style={styles.container}>
       <View style={{ gap: getResponsiveSize(16) }}>
-        {prices.PREMIUM && (
+        {prices?.PREMIUM && (
           <View
             style={[
               styles.card,
@@ -147,7 +147,7 @@ export const PassInfo = ({
           </View>
         )}
 
-        {prices.STANDARD && (
+        {prices?.STANDARD && (
           <View
             style={[
               styles.card,
@@ -235,7 +235,7 @@ export const PassInfo = ({
           </View>
         )}
 
-        {prices.TICKET && (
+        {prices?.TICKET && (
           <View
             style={[
               styles.card,

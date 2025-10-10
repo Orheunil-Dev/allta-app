@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { LoginStackParamList } from "@/navigations";
 import { z } from "zod";
 import {
   useUserControllerCheckPhoneNumber,
@@ -10,7 +11,6 @@ import {
   useUserControllerSendVerificationCode,
   useUserControllerVerifyPhoneNumber,
 } from "@/api/user/user";
-import { LoginStackParamList } from "@/navigations";
 import {
   formatPhoneNumber,
   formatTime,
@@ -21,9 +21,9 @@ import {
 import { CustomError } from "@/types";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { SignUpTextInput } from "@/components/ui/TextInput";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
+import { CustomTextInput } from "@/components/ui/CustomTextInput";
 import { colors } from "@/styles";
 
 type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpUserInfo">;
@@ -42,6 +42,7 @@ export const SignUpUserInfo = () => {
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
+  const scrollRef = useRef<ScrollView>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const secondsRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -195,95 +196,101 @@ export const SignUpUserInfo = () => {
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
-        <View style={styles.container}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={false}
-          >
-            <CustomText fontSize={24} fontWeight={"600"}>
-              기본 정보를 입력해주세요.
-            </CustomText>
+        <ScrollView
+          ref={scrollRef}
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={true}
+          style={styles.container}
+        >
+          <CustomText fontSize={24} fontWeight={"600"}>
+            기본 정보를 입력해주세요.
+          </CustomText>
 
-            <CustomText fontSize={16} marginTop={32}>
-              이름
-            </CustomText>
-            <SignUpTextInput
-              value={infoForm.name}
-              onChangeText={(text) => handleChangeSignUpForm("name", text)}
-              placeholder="이름을 입력해주세요."
+          <CustomText fontSize={16} marginTop={32}>
+            이름
+          </CustomText>
+          <CustomTextInput
+            value={infoForm.name}
+            onChangeText={(text) => handleChangeSignUpForm("name", text)}
+            placeholder="이름을 입력해주세요."
+          />
+
+          <CustomText fontSize={16} marginTop={32}>
+            휴대폰 번호
+          </CustomText>
+          <View style={styles.inputBox}>
+            <CustomTextInput
+              value={infoForm.phoneNumber}
+              onChangeText={(value) =>
+                handleChangeSignUpForm("phoneNumber", formatPhoneNumber(value))
+              }
+              errorMessage={
+                infoForm.phoneNumber.length === 13
+                  ? (checkPhoneNumberError as CustomError)?.message ?? undefined
+                  : undefined
+              }
+              maxLength={13}
+              keyboardType="number-pad"
+              placeholder="휴대폰 번호를 입력해주세요."
             />
-
-            <CustomText fontSize={16} marginTop={32}>
-              휴대폰 번호
-            </CustomText>
-            <View style={styles.inputBox}>
-              <SignUpTextInput
-                value={infoForm.phoneNumber}
-                onChangeText={(value) =>
-                  handleChangeSignUpForm(
-                    "phoneNumber",
-                    formatPhoneNumber(value)
-                  )
-                }
-                errorMessage={
-                  infoForm.phoneNumber.length === 13
-                    ? (checkPhoneNumberError as CustomError)?.message ??
-                      undefined
-                    : undefined
-                }
-                maxLength={13}
-                keyboardType="number-pad"
-                placeholder="휴대폰 번호를 입력해주세요."
-              />
-              <Pressable
-                onPress={handleSendVerificationCode}
-                disabled={!isValid}
-                style={[
-                  styles.sendCodeButton,
-                  {
-                    borderColor: isValid ? colors.main : colors.gray5,
-                  },
-                ]}
+            <Pressable
+              onPress={handleSendVerificationCode}
+              disabled={!isValid}
+              style={[
+                styles.sendCodeButton,
+                {
+                  borderColor: isValid ? colors.main : colors.gray5,
+                },
+              ]}
+            >
+              <CustomText
+                color={isValid ? colors.main : colors.gray5}
+                fontSize={12}
+                fontWeight={"500"}
+                textAlign="center"
               >
-                <CustomText
-                  color={isValid ? colors.main : colors.gray5}
-                  fontSize={12}
-                  fontWeight={"500"}
-                  textAlign="center"
-                >
-                  {isSended ? "인증번호 재전송" : "인증번호 받기"}
-                </CustomText>
-              </Pressable>
-            </View>
+                {isSended ? "인증번호 재전송" : "인증번호 받기"}
+              </CustomText>
+            </Pressable>
+          </View>
 
-            {isSended && (
-              <>
-                <CustomText fontSize={16} marginTop={32}>
-                  인증번호
-                </CustomText>
-                <View style={styles.inputBox}>
-                  <SignUpTextInput
-                    value={verificationCode}
-                    onChangeText={(text) => setVerificationCode(text)}
-                    maxLength={6}
-                    keyboardType="number-pad"
-                    errorMessage={
-                      !seconds
-                        ? "인증시간이 만료되었습니다."
-                        : (verifyPhoneNumberError as CustomError)?.message ??
-                          undefined
-                    }
-                    placeholder="인증번호 6자리"
-                  />
+          {isSended && (
+            <>
+              <CustomText fontSize={16} marginTop={32}>
+                인증번호
+              </CustomText>
+              <View style={styles.inputBox}>
+                <CustomTextInput
+                  value={verificationCode}
+                  onChangeText={(text) => setVerificationCode(text)}
+                  maxLength={6}
+                  keyboardType="number-pad"
+                  errorMessage={
+                    !seconds
+                      ? "인증시간이 만료되었습니다."
+                      : (verifyPhoneNumberError as CustomError)?.message ??
+                        undefined
+                  }
+                  onFocus={() => {
+                    scrollRef.current?.scrollTo({ y: 1000, animated: true });
+                  }}
+                  placeholder="인증번호 6자리"
+                />
 
-                  <View style={styles.timer}>
-                    <CustomText>{formatTime(seconds)}</CustomText>
-                  </View>
+                <View style={styles.timer}>
+                  <CustomText>{formatTime(seconds)}</CustomText>
                 </View>
-              </>
-            )}
-          </ScrollView>
+              </View>
+            </>
+          )}
+        </ScrollView>
 
+        <View
+          style={{
+            paddingHorizontal: getResponsiveSize(20),
+            paddingVertical: getResponsiveSize(10),
+          }}
+        >
           <CustomButton
             onPress={handleNext}
             isDisabled={!isValid}
@@ -312,7 +319,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: getResponsiveSize(20),
-    paddingVertical: getResponsiveSize(10),
+    paddingBottom: getResponsiveSize(200),
   },
   inputBox: {
     position: "relative",

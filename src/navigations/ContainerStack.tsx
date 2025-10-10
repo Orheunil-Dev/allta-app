@@ -22,6 +22,7 @@ import {
   ReceiptScanStackParamList,
 } from "./ReceiptScanStack";
 import { QrScanStack, QrScanStackParamList } from "./QrScanStack";
+import { SettingStack, SettingStackParamList } from "./SettingStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -34,6 +35,7 @@ export type ContainerStackParamList = {
   CardStack: NavigatorScreenParams<CardStackParamList>;
   ReceiptScanStack: NavigatorScreenParams<ReceiptScanStackParamList>;
   QrScanStack: NavigatorScreenParams<QrScanStackParamList>;
+  SettingStack: NavigatorScreenParams<SettingStackParamList>;
   Notification: undefined;
 };
 
@@ -144,6 +146,13 @@ export const ContainerStack = ({
           options={{
             headerShown: false,
             presentation: "transparentModal",
+          }}
+        />
+        <Stack.Screen
+          name="SettingStack"
+          component={SettingStack}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>
