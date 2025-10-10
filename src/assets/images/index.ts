@@ -74,3 +74,16 @@ export { default as receptFrame3 } from "./receipt-frame-3.png";
 export { default as receptFrame4 } from "./receipt-frame-4.png";
 export { default as cameraButton } from "./camera-button.png";
 export { default as albumIcon } from "./album-icon.png";
+
+// 마이페이지
+export { default as settingIcon } from "./setting-icon.png";
+export { default as carIcon } from "./car-icon.png";
+export { default as cardIcon } from "./card-icon.png";
+export { default as addressIcon } from "./address-icon.png";
+export { default as purchaseIcon } from "./purchase-icon.png";
+export { default as couponIcon } from "./purchase-icon.png";
+export { default as eventIcon } from "./event-icon.png";
+export { default as refferalIcon } from "./refferal-icon.png";
+export { default as noticeIcon } from "./notice-icon.png";
+export { default as inquiryIcon } from "./inquiry-icon.png";
+export { default as contactIcon } from "./contact-icon.png";
