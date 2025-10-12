@@ -6,7 +6,6 @@ import { CustomTextInput } from "@/components/ui/CustomTextInput";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
-import { Spinner } from "@/components/ui/Spinner";
 import { checkedRadioIcon, uncheckedRadioIcon } from "@/assets/images";
 import { colors } from "@/styles";
 import { useUserControllerWithdrawalUser } from "@/api/user/user";
@@ -92,6 +91,7 @@ export const Withdrawal = () => {
       <CustomModal
         visible={showModal}
         onClose={handleWithdrawal}
+        isCloseButtonDisable={withdrawalLoading}
         closeButtonText="탈퇴하기"
         onNext={() => setShowModal(false)}
         nextButtonText="돌아가기"

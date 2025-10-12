@@ -14,8 +14,10 @@ interface CustomModalProps {
   visible: boolean;
   onNext?: () => void;
   nextButtonText?: string;
+  isNextButtonDisable?: boolean;
   onClose: () => void;
   closeButtonText?: string;
+  isCloseButtonDisable?: boolean;
   children: React.ReactNode;
 }
 
@@ -23,8 +25,10 @@ export const CustomModal = ({
   visible,
   onNext,
   nextButtonText,
+  isNextButtonDisable,
   onClose,
   closeButtonText,
+  isCloseButtonDisable,
   children,
 }: CustomModalProps) => {
   return (
@@ -37,6 +41,7 @@ export const CustomModal = ({
             <View style={styles.buttonBox}>
               <CustomButton
                 onPress={onClose}
+                isDisabled={isCloseButtonDisable}
                 flex={1}
                 borderWidth={1}
                 borderColor={colors.gray2}
@@ -49,6 +54,7 @@ export const CustomModal = ({
               {onNext && (
                 <CustomButton
                   onPress={onNext}
+                  isDisabled={isNextButtonDisable}
                   flex={1}
                   backgroundColor={colors.point2}
                 >
