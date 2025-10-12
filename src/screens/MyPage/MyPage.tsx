@@ -210,7 +210,14 @@ export const MyPage = () => {
               <CustomText fontSize={16}>차량 관리</CustomText>
             </Pressable>
 
-            <Pressable style={styles.button}>
+            <Pressable
+              onPress={() =>
+                containerNavigation.navigate("CardStack", {
+                  screen: "CardList",
+                })
+              }
+              style={styles.button}
+            >
               <Image source={cardIcon} style={styles.icon} />
               <CustomText fontSize={16}>카드 관리</CustomText>
             </Pressable>
