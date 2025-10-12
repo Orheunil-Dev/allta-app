@@ -198,7 +198,14 @@ export const MyPage = () => {
 
         <View style={styles.box}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Pressable style={styles.button}>
+            <Pressable
+              onPress={() =>
+                containerNavigation.navigate("CarStack", {
+                  screen: "CarList",
+                })
+              }
+              style={styles.button}
+            >
               <Image source={carIcon} style={styles.icon} />
               <CustomText fontSize={16}>차량 관리</CustomText>
             </Pressable>

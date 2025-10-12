@@ -22,6 +22,7 @@ export { default as completeIcon } from "./complete-icon.png";
 export { default as grayErrorIcon } from "./gray-error-icon.png";
 export { default as errorModalIcon } from "./error-modal-icon.png";
 export { default as uncheckedIconGray2 } from "./unchecked-icon-gray2.png";
+export { default as kebabIcon } from "./kebab-icon.png";
 
 // 스플래쉬
 export { default as splashIamge } from "./splash-image.png";
@@ -87,3 +88,4 @@ export { default as refferalIcon } from "./refferal-icon.png";
 export { default as noticeIcon } from "./notice-icon.png";
 export { default as inquiryIcon } from "./inquiry-icon.png";
 export { default as contactIcon } from "./contact-icon.png";
+export { default as plusIcon } from "./plus-icon.png";

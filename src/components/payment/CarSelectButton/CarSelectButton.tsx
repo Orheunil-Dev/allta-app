@@ -12,6 +12,8 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
 import { useCarControllerGetCarList } from "@/api/car/car";
 import { Car } from "@/types";
+import { useSetAtom } from "jotai";
+import { errorModalAtom } from "@/recoil";
 
 interface Props {
   car: Car | null;
@@ -25,6 +27,8 @@ export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
+  const setErrorModal = useSetAtom(errorModalAtom);
+
   const { data: carData, refetch: carsRefetch } = useCarControllerGetCarList({
     query: {
       queryKey: ["cars"],
@@ -35,6 +39,13 @@ export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
 
   // 차량 등록
   const handleRouteCarRegister = () => {
+    if (carData?.data.length && carData?.data.length > 4) {
+      return setErrorModal({
+        visible: true,
+        message: "차량은 최대 5대까지 등록 가능합니다.",
+      });
+    }
+
     bottomSheetRef.current?.close();
 
     return containerNavigation.navigate("CarStack", {

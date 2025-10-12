@@ -56,7 +56,7 @@ export const CarListBottomSheet = ({
               <Pressable
                 onPress={handleSelectCar(item)}
                 style={[
-                  styles.card,
+                  styles.car,
                   item.id === car?.id && {
                     borderWidth: 2,
                     borderColor: colors.point2,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  card: {
+  car: {
     position: "relative",
     padding: getResponsiveSize(16),
     backgroundColor: colors.white,
