@@ -73,7 +73,10 @@ export const Setting = () => {
         <CustomText fontSize={16}>알림 설정</CustomText>
       </Pressable>
 
-      <Pressable style={styles.button}>
+      <Pressable
+        onPress={() => settingNavigation.navigate("TermsList")}
+        style={styles.button}
+      >
         <CustomText fontSize={16}>약관 및 정책</CustomText>
       </Pressable>
 
@@ -101,7 +104,7 @@ export const Setting = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: getResponsiveSize(20),
+    paddingHorizontal: getResponsiveSize(20),
     backgroundColor: colors.white,
   },
   button: {
