@@ -105,3 +105,5 @@ export * from './verifyReceiptRequest';
 export * from './verifyReceiptResponse';
 export * from './verifyReceiptResponseData';
 export * from './verifyReferralCodeResponse';
+export * from './withdrawalUserRequest';
+export * from './withdrawalUserResponse';

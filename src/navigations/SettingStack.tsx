@@ -5,6 +5,7 @@ import {
   Setting,
   TermsDetail,
   TermsList,
+  Withdrawal,
 } from "@/screens/Setting";
 
 export type SettingStackParamList = {
@@ -14,6 +15,7 @@ export type SettingStackParamList = {
   TermsDetail: {
     title: string;
   };
+  Withdrawal: undefined;
 };
 
 const Stack = createNativeStackNavigator<SettingStackParamList>();
@@ -50,6 +52,13 @@ export const SettingStack = () => {
             <CustomHeader title={route.params.title} showBackButton />
           ),
         })}
+      />
+      <Stack.Screen
+        name="Withdrawal"
+        component={Withdrawal}
+        options={{
+          header: () => <CustomHeader title="" showBackButton />,
+        }}
       />
     </Stack.Navigator>
   );

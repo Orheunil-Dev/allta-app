@@ -91,6 +91,22 @@ export const Setting = () => {
         </CustomText>
       </CustomModal>
 
+      <CustomModal
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+        closeButtonText="취소"
+        onNext={handleLogout}
+        nextButtonText="확인"
+      >
+        <CustomText fontSize={18} fontWeight={"600"}>
+          로그아웃
+        </CustomText>
+
+        <CustomText marginTop={8} fontSize={16}>
+          로그아웃 하시겠습니까?
+        </CustomText>
+      </CustomModal>
+
       <Pressable
         onPress={() => settingNavigation.navigate("NotificationSetting")}
         style={styles.button}
@@ -104,6 +120,7 @@ export const Setting = () => {
         style={styles.button}
       >
         <CustomText fontSize={16}>약관 및 정책</CustomText>
+        <Image source={rigthArrowIcon} style={styles.icon} />
       </Pressable>
 
       <View style={styles.button}>
@@ -120,7 +137,10 @@ export const Setting = () => {
         <CustomText fontSize={16}>로그아웃</CustomText>
       </Pressable>
 
-      <Pressable style={[styles.button, { marginTop: getResponsiveSize(20) }]}>
+      <Pressable
+        onPress={() => settingNavigation.navigate("Withdrawal")}
+        style={[styles.button, { marginTop: getResponsiveSize(20) }]}
+      >
         <CustomText
           color={colors.gray5}
           fontSize={15}

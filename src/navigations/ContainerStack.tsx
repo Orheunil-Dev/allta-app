@@ -8,7 +8,6 @@ import { Notification } from "@/screens/Notification";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
-import { LoginModal } from "@/components/modal/LoginModal";
 import { checkIsFirstLaunch } from "@/utils";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
 import { StoreStack, StoreStackParamList } from "./StoreStack";
@@ -16,13 +15,13 @@ import { AddressStack, AddressStackParamList } from "./AddressStack";
 import { PaymentStack, PaymentStackParamList } from "./PaymentStack";
 import { CarStack, CarStackParamList } from "./CarStack";
 import { CardStack, CardStackParamList } from "./CardStack";
-import { ErrorModal } from "@/components/modal/ErrorModal";
 import {
   ReceiptScanStack,
   ReceiptScanStackParamList,
 } from "./ReceiptScanStack";
 import { QrScanStack, QrScanStackParamList } from "./QrScanStack";
 import { SettingStack, SettingStackParamList } from "./SettingStack";
+import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -61,7 +60,7 @@ export const ContainerStack = ({
         visible={showLoginModal}
         setVisible={setShowLoginModal}
       />
-
+      <CommonModal />
       <ErrorModal />
 
       <Stack.Navigator

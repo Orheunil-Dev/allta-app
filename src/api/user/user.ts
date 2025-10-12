@@ -41,7 +41,9 @@ import type {
   UserControllerVerifyRefferalCodeParams,
   VerifyPhoneNumberRequest,
   VerifyPhoneNumberResponse,
-  VerifyReferralCodeResponse
+  VerifyReferralCodeResponse,
+  WithdrawalUserRequest,
+  WithdrawalUserResponse
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -720,6 +722,63 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getUserControllerUpdateMarketingAgreementStatusMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const userControllerWithdrawalUser = (
+    withdrawalUserRequest: WithdrawalUserRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<WithdrawalUserResponse>(
+      {url: `/user/withdrawal`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: withdrawalUserRequest
+    },
+      options);
+    }
+  
+
+
+export const getUserControllerWithdrawalUserMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerWithdrawalUser>>, TError,{data: WithdrawalUserRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof userControllerWithdrawalUser>>, TError,{data: WithdrawalUserRequest}, TContext> => {
+
+const mutationKey = ['userControllerWithdrawalUser'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerWithdrawalUser>>, {data: WithdrawalUserRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  userControllerWithdrawalUser(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UserControllerWithdrawalUserMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerWithdrawalUser>>>
+    export type UserControllerWithdrawalUserMutationBody = WithdrawalUserRequest
+    export type UserControllerWithdrawalUserMutationError = unknown
+
+    export const useUserControllerWithdrawalUser = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerWithdrawalUser>>, TError,{data: WithdrawalUserRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof userControllerWithdrawalUser>>,
+        TError,
+        {data: WithdrawalUserRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUserControllerWithdrawalUserMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }
