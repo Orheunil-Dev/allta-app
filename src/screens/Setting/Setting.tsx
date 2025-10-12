@@ -1,6 +1,6 @@
 import { useAuthControllerLogout } from "@/api/auth/auth";
 import { CustomText } from "@/components/ui/CustomText";
-import { ContainerStackParamList } from "@/navigations";
+import { ContainerStackParamList, SettingStackParamList } from "@/navigations";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
 import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -14,6 +14,9 @@ import { CustomModal } from "@/components/ui/CustomModal";
 export const Setting = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const settingNavigation =
+    useNavigation<NativeStackNavigationProp<SettingStackParamList>>();
 
   const [showModal, setShowModal] = useState(false);
 
@@ -63,7 +66,10 @@ export const Setting = () => {
         </CustomText>
       </CustomModal>
 
-      <Pressable style={styles.button}>
+      <Pressable
+        onPress={() => settingNavigation.navigate("NotificationSetting")}
+        style={styles.button}
+      >
         <CustomText fontSize={16}>알림 설정</CustomText>
       </Pressable>
 
