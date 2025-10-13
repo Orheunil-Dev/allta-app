@@ -66,6 +66,7 @@ export { default as clockIcon } from "./clock-icon.png";
 export { default as myLocationIcon } from "./my-location-icon.png";
 export { default as storeNoticeIcon } from "./store-notice-icon.png";
 export { default as naviIcon } from "./navi-icon.png";
+export { default as phoneIcon } from "./phone-icon.png";
 
 // 영수증 스캔
 export { default as receptFrame } from "./receipt-frame.png";
