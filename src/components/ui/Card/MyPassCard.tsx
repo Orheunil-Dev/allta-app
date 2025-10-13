@@ -1,14 +1,17 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { CustomText } from "../CustomText";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { PassStackParamList } from "@/navigations";
 import {
   formatPassType,
   formatServiceType,
   formatUsageLeft,
   getResponsiveSize,
 } from "@/utils";
-import { colors } from "@/styles";
 import { PassType, ServiceType } from "@/types";
+import { CustomText } from "../CustomText";
 import { blackRightArrow } from "@/assets/images";
+import { colors } from "@/styles";
 
 interface Props {
   id: string;
@@ -29,6 +32,11 @@ export const MyPassCard = ({
   usage,
   maxUsage,
 }: Props) => {
+  const passStackNavigation =
+    useNavigation<NativeStackNavigationProp<PassStackParamList>>();
+
+  const handleRoutePassDetail = () => {};
+
   return (
     <View key={id} style={styles.card}>
       <View style={styles.top}>
@@ -38,7 +46,7 @@ export const MyPassCard = ({
           </CustomText>
         </View>
 
-        <Pressable>
+        <Pressable onPress={handleRoutePassDetail}>
           <Image
             source={blackRightArrow}
             style={{

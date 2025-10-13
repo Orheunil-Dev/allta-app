@@ -82,6 +82,8 @@ export { default as carIcon } from "./car-icon.png";
 export { default as cardIcon } from "./card-icon.png";
 export { default as addressIcon } from "./address-icon.png";
 export { default as purchaseIcon } from "./purchase-icon.png";
+export { default as passIcon } from "./pass-icon.png";
+export { default as serviceHistoryIcon } from "./service-history-icon.png";
 export { default as couponIcon } from "./purchase-icon.png";
 export { default as eventIcon } from "./event-icon.png";
 export { default as refferalIcon } from "./refferal-icon.png";

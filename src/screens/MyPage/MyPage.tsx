@@ -18,9 +18,11 @@ import {
   eventIcon,
   inquiryIcon,
   noticeIcon,
+  passIcon,
   purchaseIcon,
   refferalIcon,
   rigthArrowIcon,
+  serviceHistoryIcon,
   settingIcon,
 } from "@/assets/images";
 
@@ -141,15 +143,7 @@ export const MyPage = () => {
           </View>
         )}
 
-        <Pressable
-          onPress={() =>
-            containerNavigation.navigate("PassStack", {
-              screen: "PassList",
-              params: {},
-            })
-          }
-          style={styles.box}
-        >
+        <View style={styles.box}>
           <View
             style={{
               flexDirection: "row",
@@ -227,7 +221,7 @@ export const MyPage = () => {
               </CustomText>
             </Pressable>
           </View>
-        </Pressable>
+        </View>
 
         <View style={styles.box}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -274,7 +268,41 @@ export const MyPage = () => {
               <CustomText fontSize={16}>주소 관리</CustomText>
             </Pressable>
 
-            <Pressable style={styles.button}>
+            <Pressable
+              onPress={() =>
+                containerNavigation.navigate("PassStack", {
+                  screen: "PassList",
+                  params: {},
+                })
+              }
+              style={styles.button}
+            >
+              <Image source={passIcon} style={styles.icon} />
+              <CustomText fontSize={16}>보유 이용권</CustomText>
+            </Pressable>
+          </View>
+
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Pressable
+              onPress={() =>
+                containerNavigation.navigate("CarStack", {
+                  screen: "CarList",
+                })
+              }
+              style={styles.button}
+            >
+              <Image source={serviceHistoryIcon} style={styles.icon} />
+              <CustomText fontSize={16}>이용 내역</CustomText>
+            </Pressable>
+
+            <Pressable
+              onPress={() =>
+                containerNavigation.navigate("CardStack", {
+                  screen: "CardList",
+                })
+              }
+              style={styles.button}
+            >
               <Image source={purchaseIcon} style={styles.icon} />
               <CustomText fontSize={16}>결제 내역</CustomText>
             </Pressable>

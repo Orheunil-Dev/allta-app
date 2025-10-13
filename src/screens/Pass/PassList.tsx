@@ -1,35 +1,23 @@
-import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import dayjs from "dayjs";
 import { PassStackParamList } from "@/navigations";
-import {
-  formatPassType,
-  formatServiceType,
-  formatUsageLeft,
-  getResponsiveSize,
-} from "@/utils";
-import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { blackRightArrow } from "@/assets/images";
 import {
   usePassControllerGetSubscriptionList,
   usePassControllerGetTicketList,
 } from "@/api/pass/pass";
-import { useEffect, useState } from "react";
-import { Car, PassType, ServiceType } from "@/types";
-import { PassFilter } from "@/components/pass";
-import dayjs from "dayjs";
 import { GetTicketListReponse } from "@/api/models";
+import { getResponsiveSize } from "@/utils";
+import { Car, PassType, ServiceType } from "@/types";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { PassFilter } from "@/components/pass";
 import { MyPassCard } from "@/components/ui/Card";
 
 type PassListRouteProp = RouteProp<PassStackParamList, "PassList">;
 
 export const PassList = () => {
   const router = useRoute<PassListRouteProp>();
-
-  const passStackNavigation =
-    useNavigation<NativeStackNavigationProp<PassStackParamList>>();
 
   const [car, setCar] = useState<Car | null>(null);
   const [passType, setPassType] = useState<PassType | null>(
@@ -124,6 +112,8 @@ export const PassList = () => {
                     type={value.type as PassType}
                     serviceType={value.serviceType as ServiceType}
                     storeName={value.storeName}
+                    usage={value.subscriptionSnapshot.usage}
+                    maxUsage={value.subscriptionSnapshot.maxUsage ?? undefined}
                     availablePeriod={`${dayjs(value.payedAt).format(
                       "YY.MM.DD"
                     )} ~ ${dayjs(value.payedAt)
@@ -155,45 +145,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: getResponsiveSize(20),
-  },
-  card: {
-    position: "relative",
-    marginTop: getResponsiveSize(20),
-    backgroundColor: colors.white,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.1,
-    elevation: 2,
-  },
-  top: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: getResponsiveSize(12),
-    paddingHorizontal: getResponsiveSize(16),
-    backgroundColor: colors.back4,
-    borderTopWidth: 1,
-    borderRightWidth: 1,
-    borderLeftWidth: 1,
-    borderColor: colors.point2,
-    borderTopRightRadius: 8,
-    borderTopLeftRadius: 8,
-  },
-  bottom: {
-    paddingVertical: getResponsiveSize(12),
-    paddingHorizontal: getResponsiveSize(20),
-    backgroundColor: colors.white,
-    borderBottomWidth: 1,
-    borderRightWidth: 1,
-    borderLeftWidth: 1,
-    borderColor: colors.point2,
-    borderBottomRightRadius: 8,
-    borderBottomLeftRadius: 8,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: getResponsiveSize(6),
   },
 });
