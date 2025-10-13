@@ -85,6 +85,8 @@ export * from './registerStoreRequestPassPriceOneOf';
 export * from './registerStoreRequestReceiptDiscount';
 export * from './registerStoreRequestReceiptDiscountOneOf';
 export * from './registerStoreResponse';
+export * from './resubscribeSubscriptionRequest';
+export * from './resubscribeSubscriptionResponse';
 export * from './sendManySmsDto';
 export * from './sendNotificationRequest';
 export * from './sendNotificationResponse';

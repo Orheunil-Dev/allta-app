@@ -34,6 +34,8 @@ import type {
   PassControllerGetAvailablePassesParams,
   PassControllerGetSubscriptionListParams,
   PassControllerGetTicketListParams,
+  ResubscribeSubscriptionRequest,
+  ResubscribeSubscriptionResponse,
   UseSubscriptionRequest,
   UseSubscriptionResponse,
   UseTicketRequest,
@@ -475,7 +477,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
       
       return customInstance<DiscontinueSubscriptionResponse>(
-      {url: `/pass/subscription/use`, method: 'PATCH',
+      {url: `/pass/subscription/dicontinue`, method: 'PATCH',
       headers: {'Content-Type': 'application/json', },
       data: discontinueSubscriptionRequest
     },
@@ -523,6 +525,63 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getPassControllerDiscontinueSubscriptionMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const passControllerResubscribeSubscription = (
+    resubscribeSubscriptionRequest: ResubscribeSubscriptionRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<ResubscribeSubscriptionResponse>(
+      {url: `/pass/subscription/resubscribe`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: resubscribeSubscriptionRequest
+    },
+      options);
+    }
+  
+
+
+export const getPassControllerResubscribeSubscriptionMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof passControllerResubscribeSubscription>>, TError,{data: ResubscribeSubscriptionRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof passControllerResubscribeSubscription>>, TError,{data: ResubscribeSubscriptionRequest}, TContext> => {
+
+const mutationKey = ['passControllerResubscribeSubscription'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof passControllerResubscribeSubscription>>, {data: ResubscribeSubscriptionRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  passControllerResubscribeSubscription(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PassControllerResubscribeSubscriptionMutationResult = NonNullable<Awaited<ReturnType<typeof passControllerResubscribeSubscription>>>
+    export type PassControllerResubscribeSubscriptionMutationBody = ResubscribeSubscriptionRequest
+    export type PassControllerResubscribeSubscriptionMutationError = unknown
+
+    export const usePassControllerResubscribeSubscription = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof passControllerResubscribeSubscription>>, TError,{data: ResubscribeSubscriptionRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof passControllerResubscribeSubscription>>,
+        TError,
+        {data: ResubscribeSubscriptionRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getPassControllerResubscribeSubscriptionMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }

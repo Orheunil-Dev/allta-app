@@ -13,6 +13,8 @@ export interface SubscriptionDetailItem {
   id: string;
   /** 구독권 종류 */
   type: string;
+  /** 일회권 상태 */
+  status: string;
   /** 서비스 종류 */
   serviceType: string;
   /** 일회권 금액 */

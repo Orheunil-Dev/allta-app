@@ -17,6 +17,7 @@ import { ContainerStackParamList, PassStackParamList } from "@/navigations";
 import {
   usePassControllerDiscontinueSubscription,
   usePassControllerGetSubscriptionDetail,
+  usePassControllerResubscribeSubscription,
 } from "@/api/pass/pass";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
@@ -69,6 +70,8 @@ export const PassDetail = () => {
   const [refundTermsOpen, setRefundTermsOpen] = useState<boolean>(false);
   const [showDiscontinueModal, setShowDicontinueModal] =
     useState<boolean>(false);
+  const [showResubscribeModal, setShowResubscribeModal] =
+    useState<boolean>(false);
 
   // 구독권 상세 조회 API
   const {
@@ -90,6 +93,13 @@ export const PassDetail = () => {
     isPending: discontinueSubscriptionLoading,
     isError: discontinueSubscriptionError,
   } = usePassControllerDiscontinueSubscription();
+
+  // 구독권 재구독 API
+  const {
+    mutate: resubscribeSubscription,
+    isPending: resubscribeSubscriptionLoading,
+    isError: resubscribeSubscriptionError,
+  } = usePassControllerResubscribeSubscription();
 
   const { getDistance } = useDistanceCalculator();
 
@@ -129,6 +139,41 @@ export const PassDetail = () => {
         onSuccess: () => {
           subscriptionRefetch();
           setShowDicontinueModal(false);
+        },
+        onError: (error: any) => {
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "구독권 해지에 실패했습니다.",
+          });
+
+          setShowDicontinueModal(false);
+        },
+      }
+    );
+  };
+
+  // 구독권 재구독
+  const handleResubscribe = () => {
+    if (router.params.type === "TICKET") return;
+
+    resubscribeSubscription(
+      {
+        data: {
+          id: router.params.id,
+        },
+      },
+      {
+        onSuccess: () => {
+          subscriptionRefetch();
+          setShowResubscribeModal(false);
+        },
+        onError: (error: any) => {
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "구독권 해지에 실패했습니다.",
+          });
+
+          setShowResubscribeModal(false);
         },
       }
     );
@@ -264,6 +309,23 @@ export const PassDetail = () => {
 
         <CustomText marginTop={16} fontSize={16}>
           정말 해지하시겠습니까?
+        </CustomText>
+      </CustomModal>
+
+      <CustomModal
+        visible={showResubscribeModal}
+        onClose={() => setShowResubscribeModal(false)}
+        closeButtonText="취소"
+        onNext={handleResubscribe}
+        isNextButtonDisable={discontinueSubscriptionLoading}
+        nextButtonText="재구독하기"
+      >
+        <CustomText fontSize={18} fontWeight={"600"}>
+          이용권 재구독
+        </CustomText>
+
+        <CustomText marginTop={8} fontSize={16}>
+          이용권을 다시 재구독하시겠습니까?
         </CustomText>
       </CustomModal>
 
@@ -474,17 +536,33 @@ export const PassDetail = () => {
             </CustomText>
           </Animated.View>
 
-          <CustomButton
-            onPress={() => setShowDicontinueModal(true)}
-            height={getResponsiveSize(50)}
-            marginTop={20}
-            borderWidth={1}
-            borderColor={colors.gray2}
-          >
-            <CustomText fontSize={16} fontWeight={"600"}>
-              이용권 해지하기
-            </CustomText>
-          </CustomButton>
+          {subscriptionData.data.status === "ACTIVE" && (
+            <CustomButton
+              onPress={() => setShowDicontinueModal(true)}
+              height={getResponsiveSize(50)}
+              marginTop={20}
+              borderWidth={1}
+              borderColor={colors.gray2}
+            >
+              <CustomText fontSize={16} fontWeight={"600"}>
+                이용권 해지하기
+              </CustomText>
+            </CustomButton>
+          )}
+
+          {subscriptionData.data.status === "DISCONTINUED" && (
+            <CustomButton
+              onPress={() => setShowResubscribeModal(true)}
+              height={getResponsiveSize(50)}
+              marginTop={20}
+              borderWidth={1}
+              borderColor={colors.gray2}
+            >
+              <CustomText fontSize={16} fontWeight={"600"}>
+                이용권 재구독하기
+              </CustomText>
+            </CustomButton>
+          )}
 
           <Animated.View style={[styles.terms, refundTermsAnimatedStyle]}>
             <View
