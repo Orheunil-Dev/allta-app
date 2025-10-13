@@ -5,14 +5,14 @@
  * Allta API 서버 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { Address } from './address';
+import type { TicketItem } from './ticketItem';
 import type { PaginationMetaEntity } from './paginationMetaEntity';
 
-export interface GetAddressesResponse {
+export interface GetTicketListReponse {
   /** 결과 여부 */
   ok: boolean;
-  /** 주소 목록 */
-  data: Address[];
+  /** 일회권 */
+  data: TicketItem[];
   /** 메타 정보 */
   meta: PaginationMetaEntity;
 }

@@ -4,8 +4,6 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Notification } from "@/screens/Notification";
-import { CustomHeader } from "@/components/layout/CustomHeader";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
 import { checkIsFirstLaunch } from "@/utils";
@@ -21,6 +19,9 @@ import {
 } from "./ReceiptScanStack";
 import { QrScanStack, QrScanStackParamList } from "./QrScanStack";
 import { SettingStack, SettingStackParamList } from "./SettingStack";
+import { PassStack, PassStackParamList } from "./PassStack";
+import { Notification } from "@/screens/Notification";
+import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 
 export type ContainerStackParamList = {
@@ -32,6 +33,7 @@ export type ContainerStackParamList = {
   PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
   CarStack: NavigatorScreenParams<CarStackParamList>;
   CardStack: NavigatorScreenParams<CardStackParamList>;
+  PassStack: NavigatorScreenParams<PassStackParamList>;
   ReceiptScanStack: NavigatorScreenParams<ReceiptScanStackParamList>;
   QrScanStack: NavigatorScreenParams<QrScanStackParamList>;
   SettingStack: NavigatorScreenParams<SettingStackParamList>;
@@ -127,6 +129,13 @@ export const ContainerStack = ({
         <Stack.Screen
           name="CardStack"
           component={CardStack}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PassStack"
+          component={PassStack}
           options={{
             headerShown: false,
           }}

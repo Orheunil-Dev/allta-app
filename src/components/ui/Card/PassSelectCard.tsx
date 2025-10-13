@@ -1,7 +1,7 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { CustomText } from "../CustomText";
 import { termsCheckedIcon, uncheckedIconGray2 } from "@/assets/images";
-import { getResponsiveSize } from "@/utils";
+import { formatUsageLeft, getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
 
 interface Props {
@@ -31,10 +31,10 @@ export const PassSelectCard = ({
         return (
           <View style={{ flexDirection: "row" }}>
             <CustomText color={colors.point2} fontSize={15} fontWeight={"500"}>
-              {"1 "}
+              1
             </CustomText>
             <CustomText fontSize={15} fontWeight={"500"}>
-              / 1 회
+              /1 회
             </CustomText>
           </View>
         );
@@ -42,11 +42,19 @@ export const PassSelectCard = ({
       case "STANDARD":
         return (
           <View style={{ flexDirection: "row" }}>
-            <CustomText color={colors.point2} fontSize={15} fontWeight={"500"}>
-              {`${usage ?? 0} `}
+            <CustomText
+              color={
+                formatUsageLeft(usage ?? 0, maxUsage ?? 0) > 0
+                  ? colors.point2
+                  : colors.gray5
+              }
+              fontSize={15}
+              fontWeight={"500"}
+            >
+              {`${formatUsageLeft(usage ?? 0, maxUsage ?? 0)}`}
             </CustomText>
             <CustomText fontSize={15} fontWeight={"500"}>
-              / {maxUsage} 회
+              /{maxUsage} 회
             </CustomText>
           </View>
         );

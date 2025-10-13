@@ -218,3 +218,8 @@ export const formatApprovalDate = (date: string, time: string): string => {
 
   return dateFormat + timeFormat;
 };
+
+// 남은 사용 횟수 포맷팅
+export const formatUsageLeft = (usage: number, maxUsage: number): number => {
+  return maxUsage - usage;
+};

@@ -141,7 +141,15 @@ export const MyPage = () => {
           </View>
         )}
 
-        <View style={styles.box}>
+        <Pressable
+          onPress={() =>
+            containerNavigation.navigate("PassStack", {
+              screen: "PassList",
+              params: {},
+            })
+          }
+          style={styles.box}
+        >
           <View
             style={{
               flexDirection: "row",
@@ -149,7 +157,15 @@ export const MyPage = () => {
               width: "100%",
             }}
           >
-            <View style={styles.pass}>
+            <Pressable
+              onPress={() =>
+                containerNavigation.navigate("PassStack", {
+                  screen: "PassList",
+                  params: { passType: "PREMIUM" },
+                })
+              }
+              style={styles.pass}
+            >
               <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
                 프리미엄
               </CustomText>
@@ -161,11 +177,19 @@ export const MyPage = () => {
               >
                 {data?.totalPremiums ?? 0}
               </CustomText>
-            </View>
+            </Pressable>
 
             <View style={styles.rowDivider} />
 
-            <View style={styles.pass}>
+            <Pressable
+              onPress={() =>
+                containerNavigation.navigate("PassStack", {
+                  screen: "PassList",
+                  params: { passType: "STANDARD" },
+                })
+              }
+              style={styles.pass}
+            >
               <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
                 스탠다드
               </CustomText>
@@ -177,10 +201,19 @@ export const MyPage = () => {
               >
                 {data?.totalStandards ?? 0}
               </CustomText>
-            </View>
+            </Pressable>
+
             <View style={styles.rowDivider} />
 
-            <View style={styles.pass}>
+            <Pressable
+              onPress={() =>
+                containerNavigation.navigate("PassStack", {
+                  screen: "PassList",
+                  params: { passType: "TICKET" },
+                })
+              }
+              style={styles.pass}
+            >
               <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
                 일회권
               </CustomText>
@@ -192,9 +225,9 @@ export const MyPage = () => {
               >
                 {data?.totalTickets ?? 0}
               </CustomText>
-            </View>
+            </Pressable>
           </View>
-        </View>
+        </Pressable>
 
         <View style={styles.box}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -229,7 +262,14 @@ export const MyPage = () => {
               alignItems: "center",
             }}
           >
-            <Pressable style={styles.button}>
+            <Pressable
+              onPress={() =>
+                containerNavigation.navigate("AddressStack", {
+                  screen: "AddressList",
+                })
+              }
+              style={styles.button}
+            >
               <Image source={addressIcon} style={styles.icon} />
               <CustomText fontSize={16}>주소 관리</CustomText>
             </Pressable>

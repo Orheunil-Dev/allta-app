@@ -40,6 +40,7 @@ export const Notification = () => {
     isError: readNotification,
   } = useNotificationControllerReadNotifications();
 
+  // 페이지네이션
   const handleLoadMore = () => {
     if (notificationsData?.meta?.hasNextPage) {
       setSkip(skip + 20);

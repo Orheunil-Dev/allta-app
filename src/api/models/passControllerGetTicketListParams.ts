@@ -6,7 +6,11 @@
  * OpenAPI spec version: 1.0
  */
 
-export type AddressControllerGetAddressesParams = {
+export type PassControllerGetTicketListParams = {
+/**
+ * 차량 번호
+ */
+carNumber: string;
 /**
  * 가져올 데이터 수
  */

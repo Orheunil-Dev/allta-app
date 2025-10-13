@@ -1,7 +1,7 @@
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { formatEllipsis, getResponsiveSize } from "@/utils";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Image, Linking, StyleSheet, View } from "react-native";
 import axios from "axios";
 import { FlatList, Pressable } from "react-native-gesture-handler";
@@ -178,7 +178,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: getResponsiveSize(20),
-    paddingBottom: getResponsiveSize(40),
   },
   locationIcon: {
     width: getResponsiveSize(20),

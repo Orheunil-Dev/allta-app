@@ -21,10 +21,9 @@ import { colors } from "@/styles";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
-import { useAddressControllerGetAddresses } from "@/api/address/address";
-import { useEffect, useState } from "react";
-import { GetAddressesResponse } from "@/api/models";
+import { useState } from "react";
 import { FlatList } from "react-native-gesture-handler";
+import { useAddressControllerGetAddressList } from "@/api/address/address";
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
@@ -55,28 +54,15 @@ export const AddressSelectBottomSheet = ({
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const [skip, setSkip] = useState<number>(0);
-  const [addresses, setAddresses] = useState<GetAddressesResponse["data"]>([]);
 
   const { data: addressesData, refetch: addressesRefetch } =
-    useAddressControllerGetAddresses(
-      {
-        take: 20,
-        skip,
+    useAddressControllerGetAddressList({
+      query: {
+        queryKey: ["addresses"],
+        retry: false,
+        gcTime: 0,
       },
-      {
-        query: {
-          queryKey: ["addresses"],
-          retry: false,
-          gcTime: 0,
-        },
-      }
-    );
-
-  const handleLoadMore = () => {
-    if (addressesData?.meta?.hasNextPage) {
-      setSkip(skip + 20);
-    }
-  };
+    });
 
   // 현재 위치로 설정
   const setCurrentLocation = async () => {
@@ -127,19 +113,6 @@ export const AddressSelectBottomSheet = ({
     });
   };
 
-  // 무한 스크롤
-  useEffect(() => {
-    if (!addressesData?.data) return;
-
-    setAddresses((prev) => {
-      if (skip === 0) {
-        return addressesData.data;
-      }
-
-      return [...prev, ...addressesData.data];
-    });
-  }, [addressesData]);
-
   return (
     <CustomBottomSheet
       ref={ref}
@@ -162,48 +135,44 @@ export const AddressSelectBottomSheet = ({
           </CustomText>
         </CustomButton>
 
-        {addresses.length > 0 && (
-          <FlatList
-            data={addresses}
-            keyExtractor={(item) => item.id}
-            onEndReached={handleLoadMore}
-            onEndReachedThreshold={0.7}
-            contentContainerStyle={{ gap: getResponsiveSize(16) }}
-            style={{ marginVertical: getResponsiveSize(16) }}
-            renderItem={({ item, index }) => (
-              <Pressable
-                onPress={() => {
-                  setCoordinate({
-                    id: item.id,
-                    lat: item.lat,
-                    lng: item.lng,
-                    nickname: item.nickname,
-                  });
+        <FlatList
+          data={addressesData?.data}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ gap: getResponsiveSize(16) }}
+          style={{ marginVertical: getResponsiveSize(16) }}
+          renderItem={({ item, index }) => (
+            <Pressable
+              onPress={() => {
+                setCoordinate({
+                  id: item.id,
+                  lat: item.lat,
+                  lng: item.lng,
+                  nickname: item.nickname,
+                });
 
-                  onClose();
-                }}
-                style={styles.card}
-              >
-                <Image
-                  source={
-                    coordinate.id === item.id
-                      ? checkedRadioIcon
-                      : uncheckedRadioIcon
-                  }
-                  style={styles.radioButton}
-                />
+                onClose();
+              }}
+              style={styles.card}
+            >
+              <Image
+                source={
+                  coordinate.id === item.id
+                    ? checkedRadioIcon
+                    : uncheckedRadioIcon
+                }
+                style={styles.radioButton}
+              />
 
-                <CustomText fontSize={18} fontWeight={"600"}>
-                  {item.nickname}
-                </CustomText>
+              <CustomText fontSize={18} fontWeight={"600"}>
+                {item.nickname}
+              </CustomText>
 
-                <CustomText marginTop={6} color={colors.gray7} fontSize={16}>
-                  {item.fullAddress}
-                </CustomText>
-              </Pressable>
-            )}
-          />
-        )}
+              <CustomText marginTop={6} color={colors.gray7} fontSize={16}>
+                {item.fullAddress}
+              </CustomText>
+            </Pressable>
+          )}
+        />
       </View>
 
       <CustomButton

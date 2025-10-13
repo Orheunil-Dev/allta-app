@@ -1,12 +1,8 @@
 import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { CardStackParamList } from "@/navigations";
-import {
-  formatCardCompany,
-  formatCardDisplayNumber,
-  getResponsiveSize,
-} from "@/utils";
+import { AddressStackParamList } from "@/navigations";
+import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { colors } from "@/styles";
@@ -14,41 +10,41 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { kebabIcon, plusIcon } from "@/assets/images";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/recoil";
-import { useCardControllerGetCardList } from "@/api/card/card";
+import { useAddressControllerGetAddressList } from "@/api/address/address";
 
-export const CardList = () => {
-  const cardStackNavigation =
-    useNavigation<NativeStackNavigationProp<CardStackParamList>>();
+export const AddressList = () => {
+  const addressStackNavigation =
+    useNavigation<NativeStackNavigationProp<AddressStackParamList>>();
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
-  // 카드 목록 조회 API
-  const { data: cardData, refetch: cardsRefetch } =
-    useCardControllerGetCardList({
+  // 주소 목록 조회 API
+  const { data: addressesData, refetch: addressesRefetch } =
+    useAddressControllerGetAddressList({
       query: {
-        queryKey: ["cards"],
+        queryKey: ["addresses"],
         retry: false,
         gcTime: 0,
       },
     });
 
-  // 카드 등록
-  const handleRouteCardRegister = () => {
-    if (cardData?.data.length && cardData?.data.length > 4) {
+  // 주소 등록
+  const handleRouteAddressRegister = () => {
+    if (addressesData?.data.length && addressesData?.data.length > 19) {
       return setErrorModal({
         visible: true,
-        message: "카드는 최대 5개까지 등록 가능합니다.",
+        message: "주소는 최대 20개까지 등록 가능합니다.",
       });
     }
 
-    return cardStackNavigation.navigate("CardRegister");
+    return addressStackNavigation.navigate("SearchAddress");
   };
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <View style={styles.container}>
         <CustomButton
-          onPress={handleRouteCardRegister}
+          onPress={handleRouteAddressRegister}
           width={"100%"}
           height={getResponsiveSize(64)}
           marginBottom={16}
@@ -57,25 +53,17 @@ export const CardList = () => {
           borderColor={colors.gray2}
         >
           <Image source={plusIcon} style={styles.plusIcon} />
-          <CustomText fontSize={16}>카드 추가하기</CustomText>
+          <CustomText fontSize={16}>주소 추가하기</CustomText>
         </CustomButton>
 
         <FlatList
-          data={cardData?.data}
+          data={addressesData?.data}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ gap: getResponsiveSize(16) }}
           renderItem={({ item, index }) => (
-            <View
-              style={[
-                styles.card,
-                item.isMain && {
-                  borderWidth: 2,
-                  borderColor: colors.point2,
-                },
-              ]}
-            >
+            <View style={[styles.address]}>
               <CustomText marginBottom={4} fontSize={18} fontWeight={"600"}>
-                {formatCardCompany(item.cardCompany)}
+                {item.nickname}
               </CustomText>
 
               <Pressable style={styles.kebabButton}>
@@ -88,11 +76,9 @@ export const CardList = () => {
                 />
               </Pressable>
 
-              <View style={{ flexDirection: "row" }}>
-                <CustomText color={colors.gray7} fontSize={16}>
-                  {formatCardDisplayNumber(item.cardDisplayNumber)}
-                </CustomText>
-              </View>
+              <CustomText color={colors.gray7} fontSize={16}>
+                {item.fullAddress}
+              </CustomText>
             </View>
           )}
         />
@@ -107,7 +93,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(20),
     paddingBottom: getResponsiveSize(20),
   },
-  card: {
+  address: {
     position: "relative",
     padding: getResponsiveSize(16),
     backgroundColor: colors.white,

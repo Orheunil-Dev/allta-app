@@ -25,8 +25,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  AddressControllerGetAddressesParams,
-  GetAddressesResponse,
+  GetAddressListResponse,
   RegisterAddressResponse,
   RegisterAddresssRequest
 } from '.././models';
@@ -38,78 +37,77 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 
-export const addressControllerGetAddresses = (
-    params: AddressControllerGetAddressesParams,
+export const addressControllerGetAddressList = (
+    
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<GetAddressesResponse>(
-      {url: `/address`, method: 'GET',
-        params, signal
+      return customInstance<GetAddressListResponse>(
+      {url: `/address`, method: 'GET', signal
     },
       options);
     }
   
 
-export const getAddressControllerGetAddressesQueryKey = (params?: AddressControllerGetAddressesParams,) => {
-    return [`/address`, ...(params ? [params]: [])] as const;
+export const getAddressControllerGetAddressListQueryKey = () => {
+    return [`/address`] as const;
     }
 
     
-export const getAddressControllerGetAddressesQueryOptions = <TData = Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError = unknown>(params: AddressControllerGetAddressesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getAddressControllerGetAddressListQueryOptions = <TData = Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getAddressControllerGetAddressesQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getAddressControllerGetAddressListQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof addressControllerGetAddresses>>> = ({ signal }) => addressControllerGetAddresses(params, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof addressControllerGetAddressList>>> = ({ signal }) => addressControllerGetAddressList(requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type AddressControllerGetAddressesQueryResult = NonNullable<Awaited<ReturnType<typeof addressControllerGetAddresses>>>
-export type AddressControllerGetAddressesQueryError = unknown
+export type AddressControllerGetAddressListQueryResult = NonNullable<Awaited<ReturnType<typeof addressControllerGetAddressList>>>
+export type AddressControllerGetAddressListQueryError = unknown
 
 
-export function useAddressControllerGetAddresses<TData = Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError = unknown>(
- params: AddressControllerGetAddressesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError, TData>> & Pick<
+export function useAddressControllerGetAddressList<TData = Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof addressControllerGetAddresses>>,
+          Awaited<ReturnType<typeof addressControllerGetAddressList>>,
           TError,
-          Awaited<ReturnType<typeof addressControllerGetAddresses>>
+          Awaited<ReturnType<typeof addressControllerGetAddressList>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useAddressControllerGetAddresses<TData = Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError = unknown>(
- params: AddressControllerGetAddressesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError, TData>> & Pick<
+export function useAddressControllerGetAddressList<TData = Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof addressControllerGetAddresses>>,
+          Awaited<ReturnType<typeof addressControllerGetAddressList>>,
           TError,
-          Awaited<ReturnType<typeof addressControllerGetAddresses>>
+          Awaited<ReturnType<typeof addressControllerGetAddressList>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useAddressControllerGetAddresses<TData = Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError = unknown>(
- params: AddressControllerGetAddressesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useAddressControllerGetAddressList<TData = Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useAddressControllerGetAddresses<TData = Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError = unknown>(
- params: AddressControllerGetAddressesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddresses>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useAddressControllerGetAddressList<TData = Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof addressControllerGetAddressList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getAddressControllerGetAddressesQueryOptions(params,options)
+  const queryOptions = getAddressControllerGetAddressListQueryOptions(options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

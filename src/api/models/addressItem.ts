@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface Address {
+export interface AddressItem {
   /** ID */
   id: string;
   /** 별명 */
