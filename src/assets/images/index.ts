@@ -92,3 +92,4 @@ export { default as noticeIcon } from "./notice-icon.png";
 export { default as inquiryIcon } from "./inquiry-icon.png";
 export { default as contactIcon } from "./contact-icon.png";
 export { default as plusIcon } from "./plus-icon.png";
+export { default as termsArrow } from "./terms-arrow.png";

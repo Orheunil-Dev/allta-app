@@ -35,7 +35,12 @@ export const MyPassCard = ({
   const passStackNavigation =
     useNavigation<NativeStackNavigationProp<PassStackParamList>>();
 
-  const handleRoutePassDetail = () => {};
+  const handleRoutePassDetail = () => {
+    return passStackNavigation.navigate("PassDetail", {
+      id,
+      type,
+    });
+  };
 
   return (
     <View key={id} style={styles.card}>

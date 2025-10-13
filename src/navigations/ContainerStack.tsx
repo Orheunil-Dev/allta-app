@@ -6,7 +6,7 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
-import { checkIsFirstLaunch } from "@/utils";
+import { checkIsFirstLaunch, formatEllipsis } from "@/utils";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
 import { StoreStack, StoreStackParamList } from "./StoreStack";
 import { AddressStack, AddressStackParamList } from "./AddressStack";
@@ -23,6 +23,7 @@ import { PassStack, PassStackParamList } from "./PassStack";
 import { Notification } from "@/screens/Notification";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
+import { MyStoreDetail } from "@/screens/MyStore";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -38,9 +39,13 @@ export type ContainerStackParamList = {
   QrScanStack: NavigatorScreenParams<QrScanStackParamList>;
   SettingStack: NavigatorScreenParams<SettingStackParamList>;
   Notification: undefined;
+  MyStoreDetail: {
+    storeId: string;
+    storeName: string;
+  };
 };
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<ContainerStackParamList>();
 
 interface Props {
   showLoginModal: boolean;
@@ -162,6 +167,18 @@ export const ContainerStack = ({
           options={{
             headerShown: false,
           }}
+        />
+        <Stack.Screen
+          name="MyStoreDetail"
+          component={MyStoreDetail}
+          options={({ route }) => ({
+            header: () => (
+              <CustomHeader
+                title={formatEllipsis(route.params.storeName, 12)}
+                showBackButton
+              />
+            ),
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>

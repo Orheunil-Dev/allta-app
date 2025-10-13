@@ -305,6 +305,7 @@ export const Payment = () => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: getResponsiveSize(12),
     paddingHorizontal: getResponsiveSize(20),
   },
   storeImage: {

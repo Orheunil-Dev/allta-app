@@ -25,7 +25,7 @@ export const CustomHeader = ({
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
-  const goBack = () => {
+  const handleGoBack = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
     } else {
@@ -44,7 +44,7 @@ export const CustomHeader = ({
     }
   };
 
-  const goHome = () => {
+  const handleGoHome = () => {
     return containerNavigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -66,7 +66,7 @@ export const CustomHeader = ({
       ]}
     >
       {showBackButton ? (
-        <Pressable onPress={goBack}>
+        <Pressable onPress={handleGoBack}>
           <Image source={headerBackArrow} style={styles.backButton} />
         </Pressable>
       ) : (
@@ -83,7 +83,7 @@ export const CustomHeader = ({
       </CustomText>
 
       {showCloseButton ? (
-        <Pressable onPress={goHome}>
+        <Pressable onPress={handleGoHome}>
           <Image source={closeIcon} style={styles.backButton} />
         </Pressable>
       ) : (
@@ -103,9 +103,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: colors.white,
     paddingHorizontal: getResponsiveSize(20),
-    paddingVertical: getResponsiveSize(24),
+    paddingVertical: getResponsiveSize(12),
+    backgroundColor: colors.white,
   },
   backButton: {
     width: getResponsiveSize(24),

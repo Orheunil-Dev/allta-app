@@ -6,9 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface UseSubscriptionRequest {
-  /** 구독권 ID */
-  subscriptionId: string;
-  /** 매장 ID */
-  storeId: string;
+export interface DiscontinueSubscriptionRequest {
+  /** ID */
+  id: string;
 }

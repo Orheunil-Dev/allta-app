@@ -25,7 +25,10 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  DiscontinueSubscriptionRequest,
+  DiscontinueSubscriptionResponse,
   GetAvailablePassesResponse,
+  GetSubscriptionDetailResponse,
   GetSubscriptionListReponse,
   GetTicketListReponse,
   PassControllerGetAvailablePassesParams,
@@ -466,4 +469,141 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
       return useMutation(mutationOptions , queryClient);
     }
+    export const passControllerDiscontinueSubscription = (
+    discontinueSubscriptionRequest: DiscontinueSubscriptionRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<DiscontinueSubscriptionResponse>(
+      {url: `/pass/subscription/use`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: discontinueSubscriptionRequest
+    },
+      options);
+    }
+  
+
+
+export const getPassControllerDiscontinueSubscriptionMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof passControllerDiscontinueSubscription>>, TError,{data: DiscontinueSubscriptionRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof passControllerDiscontinueSubscription>>, TError,{data: DiscontinueSubscriptionRequest}, TContext> => {
+
+const mutationKey = ['passControllerDiscontinueSubscription'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof passControllerDiscontinueSubscription>>, {data: DiscontinueSubscriptionRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  passControllerDiscontinueSubscription(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PassControllerDiscontinueSubscriptionMutationResult = NonNullable<Awaited<ReturnType<typeof passControllerDiscontinueSubscription>>>
+    export type PassControllerDiscontinueSubscriptionMutationBody = DiscontinueSubscriptionRequest
+    export type PassControllerDiscontinueSubscriptionMutationError = unknown
+
+    export const usePassControllerDiscontinueSubscription = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof passControllerDiscontinueSubscription>>, TError,{data: DiscontinueSubscriptionRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof passControllerDiscontinueSubscription>>,
+        TError,
+        {data: DiscontinueSubscriptionRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getPassControllerDiscontinueSubscriptionMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const passControllerGetSubscriptionDetail = (
+    id: string,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetSubscriptionDetailResponse>(
+      {url: `/pass/subscription/${id}`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getPassControllerGetSubscriptionDetailQueryKey = (id?: string,) => {
+    return [`/pass/subscription/${id}`] as const;
+    }
+
     
+export const getPassControllerGetSubscriptionDetailQueryOptions = <TData = Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError = unknown>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPassControllerGetSubscriptionDetailQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>> = ({ signal }) => passControllerGetSubscriptionDetail(id, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PassControllerGetSubscriptionDetailQueryResult = NonNullable<Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>>
+export type PassControllerGetSubscriptionDetailQueryError = unknown
+
+
+export function usePassControllerGetSubscriptionDetail<TData = Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError = unknown>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>,
+          TError,
+          Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePassControllerGetSubscriptionDetail<TData = Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>,
+          TError,
+          Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePassControllerGetSubscriptionDetail<TData = Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function usePassControllerGetSubscriptionDetail<TData = Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetSubscriptionDetail>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPassControllerGetSubscriptionDetailQueryOptions(id,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+

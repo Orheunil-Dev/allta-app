@@ -158,7 +158,7 @@ export const PassFilter = ({ car, setCar, passType, setPassType }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    paddingBottom: getResponsiveSize(12),
+    paddingVertical: getResponsiveSize(12),
     paddingHorizontal: getResponsiveSize(20),
     gap: getResponsiveSize(8),
     backgroundColor: colors.white,

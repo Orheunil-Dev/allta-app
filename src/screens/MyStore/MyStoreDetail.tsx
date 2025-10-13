@@ -179,7 +179,7 @@ export const MyStoreDetail = () => {
 
   return (
     <CustomSafeAreaView edges={[]}>
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <View style={styles.top}>
           <ImageBackground
             source={
@@ -395,6 +395,10 @@ export const MyStoreDetail = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: getResponsiveSize(12),
+  },
   top: {
     paddingHorizontal: getResponsiveSize(20),
     paddingBottom: getResponsiveSize(20),

@@ -116,7 +116,7 @@ export const PassList = () => {
                     maxUsage={value.subscriptionSnapshot.maxUsage ?? undefined}
                     availablePeriod={`${dayjs(value.payedAt).format(
                       "YY.MM.DD"
-                    )} ~ ${dayjs(value.payedAt)
+                    )}~${dayjs(value.payedAt)
                       .add(1, "month")
                       .format("YY.MM.")}${value.billingDate}`}
                   />
