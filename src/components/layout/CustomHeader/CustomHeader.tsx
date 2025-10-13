@@ -25,6 +25,25 @@ export const CustomHeader = ({
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
+  const goBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      // 뒤로 갈 화면이 없으면 홈으로
+      containerNavigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: "BottomTab",
+              params: { screen: "Home" },
+            },
+          ],
+        })
+      );
+    }
+  };
+
   const goHome = () => {
     return containerNavigation.dispatch(
       CommonActions.reset({
@@ -47,7 +66,7 @@ export const CustomHeader = ({
       ]}
     >
       {showBackButton ? (
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable onPress={goBack}>
           <Image source={headerBackArrow} style={styles.backButton} />
         </Pressable>
       ) : (
