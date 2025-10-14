@@ -90,8 +90,8 @@ export const AddressList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingVertical: getResponsiveSize(20),
     paddingHorizontal: getResponsiveSize(20),
-    paddingBottom: getResponsiveSize(20),
   },
   address: {
     position: "relative",

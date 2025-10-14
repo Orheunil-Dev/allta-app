@@ -23,7 +23,6 @@ export const AddressStack = () => {
         component={AddressList}
         options={{
           header: () => <CustomHeader title="주소 관리" showBackButton />,
-          presentation: "pageSheet",
         }}
       />
       <Stack.Screen
@@ -31,7 +30,6 @@ export const AddressStack = () => {
         component={SearchAddress}
         options={{
           header: () => <CustomHeader title="주소 검색" showBackButton />,
-          presentation: "transparentModal",
         }}
       />
       <Stack.Screen
