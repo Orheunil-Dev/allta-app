@@ -1,6 +1,5 @@
 // jotai/atoms.ts
 import { atom } from "jotai";
-import { boolean } from "zod";
 
 export const errorModalAtom = atom<{
   visible: boolean;

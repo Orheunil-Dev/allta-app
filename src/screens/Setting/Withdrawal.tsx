@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import CookieManager from "@react-native-cookies/cookies";
+import * as SecureStore from "expo-secure-store";
+import { useSetAtom } from "jotai";
+import { commonModalAtom, errorModalAtom } from "@/jotai";
+import { useUserControllerWithdrawalUser } from "@/api/user/user";
 import { getResponsiveSize } from "@/utils";
+import { ContainerStackParamList } from "@/navigations";
+import { CustomModal } from "@/components/ui/CustomModal";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
@@ -8,15 +17,6 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
 import { checkedRadioIcon, uncheckedRadioIcon } from "@/assets/images";
 import { colors } from "@/styles";
-import { useUserControllerWithdrawalUser } from "@/api/user/user";
-import * as SecureStore from "expo-secure-store";
-import CookieManager from "@react-native-cookies/cookies";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ContainerStackParamList } from "@/navigations";
-import { useSetAtom } from "jotai";
-import { commonModalAtom, errorModalAtom } from "@/recoil";
-import { CustomModal } from "@/components/ui/CustomModal";
 
 const withdrawalReasons = [
   "앱 사용이 불편했어요.",

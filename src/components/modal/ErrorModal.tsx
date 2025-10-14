@@ -1,6 +1,6 @@
 import { CustomText } from "@/components/ui/CustomText";
 import { useAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 import { getResponsiveSize } from "@/utils";
 import {
   Image,

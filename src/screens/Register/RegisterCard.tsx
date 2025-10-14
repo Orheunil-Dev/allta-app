@@ -24,7 +24,7 @@ import {
 import { colors } from "@/styles";
 import { useUserControllerRegisterExtraInfo } from "@/api/user/user";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 import { Spinner } from "@/components/ui/Spinner";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 

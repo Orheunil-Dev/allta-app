@@ -13,7 +13,7 @@ import { useState } from "react";
 import { CustomModal } from "@/components/ui/CustomModal";
 import { rigthArrowIcon } from "@/assets/images";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 
 export const Setting = () => {
   const containerNavigation =

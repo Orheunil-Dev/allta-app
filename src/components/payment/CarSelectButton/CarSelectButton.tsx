@@ -13,7 +13,7 @@ import { ContainerStackParamList } from "@/navigations";
 import { useCarControllerGetCarList } from "@/api/car/car";
 import { Car } from "@/types";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 
 interface Props {
   car: Car | null;

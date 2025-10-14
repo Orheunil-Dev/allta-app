@@ -16,7 +16,7 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { Spinner } from "@/components/ui/Spinner";
 import { PaymentStackParamList } from "@/navigations";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 import { colors } from "@/styles";
 import { Car, Card, CarType, Coupon } from "@/types";
 import {

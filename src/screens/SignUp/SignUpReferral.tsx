@@ -24,7 +24,7 @@ import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidi
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { colors } from "@/styles";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
 

@@ -26,7 +26,7 @@ import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { Spinner } from "@/components/ui/Spinner";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 
 type Pass =
   | "autoTicket"

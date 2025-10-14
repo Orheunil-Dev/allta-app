@@ -29,7 +29,7 @@ import {
 } from "@/assets/images";
 import { colors } from "@/styles";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { jwtDecode } from "jwt-decode";
 import { useVideoPlayer, VideoView } from "expo-video";

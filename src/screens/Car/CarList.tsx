@@ -10,7 +10,7 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { kebabIcon, plusIcon } from "@/assets/images";
 import { useCarControllerGetCarList } from "@/api/car/car";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 
 export const CarList = () => {
   const carStackNavigation =

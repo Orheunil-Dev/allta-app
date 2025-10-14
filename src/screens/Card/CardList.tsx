@@ -13,7 +13,7 @@ import { colors } from "@/styles";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { kebabIcon, plusIcon } from "@/assets/images";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 import { useCardControllerGetCardList } from "@/api/card/card";
 
 export const CardList = () => {
