@@ -39,7 +39,7 @@ export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
 
   // 차량 등록
   const handleRouteCarRegister = () => {
-    if (carData?.data.length && carData?.data.length > 5) {
+    if (carData?.data.length && carData?.data.length > 4) {
       return setErrorModal({
         visible: true,
         message: "차량은 최대 5대까지 등록 가능합니다.",

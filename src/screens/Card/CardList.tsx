@@ -42,7 +42,7 @@ export const CardList = () => {
 
   // 카드 등록 화면 이동
   const handleRouteCardRegister = () => {
-    if (cardData?.data.length && cardData?.data.length > 5) {
+    if (cardData?.data.length && cardData?.data.length > 4) {
       return setErrorModal({
         visible: true,
         message: "카드는 최대 5개까지 등록 가능합니다.",

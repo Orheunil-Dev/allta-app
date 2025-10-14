@@ -43,7 +43,7 @@ export const CardSelectButton = ({ card, setCard }: Props) => {
 
   // 카드 등록
   const handleRouteCardRegister = () => {
-    if (cardData?.data.length && cardData?.data.length > 5) {
+    if (cardData?.data.length && cardData?.data.length > 4) {
       return setErrorModal({
         visible: true,
         message: "차량은 최대 5대까지 등록 가능합니다.",
