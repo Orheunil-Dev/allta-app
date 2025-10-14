@@ -29,6 +29,8 @@ import { CustomButton } from "../ui/CustomButton";
 import { CustomModal } from "../ui/CustomModal";
 import { defaultStoreImage, locationIcon, termsArrow } from "@/assets/images";
 import { colors } from "@/styles";
+import Toast from "react-native-toast-message";
+import { useToastMessage } from "@/hooks/useToastMessage";
 
 interface Props {
   data: GetSubscriptionDetailResponse["data"];
@@ -75,6 +77,8 @@ export const SubscriptionDetail = ({
 
   const { getDistance } = useDistanceCalculator();
 
+  const { SuccessToast } = useToastMessage();
+
   // 구독권 갱신 해지
   const handleDiscontinue = () => {
     if (router.params.type === "TICKET") return;
@@ -89,6 +93,7 @@ export const SubscriptionDetail = ({
         onSuccess: () => {
           refetch();
           setShowDicontinueModal(false);
+          SuccessToast("구독 갱신이 해지되었습니다.");
         },
         onError: (error: any) => {
           setErrorModal({
@@ -116,6 +121,7 @@ export const SubscriptionDetail = ({
         onSuccess: () => {
           refetch();
           setShowResubscribeModal(false);
+          SuccessToast("재구독이 완료되었습니다.");
         },
         onError: (error: any) => {
           setErrorModal({
