@@ -25,6 +25,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  DeleteAddressRequest,
+  DeleteAddressResponse,
   GetAddressListResponse,
   RegisterAddressResponse,
   RegisterAddresssRequest
@@ -173,6 +175,63 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getAddressControllerRegisterAddressesMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const addressControllerDeleteAddress = (
+    deleteAddressRequest: DeleteAddressRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<DeleteAddressResponse>(
+      {url: `/address`, method: 'DELETE',
+      headers: {'Content-Type': 'application/json', },
+      data: deleteAddressRequest
+    },
+      options);
+    }
+  
+
+
+export const getAddressControllerDeleteAddressMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addressControllerDeleteAddress>>, TError,{data: DeleteAddressRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof addressControllerDeleteAddress>>, TError,{data: DeleteAddressRequest}, TContext> => {
+
+const mutationKey = ['addressControllerDeleteAddress'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addressControllerDeleteAddress>>, {data: DeleteAddressRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  addressControllerDeleteAddress(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AddressControllerDeleteAddressMutationResult = NonNullable<Awaited<ReturnType<typeof addressControllerDeleteAddress>>>
+    export type AddressControllerDeleteAddressMutationBody = DeleteAddressRequest
+    export type AddressControllerDeleteAddressMutationError = unknown
+
+    export const useAddressControllerDeleteAddress = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addressControllerDeleteAddress>>, TError,{data: DeleteAddressRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof addressControllerDeleteAddress>>,
+        TError,
+        {data: DeleteAddressRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getAddressControllerDeleteAddressMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }

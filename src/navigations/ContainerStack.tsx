@@ -114,7 +114,6 @@ export const ContainerStack = ({
           component={AddressStack}
           options={{
             headerShown: false,
-            presentation: "transparentModal",
           }}
         />
         <Stack.Screen

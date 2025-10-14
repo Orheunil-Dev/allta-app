@@ -6,15 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface AddressItem {
+export interface DeleteAddressRequest {
   /** ID */
   id: string;
-  /** 별명 */
-  nickname: string;
-  /** 위도 */
-  lat: number;
-  /** 경도 */
-  lng: number;
-  /** 전체 주소 */
-  fullAddress: string;
 }

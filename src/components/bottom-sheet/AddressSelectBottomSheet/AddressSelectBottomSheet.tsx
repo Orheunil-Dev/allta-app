@@ -108,6 +108,8 @@ export const AddressSelectBottomSheet = ({
 
   // 주소 등록 화면으로 이동
   const handleRegisterAddress = () => {
+    onClose();
+
     return containerNavigation.navigate("AddressStack", {
       screen: "SearchAddress",
     });

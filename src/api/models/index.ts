@@ -26,6 +26,8 @@ export * from './createOneCouponRequest';
 export * from './createOneCouponResponse';
 export * from './createUserRequest';
 export * from './createUserResponse';
+export * from './deleteAddressRequest';
+export * from './deleteAddressResponse';
 export * from './deleteCarRequest';
 export * from './deleteCarResponse';
 export * from './deleteCardRequest';
