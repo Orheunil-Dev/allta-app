@@ -16,7 +16,7 @@ import {
 } from "@/api/pass/pass";
 import { GetSubscriptionDetailResponse } from "@/api/models";
 import { PassStackParamList } from "@/navigations";
-import { useDistanceCalculator } from "@/hooks";
+import { useDistanceCalculator, useToastMessage } from "@/hooks";
 import {
   formatEllipsis,
   formatPassType,
@@ -29,8 +29,6 @@ import { CustomButton } from "../ui/CustomButton";
 import { CustomModal } from "../ui/CustomModal";
 import { defaultStoreImage, locationIcon, termsArrow } from "@/assets/images";
 import { colors } from "@/styles";
-import Toast from "react-native-toast-message";
-import { useToastMessage } from "@/hooks/useToastMessage";
 
 interface Props {
   data: GetSubscriptionDetailResponse["data"];
@@ -76,7 +74,6 @@ export const SubscriptionDetail = ({
   } = usePassControllerResubscribeSubscription();
 
   const { getDistance } = useDistanceCalculator();
-
   const { SuccessToast } = useToastMessage();
 
   // 구독권 갱신 해지

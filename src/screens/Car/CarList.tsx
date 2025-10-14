@@ -1,6 +1,8 @@
+import { useRef, useState } from "react";
 import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { CarStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
@@ -11,12 +13,17 @@ import { kebabIcon, plusIcon } from "@/assets/images";
 import { useCarControllerGetCarList } from "@/api/car/car";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/jotai";
+import { CarOptionsBottomSheet } from "@/components/bottom-sheet";
 
 export const CarList = () => {
   const carStackNavigation =
     useNavigation<NativeStackNavigationProp<CarStackParamList>>();
 
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const [carId, setCarId] = useState<string | undefined>(undefined);
 
   const { data: carData, refetch: carsRefetch } = useCarControllerGetCarList({
     query: {
@@ -38,8 +45,23 @@ export const CarList = () => {
     return carStackNavigation.navigate("CarRegister");
   };
 
+  const handleOpenBottomSheet = (id: string) => () => {
+    setCarId(id);
+    bottomSheetRef?.current?.present();
+  };
+  const handleCloseBottomSheet = () => {
+    setCarId(undefined);
+    bottomSheetRef?.current?.close();
+  };
+
   return (
     <CustomSafeAreaView edges={["bottom"]}>
+      <CarOptionsBottomSheet
+        ref={bottomSheetRef}
+        id={carId}
+        onClose={handleCloseBottomSheet}
+      />
+
       <View style={styles.container}>
         <CustomButton
           onPress={handleRouteCarRegister}
@@ -63,16 +85,40 @@ export const CarList = () => {
               style={[
                 styles.car,
                 item.isMain && {
-                  borderWidth: 2,
+                  borderWidth: 1,
                   borderColor: colors.point2,
                 },
               ]}
             >
-              <CustomText marginBottom={4} fontSize={18} fontWeight={"600"}>
-                {item.number}
-              </CustomText>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: getResponsiveSize(4),
+                }}
+              >
+                <CustomText fontSize={18} fontWeight={"600"}>
+                  {item.number}
+                </CustomText>
 
-              <Pressable style={styles.kebabButton}>
+                {item.isMain && (
+                  <View style={styles.mainCar}>
+                    <CustomText
+                      color={colors.point2}
+                      fontSize={12}
+                      fontWeight={"500"}
+                      lineHeight={1.4}
+                    >
+                      대표차량
+                    </CustomText>
+                  </View>
+                )}
+              </View>
+
+              <Pressable
+                onPress={handleOpenBottomSheet(item.id)}
+                style={styles.kebabButton}
+              >
                 <Image
                   source={kebabIcon}
                   style={{
@@ -101,8 +147,8 @@ export const CarList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingVertical: getResponsiveSize(20),
     paddingHorizontal: getResponsiveSize(20),
-    paddingBottom: getResponsiveSize(20),
   },
   car: {
     position: "relative",
@@ -126,5 +172,14 @@ const styles = StyleSheet.create({
     width: getResponsiveSize(24),
     height: getResponsiveSize(24),
     marginRight: getResponsiveSize(8),
+  },
+  mainCar: {
+    alignItems: "center",
+    marginLeft: getResponsiveSize(8),
+    paddingVertical: getResponsiveSize(3),
+    paddingHorizontal: getResponsiveSize(7),
+    borderWidth: 1,
+    borderColor: colors.point2,
+    borderRadius: 20,
   },
 });

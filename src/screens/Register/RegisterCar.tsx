@@ -326,8 +326,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingVertical: getResponsiveSize(20),
     paddingHorizontal: getResponsiveSize(20),
-    paddingBottom: getResponsiveSize(10),
   },
   selectInput: {
     position: "relative",

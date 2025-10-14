@@ -1,10 +1,4 @@
-import {
-  ForwardedRef,
-  forwardRef,
-  RefObject,
-  useCallback,
-  useMemo,
-} from "react";
+import { ForwardedRef, forwardRef, useCallback, useMemo } from "react";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -67,32 +61,36 @@ export const CustomBottomSheet = forwardRef(
             { paddingBottom: insets.bottom + getResponsiveSize(20) },
           ]}
         >
-          {hasCloseButton ? (
-            <View style={styles.header}>
-              <View style={styles.empty} />
+          {title && (
+            <>
+              {hasCloseButton ? (
+                <View style={styles.header}>
+                  <View style={styles.empty} />
 
-              <CustomText fontSize={18} fontWeight={"600"}>
-                {title}
-              </CustomText>
+                  <CustomText fontSize={18} fontWeight={"600"}>
+                    {title}
+                  </CustomText>
 
-              <Pressable onPress={onClose}>
-                <Image
-                  source={closeIcon}
-                  style={{
-                    width: getResponsiveSize(24),
-                    height: getResponsiveSize(24),
-                  }}
-                />
-              </Pressable>
-            </View>
-          ) : (
-            <View style={styles.header}>
-              <CustomText fontSize={18} fontWeight={"600"}>
-                {title}
-              </CustomText>
+                  <Pressable onPress={onClose}>
+                    <Image
+                      source={closeIcon}
+                      style={{
+                        width: getResponsiveSize(24),
+                        height: getResponsiveSize(24),
+                      }}
+                    />
+                  </Pressable>
+                </View>
+              ) : (
+                <View style={styles.header}>
+                  <CustomText fontSize={18} fontWeight={"600"}>
+                    {title}
+                  </CustomText>
 
-              <View style={styles.empty} />
-            </View>
+                  <View style={styles.empty} />
+                </View>
+              )}
+            </>
           )}
 
           {children}
