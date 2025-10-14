@@ -29,10 +29,6 @@ export const TicketDetail = ({
 }: Props) => {
   const [passTermsOpen, setPassTermsOpen] = useState<boolean>(false);
   const [refundTermsOpen, setRefundTermsOpen] = useState<boolean>(false);
-  const [showDiscontinueModal, setShowDicontinueModal] =
-    useState<boolean>(false);
-  const [showResubscribeModal, setShowResubscribeModal] =
-    useState<boolean>(false);
 
   const { getDistance } = useDistanceCalculator();
 
@@ -175,7 +171,7 @@ export const TicketDetail = ({
         </CustomText>
 
         <View style={styles.box}>
-          <View style={styles.row}>
+          <View style={[styles.row, { borderBottomWidth: 0 }]}>
             <CustomText color={colors.gray5} fontSize={16}>
               이용기간
             </CustomText>

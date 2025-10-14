@@ -68,9 +68,14 @@ export const PassDetail = () => {
   const handleRouteMyStoreDetail = () => {
     const storeId = subscriptionData
       ? subscriptionData.data.store.id
+      : ticketData
+      ? ticketData.data.store.id
       : undefined;
+
     const storeName = subscriptionData
       ? subscriptionData.data.store.name
+      : ticketData
+      ? ticketData.data.store.name
       : undefined;
 
     if (!storeId || !storeName) {

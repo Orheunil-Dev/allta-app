@@ -367,7 +367,7 @@ export const SubscriptionDetail = ({
             </CustomText>
           </View>
 
-          <View style={styles.row}>
+          <View style={[styles.row, { borderBottomWidth: 0 }]}>
             <CustomText color={colors.gray5} fontSize={16}>
               예상 결제 금액
             </CustomText>
