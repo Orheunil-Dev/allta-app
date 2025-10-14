@@ -14,6 +14,8 @@ export * from './carVendor';
 export * from './card';
 export * from './changeMainCarRequest';
 export * from './changeMainCarResponse';
+export * from './changeMainCardRequest';
+export * from './changeMainCardResponse';
 export * from './checkPhoneNumberRequest';
 export * from './checkPhoneNumberResponse';
 export * from './couponControllerGetCouponListParams';

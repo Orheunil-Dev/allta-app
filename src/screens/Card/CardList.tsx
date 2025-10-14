@@ -1,26 +1,34 @@
+import { useRef, useState } from "react";
 import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useSetAtom } from "jotai";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useCardControllerGetCardList } from "@/api/card/card";
+import { errorModalAtom } from "@/jotai";
 import { CardStackParamList } from "@/navigations";
 import {
   formatCardCompany,
   formatCardDisplayNumber,
   getResponsiveSize,
 } from "@/utils";
+import { Card } from "@/types";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { colors } from "@/styles";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { CardOptionsBottomSheet } from "@/components/bottom-sheet";
 import { kebabIcon, plusIcon } from "@/assets/images";
-import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/jotai";
-import { useCardControllerGetCardList } from "@/api/card/card";
+import { colors } from "@/styles";
 
 export const CardList = () => {
   const cardStackNavigation =
     useNavigation<NativeStackNavigationProp<CardStackParamList>>();
 
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const [card, setCard] = useState<Card | undefined>(undefined);
 
   // 카드 목록 조회 API
   const { data: cardData, refetch: cardsRefetch } =
@@ -32,9 +40,9 @@ export const CardList = () => {
       },
     });
 
-  // 카드 등록
+  // 카드 등록 화면 이동
   const handleRouteCardRegister = () => {
-    if (cardData?.data.length && cardData?.data.length > 4) {
+    if (cardData?.data.length && cardData?.data.length > 5) {
       return setErrorModal({
         visible: true,
         message: "카드는 최대 5개까지 등록 가능합니다.",
@@ -44,8 +52,24 @@ export const CardList = () => {
     return cardStackNavigation.navigate("CardRegister");
   };
 
+  const handleOpenBottomSheet = (card: Card) => () => {
+    setCard(card);
+    bottomSheetRef?.current?.present();
+  };
+  const handleCloseBottomSheet = () => {
+    setCard(undefined);
+    bottomSheetRef?.current?.close();
+  };
+
   return (
     <CustomSafeAreaView edges={["bottom"]}>
+      <CardOptionsBottomSheet
+        ref={bottomSheetRef}
+        id={card?.id}
+        isMain={card?.isMain}
+        onClose={handleCloseBottomSheet}
+      />
+
       <View style={styles.container}>
         <CustomButton
           onPress={handleRouteCardRegister}
@@ -69,16 +93,40 @@ export const CardList = () => {
               style={[
                 styles.card,
                 item.isMain && {
-                  borderWidth: 2,
+                  borderWidth: 1,
                   borderColor: colors.point2,
                 },
               ]}
             >
-              <CustomText marginBottom={4} fontSize={18} fontWeight={"600"}>
-                {formatCardCompany(item.cardCompany)}
-              </CustomText>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: getResponsiveSize(4),
+                }}
+              >
+                <CustomText fontSize={18} fontWeight={"600"}>
+                  {formatCardCompany(item.cardCompany)}
+                </CustomText>
 
-              <Pressable style={styles.kebabButton}>
+                {item.isMain && (
+                  <View style={styles.mainCard}>
+                    <CustomText
+                      color={colors.point2}
+                      fontSize={12}
+                      fontWeight={"500"}
+                      lineHeight={1.4}
+                    >
+                      대표카드
+                    </CustomText>
+                  </View>
+                )}
+              </View>
+
+              <Pressable
+                onPress={handleOpenBottomSheet(item)}
+                style={styles.kebabButton}
+              >
                 <Image
                   source={kebabIcon}
                   style={{
@@ -104,8 +152,8 @@ export const CardList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingVertical: getResponsiveSize(20),
     paddingHorizontal: getResponsiveSize(20),
-    paddingBottom: getResponsiveSize(20),
   },
   card: {
     position: "relative",
@@ -129,5 +177,14 @@ const styles = StyleSheet.create({
     width: getResponsiveSize(24),
     height: getResponsiveSize(24),
     marginRight: getResponsiveSize(8),
+  },
+  mainCard: {
+    alignItems: "center",
+    marginLeft: getResponsiveSize(8),
+    paddingVertical: getResponsiveSize(3),
+    paddingHorizontal: getResponsiveSize(7),
+    borderWidth: 1,
+    borderColor: colors.point2,
+    borderRadius: 20,
   },
 });
