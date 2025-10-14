@@ -4,7 +4,10 @@ import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { carIcon, deleteIcon, editIcon } from "@/assets/images";
-import { useCarControllerDeleteCar } from "@/api/car/car";
+import {
+  useCarControllerChangeMainCar,
+  useCarControllerDeleteCar,
+} from "@/api/car/car";
 import { useToastMessage } from "@/hooks";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/jotai";
@@ -15,17 +18,32 @@ import { useState } from "react";
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
   id?: string;
+  isMain?: boolean;
   onClose: () => void;
+  handleRouteCarUpdate: () => void;
 }
 
-export const CarOptionsBottomSheet = ({ ref, id, onClose }: Props) => {
+export const CarOptionsBottomSheet = ({
+  ref,
+  id,
+  isMain,
+  onClose,
+  handleRouteCarUpdate,
+}: Props) => {
   const queryClient = useQueryClient();
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
-  const { SuccessToast } = useToastMessage();
+  const { SuccessToast, ErrorToast } = useToastMessage();
+
+  // 대표 차량 변경 API
+  const {
+    mutate: changeMainCar,
+    isPending: changeMainCarLoading,
+    isError: changeMainCarError,
+  } = useCarControllerChangeMainCar();
 
   // 차량 삭제 API
   const {
@@ -34,6 +52,7 @@ export const CarOptionsBottomSheet = ({ ref, id, onClose }: Props) => {
     isError: deleteCarError,
   } = useCarControllerDeleteCar();
 
+  // 차량 삭제
   const handleDeleteCar = () => {
     if (!id) return;
 
@@ -52,6 +71,34 @@ export const CarOptionsBottomSheet = ({ ref, id, onClose }: Props) => {
           setErrorModal({
             visible: true,
             message: error?.message ?? "차량 삭제 중 오류가 발생했습니다.",
+          });
+        },
+      }
+    );
+  };
+
+  // 대표 차량 변경
+  const handleChangeMainCar = () => {
+    if (!id) return;
+
+    if (isMain) {
+      onClose();
+      return ErrorToast("해당 차량은 대표 차량입니다.");
+    }
+
+    changeMainCar(
+      { data: { id } },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["cars"] });
+          onClose();
+          SuccessToast("대표 차량이 변경되었습니다.");
+        },
+        onError: (error: any) => {
+          onClose();
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "대표 차량 변경 중 오류가 발생했습니다.",
           });
         },
       }
@@ -78,14 +125,18 @@ export const CarOptionsBottomSheet = ({ ref, id, onClose }: Props) => {
       </CustomModal>
 
       <View style={styles.container}>
-        <Pressable style={styles.button}>
+        <Pressable
+          onPress={handleChangeMainCar}
+          disabled={changeMainCarLoading}
+          style={styles.button}
+        >
           <Image source={carIcon} style={styles.icon} />
           <CustomText marginLeft={12} fontSize={18}>
             대표 차량으로 설정하기
           </CustomText>
         </Pressable>
 
-        <Pressable style={styles.button}>
+        <Pressable onPress={handleRouteCarUpdate} style={styles.button}>
           <Image source={editIcon} style={styles.icon} />
           <CustomText marginLeft={12} fontSize={18}>
             수정하기

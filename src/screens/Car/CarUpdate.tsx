@@ -1,43 +1,47 @@
 import { useRef, useState } from "react";
 import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { CarStackParamList } from "@/navigations";
-import { z } from "zod";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSetAtom } from "jotai";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { z } from "zod";
+import {
+  useCarControllerGetCarModels,
+  useCarControllerGetCarVendors,
+  useCarControllerUpdateCar,
+} from "@/api/car/car";
+import { CarStackParamList } from "@/navigations";
+import { errorModalAtom } from "@/jotai";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
-import { colors } from "@/styles";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { blackDownArrow, grayErrorIcon } from "@/assets/images";
-import {
-  useCarControllerGetCarModels,
-  useCarControllerGetCarVendors,
-  useCarControllerRegisterCar,
-} from "@/api/car/car";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
-import { useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "@/components/ui/Spinner";
+import { blackDownArrow, grayErrorIcon } from "@/assets/images";
+import { colors } from "@/styles";
 
 // 유효성 검사
 const registerFormSchema = z.object({
-  carVendor: z.string(),
-  carModel: z.string(),
-  carType: z.string(),
-  carNumber: z
-    .string()
-    .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다."),
+  vendor: z.string(),
+  model: z.string(),
+  type: z.string(),
+  number: z.string().regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다."),
 });
 
 const carNumberSchema = z
   .string()
   .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다.");
 
-export const CarRegister = () => {
+type StoreDetailRouteProp = RouteProp<CarStackParamList, "CarUpdate">;
+
+export const CarUpdate = () => {
+  const router = useRoute<StoreDetailRouteProp>();
+
   const carStackNavigation =
     useNavigation<NativeStackNavigationProp<CarStackParamList>>();
 
@@ -46,15 +50,18 @@ export const CarRegister = () => {
   const brandSelectRef = useRef<BottomSheetModal>(null);
   const modelSelectRef = useRef<BottomSheetModal>(null);
 
-  const [carVendor, setCarVendor] = useState<string | null>(null);
-  const [registerForm, setRegisterForm] = useState({
-    carVendor: "",
-    carModel: "",
-    carType: "",
-    carNumber: "",
+  const setErrorModal = useSetAtom(errorModalAtom);
+
+  const [vendor, setVendor] = useState<string | null>(router.params.car.vendor);
+  const [updateForm, setUpdateForm] = useState({
+    id: router.params.car.id,
+    vendor: router.params.car.vendor,
+    model: router.params.car.model,
+    type: router.params.car.type,
+    number: router.params.car.number,
   });
 
-  // 제조사 조회
+  // 제조사 조회 API
   const {
     data: carVendorsData,
     isPending: carVendorsLoading,
@@ -65,24 +72,24 @@ export const CarRegister = () => {
     },
   });
 
-  // 모델명 조회
+  // 모델명 조회 API
   const {
     data: carModelsData,
     isPending: carModelsLoading,
     isError: carModelsError,
-  } = useCarControllerGetCarModels(carVendor!, {
+  } = useCarControllerGetCarModels(vendor!, {
     query: {
-      enabled: !!carVendor,
+      enabled: !!vendor,
       gcTime: 0,
     },
   });
 
-  // 차량 등록
+  // 차량 수정 API
   const {
-    mutate: registerCar,
-    isError: registerCarError,
-    isPending: registerCarLoading,
-  } = useCarControllerRegisterCar({});
+    mutate: updateCar,
+    isError: updateCarError,
+    isPending: updateCarLoading,
+  } = useCarControllerUpdateCar({});
 
   // 제조사 바텀시트 조작
   const handleOpenBrandSelect = () => {
@@ -94,7 +101,7 @@ export const CarRegister = () => {
 
   // 모델 바텀시트 조작
   const handleOpenModelSelect = () => {
-    if (!registerForm.carVendor) return;
+    if (!updateForm.vendor) return;
 
     modelSelectRef?.current?.present();
   };
@@ -103,30 +110,36 @@ export const CarRegister = () => {
     brandSelectRef?.current?.close();
   };
 
-  const handleChangeRegisterForm = (
-    key: keyof typeof registerForm,
+  const handleChangeUpdateForm = (
+    key: keyof typeof updateForm,
     value: string
   ) => {
-    setRegisterForm((prev) => ({
+    setUpdateForm((prev) => ({
       ...prev,
       [key]: value,
     }));
   };
 
   const handleSubmit = () => {
-    registerCar(
-      { data: { ...registerForm } },
+    updateCar(
+      { data: { ...updateForm } },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["cars"] });
 
           return carStackNavigation.goBack();
         },
+        onError: (error: any) => {
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "차량 삭제 중 오류가 발생했습니다.",
+          });
+        },
       }
     );
   };
 
-  const isValid = registerFormSchema.safeParse(registerForm).success;
+  const isValid = registerFormSchema.safeParse(updateForm).success;
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
@@ -144,10 +157,10 @@ export const CarRegister = () => {
             renderItem={({ item, index }) => (
               <Pressable
                 onPress={() => {
-                  handleChangeRegisterForm("carModel", "");
-                  handleChangeRegisterForm("carType", "");
-                  handleChangeRegisterForm("carVendor", item.vendor);
-                  setCarVendor(item.vendor);
+                  handleChangeUpdateForm("vendor", item.vendor);
+                  handleChangeUpdateForm("type", "");
+                  handleChangeUpdateForm("model", "");
+                  setVendor(item.vendor);
                   handleCloseBrandSelect();
                 }}
                 key={index}
@@ -155,7 +168,7 @@ export const CarRegister = () => {
               >
                 <CustomText
                   color={
-                    registerForm.carVendor === item.vendor
+                    updateForm.vendor === item.vendor
                       ? colors.main
                       : colors.black
                   }
@@ -182,8 +195,8 @@ export const CarRegister = () => {
               renderItem={({ item, index }) => (
                 <Pressable
                   onPress={() => {
-                    handleChangeRegisterForm("carModel", item.name!);
-                    handleChangeRegisterForm("carType", item.type!);
+                    handleChangeUpdateForm("model", item.name!);
+                    handleChangeUpdateForm("type", item.type!);
                     handleCloseModelSelect();
                   }}
                   key={index}
@@ -191,7 +204,7 @@ export const CarRegister = () => {
                 >
                   <CustomText
                     color={
-                      registerForm.carModel === item.name
+                      updateForm.model === item.name
                         ? colors.main
                         : colors.black
                     }
@@ -220,7 +233,7 @@ export const CarRegister = () => {
             >
               <View pointerEvents="none">
                 <CustomTextInput
-                  value={registerForm.carVendor}
+                  value={updateForm.vendor}
                   onChangeText={() => {}}
                   editable={false}
                   placeholder="선택"
@@ -240,7 +253,7 @@ export const CarRegister = () => {
             >
               <View pointerEvents="none">
                 <CustomTextInput
-                  value={registerForm.carModel}
+                  value={updateForm.model}
                   onChangeText={() => {}}
                   editable={false}
                   placeholder="선택"
@@ -255,19 +268,17 @@ export const CarRegister = () => {
               차량번호
             </CustomText>
             <CustomTextInput
-              value={registerForm.carNumber}
-              onChangeText={(text) =>
-                handleChangeRegisterForm("carNumber", text)
-              }
+              value={updateForm.number}
+              onChangeText={(text) => handleChangeUpdateForm("number", text)}
               maxLength={8}
               errorMessage={
-                registerForm.carNumber.length > 6
-                  ? carNumberSchema.safeParse(registerForm.carNumber).error
+                updateForm.number.length > 6
+                  ? carNumberSchema.safeParse(updateForm.number).error
                       ?.issues?.[0]?.message
                   : undefined
               }
               placeholder="12가3456"
-              onReset={() => handleChangeRegisterForm("carNumber", "")}
+              onReset={() => handleChangeUpdateForm("number", "")}
             />
 
             <View style={styles.inquiry}>
@@ -290,11 +301,11 @@ export const CarRegister = () => {
 
           <CustomButton
             onPress={handleSubmit}
-            isDisabled={!isValid || registerCarLoading}
+            isDisabled={!isValid || updateCarLoading}
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
-            {registerCarLoading ? (
+            {updateCarLoading ? (
               <Spinner />
             ) : (
               <CustomText
@@ -302,7 +313,7 @@ export const CarRegister = () => {
                 fontSize={16}
                 fontWeight={"600"}
               >
-                등록하기
+                수정하기
               </CustomText>
             )}
           </CustomButton>

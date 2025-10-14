@@ -14,6 +14,7 @@ import { useCarControllerGetCarList } from "@/api/car/car";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/jotai";
 import { CarOptionsBottomSheet } from "@/components/bottom-sheet";
+import { Car } from "@/types";
 
 export const CarList = () => {
   const carStackNavigation =
@@ -23,7 +24,7 @@ export const CarList = () => {
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
-  const [carId, setCarId] = useState<string | undefined>(undefined);
+  const [car, setCar] = useState<Car | undefined>(undefined);
 
   const { data: carData, refetch: carsRefetch } = useCarControllerGetCarList({
     query: {
@@ -33,7 +34,7 @@ export const CarList = () => {
     },
   });
 
-  // 차량 등록
+  // 차량 등록 화면 이동
   const handleRouteCarRegister = () => {
     if (carData?.data.length && carData?.data.length > 4) {
       return setErrorModal({
@@ -45,12 +46,23 @@ export const CarList = () => {
     return carStackNavigation.navigate("CarRegister");
   };
 
-  const handleOpenBottomSheet = (id: string) => () => {
-    setCarId(id);
+  // 차량 수정 화면 이동
+  const handleRouteCarUpdate = () => {
+    if (!car) return;
+
+    handleCloseBottomSheet();
+
+    return carStackNavigation.navigate("CarUpdate", {
+      car,
+    });
+  };
+
+  const handleOpenBottomSheet = (car: Car) => () => {
+    setCar(car);
     bottomSheetRef?.current?.present();
   };
   const handleCloseBottomSheet = () => {
-    setCarId(undefined);
+    setCar(undefined);
     bottomSheetRef?.current?.close();
   };
 
@@ -58,8 +70,10 @@ export const CarList = () => {
     <CustomSafeAreaView edges={["bottom"]}>
       <CarOptionsBottomSheet
         ref={bottomSheetRef}
-        id={carId}
+        id={car?.id}
+        isMain={car?.isMain}
         onClose={handleCloseBottomSheet}
+        handleRouteCarUpdate={handleRouteCarUpdate}
       />
 
       <View style={styles.container}>
@@ -116,7 +130,7 @@ export const CarList = () => {
               </View>
 
               <Pressable
-                onPress={handleOpenBottomSheet(item.id)}
+                onPress={handleOpenBottomSheet(item)}
                 style={styles.kebabButton}
               >
                 <Image

@@ -134,6 +134,8 @@ export const RegisterCar = () => {
             renderItem={({ item, index }) => (
               <Pressable
                 onPress={() => {
+                  handleChangeRegisterForm("carModel", "");
+                  handleChangeRegisterForm("carType", "");
                   handleChangeRegisterForm("carVendor", item.vendor);
                   setCarVendor(item.vendor);
                   handleCloseBrandSelect();
