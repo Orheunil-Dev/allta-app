@@ -80,6 +80,7 @@ export * from './purchaseControllerGetPurchaseListParams';
 export * from './purchaseItem';
 export * from './purchasePassRequest';
 export * from './purchasePassResponse';
+export * from './purchaseResult';
 export * from './receiptCouponData';
 export * from './registerAddressResponse';
 export * from './registerAddresssRequest';

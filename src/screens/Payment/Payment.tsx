@@ -92,9 +92,9 @@ export const Payment = () => {
             serviceType: res.data.serviceType,
             productType: res.data.productType,
             storeName: res.data.storeName,
-            carNumber: res.data.carNumber,
+            carNumber: res.data.carNumber ?? "",
             approvedAt: res.data.approvedAt,
-            amount: res.data.amount,
+            totalAmount: res.data.totalAmount,
           });
         },
         onError: (error: any) => {
@@ -284,7 +284,7 @@ export const Payment = () => {
           onPress={handlePayment}
           width={"100%"}
           height={getResponsiveSize(53)}
-          backgroundColor={agree ? colors.point2 : colors.gray2}
+          backgroundColor={isValid ? colors.point2 : colors.gray2}
         >
           {purchasePassLoading ? (
             <Spinner />
