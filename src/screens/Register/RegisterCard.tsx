@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Alert, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   CommonActions,
   RouteProp,
@@ -8,24 +9,24 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { LoginStackParamList } from "@/navigations";
 import { z } from "zod";
 import isEmpty from "lodash/isEmpty";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { CustomText } from "@/components/ui/CustomText";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { SignUpTextInput } from "@/components/ui/TextInput";
+import { useSetAtom } from "jotai";
+import { errorModalAtom } from "@/jotai";
+import { useUserControllerRegisterExtraInfo } from "@/api/user/user";
+import { LoginStackParamList } from "@/navigations";
 import {
   formatCardExpiration,
   formatCardNumber,
   getResponsiveSize,
 } from "@/utils";
-import { colors } from "@/styles";
-import { useUserControllerRegisterExtraInfo } from "@/api/user/user";
-import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
+import { CustomText } from "@/components/ui/CustomText";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { SignUpTextInput } from "@/components/ui/TextInput";
 import { Spinner } from "@/components/ui/Spinner";
+import { colors } from "@/styles";
 
 type RegisterCardRouteProp = RouteProp<LoginStackParamList, "RegisterCard">;
 
@@ -53,6 +54,8 @@ export const RegisterCard = () => {
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const insets = useSafeAreaInsets();
 
   const [registerForm, setRegisterForm] = useState({
     cardNumber: "",
@@ -208,17 +211,6 @@ export const RegisterCard = () => {
             />
           </ScrollView>
 
-          <Pressable onPress={handleComplete}>
-            <CustomText
-              color={colors.gray7}
-              fontSize={16}
-              textAlign="center"
-              marginBottom={16}
-            >
-              건너뛰기
-            </CustomText>
-          </Pressable>
-
           <CustomButton
             onPress={handleComplete}
             isDisabled={!isValid || registerInfoLoading}
@@ -239,6 +231,24 @@ export const RegisterCard = () => {
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>
+
+      <Pressable
+        onPress={handleComplete}
+        style={{
+          position: "absolute",
+          bottom: insets.bottom + getResponsiveSize(60),
+          alignSelf: "center",
+        }}
+      >
+        <CustomText
+          color={colors.gray7}
+          fontSize={16}
+          textAlign="center"
+          marginBottom={16}
+        >
+          건너뛰기
+        </CustomText>
+      </Pressable>
     </CustomSafeAreaView>
   );
 };

@@ -16,6 +16,8 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { ContainerStack } from "@/navigations";
 import { Splash } from "@/screens/Splash";
 import "react-native-get-random-values";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "@/libs";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
@@ -86,6 +88,7 @@ export default function App() {
               />
               <SystemBars style="dark" />
               <StatusBar style="auto" />
+              <Toast config={toastConfig} />
             </BottomSheetModalProvider>
           </KeyboardProvider>
         </QueryClientProvider>

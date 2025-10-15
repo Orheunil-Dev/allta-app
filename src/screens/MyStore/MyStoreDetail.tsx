@@ -30,6 +30,7 @@ import {
   grayDownArrow,
   locationIcon,
   naviIcon,
+  phoneIcon,
   storeNoticeIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
@@ -178,7 +179,7 @@ export const MyStoreDetail = () => {
 
   return (
     <CustomSafeAreaView edges={[]}>
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <View style={styles.top}>
           <ImageBackground
             source={
@@ -217,6 +218,19 @@ export const MyStoreDetail = () => {
             <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
               {storeData?.store?.address}
             </CustomText>
+          </View>
+
+          {/* 전화번호 */}
+          <View style={styles.phone}>
+            <Image
+              source={phoneIcon}
+              style={{
+                width: getResponsiveSize(16),
+                height: getResponsiveSize(16),
+                marginRight: getResponsiveSize(4),
+              }}
+            />
+            <CustomText>{storeData?.store.phoneNumber ?? ""}</CustomText>
           </View>
 
           {/* 영업 시간 */}
@@ -381,6 +395,10 @@ export const MyStoreDetail = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: getResponsiveSize(12),
+  },
   top: {
     paddingHorizontal: getResponsiveSize(20),
     paddingBottom: getResponsiveSize(20),
@@ -395,6 +413,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: getResponsiveSize(8),
+  },
+  phone: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: getResponsiveSize(4),
   },
   businessHours: {
     flexDirection: "row",

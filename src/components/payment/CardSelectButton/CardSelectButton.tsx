@@ -1,21 +1,23 @@
 import { useEffect, useRef } from "react";
 import { Image, StyleSheet, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useSetAtom } from "jotai";
+import { errorModalAtom } from "@/jotai";
 import { CustomButton } from "@/components/ui/CustomButton";
+import { useCardControllerGetCardList } from "@/api/card/card";
 import {
   formatCardCompany,
   formatCardDisplayNumber,
   getResponsiveSize,
 } from "@/utils";
-import { colors } from "@/styles";
-import { CustomText } from "@/components/ui/CustomText";
-import { blackRightArrow } from "@/assets/images";
-import { CardListBottomSheet } from "@/components/bottom-sheet/CardListBottomSheet";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ContainerStackParamList } from "@/navigations";
-import { useCardControllerGetCardList } from "@/api/card/card";
 import { Card } from "@/types";
+import { CustomText } from "@/components/ui/CustomText";
+import { CardListBottomSheet } from "@/components/bottom-sheet/CardListBottomSheet";
+import { ContainerStackParamList } from "@/navigations";
+import { blackRightArrow } from "@/assets/images";
+import { colors } from "@/styles";
 
 interface Props {
   card: Card | null;
@@ -28,6 +30,8 @@ export const CardSelectButton = ({ card, setCard }: Props) => {
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
+  const setErrorModal = useSetAtom(errorModalAtom);
+
   const { data: cardData, refetch: cardsRefetch } =
     useCardControllerGetCardList({
       query: {
@@ -39,6 +43,13 @@ export const CardSelectButton = ({ card, setCard }: Props) => {
 
   // 카드 등록
   const handleRouteCardRegister = () => {
+    if (cardData?.data.length && cardData?.data.length > 4) {
+      return setErrorModal({
+        visible: true,
+        message: "차량은 최대 5대까지 등록 가능합니다.",
+      });
+    }
+
     bottomSheetRef.current?.close();
 
     return containerNavigation.navigate("CardStack", {

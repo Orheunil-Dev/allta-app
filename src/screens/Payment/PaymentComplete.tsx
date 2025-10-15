@@ -37,6 +37,20 @@ export const PaymentComplete = () => {
     );
   };
 
+  const handleRoutePaymentList = () => {
+    return containerNavigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {
+            name: "PaymentStack",
+            params: { screen: "PaymentList" },
+          },
+        ],
+      })
+    );
+  };
+
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <View style={styles.container}>
@@ -57,6 +71,7 @@ export const PaymentComplete = () => {
 
         <View style={styles.buttonArea}>
           <CustomButton
+            onPress={handleRoutePaymentList}
             flex={1}
             height={getResponsiveSize(53)}
             backgroundColor={colors.white}

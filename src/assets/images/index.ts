@@ -21,6 +21,8 @@ export { default as checkIcon } from "./check-icon.png";
 export { default as completeIcon } from "./complete-icon.png";
 export { default as grayErrorIcon } from "./gray-error-icon.png";
 export { default as errorModalIcon } from "./error-modal-icon.png";
+export { default as uncheckedIconGray2 } from "./unchecked-icon-gray2.png";
+export { default as kebabIcon } from "./kebab-icon.png";
 
 // 스플래쉬
 export { default as splashIamge } from "./splash-image.png";
@@ -64,6 +66,7 @@ export { default as clockIcon } from "./clock-icon.png";
 export { default as myLocationIcon } from "./my-location-icon.png";
 export { default as storeNoticeIcon } from "./store-notice-icon.png";
 export { default as naviIcon } from "./navi-icon.png";
+export { default as phoneIcon } from "./phone-icon.png";
 
 // 영수증 스캔
 export { default as receptFrame } from "./receipt-frame.png";
@@ -72,3 +75,23 @@ export { default as receptFrame2 } from "./receipt-frame-2.png";
 export { default as receptFrame3 } from "./receipt-frame-3.png";
 export { default as receptFrame4 } from "./receipt-frame-4.png";
 export { default as cameraButton } from "./camera-button.png";
+export { default as albumIcon } from "./album-icon.png";
+
+// 마이페이지
+export { default as settingIcon } from "./setting-icon.png";
+export { default as carIcon } from "./car-icon.png";
+export { default as cardIcon } from "./card-icon.png";
+export { default as addressIcon } from "./address-icon.png";
+export { default as purchaseIcon } from "./purchase-icon.png";
+export { default as passIcon } from "./pass-icon.png";
+export { default as serviceHistoryIcon } from "./service-history-icon.png";
+export { default as couponIcon } from "./purchase-icon.png";
+export { default as eventIcon } from "./event-icon.png";
+export { default as refferalIcon } from "./refferal-icon.png";
+export { default as noticeIcon } from "./notice-icon.png";
+export { default as inquiryIcon } from "./inquiry-icon.png";
+export { default as contactIcon } from "./contact-icon.png";
+export { default as plusIcon } from "./plus-icon.png";
+export { default as termsArrow } from "./terms-arrow.png";
+export { default as editIcon } from "./edit-icon.png";
+export { default as deleteIcon } from "./delete-icon.png";

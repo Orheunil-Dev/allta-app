@@ -8,13 +8,16 @@ import {
 import { CustomText } from "../CustomText";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
+import { CustomButton } from "../CustomButton";
 
 interface CustomModalProps {
   visible: boolean;
   onNext?: () => void;
   nextButtonText?: string;
+  isNextButtonDisable?: boolean;
   onClose: () => void;
   closeButtonText?: string;
+  isCloseButtonDisable?: boolean;
   children: React.ReactNode;
 }
 
@@ -22,8 +25,10 @@ export const CustomModal = ({
   visible,
   onNext,
   nextButtonText,
+  isNextButtonDisable,
   onClose,
   closeButtonText,
+  isCloseButtonDisable,
   children,
 }: CustomModalProps) => {
   return (
@@ -34,18 +39,29 @@ export const CustomModal = ({
             {children}
 
             <View style={styles.buttonBox}>
-              <Pressable onPress={onClose} style={styles.closeButton}>
+              <CustomButton
+                onPress={onClose}
+                isDisabled={isCloseButtonDisable}
+                flex={1}
+                borderWidth={1}
+                borderColor={colors.gray2}
+              >
                 <CustomText fontSize={15} fontWeight="500" color={colors.black}>
                   {closeButtonText ?? "확인"}
                 </CustomText>
-              </Pressable>
+              </CustomButton>
 
               {onNext && (
-                <Pressable onPress={onNext} style={styles.nextButton}>
+                <CustomButton
+                  onPress={onNext}
+                  isDisabled={isNextButtonDisable}
+                  flex={1}
+                  backgroundColor={colors.point2}
+                >
                   <CustomText fontSize={15} fontWeight="500" color="#fff">
                     {nextButtonText ?? "확인"}
                   </CustomText>
-                </Pressable>
+                </CustomButton>
               )}
             </View>
           </View>
@@ -63,11 +79,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: 320,
+    width: getResponsiveSize(312),
     backgroundColor: "#fff",
     borderRadius: 12,
-    paddingVertical: 24,
-    paddingHorizontal: 20,
+    paddingVertical: getResponsiveSize(24),
+    paddingHorizontal: getResponsiveSize(20),
     alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.2,
@@ -76,25 +92,7 @@ const styles = StyleSheet.create({
   },
   buttonBox: {
     flexDirection: "row",
-    marginTop: getResponsiveSize(32),
-  },
-  nextButton: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: getResponsiveSize(15),
-    marginLeft: getResponsiveSize(16),
-    backgroundColor: colors.main,
-    borderRadius: 8,
-  },
-  closeButton: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: getResponsiveSize(15),
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: colors.gray2,
-    borderRadius: 8,
+    marginTop: getResponsiveSize(24),
+    gap: getResponsiveSize(16),
   },
 });

@@ -16,6 +16,7 @@ interface Props {
   setCar: React.Dispatch<React.SetStateAction<Car | null>>;
   carData: GetCarListResponse | undefined;
   onPressRegister: () => void;
+  showRegister?: boolean;
 }
 
 export const CarListBottomSheet = ({
@@ -24,15 +25,13 @@ export const CarListBottomSheet = ({
   setCar,
   carData,
   onPressRegister,
+  showRegister,
 }: Props) => {
   // 차량 선택
   const handleSelectCar = (value: Car) => () => {
-    if (car?.id === value.id) {
-      return;
-    } else {
-      setCar(value);
-      return ref?.current?.close();
-    }
+    setCar(value);
+
+    return ref?.current?.close();
   };
 
   const handleClose = () => {
@@ -57,7 +56,7 @@ export const CarListBottomSheet = ({
               <Pressable
                 onPress={handleSelectCar(item)}
                 style={[
-                  styles.card,
+                  styles.car,
                   item.id === car?.id && {
                     borderWidth: 2,
                     borderColor: colors.point2,
@@ -99,17 +98,19 @@ export const CarListBottomSheet = ({
         )}
       </View>
 
-      <CustomButton
-        onPress={onPressRegister}
-        width={"100%"}
-        height={getResponsiveSize(53)}
-        marginTop={20}
-        backgroundColor={colors.main}
-      >
-        <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-          차량 추가하기
-        </CustomText>
-      </CustomButton>
+      {showRegister && (
+        <CustomButton
+          onPress={onPressRegister}
+          width={"100%"}
+          height={getResponsiveSize(53)}
+          marginTop={20}
+          backgroundColor={colors.main}
+        >
+          <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
+            차량 추가하기
+          </CustomText>
+        </CustomButton>
+      )}
     </CustomBottomSheet>
   );
 };
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  card: {
+  car: {
     position: "relative",
     padding: getResponsiveSize(16),
     backgroundColor: colors.white,

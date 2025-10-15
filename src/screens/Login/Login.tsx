@@ -29,7 +29,7 @@ import {
 } from "@/assets/images";
 import { colors } from "@/styles";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { jwtDecode } from "jwt-decode";
 import { useVideoPlayer, VideoView } from "expo-video";
@@ -41,8 +41,6 @@ export const Login = () => {
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
-
-  const insets = useSafeAreaInsets();
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
@@ -73,7 +71,7 @@ export const Login = () => {
     try {
       const KAKAO_REDIRECT_URI = `${process.env.EXPO_PUBLIC_API_URL}/auth/kakao`;
       const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY;
-      const redirectUri = Linking.createURL("/");
+      const redirectUri = Linking.createURL("");
 
       try {
         const result = await WebBrowser.openAuthSessionAsync(
@@ -160,8 +158,6 @@ export const Login = () => {
           const socialId = queryParams?.socialId;
           const email = queryParams?.email;
           const message = queryParams?.message;
-
-          console.log(queryParams);
 
           if (queryParams?.ok === "true") {
             loginBySocialId(
@@ -296,12 +292,9 @@ export const Login = () => {
   };
 
   return (
-    <CustomSafeAreaView edges={["bottom"]}>
-      <View style={[styles.container, { paddingTop: insets.top }]}>
-        <Pressable
-          onPress={handlePressClose}
-          style={[styles.closeButton, { top: insets.top }]}
-        >
+    <CustomSafeAreaView edges={["top", "bottom"]}>
+      <View style={styles.container}>
+        <Pressable onPress={handlePressClose} style={styles.closeButton}>
           <Image
             source={closeIcon}
             style={{
@@ -413,6 +406,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
+    top: getResponsiveSize(20),
     right: getResponsiveSize(20),
   },
   video: {

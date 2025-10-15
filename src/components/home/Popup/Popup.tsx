@@ -12,13 +12,19 @@ import { popupData } from "@/mock";
 import { colors } from "@/styles";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { POPUP_CLOSE_DATE } from "@/constants";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 export const Popup = () => {
+  const insets = useSafeAreaInsets();
+
   const popupRef = useRef<BottomSheetModal>(null);
 
-  const snapPoints = useMemo(() => [getResponsiveSize(380)], []);
+  const snapPoints = useMemo(
+    () => [insets.bottom + getResponsiveSize(350)],
+    []
+  );
 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 

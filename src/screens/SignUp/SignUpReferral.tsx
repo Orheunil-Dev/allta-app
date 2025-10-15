@@ -20,12 +20,13 @@ import { getResponsiveSize } from "@/utils";
 import { CustomError } from "@/types";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { SignUpTextInput } from "@/components/ui/TextInput";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { colors } from "@/styles";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { CustomTextInput } from "@/components/ui/CustomTextInput";
 
 type SignUpReferralRouteProp = RouteProp<LoginStackParamList, "SignUpReferral">;
 
@@ -36,6 +37,8 @@ export const SignUpReferral = () => {
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  const insets = useSafeAreaInsets();
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
@@ -179,7 +182,7 @@ export const SignUpReferral = () => {
             <CustomText fontSize={16} marginTop={32}>
               추천인 코드
             </CustomText>
-            <SignUpTextInput
+            <CustomTextInput
               value={referralCode}
               onChangeText={(text) => setReferralCode(text)}
               maxLength={6}
@@ -189,17 +192,6 @@ export const SignUpReferral = () => {
               placeholder="추천인 코드 6자리를 입력해주세요."
             />
           </ScrollView>
-
-          <Pressable onPress={handleSignUp}>
-            <CustomText
-              color={colors.gray7}
-              fontSize={16}
-              textAlign="center"
-              marginBottom={16}
-            >
-              건너뛰기
-            </CustomText>
-          </Pressable>
 
           <CustomButton
             onPress={handleSignUp}
@@ -217,6 +209,24 @@ export const SignUpReferral = () => {
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>
+
+      <Pressable
+        onPress={handleSignUp}
+        style={{
+          position: "absolute",
+          bottom: insets.bottom + getResponsiveSize(60),
+          alignSelf: "center",
+        }}
+      >
+        <CustomText
+          color={colors.gray7}
+          fontSize={16}
+          textAlign="center"
+          marginBottom={16}
+        >
+          건너뛰기
+        </CustomText>
+      </Pressable>
     </CustomSafeAreaView>
   );
 };

@@ -9,7 +9,6 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { SignUpTextInput } from "@/components/ui/TextInput";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { colors } from "@/styles";
@@ -22,6 +21,7 @@ import {
 } from "@/api/car/car";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
 import { useQueryClient } from "@tanstack/react-query";
+import { Spinner } from "@/components/ui/Spinner";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -81,7 +81,7 @@ export const CarRegister = () => {
   const {
     mutate: registerCar,
     isError: registerCarError,
-    isPending: regiserCarLoading,
+    isPending: registerCarLoading,
   } = useCarControllerRegisterCar({});
 
   // 제조사 바텀시트 조작
@@ -94,14 +94,13 @@ export const CarRegister = () => {
 
   // 모델 바텀시트 조작
   const handleOpenModelSelect = () => {
-    // 제조사 선택 안했을 경우엔 바텀시트 안열림
-    if (!registerForm.carVendor) {
-      return;
-    }
+    if (!registerForm.carVendor) return;
+
     modelSelectRef?.current?.present();
   };
   const handleCloseModelSelect = () => {
     modelSelectRef?.current?.close();
+    brandSelectRef?.current?.close();
   };
 
   const handleChangeRegisterForm = (
@@ -145,6 +144,8 @@ export const CarRegister = () => {
             renderItem={({ item, index }) => (
               <Pressable
                 onPress={() => {
+                  handleChangeRegisterForm("carModel", "");
+                  handleChangeRegisterForm("carType", "");
                   handleChangeRegisterForm("carVendor", item.vendor);
                   setCarVendor(item.vendor);
                   handleCloseBrandSelect();
@@ -289,17 +290,21 @@ export const CarRegister = () => {
 
           <CustomButton
             onPress={handleSubmit}
-            isDisabled={!isValid}
+            isDisabled={!isValid || registerCarLoading}
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
-            <CustomText
-              color={isValid ? colors.white : colors.gray5}
-              fontSize={16}
-              fontWeight={"600"}
-            >
-              등록하기
-            </CustomText>
+            {registerCarLoading ? (
+              <Spinner />
+            ) : (
+              <CustomText
+                color={isValid ? colors.white : colors.gray5}
+                fontSize={16}
+                fontWeight={"600"}
+              >
+                등록하기
+              </CustomText>
+            )}
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>
@@ -314,8 +319,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingVertical: getResponsiveSize(20),
     paddingHorizontal: getResponsiveSize(20),
-    paddingBottom: getResponsiveSize(10),
   },
   selectInput: {
     position: "relative",

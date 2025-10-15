@@ -1,19 +1,62 @@
 import { View, StyleSheet, Image, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
-import { headerBackArrow } from "@/assets/images";
+import { closeIcon, headerBackArrow } from "@/assets/images";
 import { colors } from "@/styles";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ContainerStackParamList } from "@/navigations";
 
 interface CustomHeaderProps {
   title?: string;
   showBackButton?: boolean;
+  showCloseButton?: boolean;
 }
 
-export const CustomHeader = ({ title, showBackButton }: CustomHeaderProps) => {
+export const CustomHeader = ({
+  title,
+  showBackButton,
+  showCloseButton,
+}: CustomHeaderProps) => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+
+  const containerNavigation =
+    useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const handleGoBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      // 뒤로 갈 화면이 없으면 홈으로
+      containerNavigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: "BottomTab",
+              params: { screen: "Home" },
+            },
+          ],
+        })
+      );
+    }
+  };
+
+  const handleGoHome = () => {
+    return containerNavigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {
+            name: "BottomTab",
+            params: { screen: "Home" },
+          },
+        ],
+      })
+    );
+  };
 
   return (
     <View
@@ -22,24 +65,35 @@ export const CustomHeader = ({ title, showBackButton }: CustomHeaderProps) => {
         { paddingTop: insets.top + getResponsiveSize(10) },
       ]}
     >
-      <View>
-        {showBackButton && (
-          <Pressable onPress={() => navigation.goBack()}>
-            <Image source={headerBackArrow} style={styles.backButton} />
-          </Pressable>
-        )}
-      </View>
+      {showBackButton ? (
+        <Pressable onPress={handleGoBack}>
+          <Image source={headerBackArrow} style={styles.backButton} />
+        </Pressable>
+      ) : (
+        <View
+          style={{
+            width: showCloseButton ? getResponsiveSize(24) : 0,
+            height: getResponsiveSize(24),
+          }}
+        />
+      )}
 
       <CustomText fontSize={20} fontWeight={"600"} textAlign="center">
         {title}
       </CustomText>
 
-      <View
-        style={{
-          width: showBackButton ? getResponsiveSize(24) : 0,
-          height: getResponsiveSize(24),
-        }}
-      />
+      {showCloseButton ? (
+        <Pressable onPress={handleGoHome}>
+          <Image source={closeIcon} style={styles.backButton} />
+        </Pressable>
+      ) : (
+        <View
+          style={{
+            width: showBackButton ? getResponsiveSize(24) : 0,
+            height: getResponsiveSize(24),
+          }}
+        />
+      )}
     </View>
   );
 };
@@ -49,9 +103,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: colors.white,
     paddingHorizontal: getResponsiveSize(20),
-    paddingVertical: getResponsiveSize(24),
+    paddingVertical: getResponsiveSize(12),
+    backgroundColor: colors.white,
   },
   backButton: {
     width: getResponsiveSize(24),

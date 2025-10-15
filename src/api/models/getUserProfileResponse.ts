@@ -15,4 +15,9 @@ export interface GetUserProfileResponse {
   totalStandards: number;
   /** 보유 프리미엄 구독권 개수 */
   totalPremiums: number;
+  /**
+   * 대표차량 번호
+   * @nullable
+   */
+  mainCarNumber: string | null;
 }

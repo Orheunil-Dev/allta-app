@@ -40,6 +40,7 @@ import {
   defaultStoreImage,
   grayDownArrow,
   locationIcon,
+  phoneIcon,
   storeNoticeIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
@@ -371,6 +372,19 @@ export const StoreDetail = () => {
             </CustomText>
           </View>
 
+          {/* 전화번호 */}
+          <View style={styles.phone}>
+            <Image
+              source={phoneIcon}
+              style={{
+                width: getResponsiveSize(16),
+                height: getResponsiveSize(16),
+                marginRight: getResponsiveSize(4),
+              }}
+            />
+            <CustomText>{storeData?.store.phoneNumber ?? ""}</CustomText>
+          </View>
+
           {/* 영업 시간 */}
           {storeData?.store?.businessHours && (
             <View>
@@ -549,6 +563,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: getResponsiveSize(8),
+  },
+  phone: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: getResponsiveSize(4),
   },
   businessHours: {
     flexDirection: "row",

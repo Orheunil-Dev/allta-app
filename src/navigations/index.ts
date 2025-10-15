@@ -9,6 +9,8 @@ export * from "./AddressStack";
 export * from "./PaymentStack";
 export * from "./CarStack";
 export * from "./CardStack";
+export * from "./PassStack";
 export * from "./ReceiptScanStack";
 export * from "./MyStoreStack";
 export * from "./QrScanStack";
+export * from "./SettingStack";

@@ -1,6 +1,9 @@
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import {
+  getFocusedRouteNameFromRoute,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MyStoreStack } from "./MyStoreStack";
+import { MyStoreStack, MyStoreStackParamList } from "./MyStoreStack";
 import { getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
 import { CustomBottomTab } from "@/components/layout/CustomBottomTab";
@@ -16,13 +19,13 @@ import {
 } from "@/assets/images";
 import { MyPageStack } from "./MyPageStack";
 import { Home } from "@/screens/Home";
-import { QrScanStack } from "./QrScanStack";
+import { QrScanStack, QrScanStackParamList } from "./QrScanStack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export type BottomTabParamList = {
   Home: undefined;
-  QrScanStack: undefined;
-  MyStoreStack: undefined;
+  QrScanStack: NavigatorScreenParams<QrScanStackParamList>;
+  MyStoreStack: NavigatorScreenParams<MyStoreStackParamList>;
   MyPageStack: undefined;
 };
 

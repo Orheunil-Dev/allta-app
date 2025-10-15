@@ -1,8 +1,8 @@
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { formatEllipsis, getResponsiveSize } from "@/utils";
-import { useCallback, useEffect, useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, Image, Linking, StyleSheet, View } from "react-native";
 import axios from "axios";
 import { FlatList, Pressable } from "react-native-gesture-handler";
 import { colors } from "@/styles";
@@ -30,14 +30,41 @@ export const SearchAddress = () => {
   const [addresses, setAddresses] = useState<Address[]>([]);
 
   const setCurrentLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    let { status, canAskAgain } =
+      await Location.requestForegroundPermissionsAsync();
 
     if (status !== "granted") {
-      return;
+      if (canAskAgain) {
+        const res = await Location.requestForegroundPermissionsAsync();
+
+        status = res.status;
+      }
+
+      if (status !== "granted") {
+        Alert.alert(
+          "위치정보 접근 권한이 없습니다",
+          "앱 설정에서 위치정보 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          [
+            {
+              text: "닫기",
+              style: "cancel",
+              onPress: () => {
+                return;
+              },
+            },
+            {
+              text: "설정",
+              onPress: () => Linking.openSettings(),
+            },
+          ]
+        );
+
+        return;
+      }
     }
 
     const loc = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
+      accuracy: Location.Accuracy.Low,
     });
 
     return addressNavigation.navigate("RegisterAddress", {
@@ -48,53 +75,96 @@ export const SearchAddress = () => {
 
   useEffect(() => {
     if (!keyword.trim()) {
-      return;
+      return setAddresses([]);
     }
 
-    const getAddresses = async () => {
-      const response = await axios.get(
-        "https://dapi.kakao.com/v2/local/search/keyword.json",
-        {
-          params: {
-            query: keyword,
-          },
-          headers: {
-            Authorization: `KakaoAK ${process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY}`,
-          },
-        }
-      );
-
-      const data: Address[] = response.data.documents.reduce(
-        (acc: Address[], value: any) => {
-          const uniqueKey = value.address_name;
-          if (!acc.some((item) => item.fullAddress === uniqueKey)) {
-            acc.push({
-              id: value.id,
-              fullAddress: uniqueKey,
-              roadName: value.road_address_name.trim()
-                ? value.road_address_name
-                : value.address_name,
-              lat: parseFloat(value.y),
-              lng: parseFloat(value.x),
-            });
+    const timer = setTimeout(() => {
+      const getAddresses = async () => {
+        const response = await axios.get(
+          "https://dapi.kakao.com/v2/local/search/keyword.json",
+          {
+            params: { query: keyword },
+            headers: {
+              Authorization: `KakaoAK ${process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY}`,
+            },
           }
-          return acc;
-        },
-        []
-      );
+        );
 
-      setAddresses(data);
-    };
+        const data: Address[] = response.data.documents.reduce(
+          (acc: Address[], value: any) => {
+            const uniqueKey = value.address_name;
 
-    getAddresses();
+            if (!acc.some((item) => item.fullAddress === uniqueKey)) {
+              acc.push({
+                id: value.id,
+                fullAddress: uniqueKey,
+                roadName: value.road_address_name.trim()
+                  ? value.road_address_name
+                  : value.address_name,
+                lat: parseFloat(value.y),
+                lng: parseFloat(value.x),
+              });
+            }
+
+            return acc;
+          },
+          []
+        );
+
+        setAddresses(data);
+      };
+
+      getAddresses();
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, [keyword]);
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <View style={styles.container}>
-        <CustomTextInput
-          onSubmitEditing={(e) => setKeyword(e.nativeEvent.text)}
-        />
+        <View style={{ flex: 1 }}>
+          <View style={styles.inputContainer}>
+            <CustomTextInput
+              value={keyword}
+              onChangeText={(text) => setKeyword(text)}
+              justifyContent="flex-start"
+              placeholder="예) 경기도 하남시 미사강변한강로 155"
+            />
+          </View>
+
+          {addresses.length > 0 && (
+            <FlatList
+              data={addresses}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.listContainer}
+              renderItem={({ item, index }) => (
+                <Pressable
+                  onPress={() => {
+                    return addressNavigation.navigate("RegisterAddress", {
+                      lat: Number(item.lat),
+                      lng: Number(item.lng),
+                    });
+                  }}
+                  style={styles.card}
+                >
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <CustomText marginRight={10}>지번</CustomText>
+                    <CustomText fontSize={16}>
+                      {formatEllipsis(item.fullAddress, 23)}
+                    </CustomText>
+                  </View>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <CustomText marginRight={10}>도로명</CustomText>
+                    <CustomText fontSize={16}>
+                      {formatEllipsis(item.roadName, 20)}
+                    </CustomText>
+                  </View>
+                </Pressable>
+              )}
+            />
+          )}
+        </View>
 
         <CustomButton
           onPress={setCurrentLocation}
@@ -109,38 +179,6 @@ export const SearchAddress = () => {
             현재 위치로 설정
           </CustomText>
         </CustomButton>
-
-        {addresses.length > 0 && (
-          <FlatList
-            data={addresses}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={styles.listContainer}
-            renderItem={({ item, index }) => (
-              <Pressable
-                onPress={() => {
-                  return addressNavigation.navigate("RegisterAddress", {
-                    lat: Number(item.lat),
-                    lng: Number(item.lng),
-                  });
-                }}
-                style={styles.card}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <CustomText marginRight={10}>지번</CustomText>
-                  <CustomText fontSize={16}>
-                    {formatEllipsis(item.fullAddress, 23)}
-                  </CustomText>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <CustomText marginRight={10}>도로명</CustomText>
-                  <CustomText fontSize={16}>
-                    {formatEllipsis(item.roadName, 20)}
-                  </CustomText>
-                </View>
-              </Pressable>
-            )}
-          />
-        )}
       </View>
     </CustomSafeAreaView>
   );
@@ -150,7 +188,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: getResponsiveSize(20),
-    paddingBottom: getResponsiveSize(40),
+  },
+  inputContainer: {
+    height: getResponsiveSize(40),
+    marginBottom: getResponsiveSize(20),
   },
   locationIcon: {
     width: getResponsiveSize(20),

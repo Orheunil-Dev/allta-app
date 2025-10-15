@@ -1,7 +1,7 @@
 import { StoreStackParamList } from "@/navigations";
 import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { Alert, FlatList, Linking, StyleSheet, View } from "react-native";
 import * as Location from "expo-location";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { getResponsiveSize } from "@/utils";
@@ -99,9 +99,32 @@ export const StoreList = () => {
       let isFocused = true;
 
       const fetchLocation = async () => {
-        const { status } = await Location.requestForegroundPermissionsAsync();
+        let { status, canAskAgain } =
+          await Location.requestForegroundPermissionsAsync();
 
-        if (status !== "granted") return;
+        // 권한 설정 안되있을 경우
+        if (status !== "granted") {
+          if (canAskAgain) {
+            const res = await Location.requestForegroundPermissionsAsync();
+
+            status = res.status;
+          }
+
+          if (status !== "granted") {
+            Alert.alert(
+              "위치정보 접근 권한이 없습니다",
+              "앱 설정에서 위치정보 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+              [
+                { text: "닫기", style: "cancel" },
+                {
+                  text: "설정",
+                  onPress: () => Linking.openSettings(),
+                },
+              ]
+            );
+            return;
+          }
+        }
 
         const loc = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.High,

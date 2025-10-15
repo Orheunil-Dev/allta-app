@@ -59,7 +59,7 @@ export const getStoreBusinessHours = (
 
   if (now.isAfter(close)) {
     return {
-      status: "영엄 종료",
+      status: "영업 종료",
       hours: `${findNextOpenHour(businessHours, now)} 오픈 예정`,
     };
   }

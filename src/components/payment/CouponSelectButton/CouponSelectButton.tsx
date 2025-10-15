@@ -125,7 +125,11 @@ export const CouponSelectButton = ({
       >
         <View style={styles.button}>
           <CustomText fontSize={15} fontWeight={"500"}>
-            {coupon ? coupon.name : "사용 가능한 쿠폰이 없습니다."}
+            {!couponData || !couponData.data.length
+              ? "사용 가능한 쿠폰이 없습니다."
+              : coupon
+              ? coupon.name
+              : `사용 가능한 쿠폰이 ${couponData.data.length}개 있어요`}
           </CustomText>
           <Image
             source={blackRightArrow}

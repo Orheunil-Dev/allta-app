@@ -19,7 +19,7 @@ import { colors } from "@/styles";
 import { useCardControllerRegisterCard } from "@/api/card/card";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 import { Spinner } from "@/components/ui/Spinner";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
 

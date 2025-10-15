@@ -2,8 +2,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SearchAddress } from "@/screens/SearchAddress";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { RegisterAddress } from "@/screens/RegisterAddress";
+import { AddressList } from "@/screens/Address";
 
 export type AddressStackParamList = {
+  AddressList: undefined;
   SearchAddress: undefined;
   RegisterAddress: {
     lat: number;
@@ -15,13 +17,19 @@ const Stack = createNativeStackNavigator();
 
 export const AddressStack = () => {
   return (
-    <Stack.Navigator initialRouteName="SearchAddress">
+    <Stack.Navigator initialRouteName="AddressList">
+      <Stack.Screen
+        name="AddressList"
+        component={AddressList}
+        options={{
+          header: () => <CustomHeader title="주소 관리" showBackButton />,
+        }}
+      />
       <Stack.Screen
         name="SearchAddress"
         component={SearchAddress}
         options={{
           header: () => <CustomHeader title="주소 검색" showBackButton />,
-          presentation: "transparentModal",
         }}
       />
       <Stack.Screen

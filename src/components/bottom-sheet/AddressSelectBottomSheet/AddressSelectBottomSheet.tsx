@@ -1,4 +1,11 @@
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Linking,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
 import * as Location from "expo-location";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { getResponsiveSize } from "@/utils";
@@ -14,10 +21,9 @@ import { colors } from "@/styles";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
-import { useAddressControllerGetAddresses } from "@/api/address/address";
-import { useEffect, useState } from "react";
-import { GetAddressesResponse } from "@/api/models";
+import { useState } from "react";
 import { FlatList } from "react-native-gesture-handler";
+import { useAddressControllerGetAddressList } from "@/api/address/address";
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
@@ -48,39 +54,46 @@ export const AddressSelectBottomSheet = ({
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const [skip, setSkip] = useState<number>(0);
-  const [addresses, setAddresses] = useState<GetAddressesResponse["data"]>([]);
 
   const { data: addressesData, refetch: addressesRefetch } =
-    useAddressControllerGetAddresses(
-      {
-        take: 20,
-        skip,
+    useAddressControllerGetAddressList({
+      query: {
+        queryKey: ["addresses"],
+        retry: false,
+        gcTime: 0,
       },
-      {
-        query: {
-          queryKey: ["addresses"],
-          retry: false,
-          gcTime: 0,
-        },
-      }
-    );
-
-  const handleLoadMore = () => {
-    if (addressesData?.meta?.hasNextPage) {
-      setSkip(skip + 20);
-    }
-  };
+    });
 
   // 현재 위치로 설정
   const setCurrentLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    let { status, canAskAgain } =
+      await Location.requestForegroundPermissionsAsync();
 
     if (status !== "granted") {
-      return onClose();
+      if (canAskAgain) {
+        const res = await Location.requestForegroundPermissionsAsync();
+
+        status = res.status;
+      }
+
+      if (status !== "granted") {
+        Alert.alert(
+          "위치정보 접근 권한이 없습니다",
+          "앱 설정에서 위치정보 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          [
+            { text: "닫기", style: "cancel", onPress: onClose },
+            {
+              text: "설정",
+              onPress: () => Linking.openSettings(),
+            },
+          ]
+        );
+        return;
+      }
     }
 
     const loc = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
+      accuracy: Location.Accuracy.Low,
     });
 
     setCoordinate({
@@ -95,23 +108,12 @@ export const AddressSelectBottomSheet = ({
 
   // 주소 등록 화면으로 이동
   const handleRegisterAddress = () => {
+    onClose();
+
     return containerNavigation.navigate("AddressStack", {
       screen: "SearchAddress",
     });
   };
-
-  // 무한 스크롤
-  useEffect(() => {
-    if (!addressesData?.data) return;
-
-    setAddresses((prev) => {
-      if (skip === 0) {
-        return addressesData.data;
-      }
-
-      return [...prev, ...addressesData.data];
-    });
-  }, [addressesData]);
 
   return (
     <CustomBottomSheet
@@ -135,48 +137,44 @@ export const AddressSelectBottomSheet = ({
           </CustomText>
         </CustomButton>
 
-        {addresses.length > 0 && (
-          <FlatList
-            data={addresses}
-            keyExtractor={(item) => item.id}
-            onEndReached={handleLoadMore}
-            onEndReachedThreshold={0.7}
-            contentContainerStyle={{ gap: getResponsiveSize(16) }}
-            style={{ marginVertical: getResponsiveSize(16) }}
-            renderItem={({ item, index }) => (
-              <Pressable
-                onPress={() => {
-                  setCoordinate({
-                    id: item.id,
-                    lat: item.lat,
-                    lng: item.lng,
-                    nickname: item.nickname,
-                  });
+        <FlatList
+          data={addressesData?.data}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ gap: getResponsiveSize(16) }}
+          style={{ marginVertical: getResponsiveSize(16) }}
+          renderItem={({ item, index }) => (
+            <Pressable
+              onPress={() => {
+                setCoordinate({
+                  id: item.id,
+                  lat: item.lat,
+                  lng: item.lng,
+                  nickname: item.nickname,
+                });
 
-                  onClose();
-                }}
-                style={styles.card}
-              >
-                <Image
-                  source={
-                    coordinate.id === item.id
-                      ? checkedRadioIcon
-                      : uncheckedRadioIcon
-                  }
-                  style={styles.radioButton}
-                />
+                onClose();
+              }}
+              style={styles.card}
+            >
+              <Image
+                source={
+                  coordinate.id === item.id
+                    ? checkedRadioIcon
+                    : uncheckedRadioIcon
+                }
+                style={styles.radioButton}
+              />
 
-                <CustomText fontSize={18} fontWeight={"600"}>
-                  {item.nickname}
-                </CustomText>
+              <CustomText fontSize={18} fontWeight={"600"}>
+                {item.nickname}
+              </CustomText>
 
-                <CustomText marginTop={6} color={colors.gray7} fontSize={16}>
-                  {item.fullAddress}
-                </CustomText>
-              </Pressable>
-            )}
-          />
-        )}
+              <CustomText marginTop={6} color={colors.gray7} fontSize={16}>
+                {item.fullAddress}
+              </CustomText>
+            </Pressable>
+          )}
+        />
       </View>
 
       <CustomButton

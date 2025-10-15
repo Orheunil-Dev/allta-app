@@ -16,14 +16,26 @@ export interface PurchasePassRequest {
    * @nullable
    */
   couponId?: string | null;
-  /** 제조사 */
-  carBrand: string;
-  /** 차종 */
-  carType: string;
-  /** 모델명 */
-  carModel: string;
-  /** 차량 번호 */
-  carNumber: string;
+  /**
+   * 제조사
+   * @nullable
+   */
+  carBrand?: string | null;
+  /**
+   * 차종
+   * @nullable
+   */
+  carType?: string | null;
+  /**
+   * 모델명
+   * @nullable
+   */
+  carModel?: string | null;
+  /**
+   * 차량 번호
+   * @nullable
+   */
+  carNumber?: string | null;
   /** 매장 ID */
   storeId: string;
   /** 카드 ID */

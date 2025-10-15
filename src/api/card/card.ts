@@ -25,6 +25,10 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ChangeMainCardRequest,
+  ChangeMainCardResponse,
+  DeleteCardRequest,
+  DeleteCardResponse,
   GetCardListResponse,
   RegisterCardRequest,
   RegisterCardResponse
@@ -173,6 +177,120 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getCardControllerRegisterCardMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const cardControllerDeleteCard = (
+    deleteCardRequest: DeleteCardRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<DeleteCardResponse>(
+      {url: `/card`, method: 'DELETE',
+      headers: {'Content-Type': 'application/json', },
+      data: deleteCardRequest
+    },
+      options);
+    }
+  
+
+
+export const getCardControllerDeleteCardMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cardControllerDeleteCard>>, TError,{data: DeleteCardRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof cardControllerDeleteCard>>, TError,{data: DeleteCardRequest}, TContext> => {
+
+const mutationKey = ['cardControllerDeleteCard'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof cardControllerDeleteCard>>, {data: DeleteCardRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  cardControllerDeleteCard(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CardControllerDeleteCardMutationResult = NonNullable<Awaited<ReturnType<typeof cardControllerDeleteCard>>>
+    export type CardControllerDeleteCardMutationBody = DeleteCardRequest
+    export type CardControllerDeleteCardMutationError = unknown
+
+    export const useCardControllerDeleteCard = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cardControllerDeleteCard>>, TError,{data: DeleteCardRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof cardControllerDeleteCard>>,
+        TError,
+        {data: DeleteCardRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getCardControllerDeleteCardMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const cardControllerChangeMainCard = (
+    changeMainCardRequest: ChangeMainCardRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<ChangeMainCardResponse>(
+      {url: `/card/main`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: changeMainCardRequest
+    },
+      options);
+    }
+  
+
+
+export const getCardControllerChangeMainCardMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cardControllerChangeMainCard>>, TError,{data: ChangeMainCardRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof cardControllerChangeMainCard>>, TError,{data: ChangeMainCardRequest}, TContext> => {
+
+const mutationKey = ['cardControllerChangeMainCard'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof cardControllerChangeMainCard>>, {data: ChangeMainCardRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  cardControllerChangeMainCard(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CardControllerChangeMainCardMutationResult = NonNullable<Awaited<ReturnType<typeof cardControllerChangeMainCard>>>
+    export type CardControllerChangeMainCardMutationBody = ChangeMainCardRequest
+    export type CardControllerChangeMainCardMutationError = unknown
+
+    export const useCardControllerChangeMainCard = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cardControllerChangeMainCard>>, TError,{data: ChangeMainCardRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof cardControllerChangeMainCard>>,
+        TError,
+        {data: ChangeMainCardRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getCardControllerChangeMainCardMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }

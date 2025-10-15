@@ -16,7 +16,7 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { Spinner } from "@/components/ui/Spinner";
 import { PaymentStackParamList } from "@/navigations";
-import { errorModalAtom } from "@/recoil";
+import { errorModalAtom } from "@/jotai";
 import { colors } from "@/styles";
 import { Car, Card, CarType, Coupon } from "@/types";
 import {
@@ -187,7 +187,16 @@ export const Payment = () => {
         />
 
         {/* 차량 선택 */}
-        <CarSelectButton car={car} setCar={setCar} />
+        <CustomText
+          marginTop={40}
+          marginBottom={12}
+          fontSize={18}
+          fontWeight={"600"}
+        >
+          등록 차량
+        </CustomText>
+
+        <CarSelectButton car={car} setCar={setCar} showRegister />
 
         {/* 카드 선택 */}
         <CardSelectButton card={card} setCard={setCard} />
@@ -268,6 +277,7 @@ export const Payment = () => {
           </CustomButton>
         </View>
       </ScrollView>
+
       <BottomButtonArea>
         <CustomButton
           isDisabled={!isValid || purchasePassLoading}
@@ -295,6 +305,7 @@ export const Payment = () => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: getResponsiveSize(12),
     paddingHorizontal: getResponsiveSize(20),
   },
   storeImage: {

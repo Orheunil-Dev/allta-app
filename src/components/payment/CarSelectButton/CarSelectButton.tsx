@@ -12,17 +12,22 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
 import { useCarControllerGetCarList } from "@/api/car/car";
 import { Car } from "@/types";
+import { useSetAtom } from "jotai";
+import { errorModalAtom } from "@/jotai";
 
 interface Props {
   car: Car | null;
   setCar: React.Dispatch<React.SetStateAction<Car | null>>;
+  showRegister?: boolean;
 }
 
-export const CarSelectButton = ({ car, setCar }: Props) => {
+export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const setErrorModal = useSetAtom(errorModalAtom);
 
   const { data: carData, refetch: carsRefetch } = useCarControllerGetCarList({
     query: {
@@ -32,8 +37,15 @@ export const CarSelectButton = ({ car, setCar }: Props) => {
     },
   });
 
-  // 카드등록
-  const handleRouteCardRegister = () => {
+  // 차량 등록
+  const handleRouteCarRegister = () => {
+    if (carData?.data.length && carData?.data.length > 4) {
+      return setErrorModal({
+        visible: true,
+        message: "차량은 최대 5대까지 등록 가능합니다.",
+      });
+    }
+
     bottomSheetRef.current?.close();
 
     return containerNavigation.navigate("CarStack", {
@@ -54,23 +66,19 @@ export const CarSelectButton = ({ car, setCar }: Props) => {
   }, [carData?.data]);
 
   return (
-    <View style={{ marginTop: getResponsiveSize(40) }}>
+    <View>
       <CarListBottomSheet
         ref={bottomSheetRef}
         car={car}
         setCar={setCar}
         carData={carData}
-        onPressRegister={handleRouteCardRegister}
+        onPressRegister={handleRouteCarRegister}
+        showRegister={showRegister}
       />
-
-      <CustomText fontSize={18} fontWeight={"600"}>
-        등록 차량
-      </CustomText>
 
       <CustomButton
         onPress={() => bottomSheetRef.current?.present()}
         height={getResponsiveSize(48)}
-        marginTop={12}
         borderWidth={1}
         borderColor={colors.line}
       >

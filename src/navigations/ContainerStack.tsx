@@ -4,24 +4,27 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Notification } from "@/screens/Notification";
-import { CustomHeader } from "@/components/layout/CustomHeader";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
-import { LoginModal } from "@/components/modal/LoginModal";
-import { checkIsFirstLaunch } from "@/utils";
+import { checkIsFirstLaunch, formatEllipsis } from "@/utils";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
 import { StoreStack, StoreStackParamList } from "./StoreStack";
 import { AddressStack, AddressStackParamList } from "./AddressStack";
 import { PaymentStack, PaymentStackParamList } from "./PaymentStack";
 import { CarStack, CarStackParamList } from "./CarStack";
 import { CardStack, CardStackParamList } from "./CardStack";
-import { ErrorModal } from "@/components/modal/ErrorModal";
 import {
   ReceiptScanStack,
   ReceiptScanStackParamList,
 } from "./ReceiptScanStack";
 import { QrScanStack, QrScanStackParamList } from "./QrScanStack";
+import { SettingStack, SettingStackParamList } from "./SettingStack";
+import { PassStack, PassStackParamList } from "./PassStack";
+import { Notification } from "@/screens/Notification";
+import { CustomHeader } from "@/components/layout/CustomHeader";
+import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
+import { MyStoreDetail } from "@/screens/MyStore";
+import { ServiceHistory } from "@/screens/ServiceHistory";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -32,12 +35,19 @@ export type ContainerStackParamList = {
   PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
   CarStack: NavigatorScreenParams<CarStackParamList>;
   CardStack: NavigatorScreenParams<CardStackParamList>;
+  PassStack: NavigatorScreenParams<PassStackParamList>;
   ReceiptScanStack: NavigatorScreenParams<ReceiptScanStackParamList>;
   QrScanStack: NavigatorScreenParams<QrScanStackParamList>;
+  SettingStack: NavigatorScreenParams<SettingStackParamList>;
   Notification: undefined;
+  MyStoreDetail: {
+    storeId: string;
+    storeName: string;
+  };
+  ServiceHistory: undefined;
 };
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<ContainerStackParamList>();
 
 interface Props {
   showLoginModal: boolean;
@@ -59,7 +69,7 @@ export const ContainerStack = ({
         visible={showLoginModal}
         setVisible={setShowLoginModal}
       />
-
+      <CommonModal />
       <ErrorModal />
 
       <Stack.Navigator
@@ -99,7 +109,6 @@ export const ContainerStack = ({
           component={LoginStack}
           options={{
             headerShown: false,
-            presentation: "transparentModal",
           }}
         />
         <Stack.Screen
@@ -107,7 +116,6 @@ export const ContainerStack = ({
           component={AddressStack}
           options={{
             headerShown: false,
-            presentation: "transparentModal",
           }}
         />
         <Stack.Screen
@@ -132,6 +140,13 @@ export const ContainerStack = ({
           }}
         />
         <Stack.Screen
+          name="PassStack"
+          component={PassStack}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="ReceiptScanStack"
           component={ReceiptScanStack}
           options={{
@@ -145,6 +160,32 @@ export const ContainerStack = ({
           options={{
             headerShown: false,
             presentation: "transparentModal",
+          }}
+        />
+        <Stack.Screen
+          name="SettingStack"
+          component={SettingStack}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="MyStoreDetail"
+          component={MyStoreDetail}
+          options={({ route }) => ({
+            header: () => (
+              <CustomHeader
+                title={formatEllipsis(route.params.storeName, 12)}
+                showBackButton
+              />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="ServiceHistory"
+          component={ServiceHistory}
+          options={{
+            header: () => <CustomHeader title="이용 내역" showBackButton />,
           }}
         />
       </Stack.Navigator>

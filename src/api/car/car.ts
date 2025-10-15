@@ -25,11 +25,17 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ChangeMainCarRequest,
+  ChangeMainCarResponse,
+  DeleteCarRequest,
+  DeleteCarResponse,
   GetCarListResponse,
   GetCarModelsResponse,
   GetCarVendorsResponse,
   RegisterCarRequest,
-  RegisterCarResponse
+  RegisterCarResponse,
+  UpdateCarRequest,
+  UpdateCarResponse
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -175,6 +181,177 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getCarControllerRegisterCarMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const carControllerDeleteCar = (
+    deleteCarRequest: DeleteCarRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<DeleteCarResponse>(
+      {url: `/car`, method: 'DELETE',
+      headers: {'Content-Type': 'application/json', },
+      data: deleteCarRequest
+    },
+      options);
+    }
+  
+
+
+export const getCarControllerDeleteCarMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof carControllerDeleteCar>>, TError,{data: DeleteCarRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof carControllerDeleteCar>>, TError,{data: DeleteCarRequest}, TContext> => {
+
+const mutationKey = ['carControllerDeleteCar'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof carControllerDeleteCar>>, {data: DeleteCarRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  carControllerDeleteCar(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CarControllerDeleteCarMutationResult = NonNullable<Awaited<ReturnType<typeof carControllerDeleteCar>>>
+    export type CarControllerDeleteCarMutationBody = DeleteCarRequest
+    export type CarControllerDeleteCarMutationError = unknown
+
+    export const useCarControllerDeleteCar = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof carControllerDeleteCar>>, TError,{data: DeleteCarRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof carControllerDeleteCar>>,
+        TError,
+        {data: DeleteCarRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getCarControllerDeleteCarMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const carControllerUpdateCar = (
+    updateCarRequest: UpdateCarRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<UpdateCarResponse>(
+      {url: `/car`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateCarRequest
+    },
+      options);
+    }
+  
+
+
+export const getCarControllerUpdateCarMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof carControllerUpdateCar>>, TError,{data: UpdateCarRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof carControllerUpdateCar>>, TError,{data: UpdateCarRequest}, TContext> => {
+
+const mutationKey = ['carControllerUpdateCar'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof carControllerUpdateCar>>, {data: UpdateCarRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  carControllerUpdateCar(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CarControllerUpdateCarMutationResult = NonNullable<Awaited<ReturnType<typeof carControllerUpdateCar>>>
+    export type CarControllerUpdateCarMutationBody = UpdateCarRequest
+    export type CarControllerUpdateCarMutationError = unknown
+
+    export const useCarControllerUpdateCar = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof carControllerUpdateCar>>, TError,{data: UpdateCarRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof carControllerUpdateCar>>,
+        TError,
+        {data: UpdateCarRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getCarControllerUpdateCarMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const carControllerChangeMainCar = (
+    changeMainCarRequest: ChangeMainCarRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<ChangeMainCarResponse>(
+      {url: `/car/main`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: changeMainCarRequest
+    },
+      options);
+    }
+  
+
+
+export const getCarControllerChangeMainCarMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof carControllerChangeMainCar>>, TError,{data: ChangeMainCarRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof carControllerChangeMainCar>>, TError,{data: ChangeMainCarRequest}, TContext> => {
+
+const mutationKey = ['carControllerChangeMainCar'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof carControllerChangeMainCar>>, {data: ChangeMainCarRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  carControllerChangeMainCar(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CarControllerChangeMainCarMutationResult = NonNullable<Awaited<ReturnType<typeof carControllerChangeMainCar>>>
+    export type CarControllerChangeMainCarMutationBody = ChangeMainCarRequest
+    export type CarControllerChangeMainCarMutationError = unknown
+
+    export const useCarControllerChangeMainCar = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof carControllerChangeMainCar>>, TError,{data: ChangeMainCarRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof carControllerChangeMainCar>>,
+        TError,
+        {data: ChangeMainCarRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getCarControllerChangeMainCarMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }

@@ -11,6 +11,8 @@ export interface RegisterAddresssRequest {
   nickname: string;
   /** 위도 */
   lat: number;
+  /** 경도 */
+  lng: number;
   /** 전체 주소 */
   fullAddress: string;
   /**
@@ -29,6 +31,4 @@ export interface RegisterAddresssRequest {
    * @nullable
    */
   roadName?: string | null;
-  /** 경도 */
-  lng: number;
 }

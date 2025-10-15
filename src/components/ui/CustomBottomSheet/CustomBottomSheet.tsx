@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useMemo } from "react";
+import { ForwardedRef, forwardRef, useCallback, useMemo } from "react";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -12,7 +12,6 @@ import { closeIcon } from "@/assets/images";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
-  ref: RefObject<BottomSheetModal | null>;
   height?: string | number;
   title?: string;
   hasCloseButton?: boolean;
@@ -20,84 +19,86 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const CustomBottomSheet = ({
-  ref,
-  height = "60%",
-  title,
-  hasCloseButton,
-  onClose,
-  children,
-}: Props) => {
-  const insets = useSafeAreaInsets();
+export const CustomBottomSheet = forwardRef(
+  (
+    { height = "60%", title, hasCloseButton, onClose, children }: Props,
+    ref: ForwardedRef<BottomSheetModal>
+  ) => {
+    const insets = useSafeAreaInsets();
 
-  const snapPoints = useMemo(() => [height], [height]);
+    const snapPoints = useMemo(() => [height], [height]);
 
-  const renderBackdrop = useCallback(
-    (props: any) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        pressBehavior="close"
-      />
-    ),
-    []
-  );
+    const renderBackdrop = useCallback(
+      (props: any) => (
+        <BottomSheetBackdrop
+          {...props}
+          disappearsOnIndex={-1}
+          appearsOnIndex={0}
+          pressBehavior="close"
+        />
+      ),
+      []
+    );
 
-  return (
-    <BottomSheetModal
-      ref={ref}
-      onChange={(index) => {
-        if (index === -1) {
-          onClose();
-        }
-      }}
-      snapPoints={snapPoints}
-      enablePanDownToClose={false}
-      enableHandlePanningGesture={false}
-      handleComponent={() => null}
-      backdropComponent={renderBackdrop}
-      backgroundComponent={() => <View />}
-    >
-      <BottomSheetView
-        style={[
-          styles.container,
-          { paddingBottom: insets.bottom + getResponsiveSize(20) },
-        ]}
+    return (
+      <BottomSheetModal
+        ref={ref}
+        onChange={(index) => {
+          if (index === -1) {
+            onClose();
+          }
+        }}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        enableHandlePanningGesture={false}
+        handleComponent={() => null}
+        backdropComponent={renderBackdrop}
+        backgroundComponent={() => <View />}
       >
-        {hasCloseButton ? (
-          <View style={styles.header}>
-            <View style={styles.empty} />
+        <BottomSheetView
+          style={[
+            styles.container,
+            { paddingBottom: insets.bottom + getResponsiveSize(20) },
+          ]}
+        >
+          {title && (
+            <>
+              {hasCloseButton ? (
+                <View style={styles.header}>
+                  <View style={styles.empty} />
 
-            <CustomText fontSize={18} fontWeight={"600"}>
-              {title}
-            </CustomText>
+                  <CustomText fontSize={18} fontWeight={"600"}>
+                    {title}
+                  </CustomText>
 
-            <Pressable onPress={onClose}>
-              <Image
-                source={closeIcon}
-                style={{
-                  width: getResponsiveSize(24),
-                  height: getResponsiveSize(24),
-                }}
-              />
-            </Pressable>
-          </View>
-        ) : (
-          <View style={styles.header}>
-            <CustomText fontSize={18} fontWeight={"600"}>
-              {title}
-            </CustomText>
+                  <Pressable onPress={onClose}>
+                    <Image
+                      source={closeIcon}
+                      style={{
+                        width: getResponsiveSize(24),
+                        height: getResponsiveSize(24),
+                      }}
+                    />
+                  </Pressable>
+                </View>
+              ) : (
+                <View style={styles.header}>
+                  <CustomText fontSize={18} fontWeight={"600"}>
+                    {title}
+                  </CustomText>
 
-            <View style={styles.empty} />
-          </View>
-        )}
+                  <View style={styles.empty} />
+                </View>
+              )}
+            </>
+          )}
 
-        {children}
-      </BottomSheetView>
-    </BottomSheetModal>
-  );
-};
+          {children}
+        </BottomSheetView>
+      </BottomSheetModal>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   container: {

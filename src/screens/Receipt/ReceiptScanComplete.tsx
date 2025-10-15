@@ -26,8 +26,6 @@ type ReceiptRouteProps = RouteProp<
 export const ReceiptScanComplete = () => {
   const router = useRoute<ReceiptRouteProps>();
 
-  const navigation = useNavigation();
-
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 

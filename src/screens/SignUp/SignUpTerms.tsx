@@ -183,7 +183,8 @@ export const SignUpTerms = () => {
                     />
 
                     <CustomText fontSize={16}>
-                      {value.title} {value.isRequired ? "[필수]" : "[선택]"}
+                      {value.title} 동의{" "}
+                      {value.isRequired ? "[필수]" : "[선택]"}
                     </CustomText>
                   </Pressable>
 

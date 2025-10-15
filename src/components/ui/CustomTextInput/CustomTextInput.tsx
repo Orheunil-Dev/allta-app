@@ -2,6 +2,7 @@ import { inputResetButton } from "@/assets/images";
 import { colors } from "@/styles";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import {
+  FlexStyle,
   Image,
   KeyboardTypeOptions,
   Pressable,
@@ -12,7 +13,6 @@ import {
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { CustomText } from "../CustomText/CustomText";
-import { useState } from "react";
 
 const fontMap: Record<string, string> = {
   "100": "Pretendard-Thin",
@@ -27,6 +27,7 @@ const fontMap: Record<string, string> = {
 };
 
 interface Props {
+  ref?: React.Ref<React.ComponentType<any>> | undefined;
   value?: string | undefined;
   onChangeText?: ((text: string) => void) | undefined;
   onSubmitEditing?: ((e: TextInputSubmitEditingEvent) => void) | undefined;
@@ -34,6 +35,7 @@ interface Props {
   maxLength?: number;
   placeholder?: string;
   errorMessage?: string;
+  justifyContent?: FlexStyle["justifyContent"];
   marginTop?: number;
   marginBottom?: number;
   marginRight?: number;
@@ -42,9 +44,11 @@ interface Props {
   keyboardType?: KeyboardTypeOptions | undefined;
   secureTextEntry?: boolean;
   editable?: boolean;
+  onFocus?: () => void;
 }
 
 export const CustomTextInput = ({
+  ref,
   value,
   onChangeText,
   onSubmitEditing,
@@ -52,6 +56,7 @@ export const CustomTextInput = ({
   maxLength,
   placeholder,
   errorMessage,
+  justifyContent = "center",
   marginTop = 0,
   marginBottom = 0,
   marginRight = 0,
@@ -60,9 +65,8 @@ export const CustomTextInput = ({
   keyboardType,
   secureTextEntry,
   editable = true,
+  onFocus,
 }: Props) => {
-  const [isFocused, setIsFocused] = useState(false);
-
   return (
     <View
       style={[
@@ -71,6 +75,7 @@ export const CustomTextInput = ({
           marginBottom: getResponsiveSize(marginBottom),
           marginRight: getResponsiveSize(marginRight),
           marginLeft: getResponsiveSize(marginLeft),
+          justifyContent: justifyContent,
         },
         styles.container,
       ]}
@@ -88,6 +93,7 @@ export const CustomTextInput = ({
       )}
 
       <TextInput
+        ref={ref}
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={onSubmitEditing}
@@ -95,9 +101,8 @@ export const CustomTextInput = ({
         placeholder={placeholder ?? undefined}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        editable
+        onFocus={onFocus}
+        editable={editable}
         style={[
           {
             fontFamily: fontMap[fontWeight],
@@ -121,7 +126,7 @@ export const CustomTextInput = ({
 };
 
 const styles = StyleSheet.create({
-  container: { position: "relative", flexShrink: 1, justifyContent: "center" },
+  container: { position: "relative", flex: 1, backgroundColor: colors.white },
   input: {
     paddingVertical: getResponsiveSize(8),
     paddingLeft: getResponsiveSize(8),

@@ -7,7 +7,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ContainerStackParamList } from "@/navigations";
+import { BottomTabParamList, ContainerStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import {
@@ -28,6 +28,9 @@ import { StoreRecommend } from "@/components/home/StoreRecommend";
 export const Home = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const bottomTabNavigation =
+    useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
 
@@ -196,8 +199,8 @@ export const Home = () => {
 
               <Pressable
                 onPress={() =>
-                  containerNavigation.navigate("ReceiptScanStack", {
-                    screen: "ReceiptScan",
+                  bottomTabNavigation.navigate("QrScanStack", {
+                    screen: "QrScan",
                   })
                 }
                 style={styles.qrScan}
@@ -263,7 +266,7 @@ export const Home = () => {
                 주소 : 경기도 하남시 미사강변한강로 155, 1031호
               </CustomText>
               <CustomText color={colors.gray5} fontSize={14}>
-                대표전화 : 1688-1620
+                대표전화 : 1668-1620
               </CustomText>
             </Animated.View>
           </View>

@@ -29,15 +29,21 @@ import type {
   CheckPhoneNumberResponse,
   CreateUserRequest,
   CreateUserResponse,
+  GetMarketingAgreementStatusResponse,
   GetUserProfileResponse,
+  GetUserRefferalCodeResponse,
   RegisterExtraInfoRequest,
   RegisterExtraInfoResponse,
   SendVerificationCodeRequest,
   SendVerificationCodeResponse,
+  UpdateMarketingAgreementStatusRequest,
+  UpdateMarketingAgreementStatusResponse,
   UserControllerVerifyRefferalCodeParams,
   VerifyPhoneNumberRequest,
   VerifyPhoneNumberResponse,
-  VerifyReferralCodeResponse
+  VerifyReferralCodeResponse,
+  WithdrawalUserRequest,
+  WithdrawalUserResponse
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -426,14 +432,14 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
       
       return customInstance<GetUserProfileResponse>(
-      {url: `/user/user/profile`, method: 'GET', signal
+      {url: `/user/profile`, method: 'GET', signal
     },
       options);
     }
   
 
 export const getUserControllerGetUserProfileQueryKey = () => {
-    return [`/user/user/profile`] as const;
+    return [`/user/profile`] as const;
     }
 
     
@@ -500,3 +506,280 @@ export function useUserControllerGetUserProfile<TData = Awaited<ReturnType<typeo
 
 
 
+export const userControllerGetUserRefferalCode = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetUserRefferalCodeResponse>(
+      {url: `/user/refferal-code`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getUserControllerGetUserRefferalCodeQueryKey = () => {
+    return [`/user/refferal-code`] as const;
+    }
+
+    
+export const getUserControllerGetUserRefferalCodeQueryOptions = <TData = Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getUserControllerGetUserRefferalCodeQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>> = ({ signal }) => userControllerGetUserRefferalCode(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UserControllerGetUserRefferalCodeQueryResult = NonNullable<Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>>
+export type UserControllerGetUserRefferalCodeQueryError = unknown
+
+
+export function useUserControllerGetUserRefferalCode<TData = Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUserControllerGetUserRefferalCode<TData = Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUserControllerGetUserRefferalCode<TData = Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useUserControllerGetUserRefferalCode<TData = Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetUserRefferalCode>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getUserControllerGetUserRefferalCodeQueryOptions(options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const userControllerGetMarketingAgreementStatus = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetMarketingAgreementStatusResponse>(
+      {url: `/user/marketing-status`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getUserControllerGetMarketingAgreementStatusQueryKey = () => {
+    return [`/user/marketing-status`] as const;
+    }
+
+    
+export const getUserControllerGetMarketingAgreementStatusQueryOptions = <TData = Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getUserControllerGetMarketingAgreementStatusQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>> = ({ signal }) => userControllerGetMarketingAgreementStatus(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UserControllerGetMarketingAgreementStatusQueryResult = NonNullable<Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>>
+export type UserControllerGetMarketingAgreementStatusQueryError = unknown
+
+
+export function useUserControllerGetMarketingAgreementStatus<TData = Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUserControllerGetMarketingAgreementStatus<TData = Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUserControllerGetMarketingAgreementStatus<TData = Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useUserControllerGetMarketingAgreementStatus<TData = Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerGetMarketingAgreementStatus>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getUserControllerGetMarketingAgreementStatusQueryOptions(options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const userControllerUpdateMarketingAgreementStatus = (
+    updateMarketingAgreementStatusRequest: UpdateMarketingAgreementStatusRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<UpdateMarketingAgreementStatusResponse>(
+      {url: `/user/marketing-status`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: updateMarketingAgreementStatusRequest
+    },
+      options);
+    }
+  
+
+
+export const getUserControllerUpdateMarketingAgreementStatusMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerUpdateMarketingAgreementStatus>>, TError,{data: UpdateMarketingAgreementStatusRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof userControllerUpdateMarketingAgreementStatus>>, TError,{data: UpdateMarketingAgreementStatusRequest}, TContext> => {
+
+const mutationKey = ['userControllerUpdateMarketingAgreementStatus'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerUpdateMarketingAgreementStatus>>, {data: UpdateMarketingAgreementStatusRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  userControllerUpdateMarketingAgreementStatus(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UserControllerUpdateMarketingAgreementStatusMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerUpdateMarketingAgreementStatus>>>
+    export type UserControllerUpdateMarketingAgreementStatusMutationBody = UpdateMarketingAgreementStatusRequest
+    export type UserControllerUpdateMarketingAgreementStatusMutationError = unknown
+
+    export const useUserControllerUpdateMarketingAgreementStatus = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerUpdateMarketingAgreementStatus>>, TError,{data: UpdateMarketingAgreementStatusRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof userControllerUpdateMarketingAgreementStatus>>,
+        TError,
+        {data: UpdateMarketingAgreementStatusRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUserControllerUpdateMarketingAgreementStatusMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const userControllerWithdrawalUser = (
+    withdrawalUserRequest: WithdrawalUserRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<WithdrawalUserResponse>(
+      {url: `/user/withdrawal`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: withdrawalUserRequest
+    },
+      options);
+    }
+  
+
+
+export const getUserControllerWithdrawalUserMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerWithdrawalUser>>, TError,{data: WithdrawalUserRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof userControllerWithdrawalUser>>, TError,{data: WithdrawalUserRequest}, TContext> => {
+
+const mutationKey = ['userControllerWithdrawalUser'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerWithdrawalUser>>, {data: WithdrawalUserRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  userControllerWithdrawalUser(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UserControllerWithdrawalUserMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerWithdrawalUser>>>
+    export type UserControllerWithdrawalUserMutationBody = WithdrawalUserRequest
+    export type UserControllerWithdrawalUserMutationError = unknown
+
+    export const useUserControllerWithdrawalUser = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerWithdrawalUser>>, TError,{data: WithdrawalUserRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof userControllerWithdrawalUser>>,
+        TError,
+        {data: WithdrawalUserRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUserControllerWithdrawalUserMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    

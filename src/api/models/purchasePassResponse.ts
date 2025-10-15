@@ -5,11 +5,11 @@
  * Allta API 서버 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { PurchaseDetail } from './purchaseDetail';
+import type { PurchaseItem } from './purchaseItem';
 
 export interface PurchasePassResponse {
   /** 결과 여부 */
   ok: boolean;
-  /** 결제 내역 */
-  data: PurchaseDetail;
+  /** 구매 내역 */
+  data: PurchaseItem;
 }

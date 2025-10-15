@@ -210,3 +210,32 @@ export const formatStorePhoneNumber = (value: string): string => {
 
   return value;
 };
+
+// 영수증 승인 날짜 포맷팅
+export const formatApprovalDate = (date: string, time: string): string => {
+  const dateFormat = date.length === 6 ? `20${date}` : date;
+  const timeFormat = time.length === 4 ? `${time}00` : time;
+
+  return dateFormat + timeFormat;
+};
+
+// 남은 사용 횟수 포맷팅
+export const formatUsageLeft = (usage: number, maxUsage: number): number => {
+  return maxUsage - usage;
+};
+
+export const formatPaymentStatus = (text: string): string => {
+  switch (text) {
+    case "APPROVED":
+      return "결제완료";
+
+    case "PARTIAL_REFUND":
+      return "부분취소";
+
+    case "REFUND":
+      return "결제취소";
+
+    default:
+      return text;
+  }
+};

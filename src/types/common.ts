@@ -5,3 +5,11 @@ export type CustomError = {
 };
 
 export type DayKey = "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT" | "SUN";
+
+export type Address = {
+  id: string;
+  nickname: string;
+  fullAddress: string;
+  lat: number;
+  lng: number;
+};
