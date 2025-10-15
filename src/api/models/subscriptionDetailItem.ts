@@ -24,7 +24,7 @@ export interface SubscriptionDetailItem {
   /** 자동결제 날짜 */
   billingDate: number;
   /** 마지막 결제일 */
-  payedAt: string;
+  paidAt: string;
   /** 매장 정보 */
   store: SubscriptionStoreItem;
   /** 구독권 스냅샷 */

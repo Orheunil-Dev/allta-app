@@ -319,7 +319,7 @@ export const SubscriptionDetail = ({
               이용기간
             </CustomText>
             <CustomText fontSize={16}>
-              {`${dayjs(data.payedAt).format("YY.MM.DD")}~${dayjs(data.payedAt)
+              {`${dayjs(data.paidAt).format("YY.MM.DD")}~${dayjs(data.paidAt)
                 .add(1, "month")
                 .format("YY.MM.")}${data.billingDate}`}
             </CustomText>
@@ -363,7 +363,7 @@ export const SubscriptionDetail = ({
             <CustomText fontSize={16}>
               {data.status === "ACTIVE"
                 ? `${
-                    dayjs(data.payedAt).add(1, "month").format("YY.MM.") +
+                    dayjs(data.paidAt).add(1, "month").format("YY.MM.") +
                     data.billingDate
                   }`
                 : "-"}

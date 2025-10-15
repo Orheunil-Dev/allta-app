@@ -114,11 +114,11 @@ export const PassList = () => {
                     storeName={value.storeName}
                     usage={value.subscriptionSnapshot.usage}
                     maxUsage={value.subscriptionSnapshot.maxUsage ?? undefined}
-                    availablePeriod={`${dayjs(value.payedAt).format(
+                    availablePeriod={`${dayjs(value.paidAt).format(
                       "YY.MM.DD"
-                    )}~${dayjs(value.payedAt)
-                      .add(1, "month")
-                      .format("YY.MM.")}${value.billingDate}`}
+                    )}~${dayjs(value.paidAt).add(1, "month").format("YY.MM.")}${
+                      value.billingDate
+                    }`}
                   />
                 ))}
             </View>

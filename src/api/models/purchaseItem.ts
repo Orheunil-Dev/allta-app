@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface PurchaseDetail {
+export interface PurchaseItem {
   /** 서비스 종류 */
   serviceType: string;
   /** 이용권 종류 */

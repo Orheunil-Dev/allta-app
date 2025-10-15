@@ -223,3 +223,19 @@ export const formatApprovalDate = (date: string, time: string): string => {
 export const formatUsageLeft = (usage: number, maxUsage: number): number => {
   return maxUsage - usage;
 };
+
+export const formatPaymentStatus = (text: string): string => {
+  switch (text) {
+    case "APPROVED":
+      return "결제완료";
+
+    case "PARTIAL_REFUND":
+      return "부분취소";
+
+    case "REFUND":
+      return "결제취소";
+
+    default:
+      return text;
+  }
+};

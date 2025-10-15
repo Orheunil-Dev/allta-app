@@ -1,9 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Payment, PaymentComplete } from "@/screens/Payment";
+import { Payment, PaymentComplete, PaymentList } from "@/screens/Payment";
 import { PassType, ServiceType, CarType } from "@/types";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 
 export type PaymentStackParamList = {
+  PaymentList: undefined;
   Payment: {
     storeId: string;
     storeName: string;
@@ -26,7 +27,14 @@ const Stack = createNativeStackNavigator();
 
 export const PaymentStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Payment">
+    <Stack.Navigator initialRouteName="PaymentList">
+      <Stack.Screen
+        name="PaymentList"
+        component={PaymentList}
+        options={{
+          header: () => <CustomHeader title="결제 내역" showBackButton />,
+        }}
+      />
       <Stack.Screen
         name="Payment"
         component={Payment}

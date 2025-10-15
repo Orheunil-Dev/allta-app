@@ -24,6 +24,7 @@ import { Notification } from "@/screens/Notification";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 import { MyStoreDetail } from "@/screens/MyStore";
+import { ServiceHistory } from "@/screens/ServiceHistory";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -43,6 +44,7 @@ export type ContainerStackParamList = {
     storeId: string;
     storeName: string;
   };
+  ServiceHistory: undefined;
 };
 
 const Stack = createNativeStackNavigator<ContainerStackParamList>();
@@ -178,6 +180,13 @@ export const ContainerStack = ({
               />
             ),
           })}
+        />
+        <Stack.Screen
+          name="ServiceHistory"
+          component={ServiceHistory}
+          options={{
+            header: () => <CustomHeader title="이용 내역" showBackButton />,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -284,11 +284,7 @@ export const MyPage = () => {
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Pressable
-              onPress={() =>
-                containerNavigation.navigate("CarStack", {
-                  screen: "CarList",
-                })
-              }
+              onPress={() => containerNavigation.navigate("ServiceHistory")}
               style={styles.button}
             >
               <Image source={serviceHistoryIcon} style={styles.icon} />
@@ -297,8 +293,8 @@ export const MyPage = () => {
 
             <Pressable
               onPress={() =>
-                containerNavigation.navigate("CardStack", {
-                  screen: "CardList",
+                containerNavigation.navigate("PaymentStack", {
+                  screen: "PaymentList",
                 })
               }
               style={styles.button}

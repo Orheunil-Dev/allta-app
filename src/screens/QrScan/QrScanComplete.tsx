@@ -326,7 +326,7 @@ export const QrScanComplete = () => {
                     )?.maxUsage ?? 0
                   }
                   availablePeriod={`~ ${dayjs(
-                    passData.autoStandard.payedAt as Date
+                    passData.autoStandard.paidAt as Date
                   )
                     .add(1, "month")
                     .format("YYYY.MM")}.${passData.autoStandard.billingDate}`}
@@ -341,7 +341,7 @@ export const QrScanComplete = () => {
                   type="PREMIUM"
                   name="자동세차 프리미엄"
                   availablePeriod={`~ ${dayjs(
-                    passData.autoPremium.payedAt as Date
+                    passData.autoPremium.paidAt as Date
                   )
                     .add(1, "month")
                     .format("YYYY.MM")}.${passData.autoPremium.billingDate}`}
@@ -382,7 +382,7 @@ export const QrScanComplete = () => {
                     )?.maxUsage ?? 0
                   }
                   availablePeriod={`~ ${dayjs(
-                    passData.handsStandard.payedAt as Date
+                    passData.handsStandard.paidAt as Date
                   )
                     .add(1, "month")
                     .format("YYYY.MM")}.${passData.handsStandard.billingDate}`}
@@ -397,7 +397,7 @@ export const QrScanComplete = () => {
                   type="PREMIUM"
                   name="핸즈클리닝 프리미엄"
                   availablePeriod={`~ ${dayjs(
-                    passData.handsPremium.payedAt as Date
+                    passData.handsPremium.paidAt as Date
                   )
                     .add(1, "month")
                     .format("YYYY.MM")}.${passData.handsPremium.billingDate}`}
