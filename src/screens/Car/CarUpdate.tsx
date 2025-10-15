@@ -37,10 +37,10 @@ const carNumberSchema = z
   .string()
   .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다.");
 
-type StoreDetailRouteProp = RouteProp<CarStackParamList, "CarUpdate">;
+type CarUpdateRouteProp = RouteProp<CarStackParamList, "CarUpdate">;
 
 export const CarUpdate = () => {
-  const router = useRoute<StoreDetailRouteProp>();
+  const router = useRoute<CarUpdateRouteProp>();
 
   const carStackNavigation =
     useNavigation<NativeStackNavigationProp<CarStackParamList>>();
