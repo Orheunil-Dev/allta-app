@@ -37,6 +37,19 @@ export const UsePassComplete = () => {
     );
   };
 
+  const handleRouteServiceHistory = () => {
+    return containerNavigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {
+            name: "ServiceHistory",
+          },
+        ],
+      })
+    );
+  };
+
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <View style={styles.container}>
@@ -60,6 +73,7 @@ export const UsePassComplete = () => {
 
         <View style={styles.buttonArea}>
           <CustomButton
+            onPress={handleRouteServiceHistory}
             flex={1}
             height={getResponsiveSize(50)}
             backgroundColor={colors.white}

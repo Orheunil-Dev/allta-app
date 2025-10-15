@@ -11,7 +11,7 @@ import type { PaginationMetaEntity } from './paginationMetaEntity';
 export interface GetPaymentListResponse {
   /** 결과 여부 */
   ok: boolean;
-  /** 결제 내역 목록 */
+  /** 결제 내역 스냅샷 목록 */
   data: PaymentItem[];
   /** 메타 정보 */
   meta: PaginationMetaEntity;

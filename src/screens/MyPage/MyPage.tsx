@@ -293,8 +293,8 @@ export const MyPage = () => {
 
             <Pressable
               onPress={() =>
-                containerNavigation.navigate("PaymentStack", {
-                  screen: "PaymentList",
+                containerNavigation.navigate("PurchaseStack", {
+                  screen: "PurchaseList",
                 })
               }
               style={styles.button}

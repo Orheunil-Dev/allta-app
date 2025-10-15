@@ -7,6 +7,7 @@ export * from "./LoginStack";
 export * from "./IntroStack";
 export * from "./AddressStack";
 export * from "./PaymentStack";
+export * from "./PurchaseStack";
 export * from "./CarStack";
 export * from "./CardStack";
 export * from "./PassStack";

@@ -6,10 +6,13 @@
  * OpenAPI spec version: 1.0
  */
 import type { PurchaseItem } from './purchaseItem';
+import type { PaginationMetaEntity } from './paginationMetaEntity';
 
-export interface PurchasePassResponse {
+export interface GetPurchaseListResponse {
   /** 결과 여부 */
   ok: boolean;
-  /** 결제 내역 */
-  data: PurchaseItem;
+  /** 결제 내역 목록 */
+  data: PurchaseItem[];
+  /** 메타 정보 */
+  meta: PaginationMetaEntity;
 }

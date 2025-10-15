@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import dayjs from "dayjs";
-import { usePaymentControllerGetPaymentList } from "@/api/payment/payment";
-import { GetPaymentListResponse } from "@/api/models";
+import { usePurchaseControllerGetPurchaseList } from "@/api/purchase/purchase";
+import { GetPurchaseListResponse } from "@/api/models";
 import {
   formatPassType,
   formatPaymentStatus,
@@ -13,38 +13,41 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 
-export const PaymentList = () => {
+export const PurchaseList = () => {
   const [skip, setSkip] = useState<number>(0);
-  const [payments, setPayments] = useState<GetPaymentListResponse["data"]>([]);
+  const [payments, setPayments] = useState<GetPurchaseListResponse["data"]>([]);
 
   // 결제 내역 목록 조회
-  const { data: paymentData, refetch: serviceHistoryRefetch } =
-    usePaymentControllerGetPaymentList(
-      {
-        take: 20,
-        skip,
+  const {
+    data: purchaseData,
+    isLoading: purhcaseLoading,
+    refetch: purchaseRefetch,
+  } = usePurchaseControllerGetPurchaseList(
+    {
+      take: 20,
+      skip,
+    },
+    {
+      query: {
+        retry: false,
+        gcTime: 0,
       },
-      {
-        query: {
-          retry: false,
-          gcTime: 0,
-        },
-      }
-    );
+    }
+  );
 
   // 페이지네이션
   const handleLoadMore = () => {
-    if (paymentData?.meta?.hasNextPage) {
+    if (purchaseData?.meta?.hasNextPage) {
       setSkip(skip + 20);
     }
   };
 
   // 무한 스크롤
   useEffect(() => {
-    if (paymentData?.data) {
-      setPayments((prev) => [...prev, ...paymentData.data]);
+    if (purchaseData?.data) {
+      setPayments((prev) => [...prev, ...purchaseData.data]);
     }
-  }, [paymentData]);
+  }, [purchaseData]);
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
@@ -62,7 +65,8 @@ export const PaymentList = () => {
               </CustomText>
               <CustomText
                 color={
-                  item.status === "REFUND" || item.status === "PARTIAL_REFUND"
+                  item.status === "REFUNDED" ||
+                  item.status === "PARTIAL_REFUNDED"
                     ? colors.red
                     : colors.black
                 }
@@ -78,12 +82,13 @@ export const PaymentList = () => {
                   {formatPassType(item.productType)}
                 </CustomText>
                 <CustomText fontSize={18} fontWeight={"600"}>
-                  {item.amount.toLocaleString()}원
+                  {item.totalAmount.toLocaleString()}원
                 </CustomText>
               </View>
 
               <CustomText color={colors.gray5} fontSize={14}>
-                {item.storeName} • {item.purchase.carNumber}
+                {item.storeName}
+                {item.carNumber ? ` • ${item.carNumber}` : ""}
               </CustomText>
             </Pressable>
           )}

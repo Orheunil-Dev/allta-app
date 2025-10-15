@@ -18,7 +18,7 @@ export interface PaymentItem {
   serviceType: string;
   /** 매장 이름 */
   storeName: string;
-  /** 결제 금액 */
+  /** 변동 금액 */
   amount: number;
   /** 생성일 */
   createdAt: string;
