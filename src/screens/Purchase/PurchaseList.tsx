@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import dayjs from "dayjs";
 import { usePurchaseControllerGetPurchaseList } from "@/api/purchase/purchase";
 import { GetPurchaseListResponse } from "@/api/models";
+import { PurchaseStackParamList } from "@/navigations";
 import {
   formatPassType,
   formatPaymentStatus,
@@ -14,6 +17,9 @@ import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 
 export const PurchaseList = () => {
+  const purchaseNavigation =
+    useNavigation<NativeStackNavigationProp<PurchaseStackParamList>>();
+
   const [skip, setSkip] = useState<number>(0);
   const [payments, setPayments] = useState<GetPurchaseListResponse["data"]>([]);
 
@@ -59,7 +65,14 @@ export const PurchaseList = () => {
           onEndReachedThreshold={0.7}
           contentContainerStyle={{ paddingVertical: getResponsiveSize(20) }}
           renderItem={({ item, index }) => (
-            <Pressable style={styles.itemBox}>
+            <Pressable
+              onPress={() =>
+                purchaseNavigation.navigate("PurchaseDetail", {
+                  id: item.id,
+                })
+              }
+              style={styles.itemBox}
+            >
               <CustomText color={colors.gray7} fontSize={15} fontWeight={"600"}>
                 {dayjs(item.createdAt).format("YY.MM.DD")}
               </CustomText>

@@ -144,7 +144,7 @@ export const PaymentComplete = () => {
               결제금액
             </CustomText>
             <CustomText fontSize={16}>
-              {router.params.amount.toLocaleString()}원
+              {router.params.totalAmount.toLocaleString()}원
             </CustomText>
           </View>
         </View>

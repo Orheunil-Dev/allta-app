@@ -18,7 +18,7 @@ export type PaymentStackParamList = {
     storeName: string;
     carNumber: string;
     approvedAt: string;
-    amount: number;
+    totalAmount: number;
   };
 };
 

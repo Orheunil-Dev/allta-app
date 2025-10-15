@@ -25,7 +25,7 @@ import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 import { MyStoreDetail } from "@/screens/MyStore";
 import { ServiceHistory } from "@/screens/ServiceHistory";
-import { PurchaseStackParamList } from "./PurchaseStack";
+import { PurchaseStack, PurchaseStackParamList } from "./PurchaseStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -129,7 +129,7 @@ export const ContainerStack = ({
         />
         <Stack.Screen
           name="PurchaseStack"
-          component={PaymentStack}
+          component={PurchaseStack}
           options={{
             headerShown: false,
           }}
