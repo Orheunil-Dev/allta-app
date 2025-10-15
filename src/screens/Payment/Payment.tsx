@@ -1,6 +1,5 @@
 import { usePurchaseControllerPurchasePass } from "@/api/purchase/purchase";
 import {
-  blackRightArrow,
   checkAllButton,
   checkedCheckAllButton,
   defaultStoreImage,
