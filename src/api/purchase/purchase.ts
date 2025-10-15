@@ -6,16 +6,27 @@
  * OpenAPI spec version: 1.0
  */
 import {
-  useMutation
+  useMutation,
+  useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
-  UseMutationResult
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult
 } from '@tanstack/react-query';
 
 import type {
+  GetPurchaseListResponse,
+  PurchaseControllerGetPurchaseListParams,
   PurchasePassRequest,
   PurchasePassResponse
 } from '.././models';
@@ -24,6 +35,88 @@ import { customInstance } from '../../libs/custom-instance';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+
+export const purchaseControllerGetPurchaseList = (
+    params: PurchaseControllerGetPurchaseListParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetPurchaseListResponse>(
+      {url: `/purchase`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+export const getPurchaseControllerGetPurchaseListQueryKey = (params?: PurchaseControllerGetPurchaseListParams,) => {
+    return [`/purchase`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getPurchaseControllerGetPurchaseListQueryOptions = <TData = Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError = unknown>(params: PurchaseControllerGetPurchaseListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPurchaseControllerGetPurchaseListQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>> = ({ signal }) => purchaseControllerGetPurchaseList(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PurchaseControllerGetPurchaseListQueryResult = NonNullable<Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>>
+export type PurchaseControllerGetPurchaseListQueryError = unknown
+
+
+export function usePurchaseControllerGetPurchaseList<TData = Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError = unknown>(
+ params: PurchaseControllerGetPurchaseListParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>,
+          TError,
+          Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePurchaseControllerGetPurchaseList<TData = Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError = unknown>(
+ params: PurchaseControllerGetPurchaseListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>,
+          TError,
+          Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePurchaseControllerGetPurchaseList<TData = Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError = unknown>(
+ params: PurchaseControllerGetPurchaseListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function usePurchaseControllerGetPurchaseList<TData = Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError = unknown>(
+ params: PurchaseControllerGetPurchaseListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof purchaseControllerGetPurchaseList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPurchaseControllerGetPurchaseListQueryOptions(params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
 
 
 

@@ -25,6 +25,7 @@ import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 import { MyStoreDetail } from "@/screens/MyStore";
 import { ServiceHistory } from "@/screens/ServiceHistory";
+import { PurchaseStackParamList } from "./PurchaseStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -33,6 +34,7 @@ export type ContainerStackParamList = {
   LoginStack: NavigatorScreenParams<LoginStackParamList>;
   AddressStack: NavigatorScreenParams<AddressStackParamList>;
   PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
+  PurchaseStack: NavigatorScreenParams<PurchaseStackParamList>;
   CarStack: NavigatorScreenParams<CarStackParamList>;
   CardStack: NavigatorScreenParams<CardStackParamList>;
   PassStack: NavigatorScreenParams<PassStackParamList>;
@@ -120,6 +122,13 @@ export const ContainerStack = ({
         />
         <Stack.Screen
           name="PaymentStack"
+          component={PaymentStack}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PurchaseStack"
           component={PaymentStack}
           options={{
             headerShown: false,

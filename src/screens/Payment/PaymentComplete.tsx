@@ -37,14 +37,14 @@ export const PaymentComplete = () => {
     );
   };
 
-  const handleRoutePaymentList = () => {
+  const handleRoutePurchaseList = () => {
     return containerNavigation.dispatch(
       CommonActions.reset({
         index: 0,
         routes: [
           {
-            name: "PaymentStack",
-            params: { screen: "PaymentList" },
+            name: "PurchaseStack",
+            params: { screen: "PurchaseList" },
           },
         ],
       })
@@ -71,7 +71,7 @@ export const PaymentComplete = () => {
 
         <View style={styles.buttonArea}>
           <CustomButton
-            onPress={handleRoutePaymentList}
+            onPress={handleRoutePurchaseList}
             flex={1}
             height={getResponsiveSize(53)}
             backgroundColor={colors.white}

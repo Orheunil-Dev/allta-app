@@ -1,6 +1,6 @@
 import { PassType } from "@/types";
 
-// 전화번호 포맷팅 (ex. 010-0000-0000)
+// 전화번호 포매팅 (ex. 010-0000-0000)
 export const formatPhoneNumber = (value: string) => {
   const digits = value.replace(/\D/g, "");
 
@@ -19,7 +19,7 @@ export const formatPhoneNumber = (value: string) => {
   }
 };
 
-// 카드 번호 포맷팅
+// 카드 번호 포매팅
 export const formatCardNumber = (value: string) => {
   const digits = value.replace(/\D/g, "").slice(0, 16);
 
@@ -31,7 +31,7 @@ export const formatCardNumber = (value: string) => {
   return [part1, part2, part3, part4].filter(Boolean).join("-");
 };
 
-// 시간 포맷팅 (ex. 03:00)
+// 시간 포매팅 (ex. 03:00)
 export const formatTime = (value: number) => {
   const min = Math.floor(value / 60);
   const sec = value % 60;
@@ -39,7 +39,7 @@ export const formatTime = (value: number) => {
   return `0${min}:${sec < 10 ? "0" + sec : sec}`;
 };
 
-// 유효기간 포맷팅
+// 유효기간 포매팅
 export const formatCardExpiration = (value: string) => {
   const digits = value.replace(/\D/g, "");
 
@@ -52,7 +52,7 @@ export const formatCardExpiration = (value: string) => {
   }
 };
 
-// 알림 날짜 포맷팅
+// 알림 날짜 포매팅
 export const formatNotificationTime = (value: string) => {
   const now = new Date();
   const nowKst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
@@ -149,12 +149,12 @@ export const formatCouponValue = (type: string, value: number) => {
   }
 };
 
-// 카드번호 포맷팅
+// 카드번호 포매팅
 export const formatCardDisplayNumber = (value: string) => {
   return `****-****-****-${value}`;
 };
 
-// 카드사 포맷팅
+// 카드사 포매팅
 export const formatCardCompany = (value: string) => {
   const cardCompanyMap: Record<string, string> = {
     "01": "BC",
@@ -187,7 +187,7 @@ export const formatCardCompany = (value: string) => {
   return cardCompanyMap[value] ?? value;
 };
 
-// 매장 전화번호 포맷팅
+// 매장 전화번호 포매팅
 export const formatStorePhoneNumber = (value: string): string => {
   const digits = value.replace(/\D/g, "");
 
@@ -211,7 +211,7 @@ export const formatStorePhoneNumber = (value: string): string => {
   return value;
 };
 
-// 영수증 승인 날짜 포맷팅
+// 영수증 승인 날짜 포매팅
 export const formatApprovalDate = (date: string, time: string): string => {
   const dateFormat = date.length === 6 ? `20${date}` : date;
   const timeFormat = time.length === 4 ? `${time}00` : time;
@@ -219,20 +219,21 @@ export const formatApprovalDate = (date: string, time: string): string => {
   return dateFormat + timeFormat;
 };
 
-// 남은 사용 횟수 포맷팅
+// 남은 사용 횟수 포매팅
 export const formatUsageLeft = (usage: number, maxUsage: number): number => {
   return maxUsage - usage;
 };
 
+// 결제 내역 상태 포매팅
 export const formatPaymentStatus = (text: string): string => {
   switch (text) {
     case "APPROVED":
       return "결제완료";
 
-    case "PARTIAL_REFUND":
+    case "PARTIAL_REFUNDED":
       return "부분취소";
 
-    case "REFUND":
+    case "REFUNDED":
       return "결제취소";
 
     default:

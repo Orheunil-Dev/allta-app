@@ -7,16 +7,23 @@
  */
 
 export interface PurchaseItem {
+  /** ID */
+  id: string;
+  /** 결제 상태 */
+  status: string;
+  /** 상품 종류 */
+  productType: string;
   /** 서비스 종류 */
   serviceType: string;
-  /** 이용권 종류 */
-  productType: string;
   /** 매장 이름 */
   storeName: string;
-  /** 차량 번호 */
-  carNumber: string;
-  /** 결제 일시 */
-  approvedAt: string;
-  /** 결제 금액 */
-  amount: number;
+  /** 최종 결제 금액 */
+  totalAmount: number;
+  /**
+   * 차량 번호
+   * @nullable
+   */
+  carNumber?: string | null;
+  /** 생성일 */
+  createdAt: string;
 }
