@@ -95,3 +95,4 @@ export { default as plusIcon } from "./plus-icon.png";
 export { default as termsArrow } from "./terms-arrow.png";
 export { default as editIcon } from "./edit-icon.png";
 export { default as deleteIcon } from "./delete-icon.png";
+export { default as refferalBanner } from "./refferal-banner.png";

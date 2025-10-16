@@ -25,6 +25,7 @@ interface Props {
   marginBottom?: number;
   marginRight?: number;
   marginLeft?: number;
+  letterSpacing?: number;
   lineHeight?: number;
   textDecorationLine?: TextStyle["textDecorationLine"];
   textDecorationColor?: TextStyle["textDecorationColor"];
@@ -40,6 +41,7 @@ export const CustomText = ({
   color = colors.black,
   fontSize = 14,
   fontWeight = "400",
+  letterSpacing = -0.025,
   lineHeight = 1.5,
   textDecorationLine,
   textDecorationColor,
@@ -56,6 +58,7 @@ export const CustomText = ({
         color,
         fontSize: getFontSize(fontSize),
         fontWeight,
+        letterSpacing: getFontSize(fontSize) * letterSpacing,
         lineHeight: getFontSize(fontSize) * lineHeight,
         textDecorationLine,
         textDecorationColor,

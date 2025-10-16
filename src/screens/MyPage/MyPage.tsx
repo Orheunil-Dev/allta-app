@@ -39,6 +39,8 @@ export const MyPage = () => {
     },
   });
 
+  console.log(data);
+
   return (
     <CustomSafeAreaView edges={["top"]}>
       <View
@@ -319,7 +321,10 @@ export const MyPage = () => {
             <CustomText fontSize={16}>이벤트</CustomText>
           </Pressable>
 
-          <Pressable style={styles.button}>
+          <Pressable
+            onPress={() => containerNavigation.navigate("Refferal")}
+            style={styles.button}
+          >
             <Image source={refferalIcon} style={styles.icon} />
             <CustomText fontSize={16}>친구 초대</CustomText>
           </Pressable>
