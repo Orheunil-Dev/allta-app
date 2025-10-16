@@ -184,7 +184,7 @@ export const formatCardCompany = (value: string) => {
     "30": "시티",
   };
 
-  return cardCompanyMap[value] ?? value;
+  return `${cardCompanyMap[value] ?? value} 카드`;
 };
 
 // 매장 전화번호 포매팅
@@ -225,16 +225,33 @@ export const formatUsageLeft = (usage: number, maxUsage: number): number => {
 };
 
 // 결제 내역 상태 포매팅
-export const formatPaymentStatus = (text: string): string => {
+export const formatPurchaseStatus = (text: string): string => {
   switch (text) {
     case "APPROVED":
       return "결제완료";
 
     case "PARTIAL_REFUNDED":
-      return "부분취소";
+      return "부분환불";
 
     case "REFUNDED":
-      return "결제취소";
+      return "전체환불";
+
+    default:
+      return text;
+  }
+};
+
+// 결제 내역 스냅샷 상태 포매팅
+export const formatPaymentStatus = (text: string): string => {
+  switch (text) {
+    case "APPROVED":
+      return "결제";
+
+    case "PARTIAL_REFUNDED":
+      return "부분환불";
+
+    case "REFUNDED":
+      return "전체환불";
 
     default:
       return text;
