@@ -23,12 +23,29 @@ export interface PurchaseDetailItem {
   /** 최종 결제 금액 */
   totalAmount: number;
   /**
+   * 제조사
+   * @nullable
+   */
+  carBrand?: string | null;
+  /**
+   * 차종
+   * @nullable
+   */
+  carType?: string | null;
+  /**
+   * 모델명
+   * @nullable
+   */
+  carModel?: string | null;
+  /**
    * 차량 번호
    * @nullable
    */
   carNumber?: string | null;
   /** 카드 번호 마지막 4자리 */
   cardDisplayNumber: string;
+  /** 카드사 */
+  cardCompany: string;
   /** 생성일 */
   createdAt: string;
   /** 결제 내역 스냅샷 목록 */

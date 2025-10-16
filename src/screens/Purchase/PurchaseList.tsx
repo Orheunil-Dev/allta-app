@@ -9,7 +9,7 @@ import { GetPurchaseListResponse } from "@/api/models";
 import { PurchaseStackParamList } from "@/navigations";
 import {
   formatPassType,
-  formatPaymentStatus,
+  formatPurchaseStatus,
   getResponsiveSize,
 } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
@@ -73,7 +73,7 @@ export const PurchaseList = () => {
               }
               style={styles.itemBox}
             >
-              <CustomText color={colors.gray7} fontSize={15} fontWeight={"600"}>
+              <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
                 {dayjs(item.createdAt).format("YY.MM.DD")}
               </CustomText>
               <CustomText
@@ -87,7 +87,7 @@ export const PurchaseList = () => {
                 fontSize={16}
                 fontWeight={"600"}
               >
-                {formatPaymentStatus(item.status)}
+                {formatPurchaseStatus(item.status)}
               </CustomText>
 
               <View style={styles.row}>
