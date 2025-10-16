@@ -141,7 +141,9 @@ export const UsePassComplete = () => {
             <CustomText color={colors.gray5} fontSize={16}>
               차량정보
             </CustomText>
-            <CustomText fontSize={16}>{router.params.carNumber}</CustomText>
+            <CustomText fontSize={16}>
+              {router.params.carBrand} {router.params.carModel}
+            </CustomText>
           </View>
 
           <View style={styles.row}>
