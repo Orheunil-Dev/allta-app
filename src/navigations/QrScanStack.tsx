@@ -23,6 +23,9 @@ export type QrScanStackParamList = {
     serviceType: string;
     approvedAt: string;
     storeName: string;
+    carBrand: string;
+    carType: string;
+    carModel: string;
     carNumber: string;
   };
 };

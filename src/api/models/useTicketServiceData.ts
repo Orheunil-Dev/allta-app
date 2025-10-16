@@ -11,6 +11,12 @@ export interface UseTicketServiceData {
   serviceType: string;
   /** 매장 이름 */
   storeName: string;
+  /** 제조사 */
+  carBrand: string;
+  /** 모델명 */
+  carModel: string;
+  /** 차량 종류 */
+  carType: string;
   /** 차량 번호 */
   carNumber: string;
   /** 생성일 */

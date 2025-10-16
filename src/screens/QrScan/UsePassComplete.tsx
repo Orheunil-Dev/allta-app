@@ -64,10 +64,15 @@ export const UsePassComplete = () => {
           이용권 확인 완료!
         </CustomText>
 
-        <CustomText marginTop={8} color={colors.point2} fontSize={18}>
+        <CustomText
+          marginTop={8}
+          color={colors.point2}
+          fontSize={18}
+          fontWeight={"500"}
+        >
           세차 진행을 위해
         </CustomText>
-        <CustomText color={colors.point2} fontSize={18}>
+        <CustomText color={colors.point2} fontSize={18} fontWeight={"500"}>
           직원에게 화면을 보여주세요.
         </CustomText>
 
@@ -134,6 +139,13 @@ export const UsePassComplete = () => {
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
+              차량정보
+            </CustomText>
+            <CustomText fontSize={16}>{router.params.carNumber}</CustomText>
+          </View>
+
+          <View style={styles.row}>
+            <CustomText color={colors.gray5} fontSize={16}>
               이용일시
             </CustomText>
             <CustomText fontSize={16}>
@@ -152,6 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: getResponsiveSize(20),
+    paddingBottom: getResponsiveSize(20),
   },
   buttonArea: {
     flexDirection: "row",
@@ -161,7 +174,8 @@ const styles = StyleSheet.create({
   receipt: {
     width: "100%",
     marginTop: getResponsiveSize(40),
-    padding: getResponsiveSize(16),
+    paddingVertical: getResponsiveSize(12),
+    paddingHorizontal: getResponsiveSize(16),
     gap: getResponsiveSize(12),
     backgroundColor: colors.gray1,
     borderRadius: 12,
