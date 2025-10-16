@@ -8,18 +8,11 @@
 
 export type CouponControllerGetCouponListParams = {
 /**
- * 이용권 종류
- * @nullable
+ * 가져올 데이터 수
  */
-passType?: string | null;
+take: number;
 /**
- * 서비스 종류
- * @nullable
+ * 건너뛸 데이터 수
  */
-serviceType?: string | null;
-/**
- * 매장 ID
- * @nullable
- */
-storeId?: string | null;
+skip: number;
 };

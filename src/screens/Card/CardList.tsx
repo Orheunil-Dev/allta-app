@@ -31,14 +31,15 @@ export const CardList = () => {
   const [card, setCard] = useState<Card | undefined>(undefined);
 
   // 카드 목록 조회 API
-  const { data: cardData, refetch: cardsRefetch } =
-    useCardControllerGetCardList({
+  const { data: cardData, refetch: cardRefetch } = useCardControllerGetCardList(
+    {
       query: {
         queryKey: ["cards"],
         retry: false,
         gcTime: 0,
       },
-    });
+    }
+  );
 
   // 카드 등록 화면 이동
   const handleRouteCardRegister = () => {

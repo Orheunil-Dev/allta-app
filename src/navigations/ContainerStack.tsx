@@ -26,6 +26,7 @@ import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 import { MyStoreDetail } from "@/screens/MyStore";
 import { ServiceHistory } from "@/screens/ServiceHistory";
 import { PurchaseStack, PurchaseStackParamList } from "./PurchaseStack";
+import { Coupon } from "@/screens/Coupon";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -47,6 +48,7 @@ export type ContainerStackParamList = {
     storeName: string;
   };
   ServiceHistory: undefined;
+  Coupon: undefined;
 };
 
 const Stack = createNativeStackNavigator<ContainerStackParamList>();
@@ -195,6 +197,13 @@ export const ContainerStack = ({
           component={ServiceHistory}
           options={{
             header: () => <CustomHeader title="이용 내역" showBackButton />,
+          }}
+        />
+        <Stack.Screen
+          name="Coupon"
+          component={Coupon}
+          options={{
+            header: () => <CustomHeader title="쿠폰" showBackButton />,
           }}
         />
       </Stack.Navigator>

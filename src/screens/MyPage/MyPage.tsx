@@ -1,14 +1,13 @@
-import { useUserControllerGetUserProfile } from "@/api/user/user";
-import { ContainerStackParamList } from "@/navigations";
+import { Image, Pressable, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useUserControllerGetUserProfile } from "@/api/user/user";
+import { ContainerStackParamList } from "@/navigations";
+import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { colors } from "@/styles";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { getResponsiveSize } from "@/utils";
-import { ScrollView } from "react-native-gesture-handler";
 import {
   addressIcon,
   cardIcon,
@@ -25,6 +24,7 @@ import {
   serviceHistoryIcon,
   settingIcon,
 } from "@/assets/images";
+import { colors } from "@/styles";
 
 export const MyPage = () => {
   const containerNavigation =
@@ -306,7 +306,10 @@ export const MyPage = () => {
         </View>
 
         <View style={styles.box}>
-          <Pressable style={styles.button}>
+          <Pressable
+            onPress={() => containerNavigation.navigate("Coupon")}
+            style={styles.button}
+          >
             <Image source={couponIcon} style={styles.icon} />
             <CustomText fontSize={16}>쿠폰</CustomText>
           </Pressable>
@@ -338,20 +341,6 @@ export const MyPage = () => {
             <CustomText fontSize={16}>고객센터</CustomText>
           </Pressable>
         </View>
-
-        {/* <Pressable
-          onPress={() =>
-            containerNavigation.navigate("LoginStack", { screen: "Login" })
-          }
-        >
-          <CustomText fontSize={20} marginBottom={20}>
-            로그인
-          </CustomText>
-        </Pressable>
-
-        <Pressable onPress={handleLogout}>
-          <CustomText fontSize={20}>로그아웃</CustomText>
-        </Pressable> */}
       </ScrollView>
     </CustomSafeAreaView>
   );

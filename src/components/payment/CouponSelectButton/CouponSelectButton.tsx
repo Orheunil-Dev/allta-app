@@ -7,10 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { colors } from "@/styles";
 import { Coupon } from "@/types";
-import {
-  useCouponControllerGetCouponList,
-  useCouponControllerRegisterCouponCode,
-} from "@/api/coupon/coupon";
+import { useCouponControllerGetAvailableCouponList } from "@/api/coupon/coupon";
 import { CouponListBottomSheet } from "@/components/bottom-sheet/CouponListBottomSheet";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -29,16 +26,13 @@ export const CouponSelectButton = ({
   serviceType,
   passType,
 }: Props) => {
-  const queryClient = useQueryClient();
-
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
-  const [code, setCode] = useState<string>("");
 
-  // 쿠폰 목록 조회
+  // 사용 가능 쿠폰 목록 조회
   const { data: couponData, refetch: couponRefetch } =
-    useCouponControllerGetCouponList(
+    useCouponControllerGetAvailableCouponList(
       {
         storeId,
         serviceType,
@@ -46,44 +40,15 @@ export const CouponSelectButton = ({
       },
       {
         query: {
-          queryKey: ["coupons"],
+          queryKey: ["available-coupons"],
           retry: false,
           gcTime: 0,
         },
       }
     );
 
-  // 쿠폰 등록
-  const {
-    mutate: registerCode,
-    isPending: registerCodeLoading,
-    isError: registerCodeError,
-  } = useCouponControllerRegisterCouponCode();
-
-  const handleSubmit = () => {
-    registerCode(
-      {
-        data: { code },
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["coupons"] });
-
-          setCode("");
-        },
-        onError: (error) => {
-          const errorMessage =
-            (error as { message?: string })?.message ?? String(error) ?? "";
-
-          console.log(errorMessage);
-        },
-      }
-    );
-  };
-
   const handleOpenBottomSheet = () => {
     setSelectedCoupon(coupon);
-    setCode("");
 
     return bottomSheetRef.current?.present();
   };
@@ -103,13 +68,10 @@ export const CouponSelectButton = ({
       <CouponListBottomSheet
         ref={bottomSheetRef}
         couponData={couponData}
-        code={code}
-        setCode={setCode}
         coupon={coupon}
         setCoupon={setCoupon}
         selectedCoupon={selectedCoupon}
         setSelectedCoupon={setSelectedCoupon}
-        onSubmit={handleSubmit}
       />
 
       <CustomText fontSize={18} fontWeight={"600"}>
