@@ -6,11 +6,9 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CreateUserResponse {
+export interface CheckIsRejoinResponse {
   /** 결과 여부 */
   ok: boolean;
   /** 재가입 여부 */
-  isRejoined: boolean;
-  /** 신규회원 쿠폰 발행 여부 */
-  isCouponReceived: boolean;
+  isRejoin: boolean;
 }

@@ -24,7 +24,7 @@ export const Refferal = () => {
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
-  const { SuccessToast } = useToastMessage();
+  const { SuccessToast, ErrorToast } = useToastMessage();
 
   // 추천코드 조회 API
   const {
@@ -52,9 +52,14 @@ export const Refferal = () => {
         },
       },
       {
-        onSuccess: () => {
-          referralRefetch();
+        onSuccess: (res) => {
+          if (!res.ok) {
+            return ErrorToast("잘못된 추천코드입니다.");
+          }
+
           SuccessToast("추천코드가 등록되었습니다.");
+
+          return referralRefetch();
         },
         onError: (error: any) => {
           setErrorModal({

@@ -25,6 +25,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  CheckIsRejoinResponse,
   CheckPhoneNumberRequest,
   CheckPhoneNumberResponse,
   CreateUserRequest,
@@ -37,6 +38,7 @@ import type {
   SendVerificationCodeResponse,
   UpdateMarketingAgreementStatusRequest,
   UpdateMarketingAgreementStatusResponse,
+  UserControllerCheckIsRejoinParams,
   VerifyPhoneNumberRequest,
   VerifyPhoneNumberResponse,
   WithdrawalUserRequest,
@@ -224,7 +226,89 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
       return useMutation(mutationOptions , queryClient);
     }
-    export const userControllerCreateUser = (
+    export const userControllerCheckIsRejoin = (
+    params: UserControllerCheckIsRejoinParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<CheckIsRejoinResponse>(
+      {url: `/user/rejoin`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+export const getUserControllerCheckIsRejoinQueryKey = (params?: UserControllerCheckIsRejoinParams,) => {
+    return [`/user/rejoin`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getUserControllerCheckIsRejoinQueryOptions = <TData = Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError = unknown>(params: UserControllerCheckIsRejoinParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getUserControllerCheckIsRejoinQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof userControllerCheckIsRejoin>>> = ({ signal }) => userControllerCheckIsRejoin(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UserControllerCheckIsRejoinQueryResult = NonNullable<Awaited<ReturnType<typeof userControllerCheckIsRejoin>>>
+export type UserControllerCheckIsRejoinQueryError = unknown
+
+
+export function useUserControllerCheckIsRejoin<TData = Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError = unknown>(
+ params: UserControllerCheckIsRejoinParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerCheckIsRejoin>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerCheckIsRejoin>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUserControllerCheckIsRejoin<TData = Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError = unknown>(
+ params: UserControllerCheckIsRejoinParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof userControllerCheckIsRejoin>>,
+          TError,
+          Awaited<ReturnType<typeof userControllerCheckIsRejoin>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUserControllerCheckIsRejoin<TData = Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError = unknown>(
+ params: UserControllerCheckIsRejoinParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useUserControllerCheckIsRejoin<TData = Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError = unknown>(
+ params: UserControllerCheckIsRejoinParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof userControllerCheckIsRejoin>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getUserControllerCheckIsRejoinQueryOptions(params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const userControllerCreateUser = (
     createUserRequest: CreateUserRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
