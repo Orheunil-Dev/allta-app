@@ -14,7 +14,7 @@ export const useToastMessage = () => {
         type,
         text1: message,
         topOffset: getResponsiveSize(80),
-        visibilityTime: 1500,
+        visibilityTime: 1250,
         swipeable: true,
       });
     }, 200);

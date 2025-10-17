@@ -6,9 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export type UserControllerVerifyRefferalCodeParams = {
-/**
- * 추천인 코드
- */
-referralCode: string;
-};
+export interface RegisterReferralCodeRequest {
+  /** 추천인 코드 */
+  referralCode: string;
+}

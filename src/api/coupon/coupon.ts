@@ -29,8 +29,6 @@ import type {
   CouponControllerGetCouponListParams,
   CreateCouponInfoRequest,
   CreateCouponInfoResponse,
-  CreateOneCouponRequest,
-  CreateOneCouponResponse,
   GetAvailableCouponListResponse,
   GetCouponListResponse,
   RegisterCouponCodeRequest,
@@ -126,65 +124,7 @@ export function useCouponControllerGetCouponList<TData = Awaited<ReturnType<type
 
 
 
-export const couponControllerCreateOneCoupon = (
-    createOneCouponRequest: CreateOneCouponRequest,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<CreateOneCouponResponse>(
-      {url: `/coupon`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createOneCouponRequest, signal
-    },
-      options);
-    }
-  
-
-
-export const getCouponControllerCreateOneCouponMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof couponControllerCreateOneCoupon>>, TError,{data: CreateOneCouponRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof couponControllerCreateOneCoupon>>, TError,{data: CreateOneCouponRequest}, TContext> => {
-
-const mutationKey = ['couponControllerCreateOneCoupon'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof couponControllerCreateOneCoupon>>, {data: CreateOneCouponRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  couponControllerCreateOneCoupon(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type CouponControllerCreateOneCouponMutationResult = NonNullable<Awaited<ReturnType<typeof couponControllerCreateOneCoupon>>>
-    export type CouponControllerCreateOneCouponMutationBody = CreateOneCouponRequest
-    export type CouponControllerCreateOneCouponMutationError = unknown
-
-    export const useCouponControllerCreateOneCoupon = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof couponControllerCreateOneCoupon>>, TError,{data: CreateOneCouponRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof couponControllerCreateOneCoupon>>,
-        TError,
-        {data: CreateOneCouponRequest},
-        TContext
-      > => {
-
-      const mutationOptions = getCouponControllerCreateOneCouponMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    export const couponControllerGetAvailableCouponList = (
+export const couponControllerGetAvailableCouponList = (
     params: CouponControllerGetAvailableCouponListParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {

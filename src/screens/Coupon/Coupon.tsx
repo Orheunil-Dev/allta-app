@@ -13,14 +13,13 @@ import { useToastMessage } from "@/hooks";
 import {
   formatCouponPassType,
   formatCouponValue,
-  formatServiceType,
   getFontSize,
   getResponsiveSize,
 } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { colors } from "@/styles";
+import { colors, fontMap } from "@/styles";
 
 export const Coupon = () => {
   const setErrorModal = useSetAtom(errorModalAtom);
@@ -185,6 +184,7 @@ const styles = StyleSheet.create({
   },
   codeInput: {
     flex: 1,
+    fontFamily: fontMap["500"],
     fontSize: getFontSize(15),
     fontWeight: "500",
     paddingHorizontal: getResponsiveSize(12),

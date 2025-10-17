@@ -1,21 +1,79 @@
+import { useState } from "react";
 import { Dimensions, Image, StyleSheet, View } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
+import * as Clipboard from "expo-clipboard";
 import { useSetAtom } from "jotai";
+import {
+  useReferralControllerGetUserReferralCode,
+  useReferralControllerRegisterReferralCode,
+} from "@/api/referral/referral";
 import { errorModalAtom } from "@/jotai";
+import { useToastMessage } from "@/hooks";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
+import { Spinner } from "@/components/ui/Spinner";
 import { refferalBanner } from "@/assets/images";
-import { colors } from "@/styles";
-import { useState } from "react";
+import { colors, fontMap } from "@/styles";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 export const Refferal = () => {
-  const [code, setCode] = useState<string>("");
+  const [referralCode, setReferralCode] = useState<string>("");
 
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const { SuccessToast } = useToastMessage();
+
+  // 추천코드 조회 API
+  const {
+    data: referralCodeData,
+    isPending: referralCodeLoading,
+    isError: referralCodeError,
+    refetch: referralRefetch,
+  } = useReferralControllerGetUserReferralCode();
+
+  // 추천코드 입력 API
+  const {
+    mutate: registerReferralCode,
+    isPending: registerReferralCodeLoading,
+    isError: registerReferralCodeError,
+  } = useReferralControllerRegisterReferralCode();
+
+  // 추첱코드 등록
+  const handleRegisterRefferalCode = () => {
+    if (!referralCode.length || referralCode.length > 6) return;
+
+    registerReferralCode(
+      {
+        data: {
+          referralCode,
+        },
+      },
+      {
+        onSuccess: () => {
+          referralRefetch();
+          SuccessToast("추천코드가 등록되었습니다.");
+        },
+        onError: (error: any) => {
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "추천코드 등록 중 오류가 발생했습니다.",
+          });
+        },
+      }
+    );
+  };
+
+  // 추천코드 클립보드에 복사
+  const copyToClipboard = async () => {
+    if (!referralCodeData?.data.referralCode.length) return;
+
+    await Clipboard.setStringAsync(referralCodeData?.data.referralCode).then(
+      () => SuccessToast("추천코드가 복사되었습니다.")
+    );
+  };
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
@@ -44,7 +102,7 @@ export const Refferal = () => {
               나의 추천 코드
             </CustomText>
             <CustomText fontSize={24} fontWeight={"600"} letterSpacing={0.1}>
-              AB12V3
+              {referralCodeData?.data.referralCode ?? ""}
             </CustomText>
           </View>
 
@@ -60,6 +118,7 @@ export const Refferal = () => {
             </CustomButton>
 
             <CustomButton
+              onPress={copyToClipboard}
               flex={1}
               height={getResponsiveSize(50)}
               backgroundColor={colors.point2}
@@ -79,28 +138,54 @@ export const Refferal = () => {
         </View>
 
         <View style={styles.codeArea}>
-          <TextInput
-            defaultValue={code}
-            onChangeText={(text) => {
-              setCode(text);
-            }}
-            keyboardType="default"
-            autoCorrect={false}
-            autoCapitalize="none"
-            placeholder="추천코드 입력"
-            maxLength={30}
-            style={styles.codeInput}
-          />
-          <CustomButton
-            width={getResponsiveSize(74)}
-            height={getResponsiveSize(45)}
-            borderWidth={1}
-            borderColor={colors.gray2}
-          >
-            <CustomText fontSize={15} fontWeight={"500"}>
-              쿠폰등록
-            </CustomText>
-          </CustomButton>
+          {referralCodeData?.data.referrerCode ? (
+            <View style={styles.referrerCode}>
+              <CustomText color={colors.gray5} fontSize={15} fontWeight={"500"}>
+                {referralCodeData?.data.referrerCode}
+              </CustomText>
+            </View>
+          ) : (
+            <TextInput
+              defaultValue={referralCode}
+              onChangeText={(text) => {
+                setReferralCode(text);
+              }}
+              keyboardType="default"
+              autoCorrect={false}
+              autoCapitalize="none"
+              placeholder="추천코드 입력"
+              maxLength={30}
+              style={styles.codeInput}
+            />
+          )}
+
+          {referralCodeData?.data.referrerCode ? (
+            <View style={styles.referrerCodeButton}>
+              <CustomText color={colors.gray5} fontSize={15} fontWeight={"500"}>
+                코드등록
+              </CustomText>
+            </View>
+          ) : (
+            <CustomButton
+              onPress={handleRegisterRefferalCode}
+              isDisabled={
+                !!referralCodeData?.data.referrerCode ||
+                registerReferralCodeLoading
+              }
+              width={getResponsiveSize(74)}
+              height={getResponsiveSize(45)}
+              borderWidth={1}
+              borderColor={colors.gray2}
+            >
+              {registerReferralCodeLoading ? (
+                <Spinner />
+              ) : (
+                <CustomText fontSize={15} fontWeight={"500"}>
+                  코드등록
+                </CustomText>
+              )}
+            </CustomButton>
+          )}
         </View>
 
         <View style={styles.terms}>
@@ -154,17 +239,30 @@ const styles = StyleSheet.create({
     marginBottom: getResponsiveSize(40),
     paddingHorizontal: getResponsiveSize(20),
     gap: getResponsiveSize(12),
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line,
   },
   codeInput: {
     flex: 1,
+    fontFamily: fontMap["500"],
     fontSize: getFontSize(15),
     fontWeight: "500",
     paddingHorizontal: getResponsiveSize(12),
     borderWidth: 1,
     borderColor: colors.gray2,
-    borderRadius: 12,
+    borderRadius: 8,
+  },
+  referrerCode: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: getResponsiveSize(12),
+    backgroundColor: colors.gray1,
+    borderRadius: 8,
+  },
+  referrerCodeButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: getResponsiveSize(74),
+    height: getResponsiveSize(45),
+    backgroundColor: colors.gray1,
   },
   terms: {
     marginBottom: getResponsiveSize(20),

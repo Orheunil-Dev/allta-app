@@ -11,10 +11,8 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
 import CookieManager from "@react-native-cookies/cookies";
 import * as SecureStore from "expo-secure-store";
-import {
-  useUserControllerCreateUser,
-  useUserControllerVerifyRefferalCode,
-} from "@/api/user/user";
+import { useReferralControllerVerifyReferralCode } from "@/api/referral/referral";
+import { useUserControllerCreateUser } from "@/api/user/user";
 import { useAuthControllerLoginBySocialId } from "@/api/auth/auth";
 import { getResponsiveSize } from "@/utils";
 import { CustomError } from "@/types";
@@ -45,13 +43,13 @@ export const SignUpReferral = () => {
   const [referralCode, setReferralCode] = useState("");
   const [isValid, setIsValid] = useState(false);
 
-  // 추천인 코드 검증
+  // 추천인 코드 검증 API
   const {
     data: verifyReferralCodeData,
     refetch: fetchVerifyReferralCode,
     isFetching: verifyReferralCodeLoading,
     error: verifyReferralCodeError,
-  } = useUserControllerVerifyRefferalCode(
+  } = useReferralControllerVerifyReferralCode(
     {
       referralCode,
     },
@@ -64,21 +62,21 @@ export const SignUpReferral = () => {
     }
   );
 
-  // 회원가입
+  // 회원가입 API
   const {
     mutate: createUser,
     isPending: createUserLoading,
     isError: createUserError,
   } = useUserControllerCreateUser();
 
-  // 로그인
+  // 로그인 API
   const {
     mutate: loginBySocialId,
     isPending: loginBySocialIdLoading,
     isError: loginBySocialIdError,
   } = useAuthControllerLoginBySocialId();
 
-  // 회원가입 완료
+  // 회원가입
   const handleSignUp = () => {
     createUser(
       {
