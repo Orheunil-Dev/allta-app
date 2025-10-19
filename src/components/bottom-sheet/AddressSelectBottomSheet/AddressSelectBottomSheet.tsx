@@ -21,13 +21,15 @@ import { colors } from "@/styles";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
-import { useState } from "react";
 import { FlatList } from "react-native-gesture-handler";
-import { useAddressControllerGetAddressList } from "@/api/address/address";
+import { GetAddressListResponse } from "@/api/models";
+import mmkvStorage from "@/libs/mmkv-storage";
+import { LAST_USED_ADDRESS } from "@/constants";
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
   onClose: () => void;
+  addressData: GetAddressListResponse["data"] | null;
   coordinate: {
     id: string | null;
     nickname: string | null;
@@ -47,22 +49,12 @@ interface Props {
 export const AddressSelectBottomSheet = ({
   ref,
   onClose,
+  addressData,
   coordinate,
   setCoordinate,
 }: Props) => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
-
-  const [skip, setSkip] = useState<number>(0);
-
-  const { data: addressesData, refetch: addressesRefetch } =
-    useAddressControllerGetAddressList({
-      query: {
-        queryKey: ["addresses"],
-        retry: false,
-        gcTime: 0,
-      },
-    });
 
   // 현재 위치로 설정
   const setCurrentLocation = async () => {
@@ -138,7 +130,7 @@ export const AddressSelectBottomSheet = ({
         </CustomButton>
 
         <FlatList
-          data={addressesData?.data}
+          data={addressData}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ gap: getResponsiveSize(16) }}
           style={{ marginVertical: getResponsiveSize(16) }}
@@ -146,6 +138,13 @@ export const AddressSelectBottomSheet = ({
             <Pressable
               onPress={() => {
                 setCoordinate({
+                  id: item.id,
+                  lat: item.lat,
+                  lng: item.lng,
+                  nickname: item.nickname,
+                });
+
+                mmkvStorage.setJson(LAST_USED_ADDRESS, {
                   id: item.id,
                   lat: item.lat,
                   lng: item.lng,
