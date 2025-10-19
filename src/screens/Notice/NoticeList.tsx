@@ -1,16 +1,16 @@
-import { GetNoticeListResponse } from "@/api/models";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
-import { getResponsiveSize } from "@/utils";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import dayjs from "dayjs";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { NoticeStackParamList } from "@/navigations/NoticeStack";
+import dayjs from "dayjs";
 import { useNoticeControllerGetNoticeList } from "@/api/notice/notice";
+import { GetNoticeListResponse } from "@/api/models";
+import { NoticeStackParamList } from "@/navigations/NoticeStack";
+import { getResponsiveSize } from "@/utils";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { CustomText } from "@/components/ui/CustomText";
+import { colors } from "@/styles";
 
 export const NoticeList = () => {
   const noticeStack =

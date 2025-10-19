@@ -1,15 +1,14 @@
-import { useNoticeControllerGetNoticeDetail } from "@/api/notice/notice";
-import { useNotificationControllerGetNotifications } from "@/api/notification/notification";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { CustomText } from "@/components/ui/CustomText";
-import { NoticeStackParamList } from "@/navigations/NoticeStack";
-import { getFontSize, getResponsiveSize } from "@/utils";
-import { RouteProp, useRoute } from "@react-navigation/native";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import dayjs from "dayjs";
-import { colors } from "@/styles";
+import { RouteProp, useRoute } from "@react-navigation/native";
 import RenderHTML from "react-native-render-html";
+import dayjs from "dayjs";
+import { useNoticeControllerGetNoticeDetail } from "@/api/notice/notice";
+import { NoticeStackParamList } from "@/navigations/NoticeStack";
+import { getFontSize, getResponsiveSize } from "@/utils";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { CustomText } from "@/components/ui/CustomText";
+import { colors } from "@/styles";
 
 const { width: screenWidth } = Dimensions.get("window");
 
