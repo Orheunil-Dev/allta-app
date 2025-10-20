@@ -68,12 +68,12 @@ export const Home = () => {
   const openAnimatedStyle = useAnimatedStyle(() => {
     return {
       height: withTiming(footerOpen ? footerHeight : 0, {
-        duration: 300,
+        duration: 250,
       }),
       marginTop: withTiming(footerOpen ? footerMarginTop : 0, {
-        duration: 300,
+        duration: 250,
       }),
-      opacity: withTiming(footerOpen ? 1 : 0, { duration: 300 }),
+      opacity: withTiming(footerOpen ? 1 : 0, { duration: 250 }),
     };
   });
 
@@ -82,7 +82,7 @@ export const Home = () => {
       transform: [
         {
           rotate: withTiming(footerOpen ? "0deg" : "180deg", {
-            duration: 300,
+            duration: 250,
           }),
         },
       ],
