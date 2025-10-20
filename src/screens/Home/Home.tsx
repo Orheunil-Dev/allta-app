@@ -6,7 +6,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import {
-  RouteProp,
   useFocusEffect,
   useNavigation,
   useRoute,
@@ -41,8 +40,6 @@ import { IS_NOTIFICATION_GRANTED } from "@/constants";
 type HomeRouteProp = RouteProp<BottomTabParamList, "Home">;
 
 export const Home = () => {
-  const route = useRoute<HomeRouteProp>();
-
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -140,7 +137,7 @@ export const Home = () => {
 
   // 웰컴쿠폰 모달
   useEffect(() => {
-    if (route.params?.isReceiveCoupon) {
+    if (mmkvStorage.getBoolean(IS_COUPON_RECEIVED)) {
       setShowCouponModal(true);
     }
   }, []);
@@ -159,10 +156,12 @@ export const Home = () => {
       <CustomModal
         visible={showCouponModal}
         onClose={() => {
+          mmkvStorage.removeItem(IS_COUPON_RECEIVED);
           setShowCouponModal(false);
         }}
         closeButtonText="닫기"
         onNext={() => {
+          mmkvStorage.removeItem(IS_COUPON_RECEIVED);
           setShowCouponModal(false);
           containerNavigation.navigate("Coupon");
         }}

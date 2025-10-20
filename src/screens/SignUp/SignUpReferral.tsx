@@ -28,6 +28,8 @@ import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/jotai";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
+import mmkvStorage from "@/libs/mmkv-storage";
+import { IS_COUPON_RECEIVED } from "@/constants";
 
 type SignUpReferralRouteProp = RouteProp<LoginStackParamList, "SignUpReferral">;
 
@@ -123,6 +125,8 @@ export const SignUpReferral = () => {
                 await SecureStore.setItemAsync("accessToken", accessToken);
                 await SecureStore.setItemAsync("refreshToken", refreshToken);
 
+                mmkvStorage.setBoolean(IS_COUPON_RECEIVED, isCouponReceived);
+
                 loginStackNavigation.dispatch(
                   CommonActions.reset({
                     index: 0,
@@ -131,7 +135,6 @@ export const SignUpReferral = () => {
                         name: "SignUpComplete",
                         params: {
                           isRejoined,
-                          isCouponReceived,
                         },
                       },
                     ],

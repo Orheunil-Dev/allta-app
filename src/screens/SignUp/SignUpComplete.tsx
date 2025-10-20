@@ -57,9 +57,7 @@ export const SignUpComplete = () => {
   };
 
   const handleGoRegister = () => {
-    loginStackNavigation.navigate("RegisterCar", {
-      isCouponReceived: router.params.isCouponReceived,
-    });
+    loginStackNavigation.navigate("RegisterCar");
   };
 
   // 푸시토큰 업데이트

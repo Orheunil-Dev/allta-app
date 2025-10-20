@@ -38,19 +38,15 @@ export type LoginStackParamList = {
     isRejoined: boolean;
     isCouponReceived: boolean;
   };
-  RegisterCar: {
-    isCouponReceived: boolean;
-  };
+  RegisterCar: undefined;
   RegisterCard: {
     carVendor?: string;
     carType?: string;
     carModel?: string;
     carNumber?: string;
-    isCouponReceived: boolean;
   };
   RegisterComplete: {
     isRegister: boolean;
-    isCouponReceived: boolean;
   };
 };
 

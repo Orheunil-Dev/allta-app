@@ -64,7 +64,7 @@ export const RegisterCard = () => {
     identityNumber: "",
   });
 
-  // 추가정보 등록
+  // 추가정보 등록 API
   const {
     mutate: registerInfo,
     isPending: registerInfoLoading,
@@ -93,7 +93,6 @@ export const RegisterCard = () => {
               name: "RegisterComplete",
               params: {
                 isRegister: false,
-                isCouponReceived: route.params.isCouponReceived,
               },
             },
           ],
@@ -130,7 +129,6 @@ export const RegisterCard = () => {
                   name: "RegisterComplete",
                   params: {
                     isRegister: true,
-                    isCouponReceived: route.params.isCouponReceived,
                   },
                 },
               ],
