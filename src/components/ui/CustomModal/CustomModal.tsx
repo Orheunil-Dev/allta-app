@@ -18,6 +18,7 @@ interface CustomModalProps {
   onClose: () => void;
   closeButtonText?: string;
   isCloseButtonDisable?: boolean;
+  backgroundColor?: string;
   children: React.ReactNode;
 }
 
@@ -29,13 +30,14 @@ export const CustomModal = ({
   onClose,
   closeButtonText,
   isCloseButtonDisable,
+  backgroundColor = colors.white,
   children,
 }: CustomModalProps) => {
   return (
     <Modal transparent={true} visible={visible} statusBarTranslucent>
       <Pressable onPress={onClose} style={styles.backdrop}>
         <TouchableWithoutFeedback onPress={() => {}}>
-          <View style={styles.modalContainer}>
+          <View style={[{ backgroundColor }, styles.modalContainer]}>
             {children}
 
             <View style={styles.buttonBox}>
@@ -80,7 +82,6 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: getResponsiveSize(312),
-    backgroundColor: "#fff",
     borderRadius: 12,
     paddingVertical: getResponsiveSize(24),
     paddingHorizontal: getResponsiveSize(20),

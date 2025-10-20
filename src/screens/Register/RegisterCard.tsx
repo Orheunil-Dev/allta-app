@@ -93,6 +93,7 @@ export const RegisterCard = () => {
               name: "RegisterComplete",
               params: {
                 isRegister: false,
+                isCouponReceived: route.params.isCouponReceived,
               },
             },
           ],
@@ -129,6 +130,7 @@ export const RegisterCard = () => {
                   name: "RegisterComplete",
                   params: {
                     isRegister: true,
+                    isCouponReceived: route.params.isCouponReceived,
                   },
                 },
               ],

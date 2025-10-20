@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import {
   CommonActions,
@@ -6,15 +7,17 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import * as Notifications from "expo-notifications";
+import mmkvStorage from "@/libs/mmkv-storage";
+import { useNotificationControllerUpdatePushToken } from "@/api/notification/notification";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
+import { IS_NOTIFICATION_GRANTED } from "@/constants";
 import { signupCompleteImage } from "@/assets/images";
 import { colors } from "@/styles";
-import { useEffect } from "react";
-import { useToastMessage } from "@/hooks";
 
 type SignUpCompleteRouteProp = RouteProp<LoginStackParamList, "SignUpComplete">;
 
@@ -27,7 +30,12 @@ export const SignUpComplete = () => {
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
-  const { SuccessToast } = useToastMessage();
+  // 푸시토큰 업데이트 API
+  const {
+    mutate: updatePushToken,
+    isPending: updatePushTokenLoading,
+    isError: updatePushTokenError,
+  } = useNotificationControllerUpdatePushToken();
 
   const handleGoHome = () => {
     containerNavigation.dispatch(
@@ -36,7 +44,12 @@ export const SignUpComplete = () => {
         routes: [
           {
             name: "BottomTab",
-            params: { screen: "Home" },
+            params: {
+              screen: "Home",
+              params: {
+                isReceiveCoupon: router.params.isCouponReceived,
+              },
+            },
           },
         ],
       })
@@ -44,14 +57,35 @@ export const SignUpComplete = () => {
   };
 
   const handleGoRegister = () => {
-    loginStackNavigation.navigate("RegisterCar");
+    loginStackNavigation.navigate("RegisterCar", {
+      isCouponReceived: router.params.isCouponReceived,
+    });
   };
 
+  // 푸시토큰 업데이트
   useEffect(() => {
-    if (router.params.isCouponReceived) {
-      SuccessToast("웰컴 쿠폰이 발급되었습니다.");
-    }
-  }, [router.params]);
+    const checkNotificationPermission = async () => {
+      const { status } = await Notifications.requestPermissionsAsync();
+
+      if (status === "granted") {
+        mmkvStorage.setBoolean(IS_NOTIFICATION_GRANTED, true);
+
+        const pushToken = await Notifications.getExpoPushTokenAsync({
+          projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID,
+        });
+
+        updatePushToken({
+          data: {
+            pushToken: pushToken.data,
+          },
+        });
+      } else {
+        mmkvStorage.setBoolean(IS_NOTIFICATION_GRANTED, false);
+      }
+    };
+
+    checkNotificationPermission();
+  }, []);
 
   return (
     <CustomSafeAreaView edges={["top", "bottom"]}>

@@ -5,7 +5,12 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabParamList, ContainerStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
@@ -16,6 +21,7 @@ import {
   homeFooterArrow,
   qrIcon,
   receiptIcon,
+  welcomeCoupon,
 } from "@/assets/images";
 import { colors } from "@/styles";
 import { Popup } from "@/components/home/Popup";
@@ -24,14 +30,20 @@ import { HomeHeader } from "@/components/home/HomeHeader";
 import { useNotificationControllerGetUnreadNotificationsCount } from "@/api/notification/notification";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StoreRecommend } from "@/components/home/StoreRecommend";
+import { CustomModal } from "@/components/ui/CustomModal";
+
+type HomeRouteProp = RouteProp<BottomTabParamList, "Home">;
 
 export const Home = () => {
+  const route = useRoute<HomeRouteProp>();
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const bottomTabNavigation =
     useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 
+  const [showCouponModal, setShowCouponModal] = useState<boolean>(false);
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
 
   // 미확인 알림 조회
@@ -77,6 +89,32 @@ export const Home = () => {
     };
   });
 
+  // 푸시토큰 업데이트
+  useEffect(() => {
+    const checkNotificationPermission = async () => {
+      const { status } = await Notifications.requestPermissionsAsync();
+
+      if (status === "granted") {
+        mmkvStorage.setBoolean(IS_NOTIFICATION_GRANTED, true);
+
+        const pushToken = await Notifications.getExpoPushTokenAsync({
+          projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID,
+        });
+
+        updatePushToken({
+          data: {
+            pushToken: pushToken.data,
+          },
+        });
+      } else {
+        mmkvStorage.setBoolean(IS_NOTIFICATION_GRANTED, false);
+      }
+    };
+
+    checkNotificationPermission();
+  }, []);
+
+  // 미확인 알림 조회
   useFocusEffect(
     useCallback(() => {
       const timer = setTimeout(() => {
@@ -86,6 +124,13 @@ export const Home = () => {
       return () => clearTimeout(timer);
     }, [])
   );
+
+  // 웰컴쿠폰 모달
+  useEffect(() => {
+    if (route.params?.isReceiveCoupon) {
+      setShowCouponModal(true);
+    }
+  }, []);
 
   return (
     <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
@@ -97,6 +142,36 @@ export const Home = () => {
 
       {/* 팝업 바텀시트 */}
       <Popup />
+
+      <CustomModal
+        visible={showCouponModal}
+        onClose={() => {
+          setShowCouponModal(false);
+        }}
+        closeButtonText="닫기"
+        onNext={() => {
+          setShowCouponModal(false);
+          containerNavigation.navigate("Coupon");
+        }}
+        nextButtonText="확인하기"
+        backgroundColor={colors.back4}
+      >
+        <Image
+          source={welcomeCoupon}
+          style={{
+            width: getResponsiveSize(124),
+            height: getResponsiveSize(115),
+            marginTop: getResponsiveSize(12),
+          }}
+        />
+        <CustomText fontSize={18} fontWeight={"600"}>
+          웰컴쿠폰이 도착했습니다!
+        </CustomText>
+        <CustomText marginTop={8} fontSize={16}>
+          가입을 축하드립니다.
+        </CustomText>
+        <CustomText fontSize={16}>쿠폰함에서 바로 확인해보세요.</CustomText>
+      </CustomModal>
 
       <ScrollView>
         <View style={styles.container}>

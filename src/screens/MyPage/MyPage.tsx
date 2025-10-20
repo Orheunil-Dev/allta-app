@@ -346,7 +346,10 @@ export const MyPage = () => {
             <CustomText fontSize={16}>1:1 문의</CustomText>
           </Pressable>
 
-          <Pressable style={styles.button}>
+          <Pressable
+            onPress={() => containerNavigation.navigate("Faq")}
+            style={styles.button}
+          >
             <Image source={contactIcon} style={styles.icon} />
             <CustomText fontSize={16}>고객센터</CustomText>
           </Pressable>

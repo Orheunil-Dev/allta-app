@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
 import { z } from "zod";
@@ -21,6 +21,8 @@ import {
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+type RegisterCardRouteProp = RouteProp<LoginStackParamList, "RegisterCar">;
+
 // 유효성 검사
 const registerFormSchema = z.object({
   carVendor: z.string(),
@@ -36,6 +38,8 @@ const carNumberSchema = z
   .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다.");
 
 export const RegisterCar = () => {
+  const route = useRoute<RegisterCardRouteProp>();
+
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
 
@@ -108,12 +112,15 @@ export const RegisterCar = () => {
   const isValid = registerFormSchema.safeParse(registerForm).success;
 
   const handleSkipRegist = () => {
-    loginStackNavigation.navigate("RegisterCard", {});
+    loginStackNavigation.navigate("RegisterCard", {
+      isCouponReceived: route.params.isCouponReceived,
+    });
   };
 
   const handleNextStep = () => {
     loginStackNavigation.navigate("RegisterCard", {
       ...registerForm,
+      isCouponReceived: route.params.isCouponReceived,
     });
   };
 

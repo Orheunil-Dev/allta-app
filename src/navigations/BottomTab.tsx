@@ -23,7 +23,7 @@ import { QrScanStack, QrScanStackParamList } from "./QrScanStack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export type BottomTabParamList = {
-  Home: undefined;
+  Home: { isReceiveCoupon?: boolean };
   QrScanStack: NavigatorScreenParams<QrScanStackParamList>;
   MyStoreStack: NavigatorScreenParams<MyStoreStackParamList>;
   MyPageStack: undefined;

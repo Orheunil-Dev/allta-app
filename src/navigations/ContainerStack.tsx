@@ -29,6 +29,7 @@ import { PurchaseStack, PurchaseStackParamList } from "./PurchaseStack";
 import { Coupon } from "@/screens/Coupon";
 import { Refferal } from "@/screens/Refferal";
 import { NoticeStack, NoticeStackParamList } from "./NoticeStack";
+import { Faq } from "@/screens/Faq/Faq";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -53,6 +54,7 @@ export type ContainerStackParamList = {
   Coupon: undefined;
   Refferal: undefined;
   NoticeStack: NavigatorScreenParams<NoticeStackParamList>;
+  Faq: undefined;
 };
 
 const Stack = createNativeStackNavigator<ContainerStackParamList>();
@@ -224,6 +226,13 @@ export const ContainerStack = ({
           component={NoticeStack}
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Faq"
+          component={Faq}
+          options={{
+            header: () => <CustomHeader title="고객센터" showBackButton />,
           }}
         />
       </Stack.Navigator>
