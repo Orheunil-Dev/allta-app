@@ -18,6 +18,8 @@ import { Splash } from "@/screens/Splash";
 import "react-native-get-random-values";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/libs";
+import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
@@ -70,6 +72,33 @@ export default function App() {
     };
 
     prepare();
+  }, []);
+
+  useEffect(() => {
+    const setupNotification = async () => {
+      // 포그라운드 알림 처리
+      Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+          shouldShowAlert: true, // 알림 UI
+          shouldPlaySound: true, // 사운드
+          shouldSetBadge: false, // 앱 아이콘 배지
+          shouldShowBanner: true, // iOS 14+ 배너
+          shouldShowList: true, // 알림 센터 리스트
+        }),
+      });
+
+      // 안드로이드 채널 설정
+      if (Platform.OS === "android") {
+        await Notifications.setNotificationChannelAsync("default", {
+          name: "Default",
+          importance: Notifications.AndroidImportance.MAX,
+          sound: "default",
+          vibrationPattern: [0, 250],
+        });
+      }
+    };
+
+    setupNotification();
   }, []);
 
   if (showSplash) {

@@ -16,10 +16,14 @@ import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import {
   autoWashIcon,
+  cloudIcon,
   handsWashIcon,
   homeFooterArrow,
   qrIcon,
+  rainIcon,
   receiptIcon,
+  snowIcon,
+  sunnyIcon,
   welcomeCoupon,
 } from "@/assets/images";
 import { colors } from "@/styles";
@@ -65,7 +69,7 @@ export const Home = () => {
     });
 
   // 날씨 조회 훅스
-  useCurrentWeather();
+  const { weatherText, weatherIcon } = useCurrentWeather();
 
   // 알림 버튼 터치
   const handlePressAlarm = () => {
@@ -100,6 +104,21 @@ export const Home = () => {
       ],
     };
   });
+
+  const getWeatherIcon = () => {
+    switch (weatherText) {
+      case "화창":
+        return sunnyIcon;
+      case "흐림":
+        return cloudIcon;
+      case "비":
+        return rainIcon;
+      case "눈":
+        return snowIcon;
+      default:
+        return sunnyIcon;
+    }
+  };
 
   // 푸시토큰 업데이트
   useEffect(() => {
@@ -155,6 +174,7 @@ export const Home = () => {
       {/* 팝업 바텀시트 */}
       <Popup />
 
+      {/* 웰컴쿠폰 모달 */}
       <CustomModal
         visible={showCouponModal}
         onClose={() => {
@@ -192,11 +212,14 @@ export const Home = () => {
           <MainBanner />
 
           <View style={styles.mainContainer}>
-            {/* 세차 추천 */}
-            <View style={styles.washRecommend}>
-              <CustomText color={colors.black} fontSize={16}>
-                오늘 미세먼지 '나쁨'
-              </CustomText>
+            {/* 현재 날씨 */}
+            <View style={styles.weather}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image source={getWeatherIcon()} style={styles.weatherIcon} />
+                <CustomText color={colors.black} fontSize={16}>
+                  오늘의 날씨는 '{weatherText}'
+                </CustomText>
+              </View>
               <CustomText color={colors.black} fontSize={22} fontWeight={"600"}>
                 세차하기 좋은 날이에요
               </CustomText>
@@ -375,7 +398,12 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: getResponsiveSize(20),
   },
-  washRecommend: {
+  weatherIcon: {
+    width: getResponsiveSize(24),
+    height: getResponsiveSize(24),
+    marginRight: getResponsiveSize(8),
+  },
+  weather: {
     width: "100%",
     marginTop: getResponsiveSize(32),
   },

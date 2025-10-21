@@ -1,9 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Linking } from "react-native";
 import * as Location from "expo-location";
 import axios from "axios";
 
 export const useCurrentWeather = () => {
+  const [weatherText, setWeatherText] = useState<string | null>(null);
+  const [weatherIcon, setWeatherIcon] = useState<string | null>(null);
+
   // 날씨 조회
   useEffect(() => {
     const fetchWeather = async () => {
@@ -87,9 +90,12 @@ export const useCurrentWeather = () => {
 
       const weatherData = weatherRes.data[0];
 
-      console.log(weatherData);
+      setWeatherText(weatherData.WeatherText ?? null);
+      setWeatherIcon(weatherData.WeatherIcon ?? null);
     };
 
     fetchWeather();
   }, []);
+
+  return { weatherText, weatherIcon };
 };

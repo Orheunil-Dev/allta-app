@@ -59,6 +59,10 @@ export { default as qrIcon } from "./qr-icon.png";
 export { default as homeDistanceIcon } from "./home-distance-icon.png";
 export { default as homeFooterArrow } from "./home-footer-arrow.png";
 export { default as welcomeCoupon } from "./welcome-coupon.png";
+export { default as sunnyIcon } from "./sunny-icon.png";
+export { default as cloudIcon } from "./cloud-icon.png";
+export { default as rainIcon } from "./rain-icon.png";
+export { default as snowIcon } from "./snow-icon.png";
 
 // 매장
 export { default as defaultStoreImage } from "./default-store-image.png";
