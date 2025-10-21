@@ -1,4 +1,5 @@
 import { ConfigContext, ExpoConfig } from "@expo/config";
+import "dotenv/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -76,13 +77,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     googleIosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_ID,
     googleAndroidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_ID,
     eas: {
-      projectId: "ab52a19e-7d67-49bf-a87d-60ce99c3e048",
+      projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID,
     },
   },
   updates: {
     checkAutomatically: "ON_LOAD",
     fallbackToCacheTimeout: 0,
-    url: "https://u.expo.dev/ab52a19e-7d67-49bf-a87d-60ce99c3e048",
+    url: `https://u.expo.dev/${process.env.EXPO_PUBLIC_EAS_PROJECT_ID}`,
   },
   plugins: [
     "expo-router",

@@ -1,4 +1,3 @@
-// jotai/atoms.ts
 import { atom } from "jotai";
 
 export const errorModalAtom = atom<{

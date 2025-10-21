@@ -329,7 +329,14 @@ export const MyPage = () => {
         </View>
 
         <View style={styles.box}>
-          <Pressable style={styles.button}>
+          <Pressable
+            onPress={() =>
+              containerNavigation.navigate("NoticeStack", {
+                screen: "NoticeList",
+              })
+            }
+            style={styles.button}
+          >
             <Image source={noticeIcon} style={styles.icon} />
             <CustomText fontSize={16}>공지사항</CustomText>
           </Pressable>

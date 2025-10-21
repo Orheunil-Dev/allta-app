@@ -3,8 +3,8 @@ import { MMKV } from "react-native-mmkv";
 const storage = new MMKV();
 
 const mmkvStorage = {
-  setArray: (key: string, values: any[]) => {
-    return storage.set(key, JSON.stringify(values));
+  setJson: (key: string, value: any) => {
+    return storage.set(key, JSON.stringify(value));
   },
   setString: (key: string, value: string) => {
     return storage.set(key, value);
@@ -12,7 +12,7 @@ const mmkvStorage = {
   setBoolean: (key: string, value: boolean) => {
     return storage.set(key, value);
   },
-  getArray: (key: string) => {
+  getJson: (key: string) => {
     const str = storage.getString(key);
     return str ? JSON.parse(str) : null;
   },

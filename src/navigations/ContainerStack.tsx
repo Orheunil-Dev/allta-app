@@ -28,6 +28,7 @@ import { ServiceHistory } from "@/screens/ServiceHistory";
 import { PurchaseStack, PurchaseStackParamList } from "./PurchaseStack";
 import { Coupon } from "@/screens/Coupon";
 import { Refferal } from "@/screens/Refferal";
+import { NoticeStack, NoticeStackParamList } from "./NoticeStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -51,6 +52,7 @@ export type ContainerStackParamList = {
   ServiceHistory: undefined;
   Coupon: undefined;
   Refferal: undefined;
+  NoticeStack: NavigatorScreenParams<NoticeStackParamList>;
 };
 
 const Stack = createNativeStackNavigator<ContainerStackParamList>();
@@ -215,6 +217,13 @@ export const ContainerStack = ({
             header: () => (
               <CustomHeader title="친구 초대 / 등록" showBackButton />
             ),
+          }}
+        />
+        <Stack.Screen
+          name="NoticeStack"
+          component={NoticeStack}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>

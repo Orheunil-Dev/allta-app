@@ -11,9 +11,12 @@ import { StoreFilter } from "@/components/store/StoreFilter";
 import { ServiceType } from "@/types";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useStoreControllerGetStoreList } from "@/api/store/store";
-import { GetStoreListResponse } from "@/api/models";
+import { GetAddressListResponse, GetStoreListResponse } from "@/api/models";
 import { AddressSelectBottomSheet } from "@/components/bottom-sheet/AddressSelectBottomSheet";
 import { StoreCard } from "@/components/ui/Card";
+import { useAddressControllerGetAddressList } from "@/api/address/address";
+import mmkvStorage from "@/libs/mmkv-storage";
+import { LAST_USED_ADDRESS } from "@/constants";
 
 type StoreRouteProp = RouteProp<StoreStackParamList, "StoreList">;
 
@@ -40,6 +43,7 @@ export const StoreList = () => {
     lng: 127.1935115,
   });
 
+  // 매장 목록 조회 API
   const {
     data: storesData,
     isLoading: storesLoading,
@@ -61,6 +65,16 @@ export const StoreList = () => {
     }
   );
 
+  // 주소 조회 API
+  const { data: addressesData, refetch: addressesRefetch } =
+    useAddressControllerGetAddressList({
+      query: {
+        queryKey: ["addresses"],
+        retry: false,
+        gcTime: 0,
+      },
+    });
+
   const handleLoadMore = () => {
     if (storesData?.meta?.hasNextPage) {
       setSkip(skip + 20);
@@ -73,6 +87,32 @@ export const StoreList = () => {
   const handleCloseAddressModal = () => {
     bottomSheetRef?.current?.close();
   };
+
+  // 이전에 설정했던 주소 불러오기
+  useEffect(() => {
+    if (!addressesData) return;
+
+    const lastUsedAddress = mmkvStorage.getJson(LAST_USED_ADDRESS);
+
+    const found =
+      addressesData.data && lastUsedAddress
+        ? addressesData.data.find(
+            (data: GetAddressListResponse["data"][0]) =>
+              data.id === lastUsedAddress.id
+          )
+        : null;
+
+    if (!found) {
+      mmkvStorage.removeItem(LAST_USED_ADDRESS);
+    } else {
+      setCoordinate({
+        id: found.id,
+        nickname: found.nickname,
+        lat: found.lat,
+        lng: found.lng,
+      });
+    }
+  }, [addressesData]);
 
   // 필터 변경 시 데이터 리페칭
   useEffect(() => {
@@ -153,6 +193,7 @@ export const StoreList = () => {
       <AddressSelectBottomSheet
         ref={bottomSheetRef}
         onClose={handleCloseAddressModal}
+        addressData={addressesData?.data ?? null}
         coordinate={coordinate}
         setCoordinate={setCoordinate}
       />
