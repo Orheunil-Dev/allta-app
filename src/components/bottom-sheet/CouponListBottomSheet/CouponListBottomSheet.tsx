@@ -1,39 +1,33 @@
-import { GetCouponListResponse } from "@/api/models";
+import { useEffect } from "react";
+import { Image, Pressable, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import dayjs from "dayjs";
-import { checkedRadioIcon, uncheckedRadioIcon } from "@/assets/images";
+import { GetAvailableCouponListResponse } from "@/api/models";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
+import { formatCouponValue, getFontSize, getResponsiveSize } from "@/utils";
 import { Coupon } from "@/types";
-import { getFontSize, getResponsiveSize } from "@/utils";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { Image, Pressable, StyleSheet, View, TextInput } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import { useEffect } from "react";
+import { checkedRadioIcon, uncheckedRadioIcon } from "@/assets/images";
+import { colors } from "@/styles";
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
-  couponData: GetCouponListResponse | undefined;
-  code: string;
-  setCode: React.Dispatch<React.SetStateAction<string>>;
+  couponData: GetAvailableCouponListResponse | undefined;
   coupon: Coupon | null;
   setCoupon: React.Dispatch<React.SetStateAction<Coupon | null>>;
   selectedCoupon: Coupon | null;
   setSelectedCoupon: React.Dispatch<React.SetStateAction<Coupon | null>>;
-  onSubmit: () => void;
 }
 
 export const CouponListBottomSheet = ({
   ref,
   couponData,
-  code,
-  setCode,
   coupon,
   setCoupon,
   selectedCoupon,
   setSelectedCoupon,
-  onSubmit,
 }: Props) => {
   // 쿠폰 선택
   const handleSelectCoupon = (value: Coupon) => () => {
@@ -70,31 +64,6 @@ export const CouponListBottomSheet = ({
       hasCloseButton
     >
       <View style={styles.container}>
-        {/* <View style={styles.codeArea}>
-          <TextInput
-            defaultValue={code}
-            onChangeText={(text) => {
-              setCode(text);
-            }}
-            keyboardType="default"
-            autoCorrect={false}
-            autoCapitalize="none"
-            placeholder="쿠폰번호 입력"
-            style={styles.codeInput}
-          />
-          <CustomButton
-            onPress={onSubmit}
-            width={getResponsiveSize(74)}
-            height={getResponsiveSize(45)}
-            borderWidth={1}
-            borderColor={colors.gray2}
-          >
-            <CustomText fontSize={15} fontWeight={"500"}>
-              쿠폰등록
-            </CustomText>
-          </CustomButton>
-        </View> */}
-
         {couponData?.data.length ? (
           <FlatList
             data={couponData?.data}
@@ -120,15 +89,23 @@ export const CouponListBottomSheet = ({
                   style={styles.radioButton}
                 />
 
-                <CustomText fontSize={20} fontWeight={"600"}>
+                <CustomText
+                  color={colors.point2}
+                  fontSize={20}
+                  fontWeight={"600"}
+                >
+                  {formatCouponValue(item.discountType, item.discountValue)}
+                </CustomText>
+
+                <CustomText marginTop={6} fontSize={14} fontWeight={"600"}>
                   {item.name}
                 </CustomText>
 
-                {item.expiredAt && (
-                  <CustomText marginTop={4} color={colors.gray7} fontSize={14}>
-                    {dayjs(item.expiredAt).format("YYYY. MM. DD 까지")}
+                <View style={styles.row}>
+                  <CustomText color={colors.gray6} fontSize={13}>
+                    {dayjs(item.expiredAt).format("YYYY.MM.DD")} 까지
                   </CustomText>
-                )}
+                </View>
               </Pressable>
             )}
           />
@@ -166,27 +143,13 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  codeArea: {
-    flexDirection: "row",
-    marginBottom: getResponsiveSize(24),
-    gap: getResponsiveSize(12),
-  },
-  codeInput: {
-    flex: 1,
-    fontSize: getFontSize(15),
-    fontWeight: "500",
-    paddingHorizontal: getResponsiveSize(12),
-    borderWidth: 1,
-    borderColor: colors.gray2,
-    borderRadius: 8,
-  },
   card: {
     position: "relative",
     padding: getResponsiveSize(16),
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.gray2,
-    borderRadius: 8,
+    borderRadius: 12,
     shadowColor: colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
@@ -199,6 +162,11 @@ const styles = StyleSheet.create({
     right: getResponsiveSize(16),
     width: getResponsiveSize(20),
     height: getResponsiveSize(20),
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: getResponsiveSize(1),
   },
   emptyBox: {
     flex: 1,

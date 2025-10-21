@@ -76,7 +76,7 @@ export const formatNotificationTime = (value: string) => {
 };
 
 // 서비스 종류
-export const formatServiceType = (text: string): string | null => {
+export const formatServiceType = (text: string): string => {
   switch (text) {
     case "AUTO":
       return "자동세차";
@@ -133,20 +133,51 @@ export const formatEllipsis = (text: string, length: number) => {
 };
 
 // 쿠폰 할인 정보
-export const formatCouponValue = (type: string, value: number) => {
+export const formatCouponValue = (type: string, value: number): string => {
   switch (type) {
     case "RATE":
       return `${value}%`;
 
     case "PRICE":
-      return `${value}원`;
+      return `- ${value.toLocaleString()}원`;
 
     case "FIXED":
-      return `${value}원`;
+      return `${value.toLocaleString()}원 특가`;
 
     default:
-      return `${value}원`;
+      return `- ${value.toLocaleString()}원`;
   }
+};
+
+// 쿠폰 적용 이용권 포매팅
+export const formatCouponPassType = (
+  serviceType: string | null,
+  passType: string | null
+): string => {
+  let serviceLabel = "";
+  if (serviceType === "AUTO") serviceLabel = "자동세차";
+  else if (serviceType === "HANDS") serviceLabel = "핸즈클리닝";
+
+  if (!passType)
+    return serviceLabel ? `모든 ${serviceLabel} 이용권` : "모든 이용권";
+
+  const passTypes = passType.split(",").map((v) => v.trim());
+
+  const typeMap: Record<string, string> = {
+    STANDARD: "스탠다드",
+    PREMIUM: "프리미엄",
+    TICKET: "일회권",
+  };
+
+  const order = ["TICKET", "STANDARD", "PREMIUM"];
+  const sorted = passTypes.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+  const formatted = sorted.map((type) => typeMap[type] || type).join(", ");
+
+  if (serviceLabel) {
+    return `${serviceLabel} ${formatted}`;
+  }
+
+  return formatted;
 };
 
 // 카드번호 포매팅

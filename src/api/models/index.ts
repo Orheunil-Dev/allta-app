@@ -7,6 +7,7 @@
  */
 
 export * from './addressItem';
+export * from './availableCouponListItem';
 export * from './bannerListItem';
 export * from './car';
 export * from './carModel';
@@ -18,6 +19,7 @@ export * from './changeMainCardRequest';
 export * from './changeMainCardResponse';
 export * from './checkPhoneNumberRequest';
 export * from './checkPhoneNumberResponse';
+export * from './couponControllerGetAvailableCouponListParams';
 export * from './couponControllerGetCouponListParams';
 export * from './couponListItem';
 export * from './createCouponInfoRequest';
@@ -35,6 +37,7 @@ export * from './deleteCardResponse';
 export * from './discontinueSubscriptionRequest';
 export * from './discontinueSubscriptionResponse';
 export * from './getAddressListResponse';
+export * from './getAvailableCouponListResponse';
 export * from './getAvailablePassesResponse';
 export * from './getAvailablePassesResponseAutoPremium';
 export * from './getAvailablePassesResponseAutoStandard';

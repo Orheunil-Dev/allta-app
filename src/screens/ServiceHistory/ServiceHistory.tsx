@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { ImageBackground, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { GetSerivceHistoryListResponse } from "@/api/models";
-import { getResponsiveSize } from "@/utils";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import dayjs from "dayjs";
 import { useServiceHistoryControllerGetServiceHistoryList } from "@/api/service-history/service-history";
+import { GetSerivceHistoryListResponse } from "@/api/models";
+import { ContainerStackParamList } from "@/navigations";
+import { formatPassType, getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
+import { defaultStoreImage } from "@/assets/images";
 import { colors } from "@/styles";
 
 export const ServiceHistory = () => {
+  const containerNavigation =
+    useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
   const [skip, setSkip] = useState<number>(0);
   const [serviceHsitories, setServiceHistories] = useState<
     GetSerivceHistoryListResponse["data"]
@@ -51,14 +59,33 @@ export const ServiceHistory = () => {
           keyExtractor={(item) => item.id}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.7}
+          contentContainerStyle={styles.container}
           renderItem={({ item, index }) => (
-            <View>
-              <CustomText fontSize={18} fontWeight={"600"}>
-                {item.createdAt}
+            <View style={styles.card}>
+              <CustomText color={colors.gray7} fontSize={13} fontWeight={"500"}>
+                {dayjs(item.createdAt).format("YYYY.MM.DD HH:mm")}
               </CustomText>
-              <CustomText marginTop={4} fontSize={16}>
-                {item.store.name}
-              </CustomText>
+
+              <View style={styles.serviceHistory}>
+                <ImageBackground
+                  source={
+                    item.store.mainImage
+                      ? { uri: item.store.mainImage }
+                      : defaultStoreImage
+                  }
+                  style={styles.storeImage}
+                ></ImageBackground>
+
+                <View>
+                  <CustomText fontSize={18} fontWeight={"600"}>
+                    {item.store.name}
+                  </CustomText>
+
+                  <CustomText marginTop={4} color={colors.gray5} fontSize={14}>
+                    {formatPassType(item.passType)} • {item.carNumber}
+                  </CustomText>
+                </View>
+              </View>
             </View>
           )}
         />
@@ -79,13 +106,34 @@ export const ServiceHistory = () => {
 };
 
 const styles = StyleSheet.create({
-  itemBox: {
+  container: {
+    flex: 1,
     padding: getResponsiveSize(20),
+    gap: getResponsiveSize(16),
   },
-  itemTop: {
+  card: {
+    padding: getResponsiveSize(16),
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 12,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    shadowOpacity: 0.1,
+    elevation: 2,
+  },
+  serviceHistory: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: getResponsiveSize(4),
+    alignItems: "center",
+    marginTop: getResponsiveSize(12),
+  },
+  storeImage: {
+    width: getResponsiveSize(65),
+    height: getResponsiveSize(65),
+    marginRight: getResponsiveSize(12),
+    borderRadius: 12,
+    overflow: "hidden",
   },
   emptyBox: {
     flex: 1,
