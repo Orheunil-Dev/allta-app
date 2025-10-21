@@ -1,20 +1,30 @@
 import { useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
+import { GetBannerListResponse } from "@/api/models";
 import { getResponsiveSize } from "@/utils";
-import { bannerData } from "@/mock";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 
 const { width: screenWidth } = Dimensions.get("window");
 
-export const SubBanner = () => {
+interface Props {
+  data: GetBannerListResponse["data"] | undefined;
+}
+
+export const SubBanner = ({ data }: Props) => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
+
+  const subBanners = data
+    ? data
+        .filter((item) => item.type === "SUB")
+        .sort((a, b) => a.index - b.index)
+    : [];
 
   return (
     <View style={styles.container}>
       <Carousel
-        data={bannerData}
+        data={subBanners}
         width={screenWidth}
         height={getResponsiveSize(108)}
         loop
@@ -25,7 +35,7 @@ export const SubBanner = () => {
         renderItem={({ item, index }) => (
           <Pressable key={index} style={styles.bannerCard}>
             <Image
-              src={item.image}
+              source={{ uri: item.image }}
               resizeMode="cover"
               style={styles.bannerImage}
             />
@@ -40,7 +50,7 @@ export const SubBanner = () => {
 
         <CustomText color="rgba(255, 255, 255, 0.7)" fontSize={12}>
           {" "}
-          / {bannerData.length}
+          / {subBanners.length}
         </CustomText>
       </View>
     </View>

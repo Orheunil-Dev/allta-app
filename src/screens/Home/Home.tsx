@@ -41,6 +41,7 @@ import * as Notifications from "expo-notifications";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { IS_COUPON_RECEIVED, IS_NOTIFICATION_GRANTED } from "@/constants";
 import { useCurrentWeather } from "@/hooks";
+import { useBannerControllerGetBannerList } from "@/api/banner/banner";
 
 export const Home = () => {
   const containerNavigation =
@@ -52,6 +53,13 @@ export const Home = () => {
   const [showCouponModal, setShowCouponModal] = useState<boolean>(false);
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
 
+  // 배너 목록 조회 API
+  const {
+    data: bannerData,
+    isPending: bannerLoading,
+    isError: bannerError,
+  } = useBannerControllerGetBannerList();
+
   // 푸시토큰 업데이트 API
   const {
     mutate: updatePushToken,
@@ -60,7 +68,7 @@ export const Home = () => {
   } = useNotificationControllerUpdatePushToken();
 
   // 미확인 알림 조회 API
-  const { data: unreadNotificationsData, refetch: unreadNotificationsRefetch } =
+  const { data: unreadNotificationData, refetch: unreadNotificationsRefetch } =
     useNotificationControllerGetUnreadNotificationsCount({
       query: {
         retry: false,
@@ -167,12 +175,12 @@ export const Home = () => {
     <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
       {/* 헤더 */}
       <HomeHeader
-        unreadCount={unreadNotificationsData?.count}
+        unreadCount={unreadNotificationData?.count}
         onPressAlarm={handlePressAlarm}
       />
 
       {/* 팝업 바텀시트 */}
-      <Popup />
+      <Popup data={bannerData?.data} />
 
       {/* 웰컴쿠폰 모달 */}
       <CustomModal
@@ -209,7 +217,7 @@ export const Home = () => {
 
       <ScrollView>
         <View style={styles.container}>
-          <MainBanner />
+          <MainBanner data={bannerData?.data} />
 
           <View style={styles.mainContainer}>
             {/* 현재 날씨 */}
@@ -339,7 +347,7 @@ export const Home = () => {
             <StoreRecommend />
           </View>
 
-          <SubBanner />
+          <SubBanner data={bannerData?.data} />
 
           {/* 푸터 */}
           <View style={styles.footer}>

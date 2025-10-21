@@ -1,22 +1,26 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import mmkvStorage from "@/libs/mmkv-storage";
+import { GetBannerListResponse } from "@/api/models";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
-import { popupData } from "@/mock";
-import { colors } from "@/styles";
-import mmkvStorage from "@/libs/mmkv-storage";
 import { POPUP_CLOSE_DATE } from "@/constants";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { colors } from "@/styles";
 
 const { width: screenWidth } = Dimensions.get("window");
 
-export const Popup = () => {
+interface Props {
+  data: GetBannerListResponse["data"] | undefined;
+}
+
+export const Popup = ({ data }: Props) => {
   const insets = useSafeAreaInsets();
 
   const popupRef = useRef<BottomSheetModal>(null);
@@ -28,6 +32,12 @@ export const Popup = () => {
 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
+  const popups = data
+    ? data
+        .filter((item) => item.type === "POPUP")
+        .sort((a, b) => a.index - b.index)
+    : [];
+
   const handleClose = (isHideForToday: boolean) => () => {
     if (isHideForToday) {
       const today = new Date().toISOString().split("T")[0];
@@ -36,15 +46,6 @@ export const Popup = () => {
 
     popupRef?.current?.close();
   };
-
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    const lastClosed = mmkvStorage.getString(POPUP_CLOSE_DATE);
-
-    if (!lastClosed || lastClosed !== today) {
-      popupRef.current?.present();
-    }
-  }, []);
 
   const renderBackdrop = useCallback(
     (props: any) => (
@@ -57,6 +58,15 @@ export const Popup = () => {
     ),
     []
   );
+
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    const lastClosed = mmkvStorage.getString(POPUP_CLOSE_DATE);
+
+    if (!lastClosed || (lastClosed !== today && popups.length > 0)) {
+      popupRef.current?.present();
+    }
+  }, [popups]);
 
   return (
     <BottomSheetModal
@@ -71,7 +81,7 @@ export const Popup = () => {
       <BottomSheetView style={styles.container}>
         <View style={styles.carouselContainer}>
           <Carousel
-            data={popupData}
+            data={popups}
             width={screenWidth}
             height={getResponsiveSize(300)}
             loop
@@ -79,7 +89,7 @@ export const Popup = () => {
             renderItem={({ item, index }) => (
               <Pressable key={index} style={styles.popupCard}>
                 <Image
-                  src={item.image}
+                  source={{ uri: item.image }}
                   resizeMode="cover"
                   style={styles.popupImage}
                 />
@@ -94,7 +104,7 @@ export const Popup = () => {
 
             <CustomText color="rgba(255, 255, 255, 0.7)" fontSize={12}>
               {" "}
-              / {popupData.length}
+              / {popups.length}
             </CustomText>
           </View>
 

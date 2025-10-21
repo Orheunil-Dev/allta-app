@@ -64,6 +64,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "READ_MEDIA_IMAGES",
       "READ_EXTERNAL_STORAGE",
       "WRITE_EXTERNAL_STORAGE",
+      "NOTIFICATIONS",
+      "FOREGROUND_SERVICE",
     ],
   },
   web: {
