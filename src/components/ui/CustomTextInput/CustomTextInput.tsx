@@ -103,6 +103,7 @@ export const CustomTextInput = ({
         secureTextEntry={secureTextEntry}
         onFocus={onFocus}
         editable={editable}
+        underlineColorAndroid="transparent"
         style={[
           {
             fontFamily: fontMap[fontWeight],

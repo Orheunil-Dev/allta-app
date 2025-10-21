@@ -180,6 +180,7 @@ export const Refferal = () => {
               autoCapitalize="none"
               placeholder="추천코드 입력"
               maxLength={6}
+              underlineColorAndroid="transparent"
               style={styles.codeInput}
             />
           )}

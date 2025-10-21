@@ -57,6 +57,7 @@ export const SignUpTextInput = ({
         secureTextEntry={secureTextEntry}
         maxLength={maxLength}
         placeholder={placeholder}
+        underlineColorAndroid="transparent"
         style={[
           {
             borderBottomColor:

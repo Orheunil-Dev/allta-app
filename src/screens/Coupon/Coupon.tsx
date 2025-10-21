@@ -105,6 +105,7 @@ export const Coupon = () => {
           autoCapitalize="none"
           placeholder="쿠폰번호 입력"
           maxLength={30}
+          underlineColorAndroid="transparent"
           style={styles.codeInput}
         />
         <CustomButton
