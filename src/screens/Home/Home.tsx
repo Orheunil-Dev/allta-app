@@ -35,9 +35,7 @@ import { StoreRecommend } from "@/components/home/StoreRecommend";
 import { CustomModal } from "@/components/ui/CustomModal";
 import * as Notifications from "expo-notifications";
 import mmkvStorage from "@/libs/mmkv-storage";
-import { IS_NOTIFICATION_GRANTED } from "@/constants";
-
-type HomeRouteProp = RouteProp<BottomTabParamList, "Home">;
+import { IS_COUPON_RECEIVED, IS_NOTIFICATION_GRANTED } from "@/constants";
 
 export const Home = () => {
   const containerNavigation =
