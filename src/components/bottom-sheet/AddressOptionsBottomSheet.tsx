@@ -1,17 +1,16 @@
+import { useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useQueryClient } from "@tanstack/react-query";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useSetAtom } from "jotai";
+import { useAddressControllerDeleteAddress } from "@/api/address/address";
+import { errorModalAtom } from "@/jotai";
+import { useToastMessage } from "@/hooks";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
-import { deleteIcon } from "@/assets/images";
-import { useCarControllerDeleteCar } from "@/api/car/car";
-import { useToastMessage } from "@/hooks";
-import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/jotai";
-import { useQueryClient } from "@tanstack/react-query";
 import { CustomModal } from "../ui/CustomModal";
-import { useState } from "react";
-import { useAddressControllerDeleteAddress } from "@/api/address/address";
+import { deleteIcon } from "@/assets/images";
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;

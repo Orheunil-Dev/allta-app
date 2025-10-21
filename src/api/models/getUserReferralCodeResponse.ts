@@ -5,11 +5,11 @@
  * Allta API 서버 문서입니다.
  * OpenAPI spec version: 1.0
  */
-import type { UserRefferalCodeItem } from './userRefferalCodeItem';
+import type { UserReferralCodeItem } from './userReferralCodeItem';
 
-export interface GetUserRefferalCodeResponse {
+export interface GetUserReferralCodeResponse {
   /** 결과 여부 */
   ok: boolean;
-  /** 추천인 코드 데이터 */
-  data: UserRefferalCodeItem;
+  /** 추천코드 데이터 */
+  data: UserReferralCodeItem;
 }

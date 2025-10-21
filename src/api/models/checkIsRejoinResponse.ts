@@ -6,9 +6,9 @@
  * OpenAPI spec version: 1.0
  */
 
-export type UserControllerVerifyRefferalCodeParams = {
-/**
- * 추천인 코드
- */
-referralCode: string;
-};
+export interface CheckIsRejoinResponse {
+  /** 결과 여부 */
+  ok: boolean;
+  /** 재가입 여부 */
+  isRejoin: boolean;
+}

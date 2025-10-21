@@ -32,14 +32,12 @@ export const MyPage = () => {
 
   const insets = useSafeAreaInsets();
 
-  const { data, error } = useUserControllerGetUserProfile({
+  const { data: userProfileData, error } = useUserControllerGetUserProfile({
     query: {
       retry: false,
       gcTime: 0,
     },
   });
-
-  console.log(data);
 
   return (
     <CustomSafeAreaView edges={["top"]}>
@@ -73,7 +71,7 @@ export const MyPage = () => {
       </View>
 
       <ScrollView style={styles.container}>
-        {data ? (
+        {userProfileData ? (
           <View style={styles.box}>
             <View
               style={{
@@ -83,7 +81,7 @@ export const MyPage = () => {
               }}
             >
               <CustomText fontSize={20} fontWeight={"600"}>
-                {data.name} 님
+                {userProfileData.name} 님
               </CustomText>
 
               <Pressable>
@@ -93,10 +91,10 @@ export const MyPage = () => {
 
             <View style={styles.divider} />
 
-            {data.mainCarNumber ? (
+            {userProfileData.mainCarNumber ? (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <CustomText fontSize={15} fontWeight={"600"}>
-                  {data.mainCarNumber}
+                  {userProfileData.mainCarNumber}
                 </CustomText>
 
                 <View style={styles.mainCar}>
@@ -171,7 +169,7 @@ export const MyPage = () => {
                 fontSize={22}
                 fontWeight={"600"}
               >
-                {data?.totalPremiums ?? 0}
+                {userProfileData?.totalPremiums ?? 0}
               </CustomText>
             </Pressable>
 
@@ -195,7 +193,7 @@ export const MyPage = () => {
                 fontSize={22}
                 fontWeight={"600"}
               >
-                {data?.totalStandards ?? 0}
+                {userProfileData?.totalStandards ?? 0}
               </CustomText>
             </Pressable>
 
@@ -219,7 +217,7 @@ export const MyPage = () => {
                 fontSize={22}
                 fontWeight={"600"}
               >
-                {data?.totalTickets ?? 0}
+                {userProfileData?.totalTickets ?? 0}
               </CustomText>
             </Pressable>
           </View>

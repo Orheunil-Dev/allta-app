@@ -6,7 +6,9 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CreateOneCouponResponse {
-  /** 결과 여부 */
-  ok: boolean;
-}
+export type ReferralControllerVerifyReferralCodeParams = {
+/**
+ * 추천인 코드
+ */
+referralCode: string;
+};

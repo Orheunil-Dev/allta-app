@@ -6,9 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CreateOneCouponRequest {
-  /** 쿠폰 정보 ID */
-  couponInfoId: string;
-  /** 회원 ID */
-  userId: string;
+export interface RegisterReferralCodeRequest {
+  /** 추천인 코드 */
+  referralCode: string;
 }

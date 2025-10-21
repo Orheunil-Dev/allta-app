@@ -11,9 +11,10 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
 import CookieManager from "@react-native-cookies/cookies";
 import * as SecureStore from "expo-secure-store";
+import { useReferralControllerVerifyReferralCode } from "@/api/referral/referral";
 import {
+  useUserControllerCheckIsRejoin,
   useUserControllerCreateUser,
-  useUserControllerVerifyRefferalCode,
 } from "@/api/user/user";
 import { useAuthControllerLoginBySocialId } from "@/api/auth/auth";
 import { getResponsiveSize } from "@/utils";
@@ -45,13 +46,24 @@ export const SignUpReferral = () => {
   const [referralCode, setReferralCode] = useState("");
   const [isValid, setIsValid] = useState(false);
 
-  // 추천인 코드 검증
+  // 재가입 여부 조회 API
+  const {
+    data: checkIsRejoinData,
+    isFetching: checkIsRejoinLoading,
+    error: checkIsRejoinError,
+  } = useUserControllerCheckIsRejoin({
+    loginKind: route.params.loginKind,
+    socialId: route.params.socialId,
+    phoneNumber: route.params.phoneNumber,
+  });
+
+  // 추천인 코드 검증 API
   const {
     data: verifyReferralCodeData,
     refetch: fetchVerifyReferralCode,
     isFetching: verifyReferralCodeLoading,
     error: verifyReferralCodeError,
-  } = useUserControllerVerifyRefferalCode(
+  } = useReferralControllerVerifyReferralCode(
     {
       referralCode,
     },
@@ -64,21 +76,21 @@ export const SignUpReferral = () => {
     }
   );
 
-  // 회원가입
+  // 회원가입 API
   const {
     mutate: createUser,
     isPending: createUserLoading,
     isError: createUserError,
   } = useUserControllerCreateUser();
 
-  // 로그인
+  // 로그인 API
   const {
     mutate: loginBySocialId,
     isPending: loginBySocialIdLoading,
     isError: loginBySocialIdError,
   } = useAuthControllerLoginBySocialId();
 
-  // 회원가입 완료
+  // 회원가입
   const handleSignUp = () => {
     createUser(
       {
@@ -88,7 +100,10 @@ export const SignUpReferral = () => {
         },
       },
       {
-        onSuccess: () => {
+        onSuccess: (res) => {
+          const isRejoined = res.isRejoined;
+          const isCouponReceived = res.isCouponReceived;
+
           loginBySocialId(
             {
               data: {
@@ -111,7 +126,15 @@ export const SignUpReferral = () => {
                 loginStackNavigation.dispatch(
                   CommonActions.reset({
                     index: 0,
-                    routes: [{ name: "SignUpComplete" }],
+                    routes: [
+                      {
+                        name: "SignUpComplete",
+                        params: {
+                          isRejoined,
+                          isCouponReceived,
+                        },
+                      },
+                    ],
                   })
                 );
               },
@@ -133,6 +156,13 @@ export const SignUpReferral = () => {
       }
     );
   };
+
+  // 재가입 회원일 경우 바로 회원가입 요청
+  useEffect(() => {
+    if (checkIsRejoinData && checkIsRejoinData.isRejoin) {
+      handleSignUp();
+    }
+  }, [checkIsRejoinData]);
 
   // 추천인 코드 6자 입력 시 자동으로 검증 요청
   useEffect(() => {

@@ -9,4 +9,8 @@
 export interface CreateUserResponse {
   /** 결과 여부 */
   ok: boolean;
+  /** 재가입 여부 */
+  isRejoined: boolean;
+  /** 신규회원 쿠폰 발행 여부 */
+  isCouponReceived: boolean;
 }

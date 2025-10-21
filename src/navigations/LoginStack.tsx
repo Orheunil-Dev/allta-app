@@ -34,7 +34,10 @@ export type LoginStackParamList = {
     phoneNumber: string;
     isMarketing: boolean;
   };
-  SignUpComplete: undefined;
+  SignUpComplete: {
+    isRejoined: boolean;
+    isCouponReceived: boolean;
+  };
   RegisterCar: undefined;
   RegisterCard: {
     carVendor?: string;

@@ -6,9 +6,12 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface UserRefferalCodeItem {
+export interface UserReferralCodeItem {
   /** 추천인 코드 */
   referralCode: string;
-  /** 추천인 코드 등록 여부 */
-  isReffered: boolean;
+  /**
+   * 회원이 등록한 추천인 코드
+   * @nullable
+   */
+  referrerCode?: string | null;
 }

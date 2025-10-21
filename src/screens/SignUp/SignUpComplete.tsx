@@ -1,5 +1,10 @@
 import { Image, StyleSheet, View } from "react-native";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
@@ -8,13 +13,21 @@ import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { signupCompleteImage } from "@/assets/images";
 import { colors } from "@/styles";
+import { useEffect } from "react";
+import { useToastMessage } from "@/hooks";
+
+type SignUpCompleteRouteProp = RouteProp<LoginStackParamList, "SignUpComplete">;
 
 export const SignUpComplete = () => {
+  const router = useRoute<SignUpCompleteRouteProp>();
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
+
+  const { SuccessToast } = useToastMessage();
 
   const handleGoHome = () => {
     containerNavigation.dispatch(
@@ -33,6 +46,12 @@ export const SignUpComplete = () => {
   const handleGoRegister = () => {
     loginStackNavigation.navigate("RegisterCar");
   };
+
+  useEffect(() => {
+    if (router.params.isCouponReceived) {
+      SuccessToast("웰컴 쿠폰이 발급되었습니다.");
+    }
+  }, [router.params]);
 
   return (
     <CustomSafeAreaView edges={["top", "bottom"]}>
