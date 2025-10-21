@@ -5,17 +5,19 @@ import { ContainerStackParamList } from "@/navigations";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 import * as ImagePicker from "expo-image-picker";
+import mmkvStorage from "@/libs/mmkv-storage";
 import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { colors } from "@/styles";
+import { IS_NOTIFICATION_GRANTED } from "@/constants";
 import {
   PermissionAlarmIcon,
   PermissionCameraIcon,
   PermissionLocationIcon,
   PermissionPhotoIcon,
 } from "@/assets/images";
+import { colors } from "@/styles";
 
 export const Permission = () => {
   const containerNavigation =
@@ -24,6 +26,15 @@ export const Permission = () => {
   const handleGoHome = async () => {
     // 알림 권한 요청
     await Notifications.requestPermissionsAsync();
+
+    const { status } = await Notifications.requestPermissionsAsync();
+
+    if (status === "granted") {
+      mmkvStorage.setBoolean(IS_NOTIFICATION_GRANTED, true);
+    } else {
+      mmkvStorage.setBoolean(IS_NOTIFICATION_GRANTED, false);
+    }
+
     // 위치 권한 요청
     await Location.requestForegroundPermissionsAsync();
     // 카메라 권한 요청

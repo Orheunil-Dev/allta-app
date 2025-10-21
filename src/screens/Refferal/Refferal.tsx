@@ -16,6 +16,7 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { Spinner } from "@/components/ui/Spinner";
 import { refferalBanner } from "@/assets/images";
 import { colors, fontMap } from "@/styles";
+// import { shareCustomTemplate } from "@react-native-kakao/share";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -77,8 +78,21 @@ export const Refferal = () => {
     );
   };
 
+  // 카카오톡 공유하기
+  //   const handleKakaoShare = async () => {
+  //   if (!referralCodeData?.data) return;
+
+  //   await shareCustomTemplate({
+  //     templateId: 125068,
+  //     templateArgs: {
+  //       userName: referralCodeData.data.name,
+  //       referralCode: referralCodeData.data.referralCode,
+  //     },
+  //   });
+  // };
+
   // 추천코드 클립보드에 복사
-  const copyToClipboard = async () => {
+  const handleCopyToClipboard = async () => {
     if (!referralCodeData?.data.referralCode.length) return;
 
     await Clipboard.setStringAsync(referralCodeData?.data.referralCode).then(
@@ -129,7 +143,7 @@ export const Refferal = () => {
             </CustomButton>
 
             <CustomButton
-              onPress={copyToClipboard}
+              onPress={handleCopyToClipboard}
               flex={1}
               height={getResponsiveSize(50)}
               backgroundColor={colors.point2}
