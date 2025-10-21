@@ -167,7 +167,7 @@ export const StoreList = () => {
         }
 
         const loc = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.High,
+          accuracy: Location.Accuracy.Low,
         });
 
         if (isFocused) {

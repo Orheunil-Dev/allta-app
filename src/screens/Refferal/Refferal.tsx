@@ -43,7 +43,13 @@ export const Refferal = () => {
 
   // 추첱코드 등록
   const handleRegisterRefferalCode = () => {
-    if (!referralCode.length || referralCode.length > 6) return;
+    if (referralCode.length !== 6) {
+      return ErrorToast("추천코드는 6자 입니다.");
+    }
+
+    if (referralCodeData?.data.referralCode === referralCode) {
+      return ErrorToast("본인의 추천코드는 등록할 수 없습니다.");
+    }
 
     registerReferralCode(
       {
@@ -159,7 +165,7 @@ export const Refferal = () => {
               autoCorrect={false}
               autoCapitalize="none"
               placeholder="추천코드 입력"
-              maxLength={30}
+              maxLength={6}
               style={styles.codeInput}
             />
           )}

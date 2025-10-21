@@ -341,10 +341,10 @@ export const MyPage = () => {
             <CustomText fontSize={16}>공지사항</CustomText>
           </Pressable>
 
-          <Pressable style={styles.button}>
+          {/* <Pressable style={styles.button}>
             <Image source={inquiryIcon} style={styles.icon} />
             <CustomText fontSize={16}>1:1 문의</CustomText>
-          </Pressable>
+          </Pressable> */}
 
           <Pressable
             onPress={() => containerNavigation.navigate("Faq")}

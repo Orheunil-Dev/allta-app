@@ -36,6 +36,7 @@ import { CustomModal } from "@/components/ui/CustomModal";
 import * as Notifications from "expo-notifications";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { IS_COUPON_RECEIVED, IS_NOTIFICATION_GRANTED } from "@/constants";
+import { useCurrentWeather } from "@/hooks";
 
 export const Home = () => {
   const containerNavigation =
@@ -62,6 +63,9 @@ export const Home = () => {
         gcTime: 0,
       },
     });
+
+  // 날씨 조회 훅스
+  useCurrentWeather();
 
   // 알림 버튼 터치
   const handlePressAlarm = () => {
