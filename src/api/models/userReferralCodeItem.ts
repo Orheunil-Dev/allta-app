@@ -7,6 +7,8 @@
  */
 
 export interface UserReferralCodeItem {
+  /** 이름 */
+  name: string;
   /** 추천인 코드 */
   referralCode: string;
   /**

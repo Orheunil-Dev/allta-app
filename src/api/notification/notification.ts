@@ -25,11 +25,13 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  CheckPushTokenResponse,
   GetNotificationsResponse,
   GetUnreadNotificationsCountResponse,
   NotificationControllerGetNotificationsParams,
   SendNotificationRequest,
-  SendNotificationResponse
+  SendNotificationResponse,
+  UpdatePushTokenRequest
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -315,4 +317,197 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
       return useMutation(mutationOptions , queryClient);
     }
+    export const notificationControllerUpdatePushToken = (
+    updatePushTokenRequest: UpdatePushTokenRequest,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<CheckPushTokenResponse>(
+      {url: `/notification/push-token`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: updatePushTokenRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getNotificationControllerUpdatePushTokenMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof notificationControllerUpdatePushToken>>, TError,{data: UpdatePushTokenRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof notificationControllerUpdatePushToken>>, TError,{data: UpdatePushTokenRequest}, TContext> => {
+
+const mutationKey = ['notificationControllerUpdatePushToken'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof notificationControllerUpdatePushToken>>, {data: UpdatePushTokenRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  notificationControllerUpdatePushToken(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type NotificationControllerUpdatePushTokenMutationResult = NonNullable<Awaited<ReturnType<typeof notificationControllerUpdatePushToken>>>
+    export type NotificationControllerUpdatePushTokenMutationBody = UpdatePushTokenRequest
+    export type NotificationControllerUpdatePushTokenMutationError = unknown
+
+    export const useNotificationControllerUpdatePushToken = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof notificationControllerUpdatePushToken>>, TError,{data: UpdatePushTokenRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof notificationControllerUpdatePushToken>>,
+        TError,
+        {data: UpdatePushTokenRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getNotificationControllerUpdatePushTokenMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const notificationControllerDeletePushToken = (
     
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<CheckPushTokenResponse>(
+      {url: `/notification/push-token`, method: 'DELETE'
+    },
+      options);
+    }
+  
+
+
+export const getNotificationControllerDeletePushTokenMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof notificationControllerDeletePushToken>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof notificationControllerDeletePushToken>>, TError,void, TContext> => {
+
+const mutationKey = ['notificationControllerDeletePushToken'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof notificationControllerDeletePushToken>>, void> = () => {
+          
+
+          return  notificationControllerDeletePushToken(requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type NotificationControllerDeletePushTokenMutationResult = NonNullable<Awaited<ReturnType<typeof notificationControllerDeletePushToken>>>
+    
+    export type NotificationControllerDeletePushTokenMutationError = unknown
+
+    export const useNotificationControllerDeletePushToken = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof notificationControllerDeletePushToken>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof notificationControllerDeletePushToken>>,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getNotificationControllerDeletePushTokenMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    export const notificationControllerCheckPushTokenStored = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<CheckPushTokenResponse>(
+      {url: `/notification/push-token/check`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getNotificationControllerCheckPushTokenStoredQueryKey = () => {
+    return [`/notification/push-token/check`] as const;
+    }
+
+    
+export const getNotificationControllerCheckPushTokenStoredQueryOptions = <TData = Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getNotificationControllerCheckPushTokenStoredQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>> = ({ signal }) => notificationControllerCheckPushTokenStored(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type NotificationControllerCheckPushTokenStoredQueryResult = NonNullable<Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>>
+export type NotificationControllerCheckPushTokenStoredQueryError = unknown
+
+
+export function useNotificationControllerCheckPushTokenStored<TData = Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>,
+          TError,
+          Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useNotificationControllerCheckPushTokenStored<TData = Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>,
+          TError,
+          Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useNotificationControllerCheckPushTokenStored<TData = Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useNotificationControllerCheckPushTokenStored<TData = Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof notificationControllerCheckPushTokenStored>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getNotificationControllerCheckPushTokenStoredQueryOptions(options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+

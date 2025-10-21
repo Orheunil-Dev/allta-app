@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
@@ -27,10 +27,16 @@ import { colors } from "@/styles";
 import { Popup } from "@/components/home/Popup";
 import { MainBanner, SubBanner } from "@/components/home/Banner";
 import { HomeHeader } from "@/components/home/HomeHeader";
-import { useNotificationControllerGetUnreadNotificationsCount } from "@/api/notification/notification";
+import {
+  useNotificationControllerGetUnreadNotificationsCount,
+  useNotificationControllerUpdatePushToken,
+} from "@/api/notification/notification";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StoreRecommend } from "@/components/home/StoreRecommend";
 import { CustomModal } from "@/components/ui/CustomModal";
+import * as Notifications from "expo-notifications";
+import mmkvStorage from "@/libs/mmkv-storage";
+import { IS_NOTIFICATION_GRANTED } from "@/constants";
 
 type HomeRouteProp = RouteProp<BottomTabParamList, "Home">;
 
@@ -46,7 +52,14 @@ export const Home = () => {
   const [showCouponModal, setShowCouponModal] = useState<boolean>(false);
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
 
-  // 미확인 알림 조회
+  // 푸시토큰 업데이트 API
+  const {
+    mutate: updatePushToken,
+    isPending: updatePushTokenLoading,
+    isError: updatePushTokenError,
+  } = useNotificationControllerUpdatePushToken();
+
+  // 미확인 알림 조회 API
   const { data: unreadNotificationsData, refetch: unreadNotificationsRefetch } =
     useNotificationControllerGetUnreadNotificationsCount({
       query: {
