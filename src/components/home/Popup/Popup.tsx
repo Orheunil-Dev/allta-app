@@ -25,6 +25,8 @@ export const Popup = ({ data }: Props) => {
 
   const popupRef = useRef<BottomSheetModal>(null);
 
+  const [hasShownPopup, setHasShownPopup] = useState(false);
+
   const TAB_HEIGHT =
     screenHeight < 680 ? getResponsiveSize(365) : getResponsiveSize(350);
 
@@ -47,6 +49,20 @@ export const Popup = ({ data }: Props) => {
     popupRef?.current?.close();
   };
 
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    const lastClosed = mmkvStorage.getString(POPUP_CLOSE_DATE);
+
+    if (
+      !hasShownPopup &&
+      (!lastClosed || lastClosed !== today) &&
+      popups.length > 0
+    ) {
+      popupRef.current?.present();
+      setHasShownPopup(true);
+    }
+  }, [popups, hasShownPopup]);
+
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop
@@ -58,15 +74,6 @@ export const Popup = ({ data }: Props) => {
     ),
     []
   );
-
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    const lastClosed = mmkvStorage.getString(POPUP_CLOSE_DATE);
-
-    if (!lastClosed || (lastClosed !== today && popups.length > 0)) {
-      popupRef.current?.present();
-    }
-  }, [popups]);
 
   return (
     <BottomSheetModal
