@@ -2,22 +2,55 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import { CustomText } from "../CustomText";
 import { defaultStoreImage, homeDistanceIcon } from "@/assets/images";
 import { colors } from "@/styles";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ContainerStackParamList } from "@/navigations";
+import { StoreDetailItemPassPrice } from "@/types";
 
 interface Props {
+  id: string;
   name: string;
   distance: string;
   address: string;
+  passPrice?: StoreDetailItemPassPrice | null;
   mainImage?: string | null;
+  storeGroupId?: string | null;
 }
 
 export const RecommendCard = ({
+  id,
   name,
   distance,
   address,
+  passPrice,
   mainImage,
+  storeGroupId,
 }: Props) => {
+  const containerNavigation =
+    useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const handleRouteStoreDetail = () => {
+    if (!passPrice) return;
+
+    const serviceType = passPrice?.AUTO
+      ? "AUTO"
+      : passPrice?.HANDS
+      ? "HANDS"
+      : "AUTO";
+
+    return containerNavigation.navigate("StoreStack", {
+      screen: "StoreDetail",
+      params: {
+        serviceType,
+        storeId: id,
+        storeName: name,
+        storeGroupId: storeGroupId ?? undefined,
+      },
+    });
+  };
+
   return (
-    <Pressable style={styles.container}>
+    <Pressable onPress={handleRouteStoreDetail} style={styles.container}>
       <Image src={mainImage ?? defaultStoreImage} style={styles.storeImage} />
 
       <View>

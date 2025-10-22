@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import { useDistanceCalculator } from "@/hooks";
+import { StoreDetailItemPassPrice } from "@/types";
 
 export const StoreRecommend = () => {
   const containerNavigation =
@@ -135,9 +136,12 @@ export const StoreRecommend = () => {
           storesData.data.map((value, index) => (
             <RecommendCard
               key={index}
+              id={value.id}
               name={value.name}
               address={value.address}
+              passPrice={value.passPrice as StoreDetailItemPassPrice}
               mainImage={value.mainImage}
+              storeGroupId={value.storeGroupId}
               distance={getDistance(
                 coordinate.lat,
                 coordinate.lng,
