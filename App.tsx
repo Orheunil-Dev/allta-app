@@ -19,7 +19,10 @@ import "react-native-get-random-values";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/libs";
 import * as Notifications from "expo-notifications";
-import { Platform } from "react-native";
+import { Alert, Linking, Platform } from "react-native";
+import * as Application from "expo-application";
+import * as Updates from "expo-updates";
+import checkVersion from "react-native-store-version";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
@@ -59,6 +62,73 @@ export default function App() {
       },
     }),
   });
+
+  useEffect(() => {
+    const appEnv = process.env.EXPO_PUBLIC_APP_ENV;
+
+    if (appEnv === "DEV") return;
+
+    const storeUrl = {
+      iosStoreURL: "https://apps.apple.com/kr/app/allta/id6467127880",
+      androidStoreURL:
+        "https://play.google.com/store/apps/details?id=io.allta.user",
+    };
+
+    const checkUpdate = async () => {
+      try {
+        const check = await checkVersion({
+          version: Application.nativeApplicationVersion ?? "",
+          ...storeUrl,
+          country: "kr",
+        });
+
+        if (check.result === "new") {
+          // 앱 스토어 버전이 새로움
+          Alert.alert(
+            "ALLTA 업데이트",
+            "새로운 버전으로 업데이트 되었습니다. [확인]를 누르시면 스토어로 이동합니다.",
+            [
+              {
+                text: "확인",
+                onPress: () => {
+                  setTimeout(() => {
+                    const _storeUrl =
+                      Platform.OS === "android"
+                        ? storeUrl.androidStoreURL
+                        : storeUrl.iosStoreURL;
+                    Linking.openURL(_storeUrl);
+                  }, 100);
+                },
+              },
+            ]
+          );
+        } else {
+          const update = await Updates.checkForUpdateAsync();
+          if (update.isAvailable) {
+            await Updates.fetchUpdateAsync();
+
+            const alertMessage =
+              "새로운 버전으로 업데이트 되었습니다. [확인]를 누르시면 업데이트를 위해 앱이 재기동 됩니다.";
+
+            Alert.alert("ALLTA 업데이트", alertMessage, [
+              {
+                text: "확인",
+                onPress: () => {
+                  setTimeout(() => {
+                    Updates.reloadAsync();
+                  }, 100);
+                },
+              },
+            ]);
+          }
+        }
+      } catch (error) {
+        console.log("checkUpdate error:", error);
+      }
+    };
+
+    checkUpdate();
+  }, []);
 
   useEffect(() => {
     const prepare = async () => {

@@ -14,7 +14,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   userInterfaceStyle: "light",
   newArchEnabled: true,
   ios: {
-    jsEngine: "hermes",
     bundleIdentifier: "io.allta.user",
     icon: "./src/assets/images/app-icon.png",
     supportsTablet: true,
@@ -50,7 +49,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
   },
   android: {
-    jsEngine: "hermes",
     package: "io.allta.user",
     googleServicesFile: "./google-services.json",
     adaptiveIcon: {
@@ -90,6 +88,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   plugins: [
     "expo-router",
+    ["expo-updates"],
     [
       "expo-splash-screen",
       {
@@ -103,12 +102,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "expo-build-properties",
       {
         android: {
-          compileSdkVersion: 36,
-          targetSdkVersion: 36,
-          minSdkVersion: 25,
-          buildToolsVersion: "36.0.0",
-          kotlinVersion: "2.0.21",
-          gradlePluginVersion: "8.4.0",
           extraMavenRepos: [
             "https://devrepo.kakao.com/nexus/content/groups/public/",
           ],
