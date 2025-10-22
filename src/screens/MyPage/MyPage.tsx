@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -328,7 +328,14 @@ export const MyPage = () => {
           </Pressable>
         </View>
 
-        <View style={styles.box}>
+        <View
+          style={[
+            styles.box,
+            Platform.OS === "android" && {
+              marginBottom: getResponsiveSize(40),
+            },
+          ]}
+        >
           <Pressable
             onPress={() =>
               containerNavigation.navigate("NoticeStack", {
