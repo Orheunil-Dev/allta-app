@@ -51,6 +51,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     package: "io.allta.user",
     googleServicesFile: "./google-services.json",
+    icon: "./src/assets/images/app-icon.png",
     adaptiveIcon: {
       foregroundImage: "./src/assets/images/adaptive-icon.png",
       backgroundColor: "#ffffff",

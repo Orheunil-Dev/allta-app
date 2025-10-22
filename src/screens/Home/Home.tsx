@@ -113,6 +113,7 @@ export const Home = () => {
     };
   });
 
+  // 날씨 아이콘
   const getWeatherIcon = () => {
     switch (weatherText) {
       case "화창":

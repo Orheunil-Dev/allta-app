@@ -14,7 +14,7 @@ import { CustomText } from "@/components/ui/CustomText";
 import { POPUP_CLOSE_DATE } from "@/constants";
 import { colors } from "@/styles";
 
-const { width: screenWidth } = Dimensions.get("window");
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 interface Props {
   data: GetBannerListResponse["data"] | undefined;
@@ -25,10 +25,10 @@ export const Popup = ({ data }: Props) => {
 
   const popupRef = useRef<BottomSheetModal>(null);
 
-  const snapPoints = useMemo(
-    () => [insets.bottom + getResponsiveSize(350)],
-    []
-  );
+  const TAB_HEIGHT =
+    screenHeight < 680 ? getResponsiveSize(365) : getResponsiveSize(350);
+
+  const snapPoints = useMemo(() => [insets.bottom + TAB_HEIGHT], []);
 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 

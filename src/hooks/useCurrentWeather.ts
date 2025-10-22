@@ -45,7 +45,7 @@ export const useCurrentWeather = () => {
       });
 
       const lat = loc.coords.latitude;
-      const lon = loc.coords.longitude;
+      const lng = loc.coords.longitude;
 
       //   // 좌표 -> 주소로 변환
       //   const kakaoRes = await axios.get(
@@ -55,7 +55,7 @@ export const useCurrentWeather = () => {
       //         Authorization:
       //           "KakaoAK " + process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY,
       //       },
-      //       params: { x: lon, y: lat },
+      //       params: { x: lng, y: lat },
       //     }
       //   );
 
@@ -68,7 +68,7 @@ export const useCurrentWeather = () => {
         {
           params: {
             apikey: process.env.EXPO_PUBLIC_ACCU_WEATHER_API_KEY,
-            q: `${lat},${lon}`,
+            q: `${lat},${lng}`,
             language: "ko-KR",
           },
         }
@@ -83,15 +83,26 @@ export const useCurrentWeather = () => {
           params: {
             apikey: process.env.EXPO_PUBLIC_ACCU_WEATHER_API_KEY,
             language: "ko-KR",
-            details: false,
+            details: true,
           },
         }
       );
 
       const weatherData = weatherRes.data[0];
 
-      setWeatherText(weatherData.WeatherText ?? null);
-      setWeatherIcon(weatherData.WeatherIcon ?? null);
+      const weather = {
+        weatherText: weatherData.WeatherText ?? null,
+        weatherCode: weatherData.WeatherIcon ?? null,
+        temperature: weatherData.Temperature.Metric.Value ?? null,
+        humidity: weatherData.RelativeHumidity ?? null,
+        currentPrecipitation:
+          weatherData.PrecipitationSummary.PastHour.Metric.Value ?? null,
+        totalPrecipitation:
+          weatherData.PrecipitationSummary.Precipitation.Metric.Value ?? null,
+      };
+
+      setWeatherText(weather.weatherText ?? null);
+      setWeatherIcon(weather.weatherCode ?? null);
     };
 
     fetchWeather();

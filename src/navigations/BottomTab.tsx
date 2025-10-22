@@ -7,7 +7,7 @@ import { MyStoreStack, MyStoreStackParamList } from "./MyStoreStack";
 import { getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
 import { CustomBottomTab } from "@/components/layout/CustomBottomTab";
-import { Image, Platform } from "react-native";
+import { Dimensions, Image, Platform } from "react-native";
 import {
   blackHomeIcon,
   blackMyIcon,
@@ -31,15 +31,20 @@ export type BottomTabParamList = {
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
+const screenHeight = Dimensions.get("window").height;
+
 export const BottomTab = () => {
   const insets = useSafeAreaInsets();
+
+  const TAB_HEIGHT =
+    screenHeight < 680 ? getResponsiveSize(70) : getResponsiveSize(30);
 
   return (
     <Tab.Navigator
       tabBar={(props) => <CustomBottomTab {...props} />}
       screenOptions={{
         tabBarStyle: {
-          height: getResponsiveSize(30) + insets.bottom,
+          height: TAB_HEIGHT + insets.bottom,
           backgroundColor: colors.white,
         },
         tabBarIconStyle: {
