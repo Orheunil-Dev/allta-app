@@ -52,6 +52,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     jsEngine: "hermes",
     package: "io.allta.user",
+    googleServicesFile: "./google-services.json",
     adaptiveIcon: {
       foregroundImage: "./src/assets/images/adaptive-icon.png",
       backgroundColor: "#ffffff",

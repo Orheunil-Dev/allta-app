@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "579472260160",
+    "project_id": "allta-390603",
+    "storage_bucket": "allta-390603.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579472260160:android:8ef3a41201256e159fb3a5",
+        "android_client_info": {
+          "package_name": "io.allta.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579472260160-hs40tnjqp4kt17avt81prlmfcrj1kihk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTohqUrG5wtt2y1yqakJXpPcrp6kycNhE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579472260160-hs40tnjqp4kt17avt81prlmfcrj1kihk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
