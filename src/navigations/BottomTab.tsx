@@ -99,7 +99,7 @@ export const BottomTab = () => {
             tabBarStyle: hideTabBar
               ? { display: "none" }
               : {
-                  height: getResponsiveSize(30) + insets.bottom,
+                  height: TAB_HEIGHT + insets.bottom,
                   backgroundColor: colors.white,
                 },
           };
