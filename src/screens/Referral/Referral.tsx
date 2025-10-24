@@ -135,6 +135,7 @@ export const Referral = () => {
 
             <View style={styles.buttonArea}>
               <CustomButton
+                onPress={handleKakaoShare}
                 flex={1}
                 height={getResponsiveSize(50)}
                 backgroundColor={colors.point2}
