@@ -11,6 +11,7 @@ import {
   useUserControllerSendVerificationCode,
   useUserControllerVerifyPhoneNumber,
 } from "@/api/user/user";
+import { useToastMessage } from "@/hooks";
 import {
   formatPhoneNumber,
   formatTime,
@@ -30,7 +31,10 @@ type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpUserInfo">;
 
 // 유효성 검사
 const signUpFormSchema = z.object({
-  name: z.string().regex(regexName, "올바른 이름 형식이 아닙니다."),
+  name: z
+    .string()
+    .max(10, "이름은 최대 10자까지 입력해주세요.")
+    .regex(regexName, "올바른 이름 형식이 아닙니다."),
   phoneNumber: z
     .string()
     .regex(regexPhoneNumber, "올바른 휴대폰 번호 형식이 아닙니다."),
@@ -55,6 +59,8 @@ export const SignUpUserInfo = () => {
     name: "",
     phoneNumber: "",
   });
+
+  const { SuccessToast, ErrorToast } = useToastMessage();
 
   // 휴대폰 번호 중복 확인 API
   const {
@@ -97,6 +103,8 @@ export const SignUpUserInfo = () => {
 
   // 인증코드 전송
   const handleSendVerificationCode = () => {
+    SuccessToast("인증코드가 전송되었습니다.");
+
     sendVerificationCode(
       {
         data: {
@@ -213,6 +221,7 @@ export const SignUpUserInfo = () => {
             value={infoForm.name}
             onChangeText={(text) => handleChangeSignUpForm("name", text)}
             placeholder="이름을 입력해주세요."
+            maxLength={10}
           />
 
           <CustomText fontSize={16} marginTop={32}>
