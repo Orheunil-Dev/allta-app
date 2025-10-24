@@ -7,21 +7,21 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/jotai";
 import * as Location from "expo-location";
+import { useSetAtom } from "jotai";
 import {
   usePassControllerGetSubscriptionDetail,
   usePassControllerGetTicketDetail,
 } from "@/api/pass/pass";
+import { errorModalAtom } from "@/jotai";
 import { ContainerStackParamList, PassStackParamList } from "@/navigations";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { SubscriptionDetail, TicketDetail } from "@/components/pass";
 
-type PassListRouteProp = RouteProp<PassStackParamList, "PassDetail">;
+type PassDetailRouteProp = RouteProp<PassStackParamList, "PassDetail">;
 
 export const PassDetail = () => {
-  const router = useRoute<PassListRouteProp>();
+  const router = useRoute<PassDetailRouteProp>();
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();

@@ -18,6 +18,7 @@ import { GetSubscriptionDetailResponse } from "@/api/models";
 import { PassStackParamList } from "@/navigations";
 import { useDistanceCalculator, useToastMessage } from "@/hooks";
 import {
+  formatCardCompany,
   formatEllipsis,
   formatPassType,
   formatServiceType,
@@ -370,13 +371,34 @@ export const SubscriptionDetail = ({
             </CustomText>
           </View>
 
-          <View style={[styles.row, { borderBottomWidth: 0 }]}>
+          <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
               예상 결제 금액
             </CustomText>
             <CustomText fontSize={16}>
               {data.amount.toLocaleString()}원
             </CustomText>
+          </View>
+
+          <View style={[styles.row, { borderBottomWidth: 0 }]}>
+            <CustomText color={colors.gray5} fontSize={16}>
+              결제수단
+            </CustomText>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <CustomText fontSize={16}>
+                {formatCardCompany(data.cardCompany)} {data.cardDisplayNumber}
+              </CustomText>
+
+              <Pressable style={styles.changeButton}>
+                <CustomText
+                  color={colors.gray7}
+                  fontSize={12}
+                  fontWeight={"500"}
+                >
+                  변경
+                </CustomText>
+              </Pressable>
+            </View>
           </View>
         </View>
 
@@ -557,6 +579,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(16),
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
+  },
+  changeButton: {
+    marginLeft: getResponsiveSize(8),
+    paddingVertical: getResponsiveSize(4),
+    paddingHorizontal: getResponsiveSize(10),
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 8,
   },
   terms: {
     marginTop: getResponsiveSize(40),

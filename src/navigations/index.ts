@@ -15,3 +15,4 @@ export * from "./ReceiptScanStack";
 export * from "./MyStoreStack";
 export * from "./QrScanStack";
 export * from "./SettingStack";
+export * from "./EventStack";

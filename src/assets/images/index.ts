@@ -103,3 +103,4 @@ export { default as deleteIcon } from "./delete-icon.png";
 export { default as refferalBanner } from "./refferal-banner.png";
 export { default as qIcon } from "./q-icon.png";
 export { default as aIcon } from "./a-icon.png";
+export { default as shareIcon } from "./share-icon.png";
