@@ -314,7 +314,14 @@ export const MyPage = () => {
             <CustomText fontSize={16}>쿠폰</CustomText>
           </Pressable>
 
-          <Pressable style={styles.button}>
+          <Pressable
+            onPress={() =>
+              containerNavigation.navigate("EventStack", {
+                screen: "EventList",
+              })
+            }
+            style={styles.button}
+          >
             <Image source={eventIcon} style={styles.icon} />
             <CustomText fontSize={16}>이벤트</CustomText>
           </Pressable>

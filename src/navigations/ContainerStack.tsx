@@ -30,6 +30,7 @@ import { Coupon } from "@/screens/Coupon";
 import { Refferal } from "@/screens/Refferal";
 import { NoticeStack, NoticeStackParamList } from "./NoticeStack";
 import { Faq } from "@/screens/Faq/Faq";
+import { EventStack, EventStackParamList } from "./EventStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -53,6 +54,7 @@ export type ContainerStackParamList = {
   ServiceHistory: undefined;
   Coupon: undefined;
   Refferal: undefined;
+  EventStack: NavigatorScreenParams<EventStackParamList>;
   NoticeStack: NavigatorScreenParams<NoticeStackParamList>;
   Faq: undefined;
 };
@@ -210,6 +212,13 @@ export const ContainerStack = ({
           component={Coupon}
           options={{
             header: () => <CustomHeader title="쿠폰" showBackButton />,
+          }}
+        />
+        <Stack.Screen
+          name="EventStack"
+          component={EventStack}
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen
