@@ -13,6 +13,8 @@ import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { POPUP_CLOSE_DATE } from "@/constants";
 import { colors } from "@/styles";
+import { useAtom } from "jotai";
+import { popupAtom } from "@/jotai";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -25,7 +27,7 @@ export const Popup = ({ data }: Props) => {
 
   const popupRef = useRef<BottomSheetModal>(null);
 
-  const [hasShownPopup, setHasShownPopup] = useState(false);
+  const [popup, setPopup] = useAtom(popupAtom);
 
   const TAB_HEIGHT =
     screenHeight < 680 ? getResponsiveSize(365) : getResponsiveSize(350);
@@ -53,15 +55,11 @@ export const Popup = ({ data }: Props) => {
     const today = new Date().toISOString().split("T")[0];
     const lastClosed = mmkvStorage.getString(POPUP_CLOSE_DATE);
 
-    if (
-      !hasShownPopup &&
-      (!lastClosed || lastClosed !== today) &&
-      popups.length > 0
-    ) {
+    if (!popup && (!lastClosed || lastClosed !== today) && popups.length > 0) {
       popupRef.current?.present();
-      setHasShownPopup(true);
+      setPopup(true);
     }
-  }, [popups, hasShownPopup]);
+  }, [popups, popup]);
 
   const renderBackdrop = useCallback(
     (props: any) => (
