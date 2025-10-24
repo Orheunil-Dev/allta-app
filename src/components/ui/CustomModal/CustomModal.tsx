@@ -15,7 +15,7 @@ interface CustomModalProps {
   onNext?: () => void;
   nextButtonText?: string;
   isNextButtonDisable?: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   closeButtonText?: string;
   isCloseButtonDisable?: boolean;
   backgroundColor?: string;
@@ -41,17 +41,23 @@ export const CustomModal = ({
             {children}
 
             <View style={styles.buttonBox}>
-              <CustomButton
-                onPress={onClose}
-                isDisabled={isCloseButtonDisable}
-                flex={1}
-                borderWidth={1}
-                borderColor={colors.gray2}
-              >
-                <CustomText fontSize={15} fontWeight="500" color={colors.black}>
-                  {closeButtonText ?? "확인"}
-                </CustomText>
-              </CustomButton>
+              {onClose && (
+                <CustomButton
+                  onPress={onClose}
+                  isDisabled={isCloseButtonDisable}
+                  flex={1}
+                  borderWidth={1}
+                  borderColor={colors.gray2}
+                >
+                  <CustomText
+                    fontSize={15}
+                    fontWeight="500"
+                    color={colors.black}
+                  >
+                    {closeButtonText ?? "확인"}
+                  </CustomText>
+                </CustomButton>
+              )}
 
               {onNext && (
                 <CustomButton

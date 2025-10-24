@@ -1,31 +1,38 @@
 import { useEffect, useState } from "react";
+import { Platform } from "react-native";
+import "react-native-reanimated";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { KeyboardProvider } from "react-native-keyboard-controller";
+import "react-native-get-random-values";
+import Toast from "react-native-toast-message";
+import checkVersion from "react-native-store-version";
+import * as Font from "expo-font";
+import { StatusBar } from "expo-status-bar";
+import { SystemBars } from "react-native-edge-to-edge";
+import * as Updates from "expo-updates";
+import * as SecureStore from "expo-secure-store";
+import * as Notifications from "expo-notifications";
+import * as Application from "expo-application";
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import "react-native-reanimated";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { KeyboardProvider } from "react-native-keyboard-controller";
-import * as Font from "expo-font";
-import { StatusBar } from "expo-status-bar";
-import { SystemBars } from "react-native-edge-to-edge";
-import * as SecureStore from "expo-secure-store";
+import { initializeKakaoSDK } from "@react-native-kakao/core";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { ContainerStack } from "@/navigations";
-import { Splash } from "@/screens/Splash";
-import "react-native-get-random-values";
-import Toast from "react-native-toast-message";
 import { toastConfig } from "@/libs";
-import * as Notifications from "expo-notifications";
-import { Alert, Linking, Platform } from "react-native";
-import * as Application from "expo-application";
-import * as Updates from "expo-updates";
-import checkVersion from "react-native-store-version";
+import { ContainerStack } from "@/navigations";
+import { Update } from "@/screens/Update";
+import { Splash } from "@/screens/Splash";
+
+initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_APP_KEY);
 
 export default function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
+  const [showUpdate, setShowUpdate] = useState<boolean>(false);
+  const [isVersionUpdate, setIsVersionUpdate] = useState<boolean>(false);
+  const [isUpdateFinished, setIsUpdateFinished] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
 
   const [fontsLoaded] = Font.useFonts({
@@ -63,10 +70,11 @@ export default function App() {
     }),
   });
 
+  // 앱 업데이트 체크
   useEffect(() => {
     const appEnv = process.env.EXPO_PUBLIC_APP_ENV;
 
-    if (appEnv === "DEV") return;
+    if (appEnv !== "PROD") return;
 
     const storeUrl = {
       iosStoreURL: "https://apps.apple.com/kr/app/allta/id6467127880",
@@ -82,48 +90,40 @@ export default function App() {
           country: "kr",
         });
 
+        // 앱 버전 업데이트
         if (check.result === "new") {
-          // 앱 스토어 버전이 새로움
-          Alert.alert(
-            "ALLTA 업데이트",
-            "새로운 버전으로 업데이트 되었습니다. [확인]를 누르시면 스토어로 이동합니다.",
-            [
-              {
-                text: "확인",
-                onPress: () => {
-                  setTimeout(() => {
-                    const _storeUrl =
-                      Platform.OS === "android"
-                        ? storeUrl.androidStoreURL
-                        : storeUrl.iosStoreURL;
-                    Linking.openURL(_storeUrl);
-                  }, 100);
-                },
-              },
-            ]
-          );
+          setShowUpdate(true);
+          setIsVersionUpdate(true);
         } else {
           const update = await Updates.checkForUpdateAsync();
+
+          // Expo-Updates(코드 푸시)
           if (update.isAvailable) {
+            setShowUpdate(true);
+            setIsUpdateFinished(false);
+
+            const start = performance.now();
+
             await Updates.fetchUpdateAsync();
 
-            const alertMessage =
-              "새로운 버전으로 업데이트 되었습니다. [확인]를 누르시면 업데이트를 위해 앱이 재기동 됩니다.";
+            const elapsed = performance.now() - start;
+            const remaining = Math.max(1000 - elapsed, 0);
 
-            Alert.alert("ALLTA 업데이트", alertMessage, [
-              {
-                text: "확인",
-                onPress: () => {
-                  setTimeout(() => {
-                    Updates.reloadAsync();
-                  }, 100);
-                },
-              },
-            ]);
+            await new Promise((resolve) => setTimeout(resolve, remaining));
+
+            setIsUpdateFinished(true);
+
+            setTimeout(async () => {
+              await Updates.reloadAsync();
+            }, 250);
           }
         }
-      } catch (error) {
-        console.log("checkUpdate error:", error);
+      } catch (error: any) {
+        setShowUpdate(false);
+        setIsVersionUpdate(false);
+        setIsUpdateFinished(false);
+
+        console.log(error.message ?? error);
       }
     };
 
@@ -170,6 +170,15 @@ export default function App() {
 
     setupNotification();
   }, []);
+
+  if (showUpdate) {
+    return (
+      <Update
+        isVersionUpdate={isVersionUpdate}
+        isUpdateFinished={isUpdateFinished}
+      />
+    );
+  }
 
   if (showSplash) {
     return <Splash />;
