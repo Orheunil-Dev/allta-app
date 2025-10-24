@@ -289,7 +289,11 @@ export const formatPaymentStatus = (text: string): string => {
   }
 };
 
-const formatWeatherIcon = (code: number) => {
+export const formatWeatherIcon = (code: number | null) => {
+  if (!code) {
+    return "화창";
+  }
+
   if ([1, 2, 3, 4, 5, 30, 31, 32, 33, 34, 35, 36, 37].includes(code)) {
     return "화창";
   } else if ([6, 7, 8, 11, 38].includes(code)) {
