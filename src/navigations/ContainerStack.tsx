@@ -27,10 +27,10 @@ import { MyStoreDetail } from "@/screens/MyStore";
 import { ServiceHistory } from "@/screens/ServiceHistory";
 import { PurchaseStack, PurchaseStackParamList } from "./PurchaseStack";
 import { Coupon } from "@/screens/Coupon";
-import { Refferal } from "@/screens/Refferal";
+import { Referral } from "@/screens/Referral";
 import { NoticeStack, NoticeStackParamList } from "./NoticeStack";
-import { Faq } from "@/screens/Faq/Faq";
 import { EventStack, EventStackParamList } from "./EventStack";
+import { Faq } from "@/screens/Faq";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -53,7 +53,7 @@ export type ContainerStackParamList = {
   };
   ServiceHistory: undefined;
   Coupon: undefined;
-  Refferal: undefined;
+  Referral: undefined;
   EventStack: NavigatorScreenParams<EventStackParamList>;
   NoticeStack: NavigatorScreenParams<NoticeStackParamList>;
   Faq: undefined;
@@ -222,8 +222,8 @@ export const ContainerStack = ({
           }}
         />
         <Stack.Screen
-          name="Refferal"
-          component={Refferal}
+          name="Referral"
+          component={Referral}
           options={{
             header: () => (
               <CustomHeader title="친구 초대 / 등록" showBackButton />

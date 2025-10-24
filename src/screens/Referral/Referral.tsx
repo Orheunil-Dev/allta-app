@@ -14,14 +14,14 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { Spinner } from "@/components/ui/Spinner";
-import { refferalBanner } from "@/assets/images";
+import { referralBanner } from "@/assets/images";
 import { colors, fontMap } from "@/styles";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-// import { shareCustomTemplate } from "@react-native-kakao/share";
+import { shareCustomTemplate } from "@react-native-kakao/share";
 
 const { width: screenWidth } = Dimensions.get("window");
 
-export const Refferal = () => {
+export const Referral = () => {
   const [referralCode, setReferralCode] = useState<string>("");
 
   const setErrorModal = useSetAtom(errorModalAtom);
@@ -44,7 +44,7 @@ export const Refferal = () => {
   } = useReferralControllerRegisterReferralCode();
 
   // 추첱코드 등록
-  const handleRegisterRefferalCode = () => {
+  const handleRegisterReferralCode = () => {
     if (referralCode.length !== 6) {
       return ErrorToast("추천코드는 6자 입니다.");
     }
@@ -80,17 +80,17 @@ export const Refferal = () => {
   };
 
   // 카카오톡 공유하기
-  //   const handleKakaoShare = async () => {
-  //   if (!referralCodeData?.data) return;
+  const handleKakaoShare = async () => {
+    if (!referralCodeData?.data) return;
 
-  //   await shareCustomTemplate({
-  //     templateId: 125068,
-  //     templateArgs: {
-  //       userName: referralCodeData.data.name,
-  //       referralCode: referralCodeData.data.referralCode,
-  //     },
-  //   });
-  // };
+    await shareCustomTemplate({
+      templateId: 125068,
+      templateArgs: {
+        userName: referralCodeData.data.name,
+        referralCode: referralCodeData.data.referralCode,
+      },
+    });
+  };
 
   // 추천코드 클립보드에 복사
   const handleCopyToClipboard = async () => {
@@ -106,7 +106,7 @@ export const Refferal = () => {
       <CustomKeyboardAvoidingView>
         <ScrollView>
           <Image
-            source={refferalBanner}
+            source={referralBanner}
             style={{
               width: screenWidth,
               height: (screenWidth * 388) / 375,
@@ -124,7 +124,7 @@ export const Refferal = () => {
               <CustomText fontSize={16}>을 받을 수 있어요!</CustomText>
             </View>
 
-            <View style={styles.refferalCode}>
+            <View style={styles.referralCode}>
               <CustomText fontSize={16} fontWeight={"600"}>
                 나의 추천 코드
               </CustomText>
@@ -211,7 +211,7 @@ export const Refferal = () => {
               </View>
             ) : (
               <CustomButton
-                onPress={handleRegisterRefferalCode}
+                onPress={handleRegisterReferralCode}
                 isDisabled={
                   !!referralCodeData?.data.referrerCode ||
                   registerReferralCodeLoading
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: getResponsiveSize(20),
   },
-  refferalCode: {
+  referralCode: {
     alignItems: "center",
     marginTop: getResponsiveSize(20),
     paddingVertical: 12,
