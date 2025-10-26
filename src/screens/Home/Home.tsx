@@ -1,47 +1,39 @@
 import { useCallback, useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { BottomTabParamList, ContainerStackParamList } from "@/navigations";
-import { getResponsiveSize } from "@/utils";
-import { CustomText } from "@/components/ui/CustomText";
-import {
-  autoWashIcon,
-  cloudIcon,
-  handsWashIcon,
-  homeFooterArrow,
-  qrIcon,
-  rainIcon,
-  receiptIcon,
-  snowIcon,
-  sunnyIcon,
-  welcomeCoupon,
-} from "@/assets/images";
-import { colors } from "@/styles";
-import { Popup } from "@/components/home/Popup";
-import { MainBanner, SubBanner } from "@/components/home/Banner";
-import { HomeHeader } from "@/components/home/HomeHeader";
+import * as Notifications from "expo-notifications";
 import {
   useNotificationControllerGetUnreadNotificationsCount,
   useNotificationControllerUpdatePushToken,
 } from "@/api/notification/notification";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useBannerControllerGetBannerList } from "@/api/banner/banner";
+import { BottomTabParamList, ContainerStackParamList } from "@/navigations";
+import mmkvStorage from "@/libs/mmkv-storage";
+import { getResponsiveSize } from "@/utils";
+import { CustomText } from "@/components/ui/CustomText";
+import { Popup } from "@/components/home/Popup";
+import { MainBanner, SubBanner } from "@/components/home/Banner";
+import { HomeHeader } from "@/components/home/HomeHeader";
 import { StoreRecommend } from "@/components/home/StoreRecommend";
 import { CustomModal } from "@/components/ui/CustomModal";
-import * as Notifications from "expo-notifications";
-import mmkvStorage from "@/libs/mmkv-storage";
+import { WeatherCast } from "@/components/home/WeatherCast";
 import { IS_COUPON_RECEIVED, IS_NOTIFICATION_GRANTED } from "@/constants";
-import { useCurrentWeather } from "@/hooks";
-import { useBannerControllerGetBannerList } from "@/api/banner/banner";
+import {
+  autoWashIcon,
+  handsWashIcon,
+  homeFooterArrow,
+  qrIcon,
+  receiptIcon,
+  welcomeCoupon,
+} from "@/assets/images";
+import { colors } from "@/styles";
 
 export const Home = () => {
   const containerNavigation =
@@ -76,9 +68,6 @@ export const Home = () => {
       },
     });
 
-  // 날씨 조회 훅스
-  const { weatherText, weatherIcon } = useCurrentWeather();
-
   // 알림 버튼 터치
   const handlePressAlarm = () => {
     return containerNavigation.navigate("Notification");
@@ -112,22 +101,6 @@ export const Home = () => {
       ],
     };
   });
-
-  // 날씨 아이콘
-  const getWeatherIcon = () => {
-    switch (weatherText) {
-      case "화창":
-        return sunnyIcon;
-      case "흐림":
-        return cloudIcon;
-      case "비":
-        return rainIcon;
-      case "눈":
-        return snowIcon;
-      default:
-        return sunnyIcon;
-    }
-  };
 
   // 푸시토큰 업데이트
   useEffect(() => {
@@ -221,18 +194,7 @@ export const Home = () => {
           <MainBanner data={bannerData?.data} />
 
           <View style={styles.mainContainer}>
-            {/* 현재 날씨 */}
-            <View style={styles.weather}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image source={getWeatherIcon()} style={styles.weatherIcon} />
-                <CustomText color={colors.black} fontSize={16}>
-                  오늘의 날씨는 '{weatherText}'
-                </CustomText>
-              </View>
-              <CustomText color={colors.black} fontSize={22} fontWeight={"600"}>
-                세차하기 좋은 날이에요
-              </CustomText>
-            </View>
+            <WeatherCast />
 
             <View style={styles.mainArea}>
               {/* 자동세차 */}
@@ -406,15 +368,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     width: "100%",
     paddingHorizontal: getResponsiveSize(20),
-  },
-  weatherIcon: {
-    width: getResponsiveSize(24),
-    height: getResponsiveSize(24),
-    marginRight: getResponsiveSize(8),
-  },
-  weather: {
-    width: "100%",
-    marginTop: getResponsiveSize(32),
   },
   productRecommend: {
     width: "100%",

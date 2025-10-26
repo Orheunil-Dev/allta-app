@@ -19,7 +19,7 @@ import {
   noticeIcon,
   passIcon,
   purchaseIcon,
-  refferalIcon,
+  referralIcon,
   rigthArrowIcon,
   serviceHistoryIcon,
   settingIcon,
@@ -327,10 +327,10 @@ export const MyPage = () => {
           </Pressable>
 
           <Pressable
-            onPress={() => containerNavigation.navigate("Refferal")}
+            onPress={() => containerNavigation.navigate("Referral")}
             style={styles.button}
           >
-            <Image source={refferalIcon} style={styles.icon} />
+            <Image source={referralIcon} style={styles.icon} />
             <CustomText fontSize={16}>친구 초대</CustomText>
           </Pressable>
         </View>

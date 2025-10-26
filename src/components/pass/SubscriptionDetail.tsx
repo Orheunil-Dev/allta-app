@@ -25,15 +25,16 @@ import {
   formatUsageLeft,
   getResponsiveSize,
 } from "@/utils";
-import { CustomText } from "../ui/CustomText";
-import { CustomButton } from "../ui/CustomButton";
-import { CustomModal } from "../ui/CustomModal";
+import { CustomText } from "@/components/ui/CustomText";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomModal } from "@/components/ui/CustomModal";
+import { CardChangeButton } from "./CardChangeButton";
 import { defaultStoreImage, locationIcon, termsArrow } from "@/assets/images";
 import { colors } from "@/styles";
 
 interface Props {
   data: GetSubscriptionDetailResponse["data"];
-  refetch: (
+  subscriptionRefetch: (
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<GetSubscriptionDetailResponse, unknown>>;
   router: RouteProp<PassStackParamList, "PassDetail">;
@@ -48,17 +49,17 @@ export const SubscriptionDetail = ({
   router,
   coordinate,
   data,
-  refetch,
+  subscriptionRefetch,
   handleRouteMyStoreDetail,
 }: Props) => {
+  const setErrorModal = useSetAtom(errorModalAtom);
+
   const [passTermsOpen, setPassTermsOpen] = useState<boolean>(false);
   const [refundTermsOpen, setRefundTermsOpen] = useState<boolean>(false);
   const [showDiscontinueModal, setShowDicontinueModal] =
     useState<boolean>(false);
   const [showResubscribeModal, setShowResubscribeModal] =
     useState<boolean>(false);
-
-  const setErrorModal = useSetAtom(errorModalAtom);
 
   // 구독권 갱신 해지 API
   const {
@@ -89,7 +90,7 @@ export const SubscriptionDetail = ({
       },
       {
         onSuccess: () => {
-          refetch();
+          subscriptionRefetch();
           setShowDicontinueModal(false);
           SuccessToast("구독 갱신이 해지되었습니다.");
         },
@@ -117,7 +118,7 @@ export const SubscriptionDetail = ({
       },
       {
         onSuccess: () => {
-          refetch();
+          subscriptionRefetch();
           setShowResubscribeModal(false);
           SuccessToast("재구독이 완료되었습니다.");
         },
@@ -389,15 +390,12 @@ export const SubscriptionDetail = ({
                 {formatCardCompany(data.cardCompany)} {data.cardDisplayNumber}
               </CustomText>
 
-              <Pressable style={styles.changeButton}>
-                <CustomText
-                  color={colors.gray7}
-                  fontSize={12}
-                  fontWeight={"500"}
-                >
-                  변경
-                </CustomText>
-              </Pressable>
+              <CardChangeButton
+                subscriptionId={router.params.id}
+                cardCompany={data.cardCompany}
+                cardDisplayNumber={data.cardDisplayNumber}
+                subscriptionRefetch={subscriptionRefetch}
+              />
             </View>
           </View>
         </View>
@@ -579,14 +577,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(16),
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
-  },
-  changeButton: {
-    marginLeft: getResponsiveSize(8),
-    paddingVertical: getResponsiveSize(4),
-    paddingHorizontal: getResponsiveSize(10),
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 8,
   },
   terms: {
     marginTop: getResponsiveSize(40),

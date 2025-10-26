@@ -14,15 +14,18 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
+import RenderHTML from "react-native-render-html";
 import * as Location from "expo-location";
 import { GetStoreGroupListResponse } from "@/api/models";
 import { useStoreControllerGetStoreDetail } from "@/api/store/store";
 import { MyStoreStackParamList } from "@/navigations";
-import { useDistanceCalculator } from "@/hooks";
+import { useDistanceCalculator, useToastMessage } from "@/hooks";
 import { getFontSize, getResponsiveSize, getStoreBusinessHours } from "@/utils";
 import { DayKey, PassType } from "@/types";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { KakaoMap } from "@/components/store/KakaoMap";
 import { dayLabel, dayOrder } from "@/constants";
 import {
   clockIcon,
@@ -34,9 +37,6 @@ import {
   storeNoticeIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
-import RenderHTML from "react-native-render-html";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { KakaoMap } from "@/components/store/KakaoMap";
 
 type StoreDetailRouteProp = RouteProp<MyStoreStackParamList, "MyStoreDetail">;
 
@@ -70,6 +70,7 @@ export const MyStoreDetail = () => {
     query: { enabled: !!router.params.storeId },
   });
 
+  const { ErrorToast } = useToastMessage();
   const { getDistance } = useDistanceCalculator();
 
   const rotateAnimatedStyle = useAnimatedStyle(() => {
@@ -97,10 +98,16 @@ export const MyStoreDetail = () => {
     setShowBusinessHours(!showBusinessHours);
   };
 
-  // 티맵 열기
-  const handleOpenNavigation = () => {
+  // TMAP 네비게이션 열기
+  const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(storeData?.store.name ?? "");
     const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${storeData?.store.lng}&rGoY=${storeData?.store.lat}`;
+
+    const isCanOpen = await Linking.canOpenURL(tmapScheme);
+
+    if (!isCanOpen) {
+      return ErrorToast("티맵이 설치되어 있지 않습니다.");
+    }
 
     return Linking.openURL(tmapScheme);
   };

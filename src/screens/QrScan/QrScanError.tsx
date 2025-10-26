@@ -122,7 +122,7 @@ export const QrScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              QR스캔 중 에러가 발생했습니다.
+              QR스캔 중 오류가 발생했습니다.
             </CustomText>
 
             <CustomText marginTop={8} color={colors.gray7} fontSize={16}>

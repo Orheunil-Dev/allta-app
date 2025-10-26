@@ -4,6 +4,7 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as Linking from "expo-linking";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
 import { checkIsFirstLaunch, formatEllipsis } from "@/utils";
@@ -20,17 +21,17 @@ import {
 import { QrScanStack, QrScanStackParamList } from "./QrScanStack";
 import { SettingStack, SettingStackParamList } from "./SettingStack";
 import { PassStack, PassStackParamList } from "./PassStack";
+import { PurchaseStack, PurchaseStackParamList } from "./PurchaseStack";
+import { NoticeStack, NoticeStackParamList } from "./NoticeStack";
+import { EventStack, EventStackParamList } from "./EventStack";
 import { Notification } from "@/screens/Notification";
-import { CustomHeader } from "@/components/layout/CustomHeader";
-import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 import { MyStoreDetail } from "@/screens/MyStore";
 import { ServiceHistory } from "@/screens/ServiceHistory";
-import { PurchaseStack, PurchaseStackParamList } from "./PurchaseStack";
 import { Coupon } from "@/screens/Coupon";
-import { Refferal } from "@/screens/Refferal";
-import { NoticeStack, NoticeStackParamList } from "./NoticeStack";
-import { Faq } from "@/screens/Faq/Faq";
-import { EventStack, EventStackParamList } from "./EventStack";
+import { Referral } from "@/screens/Referral";
+import { Faq } from "@/screens/Faq";
+import { CustomHeader } from "@/components/layout/CustomHeader";
+import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -53,18 +54,34 @@ export type ContainerStackParamList = {
   };
   ServiceHistory: undefined;
   Coupon: undefined;
-  Refferal: undefined;
+  Referral: undefined;
   EventStack: NavigatorScreenParams<EventStackParamList>;
   NoticeStack: NavigatorScreenParams<NoticeStackParamList>;
   Faq: undefined;
 };
 
-const Stack = createNativeStackNavigator<ContainerStackParamList>();
-
 interface Props {
   showLoginModal: boolean;
   setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+const Stack = createNativeStackNavigator<ContainerStackParamList>();
+
+const linking = {
+  prefixes: [Linking.createURL("/"), "allta-user://"],
+  config: {
+    screens: {
+      Coupon: "coupon",
+      EventStack: {
+        path: "event",
+        screens: {
+          EventList: "",
+          EventDetail: ":id",
+        },
+      },
+    },
+  },
+};
 
 export const ContainerStack = ({
   showLoginModal,
@@ -75,7 +92,7 @@ export const ContainerStack = ({
   const isFirstLaunch = checkIsFirstLaunch();
 
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={navigationRef} linking={linking}>
       <LoginModal
         navigationRef={navigationRef}
         visible={showLoginModal}
@@ -222,8 +239,8 @@ export const ContainerStack = ({
           }}
         />
         <Stack.Screen
-          name="Refferal"
-          component={Refferal}
+          name="Referral"
+          component={Referral}
           options={{
             header: () => (
               <CustomHeader title="친구 초대 / 등록" showBackButton />

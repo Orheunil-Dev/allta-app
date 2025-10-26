@@ -17,3 +17,5 @@ export const commonModalAtom = atom<{
   title: null,
   message: null,
 });
+
+export const popupAtom = atom<boolean>(false);

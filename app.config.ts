@@ -42,6 +42,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "kakaolink",
         "kakaoplus",
         "kakaotalk",
+        "tmap",
       ],
       NSAppTransportSecurity: {
         NSAllowsArbitraryLoads: true,
@@ -107,6 +108,19 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
             "https://devrepo.kakao.com/nexus/content/groups/public/",
           ],
           usesCleartextTraffic: true,
+        },
+      },
+    ],
+    [
+      "@react-native-kakao/core",
+      {
+        nativeAppKey: process.env.EXPO_PUBLIC_KAKAO_APP_KEY,
+        android: {
+          authCodeHandlerActivity: true,
+        },
+        ios: {
+          handleKakaoOpenUrl: true,
+          forwardKakaoLinkIntentFilterToMainActivity: true,
         },
       },
     ],

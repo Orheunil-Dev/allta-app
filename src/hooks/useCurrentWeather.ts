@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const useCurrentWeather = () => {
   const [weatherText, setWeatherText] = useState<string | null>(null);
-  const [weatherIcon, setWeatherIcon] = useState<string | null>(null);
+  const [weatherIcon, setWeatherIcon] = useState<number | null>(null);
 
   // 날씨 조회
   useEffect(() => {
@@ -102,7 +102,7 @@ export const useCurrentWeather = () => {
       };
 
       setWeatherText(weather.weatherText ?? null);
-      setWeatherIcon(weather.weatherCode ?? null);
+      setWeatherIcon(Number(weather.weatherCode) ?? null);
     };
 
     fetchWeather();

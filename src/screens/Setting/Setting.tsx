@@ -9,13 +9,18 @@ import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import CookieManager from "@react-native-cookies/cookies";
 import * as Linking from "expo-linking";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomModal } from "@/components/ui/CustomModal";
 import { rigthArrowIcon } from "@/assets/images";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/jotai";
+import checkVersion from "react-native-store-version";
+import * as Application from "expo-application";
 
 export const Setting = () => {
+  const [appVersion, setAppVersion] = useState<string>("");
+  const [isOldVersion, setIsOldVersion] = useState<boolean>(false);
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -73,6 +78,27 @@ export const Setting = () => {
     );
   };
 
+  // 앱 버전 체크
+  useEffect(() => {
+    const fetchVersion = async () => {
+      const version = await checkVersion({
+        version: Application.nativeApplicationVersion ?? "",
+        iosStoreURL: "https://apps.apple.com/kr/app/allta/id6467127880",
+        androidStoreURL:
+          "https://play.google.com/store/apps/details?id=io.allta.user",
+        country: "kr",
+      });
+
+      setAppVersion(version.local ?? "");
+
+      if (version.result === "new") {
+        setIsOldVersion(true);
+      }
+    };
+
+    fetchVersion();
+  }, []);
+
   return (
     <View style={styles.container}>
       <CustomModal
@@ -124,13 +150,15 @@ export const Setting = () => {
       </Pressable>
 
       <View style={styles.button}>
-        <CustomText fontSize={16}>버전 정보</CustomText>
+        <CustomText fontSize={16}>버전 정보 {appVersion}</CustomText>
 
-        <Pressable onPress={handleOpenStore} style={styles.updateButton}>
-          <CustomText color={colors.gray7} fontSize={12} fontWeight={"500"}>
-            업데이트
-          </CustomText>
-        </Pressable>
+        {isOldVersion && (
+          <Pressable onPress={handleOpenStore} style={styles.updateButton}>
+            <CustomText color={colors.gray7} fontSize={12} fontWeight={"500"}>
+              업데이트
+            </CustomText>
+          </Pressable>
+        )}
       </View>
 
       <Pressable onPress={() => setShowModal(true)} style={styles.button}>

@@ -1,5 +1,6 @@
 import { Dimensions, Image, Linking, StyleSheet, View } from "react-native";
 import RenderHTML from "react-native-render-html";
+import { useToastMessage } from "@/hooks";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
@@ -24,9 +25,18 @@ export const StoreInfo = ({
   description,
   policy,
 }: Props) => {
-  const handleOpenNavigation = () => {
+  const { ErrorToast } = useToastMessage();
+
+  // TMAP 네비게이션 열기
+  const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(storeName);
     const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
+
+    const isCanOpen = await Linking.canOpenURL(tmapScheme);
+
+    if (!isCanOpen) {
+      return ErrorToast("티맵이 설치되어 있지 않습니다.");
+    }
 
     return Linking.openURL(tmapScheme);
   };

@@ -1,1 +1,1 @@
-export * from "./Refferal";
+export * from "./Faq";

@@ -26,5 +26,6 @@
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "cmake.sourceDirectory": "/Users/oseunghyeon/Desktop/develop/allta-app/node_modules/react-native/ReactCommon/jsinspector-modern"
 }
