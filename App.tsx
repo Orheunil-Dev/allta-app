@@ -13,6 +13,7 @@ import { SystemBars } from "react-native-edge-to-edge";
 import * as Updates from "expo-updates";
 import * as SecureStore from "expo-secure-store";
 import * as Notifications from "expo-notifications";
+import * as Linking from "expo-linking";
 import * as Application from "expo-application";
 import {
   QueryCache,
@@ -144,9 +145,24 @@ export default function App() {
     prepare();
   }, []);
 
+  // 푸시알림 딥링크 처리
+  useEffect(() => {
+    const listener = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        const url = response.notification.request.content.data?.url;
+
+        if (url) {
+          Linking.openURL(url as string);
+        }
+      }
+    );
+
+    return () => listener.remove();
+  }, []);
+
+  // 포그라운드 알림 처리
   useEffect(() => {
     const setupNotification = async () => {
-      // 포그라운드 알림 처리
       Notifications.setNotificationHandler({
         handleNotification: async () => ({
           shouldShowAlert: true, // 알림 UI
