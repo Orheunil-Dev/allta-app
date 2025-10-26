@@ -145,7 +145,7 @@ export const PassDetail = () => {
   );
 
   return (
-    <CustomSafeAreaView edges={["bottom"]}>
+    <CustomSafeAreaView edges={["bottom"]} paddinBottom={20}>
       {subscriptionData?.data && (
         <SubscriptionDetail
           data={subscriptionData.data}
