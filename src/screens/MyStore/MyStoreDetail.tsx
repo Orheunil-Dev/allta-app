@@ -98,7 +98,7 @@ export const MyStoreDetail = () => {
     setShowBusinessHours(!showBusinessHours);
   };
 
-  // TMAP 네이게이션 열기
+  // TMAP 네비게이션 열기
   const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(storeData?.store.name ?? "");
     const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${storeData?.store.lng}&rGoY=${storeData?.store.lat}`;

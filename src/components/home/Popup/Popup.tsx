@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Linking from "expo-linking";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -42,6 +43,18 @@ export const Popup = ({ data }: Props) => {
         .sort((a, b) => a.index - b.index)
     : [];
 
+  // URL 열기
+  const handleOpenUrl = (url?: string | null) => async () => {
+    if (!url) return;
+
+    const isCanOpen = await Linking.canOpenURL(url);
+
+    if (!isCanOpen) return;
+
+    return Linking.openURL(url);
+  };
+
+  // 팝업 닫기
   const handleClose = (isHideForToday: boolean) => () => {
     if (isHideForToday) {
       const today = new Date().toISOString().split("T")[0];
@@ -92,7 +105,11 @@ export const Popup = ({ data }: Props) => {
             loop
             onSnapToItem={(index) => setCurrentSlide(index)}
             renderItem={({ item, index }) => (
-              <Pressable key={index} style={styles.popupCard}>
+              <Pressable
+                key={index}
+                onPress={handleOpenUrl(item.url)}
+                style={styles.popupCard}
+              >
                 <Image
                   source={{ uri: item.image }}
                   resizeMode="cover"

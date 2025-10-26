@@ -33,7 +33,7 @@ export const MyStoreCard = ({
   const { ErrorToast } = useToastMessage();
   const { getDistance } = useDistanceCalculator();
 
-  // TMAP 네이게이션 열기
+  // TMAP 네비게이션 열기
   const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(store.name);
     const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;

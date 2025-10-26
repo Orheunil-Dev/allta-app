@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
+import * as Linking from "expo-linking";
 import { GetBannerListResponse } from "@/api/models";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
@@ -21,6 +22,17 @@ export const MainBanner = ({ data }: Props) => {
         .sort((a, b) => a.index - b.index)
     : [];
 
+  // URL 열기
+  const handleOpenUrl = (url?: string | null) => async () => {
+    if (!url) return;
+
+    const isCanOpen = await Linking.canOpenURL(url);
+
+    if (!isCanOpen) return;
+
+    return Linking.openURL(url);
+  };
+
   return (
     <View style={styles.container}>
       <Carousel
@@ -33,7 +45,11 @@ export const MainBanner = ({ data }: Props) => {
         autoPlayInterval={2500}
         onSnapToItem={(index) => setCurrentSlide(index)}
         renderItem={({ item, index }) => (
-          <Pressable key={index} style={styles.bannerCard}>
+          <Pressable
+            key={index}
+            onPress={handleOpenUrl(item.url)}
+            style={styles.bannerCard}
+          >
             <Image
               source={{ uri: item.image }}
               resizeMode="cover"

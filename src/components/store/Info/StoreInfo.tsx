@@ -27,7 +27,7 @@ export const StoreInfo = ({
 }: Props) => {
   const { ErrorToast } = useToastMessage();
 
-  // TMAP 네이게이션 열기
+  // TMAP 네비게이션 열기
   const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(storeName);
     const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
