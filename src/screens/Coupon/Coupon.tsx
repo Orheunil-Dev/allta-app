@@ -126,6 +126,7 @@ export const Coupon = () => {
           <FlatList
             data={coupons}
             keyExtractor={(item) => item.id}
+            style={{ flex: 1 }}
             contentContainerStyle={styles.container}
             renderItem={({ item, index }) => (
               <View style={styles.card}>
@@ -172,7 +173,6 @@ export const Coupon = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: getResponsiveSize(20),
     gap: getResponsiveSize(16),
   },
