@@ -94,7 +94,6 @@ export const MyStoreList = () => {
           renderItem={({ item, index }) => (
             <MyStoreCard
               store={item}
-              storeName={item.name}
               lat={coordinate.lat}
               lng={coordinate.lng}
             />

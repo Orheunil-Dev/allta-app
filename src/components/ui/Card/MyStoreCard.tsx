@@ -10,7 +10,12 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MyStoreListItem } from "@/api/models";
 import { MyStoreStackParamList } from "@/navigations";
 import { useDistanceCalculator, useToastMessage } from "@/hooks";
-import { formatEllipsis, formatPassType, getResponsiveSize } from "@/utils";
+import {
+  formatEllipsis,
+  formatPassType,
+  getResponsiveSize,
+  getStoreBusinessHours,
+} from "@/utils";
 import { CustomText } from "../CustomText";
 import { CustomButton } from "../CustomButton";
 import { defaultStoreImage, locationIcon } from "@/assets/images";
@@ -47,6 +52,17 @@ export const MyStoreCard = ({
     return Linking.openURL(tmapScheme);
   };
 
+  const bi = getStoreBusinessHours(
+    store.businessHours as unknown as Record<
+      string,
+      { open: string; close: string }
+    >,
+    store.breakTime,
+    store.holidays
+  );
+
+  console.log(bi);
+
   return (
     <View style={styles.card}>
       <View style={styles.top}>
@@ -55,7 +71,18 @@ export const MyStoreCard = ({
             store?.mainImage ? { uri: store.mainImage } : defaultStoreImage
           }
           style={styles.storeImage}
-        ></ImageBackground>
+        >
+          {bi.status !== "영업중" && (
+            <View style={styles.overlay}>
+              <CustomText color={colors.white} fontSize={15} fontWeight={"500"}>
+                {bi.status}
+              </CustomText>
+              <CustomText color={colors.white} fontSize={12} fontWeight={"500"}>
+                {bi.hours}
+              </CustomText>
+            </View>
+          )}
+        </ImageBackground>
 
         <View>
           <CustomText fontSize={18} fontWeight={"600"}>
@@ -160,6 +187,13 @@ const styles = StyleSheet.create({
     marginRight: getResponsiveSize(12),
     borderRadius: 12,
     overflow: "hidden",
+  },
+  overlay: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(38, 38, 39, 0.7)",
   },
   divider: {
     width: 1,
