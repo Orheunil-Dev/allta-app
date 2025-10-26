@@ -1,16 +1,17 @@
-import { GetNotificationsResponse } from "@/api/models";
+import { useCallback, useEffect, useState } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { useFocusEffect } from "@react-navigation/native";
+import * as Linking from "expo-linking";
 import {
   useNotificationControllerGetNotifications,
   useNotificationControllerReadNotifications,
 } from "@/api/notification/notification";
+import { GetNotificationsResponse } from "@/api/models";
+import { formatNotificationTime, getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
-import { formatNotificationTime, getResponsiveSize } from "@/utils";
-import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 
 export const Notification = () => {
   const [skip, setSkip] = useState<number>(0);
@@ -72,7 +73,10 @@ export const Notification = () => {
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.7}
           renderItem={({ item, index }) => (
-            <View
+            <Pressable
+              onPress={() => {
+                item.url && Linking.openURL(item.url);
+              }}
               style={{
                 padding: getResponsiveSize(20),
                 backgroundColor: item.isRead ? "#FFFFFF" : "#F2F2FD",
@@ -93,7 +97,7 @@ export const Notification = () => {
               <CustomText marginTop={4} fontSize={16}>
                 {item.content}
               </CustomText>
-            </View>
+            </Pressable>
           )}
         />
       ) : (
