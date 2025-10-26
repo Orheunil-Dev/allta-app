@@ -149,7 +149,7 @@ export const PassDetail = () => {
       {subscriptionData?.data && (
         <SubscriptionDetail
           data={subscriptionData.data}
-          refetch={subscriptionRefetch}
+          subscriptionRefetch={subscriptionRefetch}
           router={router}
           coordinate={coordinate}
           handleRouteMyStoreDetail={handleRouteMyStoreDetail}

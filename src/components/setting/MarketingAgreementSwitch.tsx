@@ -40,7 +40,7 @@ export const MarketingAgreementSwitch = () => {
           refetch();
         },
         onError: () => {
-          ErrorToast("요청 중 에러가 발생했습니다.");
+          ErrorToast("요청 중 오류가 발생했습니다.");
         },
       }
     );

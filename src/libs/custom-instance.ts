@@ -180,7 +180,7 @@ export const customInstance = <T = any>(
 
         throw { message, status } as CustomError;
       } else {
-        const message = (error as any)?.message ?? "에러가 발생했습니다.";
+        const message = (error as any)?.message ?? "오류가 발생했습니다.";
         const status = (error as any)?.status ?? 500;
 
         throw { message, status } as CustomError;
