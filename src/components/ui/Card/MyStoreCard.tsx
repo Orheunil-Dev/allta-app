@@ -1,4 +1,3 @@
-import { defaultStoreImage, locationIcon } from "@/assets/images";
 import {
   Image,
   ImageBackground,
@@ -6,15 +5,16 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { CustomText } from "../CustomText";
-import { formatEllipsis, formatPassType, getResponsiveSize } from "@/utils";
-import { MyStoreListItem } from "@/api/models";
-import { useDistanceCalculator } from "@/hooks";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { MyStoreStackParamList, StoreStackParamList } from "@/navigations";
-import { colors } from "@/styles";
+import { MyStoreListItem } from "@/api/models";
+import { MyStoreStackParamList } from "@/navigations";
+import { useDistanceCalculator, useToastMessage } from "@/hooks";
+import { formatEllipsis, formatPassType, getResponsiveSize } from "@/utils";
+import { CustomText } from "../CustomText";
 import { CustomButton } from "../CustomButton";
+import { defaultStoreImage, locationIcon } from "@/assets/images";
+import { colors } from "@/styles";
 
 interface Props {
   store: MyStoreListItem;
@@ -30,11 +30,19 @@ export const MyStoreCard = ({
   const myStoreNavigation =
     useNavigation<NativeStackNavigationProp<MyStoreStackParamList>>();
 
+  const { ErrorToast } = useToastMessage();
   const { getDistance } = useDistanceCalculator();
 
-  const handleOpenNavigation = () => {
+  // TMAP 네이게이션 열기
+  const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(store.name);
-    const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${store.lng}&rGoY=${store.lat}`;
+    const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
+
+    const isCanOpen = await Linking.canOpenURL(tmapScheme);
+
+    if (!isCanOpen) {
+      return ErrorToast("티맵이 설치되어 있지 않습니다.");
+    }
 
     return Linking.openURL(tmapScheme);
   };

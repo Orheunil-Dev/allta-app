@@ -42,6 +42,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "kakaolink",
         "kakaoplus",
         "kakaotalk",
+        "tmap",
       ],
       NSAppTransportSecurity: {
         NSAllowsArbitraryLoads: true,
