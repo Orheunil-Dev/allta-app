@@ -8,7 +8,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   currentFullName: "@orheunil/allta-user",
   originalFullName: "@orheunil/allta-user",
   scheme: "allta-user",
-  version: "1.2.2",
+  version: "1.3.0",
   orientation: "portrait",
   icon: "./src/assets/images/app-icon.png",
   userInterfaceStyle: "light",
@@ -52,6 +52,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     package: "io.allta.user",
     googleServicesFile: "./google-services.json",
+    versionCode: 1,
     icon: "./src/assets/images/app-icon.png",
     adaptiveIcon: {
       foregroundImage: "./src/assets/images/adaptive-icon.png",
