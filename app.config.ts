@@ -9,6 +9,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   originalFullName: "@orheunil/allta-user",
   scheme: "allta-user",
   version: "1.3.0",
+  runtimeVersion: {
+    policy: "appVersion",
+  },
   orientation: "portrait",
   icon: "./src/assets/images/app-icon.png",
   userInterfaceStyle: "light",
