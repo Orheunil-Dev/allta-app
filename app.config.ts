@@ -15,8 +15,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   newArchEnabled: true,
   ios: {
     bundleIdentifier: "io.allta.user",
+    googleServicesFile: "./GoogleService-Info.plist",
     icon: "./src/assets/images/app-icon.png",
-    supportsTablet: true,
+    supportsTablet: false,
     config: {
       usesNonExemptEncryption: false,
     },
@@ -52,7 +53,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     package: "io.allta.user",
     googleServicesFile: "./google-services.json",
-    versionCode: 1,
     icon: "./src/assets/images/app-icon.png",
     adaptiveIcon: {
       foregroundImage: "./src/assets/images/adaptive-icon.png",
@@ -66,8 +66,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "READ_MEDIA_IMAGES",
       "READ_EXTERNAL_STORAGE",
       "WRITE_EXTERNAL_STORAGE",
+      "READ_MEDIA_IMAGES",
+      "READ_MEDIA_VIDEO",
       "NOTIFICATIONS",
       "FOREGROUND_SERVICE",
+      "com.google.android.gms.permission.AD_ID",
     ],
   },
   web: {
@@ -93,15 +96,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     "expo-router",
     ["expo-updates"],
     [
-      "expo-splash-screen",
-      {
-        image: "./src/assets/images/empty-image.png",
-        imageWidth: 154,
-        resizeMode: "contain",
-        backgroundColor: "#ffffff",
-      },
-    ],
-    [
       "expo-build-properties",
       {
         android: {
@@ -110,8 +104,22 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           ],
           usesCleartextTraffic: true,
         },
+        ios: {
+          useFrameworks: "static",
+          forceStaticLinking: ["RNFBApp", "RNFBAuth", "RNFBFirestore"],
+        },
       },
     ],
+    [
+      "expo-splash-screen",
+      {
+        image: "./src/assets/images/empty-image.png",
+        imageWidth: 154,
+        resizeMode: "contain",
+        backgroundColor: "#ffffff",
+      },
+    ],
+    "@react-native-firebase/app",
     [
       "@react-native-kakao/core",
       {

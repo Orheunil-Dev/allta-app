@@ -197,10 +197,7 @@ export const RegisterCar = () => {
         </CustomBottomSheet>
 
         <View style={styles.container}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={false}
-          >
+          <ScrollView showsVerticalScrollIndicator={false}>
             <CustomText fontSize={24} fontWeight={"600"}>
               대표 차량을 등록해주세요.
             </CustomText>

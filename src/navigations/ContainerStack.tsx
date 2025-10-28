@@ -4,6 +4,7 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import analytics from "@react-native-firebase/analytics";
 import * as Linking from "expo-linking";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
@@ -32,6 +33,7 @@ import { Referral } from "@/screens/Referral";
 import { Faq } from "@/screens/Faq";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
+import { useEffect, useRef } from "react";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -89,10 +91,55 @@ export const ContainerStack = ({
 }: Props) => {
   const navigationRef = useNavigationContainerRef();
 
+  const routeNameRef = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const currentRoute = navigationRef.getCurrentRoute();
+
+      if (currentRoute) {
+        routeNameRef.current = currentRoute.name;
+      }
+    }, 0);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   const isFirstLaunch = checkIsFirstLaunch();
 
   return (
-    <NavigationContainer ref={navigationRef} linking={linking}>
+    <NavigationContainer
+      ref={navigationRef}
+      linking={linking}
+      onReady={() => {
+        // 앱 시작 시 첫 화면 추적
+        const currentRoute = navigationRef.getCurrentRoute();
+
+        if (currentRoute) {
+          routeNameRef.current = currentRoute.name;
+          analytics().logScreenView({
+            screen_name: currentRoute.name,
+            screen_class: currentRoute.name,
+          });
+        }
+      }}
+      onStateChange={async () => {
+        // 화면 전환 감지
+        const previousRouteName = routeNameRef.current;
+        const currentRoute = navigationRef.getCurrentRoute();
+
+        if (currentRoute && previousRouteName !== currentRoute.name) {
+          // GA4 화면 뷰 이벤트 전송
+          await analytics().logScreenView({
+            screen_name: currentRoute.name,
+            screen_class: currentRoute.name,
+          });
+        }
+
+        // 현재 화면 이름 저장
+        routeNameRef.current = currentRoute?.name;
+      }}
+    >
       <LoginModal
         navigationRef={navigationRef}
         visible={showLoginModal}
