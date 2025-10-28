@@ -296,14 +296,14 @@ export const Home = () => {
                   fontSize={18}
                   fontWeight={"600"}
                 >
-                  QR 스캔
+                  세차권 사용
                 </CustomText>
                 <CustomText
                   color={colors.white}
                   fontSize={13}
                   fontWeight={"500"}
                 >
-                  스캔 후 세차하기
+                  QR 스캔
                 </CustomText>
 
                 <Image source={qrIcon} style={styles.buttonIcon} />

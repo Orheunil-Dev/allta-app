@@ -18,7 +18,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   newArchEnabled: true,
   ios: {
     bundleIdentifier: "io.allta.user",
-    googleServicesFile: "./GoogleService-Info.plist",
+    googleServicesFile: "./cert/GoogleService-Info.plist",
     icon: "./src/assets/images/app-icon.png",
     supportsTablet: false,
     config: {
@@ -55,7 +55,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: "io.allta.user",
-    googleServicesFile: "./google-services.json",
+    googleServicesFile: "./cert/google-services.json",
     icon: "./src/assets/images/app-icon.png",
     adaptiveIcon: {
       foregroundImage: "./src/assets/images/adaptive-icon.png",
@@ -78,7 +78,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   web: {
     bundler: "metro",
-    output: "static",
+    output: "single",
     favicon: "./src/assets/images/favicon.png",
   },
   extra: {
