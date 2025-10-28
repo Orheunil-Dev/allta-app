@@ -138,7 +138,7 @@ export const Coupon = () => {
                   {formatCouponValue(item.discountType, item.discountValue)}
                 </CustomText>
 
-                <CustomText marginTop={6} fontSize={14} fontWeight={"600"}>
+                <CustomText marginTop={6} fontSize={16} fontWeight={"600"}>
                   {item.name}
                 </CustomText>
 
