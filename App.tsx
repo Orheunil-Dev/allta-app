@@ -34,6 +34,7 @@ initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_APP_KEY);
 export default function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
   const [showUpdate, setShowUpdate] = useState<boolean>(false);
+  const [isCheckingUpdate, setIsCheckingUpdate] = useState(true);
   const [isVersionUpdate, setIsVersionUpdate] = useState<boolean>(false);
   const [isUpdateFinished, setIsUpdateFinished] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -91,7 +92,11 @@ export default function App() {
   useEffect(() => {
     const appEnv = process.env.EXPO_PUBLIC_APP_ENV;
 
-    if (appEnv !== "PROD") return;
+    if (appEnv !== "PROD") {
+      setIsCheckingUpdate(false);
+      setShowSplash(true);
+      return;
+    }
 
     const storeUrl = {
       iosStoreURL: "https://apps.apple.com/kr/app/allta/id6467127880",
@@ -109,6 +114,7 @@ export default function App() {
 
         // 앱 버전 업데이트
         if (check.result === "new") {
+          setIsCheckingUpdate(false);
           setShowUpdate(true);
           setIsVersionUpdate(true);
         } else {
@@ -116,6 +122,7 @@ export default function App() {
 
           // Expo-Updates(코드 푸시)
           if (update.isAvailable) {
+            setIsCheckingUpdate(false);
             setShowUpdate(true);
             setIsUpdateFinished(false);
 
@@ -136,30 +143,18 @@ export default function App() {
           }
         }
       } catch (error: any) {
+        setIsCheckingUpdate(false);
         setShowUpdate(false);
         setIsVersionUpdate(false);
         setIsUpdateFinished(false);
 
         console.log(error.message ?? error);
+      } finally {
+        setIsCheckingUpdate(false);
       }
     };
 
     checkUpdate();
-  }, []);
-
-  // 스플래시
-  useEffect(() => {
-    const prepare = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1250));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setShowSplash(false);
-      }
-    };
-
-    prepare();
   }, []);
 
   // 푸시알림 딥링크 처리
@@ -203,6 +198,10 @@ export default function App() {
 
     setupNotification();
   }, []);
+
+  if (isCheckingUpdate) {
+    return null;
+  }
 
   if (showUpdate) {
     return (
