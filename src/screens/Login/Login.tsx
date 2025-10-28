@@ -269,12 +269,7 @@ export const Login = () => {
           },
         }
       );
-    } catch (error: any) {
-      setErrorModal({
-        visible: true,
-        message: error?.message ?? "로그인에 실패했습니다.",
-      });
-    }
+    } catch (error: any) {}
   };
 
   const handlePressClose = () => {
@@ -311,11 +306,13 @@ export const Login = () => {
           세차를 시작하세요!
         </CustomText>
 
-        <VideoView
-          style={styles.video}
-          player={player}
-          nativeControls={false}
-        />
+        <Pressable onLongPress={() => {}}>
+          <VideoView
+            style={styles.video}
+            player={player}
+            nativeControls={false}
+          />
+        </Pressable>
 
         {/* 카카오 로그인 */}
         <CustomButton
