@@ -64,7 +64,7 @@ export const MainBanner = ({ data }: Props) => {
           {currentSlide + 1}
         </CustomText>
 
-        <CustomText color="(255, 255, 255, 0.7)" fontSize={12}>
+        <CustomText color="rgba(255, 255, 255, 0.7)" fontSize={12}>
           {" "}
           / {mainBanners.length}
         </CustomText>

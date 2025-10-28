@@ -27,6 +27,7 @@ import { toastConfig } from "@/libs";
 import { ContainerStack } from "@/navigations";
 import { Update } from "@/screens/Update";
 import { Splash } from "@/screens/Splash";
+import { colors } from "@/styles";
 
 initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_APP_KEY);
 
@@ -217,7 +218,7 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider style={{ backgroundColor: "#FFFFFF" }}>
+    <SafeAreaProvider style={{ backgroundColor: colors.bg }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <KeyboardProvider>

@@ -151,8 +151,8 @@ const styles = StyleSheet.create({
     height: "100%",
     paddingBottom: getResponsiveSize(40),
     backgroundColor: colors.white,
-    borderTopRightRadius: 32,
-    borderTopLeftRadius: 32,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
     overflow: "hidden",
   },
   carouselContainer: {

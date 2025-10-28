@@ -122,7 +122,7 @@ export const StoreRecommend = () => {
           }
           style={styles.moreStore}
         >
-          <CustomText color={colors.gray5} fontSize={12} fontWeight={"600"}>
+          <CustomText color={colors.gray5} fontSize={14} fontWeight={"600"}>
             더보기
           </CustomText>
 
@@ -172,8 +172,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   moreIcon: {
-    width: getResponsiveSize(20),
-    height: getResponsiveSize(20),
+    width: getResponsiveSize(24),
+    height: getResponsiveSize(24),
   },
   myStoreList: {
     marginBottom: getResponsiveSize(40),
