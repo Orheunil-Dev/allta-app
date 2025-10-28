@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Platform, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
   CommonActions,
@@ -10,6 +10,7 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
 import CookieManager from "@react-native-cookies/cookies";
+import analytics from "@react-native-firebase/analytics";
 import * as SecureStore from "expo-secure-store";
 import { useReferralControllerVerifyReferralCode } from "@/api/referral/referral";
 import {
@@ -102,9 +103,15 @@ export const SignUpReferral = () => {
         },
       },
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           const isRejoined = res.isRejoined;
           const isCouponReceived = res.isCouponReceived;
+
+          await analytics().logEvent("sign_up_complete", {
+            platform: Platform.OS,
+            is_rejoined: isRejoined,
+            coupon_received: isCouponReceived,
+          });
 
           loginBySocialId(
             {

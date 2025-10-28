@@ -149,10 +149,7 @@ export const RegisterCard = () => {
     <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
         <View style={styles.container}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={false}
-          >
+          <ScrollView showsVerticalScrollIndicator={false}>
             <CustomText fontSize={24} fontWeight={"600"}>
               결제할 카드를 등록해주세요.
             </CustomText>
@@ -260,8 +257,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingVertical: getResponsiveSize(20),
     paddingHorizontal: getResponsiveSize(20),
-    paddingVertical: getResponsiveSize(10),
   },
   selectInput: {
     flex: 1,

@@ -146,7 +146,10 @@ export const Home = () => {
   }, []);
 
   return (
-    <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
+    <SafeAreaView
+      edges={["top"]}
+      style={{ flex: 1, backgroundColor: colors.bg }}
+    >
       {/* 헤더 */}
       <HomeHeader
         unreadCount={unreadNotificationData?.count}

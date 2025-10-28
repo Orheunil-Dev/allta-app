@@ -15,17 +15,19 @@ import * as SecureStore from "expo-secure-store";
 import * as Notifications from "expo-notifications";
 import * as Linking from "expo-linking";
 import * as Application from "expo-application";
+import analytics from "@react-native-firebase/analytics";
+import { initializeKakaoSDK } from "@react-native-kakao/core";
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { initializeKakaoSDK } from "@react-native-kakao/core";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { toastConfig } from "@/libs";
 import { ContainerStack } from "@/navigations";
 import { Update } from "@/screens/Update";
 import { Splash } from "@/screens/Splash";
+import { colors } from "@/styles";
 
 initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_APP_KEY);
 
@@ -70,6 +72,20 @@ export default function App() {
       },
     }),
   });
+
+  // 파이어 베이스 초기화
+  useEffect(() => {
+    async function initializeApp() {
+      try {
+        await analytics().setAnalyticsCollectionEnabled(true);
+        console.log("firebase 초기화 성공");
+      } catch (error) {
+        console.error("firebase 초기화 실패:", error);
+      }
+    }
+
+    initializeApp();
+  }, []);
 
   // 앱 업데이트 체크
   useEffect(() => {
@@ -131,6 +147,7 @@ export default function App() {
     checkUpdate();
   }, []);
 
+  // 스플래시
   useEffect(() => {
     const prepare = async () => {
       try {
@@ -201,7 +218,7 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider style={{ backgroundColor: "#FFFFFF" }}>
+    <SafeAreaProvider style={{ backgroundColor: colors.bg }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <KeyboardProvider>

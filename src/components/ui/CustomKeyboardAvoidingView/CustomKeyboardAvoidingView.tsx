@@ -44,7 +44,7 @@ export const CustomKeyboardAvoidingView = ({
       enabled={enabled}
       keyboardVerticalOffset={
         Platform.OS === "ios"
-          ? getResponsiveSize(80 + insets.bottom)
+          ? getResponsiveSize(70 + insets.bottom)
           : getResponsiveSize(80)
       }
       behavior={Platform.OS === "ios" ? "padding" : "padding"}

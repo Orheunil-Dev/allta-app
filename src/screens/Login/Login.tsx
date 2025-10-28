@@ -33,7 +33,6 @@ import { errorModalAtom } from "@/jotai";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { jwtDecode } from "jwt-decode";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -62,6 +61,7 @@ export const Login = () => {
     require("@/assets/video/login-video.mp4"),
     (player) => {
       player.loop = true;
+      player.muted = true;
       player.play();
     }
   );
@@ -269,12 +269,7 @@ export const Login = () => {
           },
         }
       );
-    } catch (error: any) {
-      setErrorModal({
-        visible: true,
-        message: error?.message ?? "로그인에 실패했습니다.",
-      });
-    }
+    } catch (error: any) {}
   };
 
   const handlePressClose = () => {
@@ -311,11 +306,13 @@ export const Login = () => {
           세차를 시작하세요!
         </CustomText>
 
-        <VideoView
-          style={styles.video}
-          player={player}
-          nativeControls={false}
-        />
+        <Pressable onLongPress={() => {}}>
+          <VideoView
+            style={styles.video}
+            player={player}
+            nativeControls={false}
+          />
+        </Pressable>
 
         {/* 카카오 로그인 */}
         <CustomButton
