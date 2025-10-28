@@ -38,6 +38,7 @@ export { default as PermissionPhotoIcon } from "./permission-photo-icon.png";
 export { default as kakaoLoginIcon } from "./kakao-login-icon.png";
 export { default as googleLoginIcon } from "./google-login-icon.png";
 export { default as appleLoginIcon } from "./apple-login-icon.png";
+export { default as loginImage } from "./login-image.gif";
 
 // 회원가입
 export { default as checkAllButton } from "./check-all-button.png";

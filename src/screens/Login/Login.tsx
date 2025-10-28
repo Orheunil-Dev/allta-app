@@ -26,6 +26,7 @@ import {
   closeIcon,
   googleLoginIcon,
   kakaoLoginIcon,
+  loginImage,
 } from "@/assets/images";
 import { colors } from "@/styles";
 import { useSetAtom } from "jotai";
@@ -307,10 +308,17 @@ export const Login = () => {
         </CustomText>
 
         <Pressable onLongPress={() => {}}>
-          <VideoView
+          {/* <VideoView
             style={styles.video}
             player={player}
             nativeControls={false}
+          /> */}
+          <Image
+            source={loginImage}
+            style={{
+              width: getResponsiveSize(204),
+              height: getResponsiveSize(204),
+            }}
           />
         </Pressable>
 
