@@ -96,7 +96,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     url: `https://u.expo.dev/${process.env.EXPO_PUBLIC_EAS_PROJECT_ID}`,
   },
   plugins: [
-    "expo-router",
     ["expo-updates"],
     [
       "expo-build-properties",
