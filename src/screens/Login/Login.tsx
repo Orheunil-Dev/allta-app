@@ -15,6 +15,7 @@ import * as Linking from "expo-linking";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import {
   useAuthControllerAppleLoginCallback,
+  useAuthControllerFindUserBySocialId,
   useAuthControllerLoginBySocialId,
 } from "@/api/auth/auth";
 import { getResponsiveSize } from "@/utils";
@@ -33,7 +34,8 @@ import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/jotai";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { jwtDecode } from "jwt-decode";
-import { useVideoPlayer, VideoView } from "expo-video";
+import { useVideoPlayer } from "expo-video";
+import { login, me } from "@react-native-kakao/user";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -43,6 +45,13 @@ export const Login = () => {
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  // 소셜 ID 체크
+  const {
+    mutate: checkSocialId,
+    isPending: checkSocialIdLoading,
+    isError: checkSocialIdError,
+  } = useAuthControllerFindUserBySocialId();
 
   // 소셜 로그인
   const {
@@ -69,26 +78,30 @@ export const Login = () => {
 
   // 카카오 로그인
   const handleLoginKakao = async () => {
-    try {
-      const KAKAO_REDIRECT_URI = `${process.env.EXPO_PUBLIC_API_URL}/auth/kakao`;
-      const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY;
-      const redirectUri = Linking.createURL("");
+    await login();
 
-      try {
-        const result = await WebBrowser.openAuthSessionAsync(
-          `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}`,
-          redirectUri
-        );
+    const profile = await me();
 
-        if (result.type === "success") {
-          const { queryParams } = Linking.parse(result.url);
+    const socialId = String(profile.id);
+    const email = profile.email;
 
-          const socialId = queryParams?.socialId;
-          const email = queryParams?.email;
-          const message = queryParams?.message;
+    if (!socialId) {
+      setErrorModal({
+        visible: true,
+        message: "로그인 중 오류가 발생했습니다.",
+      });
+    }
 
-          // 기존 회원
-          if (queryParams?.ok === "true") {
+    checkSocialId(
+      {
+        data: {
+          loginKind: "KAKAO",
+          socialId,
+        },
+      },
+      {
+        onSuccess: (res) => {
+          if (res.ok) {
             loginBySocialId(
               {
                 data: { socialId: socialId as string, loginKind: "KAKAO" },
@@ -117,27 +130,30 @@ export const Login = () => {
                     })
                   );
                 },
+                onError: (error: any) => {
+                  return setErrorModal({
+                    visible: true,
+                    message: error.message ?? "로그인 중 오류가 발생했습니다.",
+                  });
+                },
               }
             );
-          } else if (socialId) {
+          } else {
             return loginStackNavigation.navigate("SignUpTerms", {
               loginKind: "KAKAO",
-              socialId: socialId as string,
-              email: email as string,
-            });
-          } else {
-            setErrorModal({
-              visible: true,
-              message: message ? (message as string) : "로그인에 실패했습니다.",
+              socialId: socialId,
+              email: email,
             });
           }
-        }
-      } catch (error) {
-        console.log(error);
+        },
+        onError: (error: any) => {
+          return setErrorModal({
+            visible: true,
+            message: error.message ?? "로그인 중 오류가 발생했습니다.",
+          });
+        },
       }
-    } catch (error) {
-      console.log(error);
-    }
+    );
   };
 
   // 구글 로그인

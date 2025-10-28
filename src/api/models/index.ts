@@ -38,6 +38,8 @@ export * from './discontinueSubscriptionRequest';
 export * from './discontinueSubscriptionResponse';
 export * from './eventDetailItem';
 export * from './eventListItem';
+export * from './findUserBySocialIdRequest';
+export * from './findUserBySocialIdResponse';
 export * from './getAddressListResponse';
 export * from './getAvailableCouponListResponse';
 export * from './getAvailablePassesResponse';
