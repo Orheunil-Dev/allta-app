@@ -157,6 +157,21 @@ export default function App() {
     checkUpdate();
   }, []);
 
+  // 스플래시 화면 제거
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1250));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setShowSplash(false);
+      }
+    };
+
+    prepare();
+  }, []);
+
   // 푸시알림 딥링크 처리
   useEffect(() => {
     const listener = Notifications.addNotificationResponseReceivedListener(
