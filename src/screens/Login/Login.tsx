@@ -33,7 +33,6 @@ import { errorModalAtom } from "@/jotai";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { jwtDecode } from "jwt-decode";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -62,6 +61,7 @@ export const Login = () => {
     require("@/assets/video/login-video.mp4"),
     (player) => {
       player.loop = true;
+      player.muted = true;
       player.play();
     }
   );
