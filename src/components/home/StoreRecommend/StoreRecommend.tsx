@@ -122,7 +122,7 @@ export const StoreRecommend = () => {
           }
           style={styles.moreStore}
         >
-          <CustomText color={colors.gray5} fontSize={14} fontWeight={"600"}>
+          <CustomText color={colors.gray5} fontSize={14}>
             더보기
           </CustomText>
 
