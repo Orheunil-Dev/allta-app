@@ -26,11 +26,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     usesAppleSignIn: true,
     infoPlist: {
-      NSCameraUsageDescription: "카메라 접근 권한이 필요합니다.",
-      NSPhotoLibraryUsageDescription: "사진 접근 권한이 필요합니다.",
-      NSLocationWhenInUseUsageDescription: "위치 정보 접근 권한이 필요합니다.",
+      NSCameraUsageDescription:
+        "이용권 확인을 위한 QR스캔 기능 및 주유 영수증 할인을 위한 영수증 촬영 기능을 위한 카메라 접근 권한이 필요합니다.",
+      NSPhotoLibraryUsageDescription:
+        "주유 영수증 할인을 위한 영수증 이미지 업로드 기능을 위해 사진 접근 권한이 필요합니다.",
+      NSLocationWhenInUseUsageDescription:
+        "현 위치 날씨 API 요청과 현 위치 기반 매장 추천 기능을 위해 위치 정보 접근 권한이 필요합니다.",
       NSUserTrackingUsageDescription:
-        "광고 맞춤화를 위해 추적 허용이 필요합니다.",
+        "앱 사용 경험을 개선하고 맞춤형 광고를 제공하기 위해 추적 권한이 필요합니다.",
       CFBundleURLTypes: [
         {
           CFBundleTypeRole: "Editor",
@@ -135,6 +138,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         },
       },
     ],
+    ["expo-tracking-transparency"],
     ["expo-secure-store"],
     ["expo-apple-authentication"],
     [

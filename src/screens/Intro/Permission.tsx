@@ -1,10 +1,11 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Platform, StyleSheet, View } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 import * as ImagePicker from "expo-image-picker";
+import * as TrackingTransparency from "expo-tracking-transparency";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
@@ -41,6 +42,8 @@ export const Permission = () => {
     await ImagePicker.requestCameraPermissionsAsync();
     // 앨범 권한 요청
     await ImagePicker.requestMediaLibraryPermissionsAsync();
+    // ATT 권한 요청
+    await TrackingTransparency.requestTrackingPermissionsAsync();
 
     containerNavigation.dispatch(
       CommonActions.reset({
