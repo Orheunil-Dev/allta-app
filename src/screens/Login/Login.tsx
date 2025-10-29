@@ -434,6 +434,7 @@ export const Login = () => {
               fontFamily: "Roboto-Medium",
               fontSize: getResponsiveSize(15),
             }}
+            allowFontScaling={false}
           >
             구글 계정으로 로그인
           </Text>
