@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   headerLogo: {
     width: getResponsiveSize(58),
-    aspectRatio: 58 / 27,
+    height: getResponsiveSize(31),
   },
   alarm: {
     width: getResponsiveSize(24),
