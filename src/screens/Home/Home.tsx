@@ -359,7 +359,7 @@ export const Home = () => {
                 통신판매번호 : 2024-경기하남-2769
               </CustomText>
               <CustomText color={colors.gray5} fontSize={14}>
-                주소 : 경기도 하남시 미사강변한강로 155, 1031호
+                주소 : 경기도 하남시 미사강변한강로 155
               </CustomText>
               <CustomText color={colors.gray5} fontSize={14}>
                 대표전화 : 1668-1620
