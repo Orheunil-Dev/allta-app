@@ -111,15 +111,15 @@ export const ContainerStack = ({
     <NavigationContainer
       ref={navigationRef}
       linking={linking}
-      onReady={() => {
+      onReady={async () => {
         // 앱 시작 시 첫 화면 추적
         const currentRoute = navigationRef.getCurrentRoute();
 
         if (currentRoute) {
           routeNameRef.current = currentRoute.name;
-          analytics().logScreenView({
+
+          await analytics().logEvent("screen_view", {
             screen_name: currentRoute.name,
-            screen_class: currentRoute.name,
           });
         }
       }}
@@ -130,9 +130,8 @@ export const ContainerStack = ({
 
         if (currentRoute && previousRouteName !== currentRoute.name) {
           // GA4 화면 뷰 이벤트 전송
-          await analytics().logScreenView({
+          await analytics().logEvent("screen_view", {
             screen_name: currentRoute.name,
-            screen_class: currentRoute.name,
           });
         }
 
