@@ -87,6 +87,63 @@ export default function App() {
     initializeApp();
   }, []);
 
+  // 푸시알림 딥링크 처리
+  useEffect(() => {
+    const listener = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        const url = response.notification.request.content.data?.url;
+
+        if (url) {
+          Linking.openURL(url as string);
+        }
+      }
+    );
+
+    return () => listener.remove();
+  }, []);
+
+  // 포그라운드 알림 처리
+  useEffect(() => {
+    const setupNotification = async () => {
+      Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+          shouldShowAlert: true, // 알림 UI
+          shouldPlaySound: true, // 사운드
+          shouldSetBadge: false, // 앱 아이콘 배지
+          shouldShowBanner: true, // iOS 14+ 배너
+          shouldShowList: true, // 알림 센터 리스트
+        }),
+      });
+
+      // 안드로이드 채널 설정
+      if (Platform.OS === "android") {
+        await Notifications.setNotificationChannelAsync("default", {
+          name: "Default",
+          importance: Notifications.AndroidImportance.MAX,
+          sound: "default",
+          vibrationPattern: [0, 250],
+        });
+      }
+    };
+
+    setupNotification();
+  }, []);
+
+  // 스플래시
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1250));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setShowSplash(false);
+      }
+    };
+
+    prepare();
+  }, []);
+
   // 앱 업데이트 체크
   useEffect(() => {
     const storeUrl = {
@@ -128,7 +185,7 @@ export default function App() {
 
             setTimeout(async () => {
               await Updates.reloadAsync();
-            }, 250);
+            }, 500);
           }
         }
       } catch (error: any) {
@@ -141,63 +198,6 @@ export default function App() {
     };
 
     checkUpdate();
-  }, []);
-
-  // 스플래시
-  useEffect(() => {
-    const prepare = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1250));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setShowSplash(false);
-      }
-    };
-
-    prepare();
-  }, []);
-
-  // 푸시알림 딥링크 처리
-  useEffect(() => {
-    const listener = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
-        const url = response.notification.request.content.data?.url;
-
-        if (url) {
-          Linking.openURL(url as string);
-        }
-      }
-    );
-
-    return () => listener.remove();
-  }, []);
-
-  // 포그라운드 알림 처리
-  useEffect(() => {
-    const setupNotification = async () => {
-      Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-          shouldShowAlert: true, // 알림 UI
-          shouldPlaySound: true, // 사운드
-          shouldSetBadge: false, // 앱 아이콘 배지
-          shouldShowBanner: true, // iOS 14+ 배너
-          shouldShowList: true, // 알림 센터 리스트
-        }),
-      });
-
-      // 안드로이드 채널 설정
-      if (Platform.OS === "android") {
-        await Notifications.setNotificationChannelAsync("default", {
-          name: "Default",
-          importance: Notifications.AndroidImportance.MAX,
-          sound: "default",
-          vibrationPattern: [0, 250],
-        });
-      }
-    };
-
-    setupNotification();
   }, []);
 
   return (
