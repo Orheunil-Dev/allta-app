@@ -67,7 +67,7 @@ export const CustomBottomSheet = forwardRef(
                 <View style={styles.header}>
                   <View style={styles.empty} />
 
-                  <CustomText fontSize={18} fontWeight={"600"}>
+                  <CustomText fontSize={16} fontWeight={"600"}>
                     {title}
                   </CustomText>
 

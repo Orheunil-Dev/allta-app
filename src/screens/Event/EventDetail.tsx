@@ -71,7 +71,7 @@ export const EventDetail = () => {
           <Image source={headerBackArrow} style={styles.icon} />
         </Pressable>
 
-        <CustomText fontSize={18} fontWeight={"600"}>
+        <CustomText fontSize={16} fontWeight={"600"}>
           이벤트
         </CustomText>
 

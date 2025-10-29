@@ -49,7 +49,7 @@ export const MyPage = () => {
       >
         <View style={{ width: getResponsiveSize(24) }} />
 
-        <CustomText fontSize={18} fontWeight={"600"}>
+        <CustomText fontSize={16} fontWeight={"600"}>
           마이페이지
         </CustomText>
 
