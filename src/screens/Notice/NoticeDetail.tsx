@@ -77,7 +77,10 @@ const styles = StyleSheet.create({
     padding: getResponsiveSize(20),
   },
   html: {
+    marginTop: getResponsiveSize(20),
     paddingTop: getResponsiveSize(20),
     paddingBottom: getResponsiveSize(40),
+    borderTopWidth: 1,
+    borderTopColor: colors.line,
   },
 });
