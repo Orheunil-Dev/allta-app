@@ -179,6 +179,7 @@ export default function App() {
       prepare();
     }
   }, [isCheckingUpdate]);
+
   // 푸시알림 딥링크 처리
   useEffect(() => {
     const listener = Notifications.addNotificationResponseReceivedListener(

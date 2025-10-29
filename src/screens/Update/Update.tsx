@@ -1,4 +1,4 @@
-import { Linking, Platform, StyleSheet, View } from "react-native";
+import { Image, Linking, Platform, StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -33,17 +33,6 @@ export const Update = ({ isVersionUpdate, isUpdateFinished }: Props) => {
       console.log(error.message ?? error);
     }
   };
-
-  const splashAnimatedStyle = useAnimatedStyle(() => {
-    "worklet";
-
-    return {
-      marginTop: withTiming(visible ? 0 : logoY, {
-        duration: 300,
-      }),
-      opacity: withTiming(visible ? 1 : 0, { duration: 300 }),
-    };
-  });
 
   const progressBarAnimatedStyle = useAnimatedStyle(() => {
     "worklet";
@@ -84,15 +73,12 @@ export const Update = ({ isVersionUpdate, isUpdateFinished }: Props) => {
         </CustomText>
       </CustomModal>
 
-      <Animated.Image
+      <Image
         source={splashIamge}
-        style={[
-          {
-            width: getResponsiveSize(154),
-            height: getResponsiveSize(233),
-          },
-          splashAnimatedStyle,
-        ]}
+        style={{
+          width: getResponsiveSize(154),
+          height: getResponsiveSize(233),
+        }}
       />
 
       <View style={styles.loading}>

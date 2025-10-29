@@ -8,6 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import * as TrackingTransparency from "expo-tracking-transparency";
 import * as Notifications from "expo-notifications";
 import {
   useNotificationControllerGetUnreadNotificationsCount,
@@ -143,6 +144,15 @@ export const Home = () => {
     if (mmkvStorage.getBoolean(IS_COUPON_RECEIVED)) {
       setShowCouponModal(true);
     }
+  }, []);
+
+  // ATT 권한 요청
+  useEffect(() => {
+    const requestTrakingPermission = async () => {
+      await TrackingTransparency.requestTrackingPermissionsAsync();
+    };
+
+    requestTrakingPermission();
   }, []);
 
   return (
