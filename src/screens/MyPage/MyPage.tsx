@@ -109,7 +109,11 @@ export const MyPage = () => {
               </View>
             ) : (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <CustomText fontSize={15} fontWeight={"600"}>
+                <CustomText
+                  color={colors.gray5}
+                  fontSize={15}
+                  fontWeight={"600"}
+                >
                   차량을 등록해주세요
                 </CustomText>
               </View>
