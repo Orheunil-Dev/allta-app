@@ -18,8 +18,6 @@ interface Props {
 export const Update = ({ isVersionUpdate, isUpdateFinished }: Props) => {
   const [visible, setVisible] = useState(false);
 
-  const logoY = getResponsiveSize(80);
-
   // 앱 버전 업데이트
   const handleOpenStore = async () => {
     const storeUrl =

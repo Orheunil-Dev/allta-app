@@ -51,7 +51,6 @@ export const CustomText = ({
         textDecorationLine,
         textDecorationColor,
       }}
-      allowFontScaling={false}
     >
       {children}
     </Text>

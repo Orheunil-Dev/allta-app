@@ -28,14 +28,12 @@ import { ContainerStack } from "@/navigations";
 import { Update } from "@/screens/Update";
 import { Splash } from "@/screens/Splash";
 import { colors } from "@/styles";
-import { Empty } from "@/screens/Empty";
 
 initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_APP_KEY);
 
 export default function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
   const [showUpdate, setShowUpdate] = useState<boolean>(false);
-  const [isCheckingUpdate, setIsCheckingUpdate] = useState(true);
   const [isVersionUpdate, setIsVersionUpdate] = useState<boolean>(false);
   const [isUpdateFinished, setIsUpdateFinished] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -93,11 +91,7 @@ export default function App() {
   useEffect(() => {
     const appEnv = process.env.EXPO_PUBLIC_APP_ENV;
 
-    if (appEnv !== "PROD") {
-      setIsCheckingUpdate(false);
-      setShowSplash(true);
-      return;
-    }
+    if (appEnv !== "PROD") return;
 
     const storeUrl = {
       iosStoreURL: "https://apps.apple.com/kr/app/allta/id6467127880",
@@ -115,7 +109,6 @@ export default function App() {
 
         // 앱 버전 업데이트
         if (check.result === "new") {
-          setIsCheckingUpdate(false);
           setShowUpdate(true);
           setIsVersionUpdate(true);
         } else {
@@ -123,7 +116,6 @@ export default function App() {
 
           // Expo-Updates(코드 푸시)
           if (update.isAvailable) {
-            setIsCheckingUpdate(false);
             setShowUpdate(true);
             setIsUpdateFinished(false);
 
@@ -144,41 +136,31 @@ export default function App() {
           }
         }
       } catch (error: any) {
-        setIsCheckingUpdate(false);
         setShowUpdate(false);
         setIsVersionUpdate(false);
         setIsUpdateFinished(false);
 
         console.log(error.message ?? error);
-      } finally {
-        setIsCheckingUpdate(false);
       }
     };
 
-    // 인터넷 연결 지연 대비 최소 1초 후에 체크 완료 처리
-    const timeout = setTimeout(() => {
-      setIsCheckingUpdate(false);
-    }, 1000);
-
-    checkUpdate().finally(() => clearTimeout(timeout));
+    checkUpdate();
   }, []);
 
-  // 스플래시 화면 제거
+  // 스플래시
   useEffect(() => {
-    if (!isCheckingUpdate) {
-      const prepare = async () => {
-        try {
-          await new Promise((resolve) => setTimeout(resolve, 1250));
-        } catch (e) {
-          console.warn(e);
-        } finally {
-          setShowSplash(false);
-        }
-      };
+    const prepare = async () => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1250));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setShowSplash(false);
+      }
+    };
 
-      prepare();
-    }
-  }, [isCheckingUpdate]);
+    prepare();
+  }, []);
 
   // 푸시알림 딥링크 처리
   useEffect(() => {
@@ -221,10 +203,6 @@ export default function App() {
 
     setupNotification();
   }, []);
-
-  if (isCheckingUpdate) {
-    return <Empty />;
-  }
 
   if (showUpdate) {
     return (
