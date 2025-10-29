@@ -36,6 +36,7 @@ import * as AppleAuthentication from "expo-apple-authentication";
 import { jwtDecode } from "jwt-decode";
 import { useVideoPlayer } from "expo-video";
 import { login, me } from "@react-native-kakao/user";
+import { useState } from "react";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -45,6 +46,8 @@ export const Login = () => {
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const [count, setCount] = useState<number>(0);
 
   // 소셜 ID 체크
   const {
@@ -287,6 +290,53 @@ export const Login = () => {
         }
       );
     } catch (error: any) {}
+  };
+
+  // 테스트 계정 로그인
+  const handleLoginTest = () => {
+    setCount(count + 1);
+
+    if (count < 20) return;
+
+    loginBySocialId(
+      {
+        data: {
+          loginKind: "TEST",
+          socialId: "9999999",
+        },
+      },
+      {
+        onSuccess: async () => {
+          const cookies = await CookieManager.get(
+            process.env.EXPO_PUBLIC_API_URL
+          );
+
+          const accessToken = cookies.accessToken.value;
+          const refreshToken = cookies.refreshToken.value;
+
+          await SecureStore.setItemAsync("accessToken", accessToken);
+          await SecureStore.setItemAsync("refreshToken", refreshToken);
+
+          return containerNavigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {
+                  name: "BottomTab",
+                  params: { screen: "Home" },
+                },
+              ],
+            })
+          );
+        },
+        onError: (error: any) => {
+          return setErrorModal({
+            visible: true,
+            message: error.message ?? "로그인 중 오류가 발생했습니다.",
+          });
+        },
+      }
+    );
   };
 
   const handlePressClose = () => {
