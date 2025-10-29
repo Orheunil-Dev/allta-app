@@ -296,17 +296,19 @@ export const Login = () => {
   const handleLoginTest = () => {
     setCount(count + 1);
 
-    if (count < 20) return;
+    if (count < 10) return;
 
-    loginBySocialId(
+    return loginBySocialId(
       {
         data: {
           loginKind: "TEST",
-          socialId: "9999999",
+          socialId: process.env.EXPO_PUBLIC_TEST_ID,
         },
       },
       {
         onSuccess: async () => {
+          setCount(0);
+
           const cookies = await CookieManager.get(
             process.env.EXPO_PUBLIC_API_URL
           );
@@ -373,7 +375,7 @@ export const Login = () => {
           세차를 시작하세요!
         </CustomText>
 
-        <Pressable onLongPress={() => {}}>
+        <Pressable onPress={handleLoginTest}>
           {/* <VideoView
             style={styles.video}
             player={player}
