@@ -152,7 +152,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-video",
       {
-        supportsBackgroundPlayback: true,
+        supportsBackgroundPlayback: false,
         supportsPictureInPicture: true,
       },
     ],
