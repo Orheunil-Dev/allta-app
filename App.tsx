@@ -28,6 +28,7 @@ import { ContainerStack } from "@/navigations";
 import { Update } from "@/screens/Update";
 import { Splash } from "@/screens/Splash";
 import { colors } from "@/styles";
+import { Empty } from "@/screens/Empty";
 
 initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_APP_KEY);
 
@@ -154,24 +155,30 @@ export default function App() {
       }
     };
 
-    checkUpdate();
+    // 인터넷 연결 지연 대비 최소 1초 후에 체크 완료 처리
+    const timeout = setTimeout(() => {
+      setIsCheckingUpdate(false);
+    }, 1000);
+
+    checkUpdate().finally(() => clearTimeout(timeout));
   }, []);
 
   // 스플래시 화면 제거
   useEffect(() => {
-    const prepare = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1250));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setShowSplash(false);
-      }
-    };
+    if (!isCheckingUpdate) {
+      const prepare = async () => {
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 1250));
+        } catch (e) {
+          console.warn(e);
+        } finally {
+          setShowSplash(false);
+        }
+      };
 
-    prepare();
-  }, []);
-
+      prepare();
+    }
+  }, [isCheckingUpdate]);
   // 푸시알림 딥링크 처리
   useEffect(() => {
     const listener = Notifications.addNotificationResponseReceivedListener(
@@ -215,7 +222,7 @@ export default function App() {
   }, []);
 
   if (isCheckingUpdate) {
-    return null;
+    return <Empty />;
   }
 
   if (showUpdate) {
