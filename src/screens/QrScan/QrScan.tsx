@@ -14,10 +14,10 @@ import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
-  receptFrame1,
-  receptFrame2,
-  receptFrame3,
-  receptFrame4,
+  qrFrame1,
+  qrFrame2,
+  qrFrame3,
+  qrFrame4,
   whiteCloseIcon,
 } from "@/assets/images";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -166,16 +166,38 @@ export const QrScan = () => {
           style={styles.cameraView}
         >
           <View style={styles.frame}>
+            <Animated.View
+              style={[overlayAnimatedStyle, styles.textView]}
+              pointerEvents="none"
+            >
+              <CustomText
+                textAlign="center"
+                color={colors.white}
+                fontSize={20}
+                fontWeight={"600"}
+              >
+                매장 QR을 스캔해
+              </CustomText>
+              <CustomText
+                textAlign="center"
+                color={colors.white}
+                fontSize={20}
+                fontWeight={"600"}
+              >
+                이용권을 확인해주세요!
+              </CustomText>
+            </Animated.View>
+
             <View style={styles.frameTop}>
               <Image
-                source={receptFrame1}
+                source={qrFrame1}
                 style={{
                   width: getResponsiveSize(32),
                   height: getResponsiveSize(32),
                 }}
               />
               <Image
-                source={receptFrame2}
+                source={qrFrame2}
                 style={{
                   width: getResponsiveSize(32),
                   height: getResponsiveSize(32),
@@ -184,14 +206,14 @@ export const QrScan = () => {
             </View>
             <View style={styles.frameBottom}>
               <Image
-                source={receptFrame3}
+                source={qrFrame3}
                 style={{
                   width: getResponsiveSize(32),
                   height: getResponsiveSize(32),
                 }}
               />
               <Image
-                source={receptFrame4}
+                source={qrFrame4}
                 style={{
                   width: getResponsiveSize(32),
                   height: getResponsiveSize(32),
@@ -203,11 +225,7 @@ export const QrScan = () => {
           <Animated.View
             style={[styles.overlay, overlayAnimatedStyle]}
             pointerEvents="none"
-          >
-            <CustomText color={colors.white} fontSize={20} fontWeight={"600"}>
-              매장의 QR코드를 스캔해주세요
-            </CustomText>
-          </Animated.View>
+          />
 
           <SafeAreaView edges={["top"]}>
             <View style={styles.container}>
@@ -274,8 +292,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "space-between",
     alignSelf: "center",
-    width: screenWidth - getResponsiveSize(80),
-    height: screenWidth - getResponsiveSize(40),
+    width: screenWidth - getResponsiveSize(160),
+    height: screenWidth - getResponsiveSize(160),
     zIndex: 3,
   },
   frameTop: {
@@ -286,5 +304,10 @@ const styles = StyleSheet.create({
   cameraButton: {
     position: "absolute",
     bottom: getResponsiveSize(20),
+  },
+  textView: {
+    position: "absolute",
+    alignSelf: "center",
+    top: -getResponsiveSize(100),
   },
 });

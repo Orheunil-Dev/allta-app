@@ -89,10 +89,6 @@ export default function App() {
 
   // 앱 업데이트 체크
   useEffect(() => {
-    const appEnv = process.env.EXPO_PUBLIC_APP_ENV;
-
-    if (appEnv !== "PROD") return;
-
     const storeUrl = {
       iosStoreURL: "https://apps.apple.com/kr/app/allta/id6467127880",
       androidStoreURL:
@@ -204,29 +200,26 @@ export default function App() {
     setupNotification();
   }, []);
 
-  if (showUpdate) {
-    return (
-      <Update
-        isVersionUpdate={isVersionUpdate}
-        isUpdateFinished={isUpdateFinished}
-      />
-    );
-  }
-
-  if (showSplash) {
-    return <Splash />;
-  }
-
   return (
     <SafeAreaProvider style={{ backgroundColor: colors.bg }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <KeyboardProvider>
             <BottomSheetModalProvider>
-              <ContainerStack
-                showLoginModal={showLoginModal}
-                setShowLoginModal={setShowLoginModal}
-              />
+              {showUpdate ? (
+                <Update
+                  isVersionUpdate={isVersionUpdate}
+                  isUpdateFinished={isUpdateFinished}
+                />
+              ) : showSplash ? (
+                <Splash />
+              ) : (
+                <ContainerStack
+                  showLoginModal={showLoginModal}
+                  setShowLoginModal={setShowLoginModal}
+                />
+              )}
+
               <SystemBars style="dark" />
               <StatusBar style="auto" />
               <Toast config={toastConfig} />

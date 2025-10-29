@@ -83,6 +83,12 @@ export { default as receptFrame4 } from "./receipt-frame-4.png";
 export { default as cameraButton } from "./camera-button.png";
 export { default as albumIcon } from "./album-icon.png";
 
+// QR 스캔
+export { default as qrFrame1 } from "./qr-frame-1.png";
+export { default as qrFrame2 } from "./qr-frame-2.png";
+export { default as qrFrame3 } from "./qr-frame-3.png";
+export { default as qrFrame4 } from "./qr-frame-4.png";
+
 // 마이페이지
 export { default as settingIcon } from "./setting-icon.png";
 export { default as carIcon } from "./car-icon.png";
