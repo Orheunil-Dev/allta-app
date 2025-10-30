@@ -34,7 +34,7 @@ import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/jotai";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { jwtDecode } from "jwt-decode";
-import { useVideoPlayer } from "expo-video";
+// import { useVideoPlayer } from "expo-video";
 import { login, me } from "@react-native-kakao/user";
 import { useState } from "react";
 
@@ -70,14 +70,14 @@ export const Login = () => {
     isError: appleLoginCallbackError,
   } = useAuthControllerAppleLoginCallback();
 
-  const player = useVideoPlayer(
-    require("@/assets/video/login-video.mp4"),
-    (player) => {
-      player.loop = true;
-      player.muted = true;
-      player.play();
-    }
-  );
+  // const player = useVideoPlayer(
+  //   require("@/assets/video/login-video.mp4"),
+  //   (player) => {
+  //     player.loop = true;
+  //     player.muted = true;
+  //     player.play();
+  //   }
+  // );
 
   // 카카오 로그인
   const handleLoginKakao = async () => {
