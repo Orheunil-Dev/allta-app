@@ -108,6 +108,7 @@ export const Coupon = () => {
           underlineColorAndroid="transparent"
           style={styles.codeInput}
         />
+
         <CustomButton
           onPress={handleSubmit}
           width={getResponsiveSize(74)}
@@ -189,6 +190,7 @@ const styles = StyleSheet.create({
     fontSize: getFontSize(15),
     fontWeight: "500",
     paddingHorizontal: getResponsiveSize(12),
+    backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.gray2,
     borderRadius: 12,

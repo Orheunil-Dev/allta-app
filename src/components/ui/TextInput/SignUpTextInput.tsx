@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(8),
     fontSize: getFontSize(16),
     color: colors.black,
+    backgroundColor: colors.white,
     borderBottomWidth: 1,
   },
   errorMessage: {

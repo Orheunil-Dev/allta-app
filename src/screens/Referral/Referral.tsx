@@ -292,6 +292,7 @@ const styles = StyleSheet.create({
     fontSize: getFontSize(15),
     fontWeight: "500",
     paddingHorizontal: getResponsiveSize(12),
+    backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.gray2,
     borderRadius: 8,

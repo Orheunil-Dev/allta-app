@@ -1,6 +1,3 @@
-import { inputResetButton } from "@/assets/images";
-import { colors } from "@/styles";
-import { getFontSize, getResponsiveSize } from "@/utils";
 import {
   FlexStyle,
   Image,
@@ -12,7 +9,10 @@ import {
   View,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomText } from "../CustomText/CustomText";
+import { inputResetButton } from "@/assets/images";
+import { colors } from "@/styles";
 
 const fontMap: Record<string, string> = {
   "100": "Pretendard-Thin",
