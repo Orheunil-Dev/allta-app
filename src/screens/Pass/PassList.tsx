@@ -28,42 +28,47 @@ export const PassList = () => {
   const [skip, setSkip] = useState<number>(0);
   const [tickets, setTickets] = useState<GetTicketListReponse["data"]>([]);
 
-  const { data: ticketData, refetch: ticketRefetch } =
-    usePassControllerGetTicketList(
-      {
-        carNumber: car?.number ?? "",
-        take: 20,
-        skip,
+  const {
+    data: ticketData,
+    isLoading: ticketLoading,
+    refetch: ticketRefetch,
+  } = usePassControllerGetTicketList(
+    {
+      carNumber: car?.number ?? "",
+      take: 20,
+      skip,
+    },
+    {
+      query: {
+        queryKey: ["tickets", car?.number, passType],
+        enabled: !!car?.number && (passType === "TICKET" || passType === null),
+        retry: false,
+        gcTime: 0,
       },
-      {
-        query: {
-          queryKey: ["tickets", car?.number, passType],
-          enabled:
-            !!car?.number && (passType === "TICKET" || passType === null),
-          retry: false,
-          gcTime: 0,
-        },
-      }
-    );
+    }
+  );
 
   // 구독권 목록 조회 API
-  const { data: subscriptionData, refetch: subscriptionRefetch } =
-    usePassControllerGetSubscriptionList(
-      {
-        carNumber: car?.number ?? "",
-        ...(passType === "STANDARD" || passType === "PREMIUM"
-          ? { subscriptionType: passType }
-          : {}),
+  const {
+    data: subscriptionData,
+    isLoading: subscriptionLoading,
+    refetch: subscriptionRefetch,
+  } = usePassControllerGetSubscriptionList(
+    {
+      carNumber: car?.number ?? "",
+      ...(passType === "STANDARD" || passType === "PREMIUM"
+        ? { subscriptionType: passType }
+        : {}),
+    },
+    {
+      query: {
+        queryKey: ["subscriptions", car?.number, passType],
+        enabled: !!car?.number && passType !== "TICKET",
+        retry: false,
+        gcTime: 0,
       },
-      {
-        query: {
-          queryKey: ["subscriptions", car?.number, passType],
-          enabled: !!car?.number && passType !== "TICKET",
-          retry: false,
-          gcTime: 0,
-        },
-      }
-    );
+    }
+  );
 
   // 페이지네이션
   const handleLoadMore = () => {
@@ -95,7 +100,10 @@ export const PassList = () => {
       />
 
       <View style={styles.container}>
-        {tickets.length ? (
+        {tickets.length ||
+        subscriptionData?.data.length ||
+        ticketLoading ||
+        subscriptionLoading ? (
           <FlatList
             data={tickets}
             keyExtractor={(item) => item.id}
