@@ -72,7 +72,7 @@ export const MyPage = () => {
 
       <ScrollView style={styles.container}>
         {userProfileData ? (
-          <View style={styles.box}>
+          <View style={styles.profileBox}>
             <View
               style={{
                 flexDirection: "row",
@@ -120,7 +120,7 @@ export const MyPage = () => {
             )}
           </View>
         ) : (
-          <View style={styles.box}>
+          <View style={styles.profileBox}>
             <View
               style={{
                 flexDirection: "row",
@@ -147,7 +147,7 @@ export const MyPage = () => {
           </View>
         )}
 
-        <View style={styles.box}>
+        <View style={styles.profileBox}>
           <View
             style={{
               flexDirection: "row",
@@ -394,13 +394,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(20),
     backgroundColor: colors.bg,
   },
-  box: {
+  profileBox: {
     marginBottom: getResponsiveSize(16),
     padding: getResponsiveSize(16),
     gap: getResponsiveSize(4),
     backgroundColor: colors.white,
     borderRadius: 12,
   },
+  box: {
+    marginBottom: getResponsiveSize(16),
+    paddingVertical: getResponsiveSize(4),
+    paddingHorizontal: getResponsiveSize(16),
+    gap: getResponsiveSize(4),
+    backgroundColor: colors.white,
+    borderRadius: 12,
+  },
+
   divider: {
     width: "100%",
     height: 2,
