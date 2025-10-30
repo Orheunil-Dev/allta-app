@@ -3,25 +3,25 @@ import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { CarStackParamList } from "@/navigations";
-import { z } from "zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { getResponsiveSize, regexCarNumber } from "@/utils";
-import { CustomText } from "@/components/ui/CustomText";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
-import { colors } from "@/styles";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { blackDownArrow, grayErrorIcon } from "@/assets/images";
+import { z } from "zod";
 import {
   useCarControllerGetCarModels,
   useCarControllerGetCarVendors,
   useCarControllerRegisterCar,
 } from "@/api/car/car";
+import { CarStackParamList } from "@/navigations";
+import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
-import { useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "@/components/ui/Spinner";
+import { CustomText } from "@/components/ui/CustomText";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
+import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { blackDownArrow, grayErrorIcon } from "@/assets/images";
+import { colors } from "@/styles";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -207,10 +207,7 @@ export const CarRegister = () => {
         </CustomBottomSheet>
 
         <View style={styles.container}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ paddingBottom: getResponsiveSize(20) }}
-          >
+          <ScrollView showsVerticalScrollIndicator={false}>
             {/* 제조사 선택 */}
             <CustomText fontSize={16} fontWeight={"500"}>
               제조사
@@ -293,6 +290,7 @@ export const CarRegister = () => {
             onPress={handleSubmit}
             isDisabled={!isValid || registerCarLoading}
             height={getResponsiveSize(53)}
+            marginTop={10}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
             {registerCarLoading ? (

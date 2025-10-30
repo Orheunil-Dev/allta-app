@@ -3,25 +3,24 @@ import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { CardStackParamList } from "@/navigations";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSetAtom } from "jotai";
 import { z } from "zod";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { CustomText } from "@/components/ui/CustomText";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { SignUpTextInput } from "@/components/ui/TextInput";
+import { useCardControllerRegisterCard } from "@/api/card/card";
+import { CardStackParamList } from "@/navigations";
+import { errorModalAtom } from "@/jotai";
 import {
   formatCardExpiration,
   formatCardNumber,
   getResponsiveSize,
 } from "@/utils";
-import { colors } from "@/styles";
-import { useCardControllerRegisterCard } from "@/api/card/card";
-import { useQueryClient } from "@tanstack/react-query";
-import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/jotai";
-import { Spinner } from "@/components/ui/Spinner";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
+import { CustomText } from "@/components/ui/CustomText";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { Spinner } from "@/components/ui/Spinner";
+import { colors } from "@/styles";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -55,7 +54,7 @@ export const CardRegister = () => {
     identityNumber: "",
   });
 
-  // 카드 등록
+  // 카드 등록 API
   const {
     mutate: registerCard,
     isError: registerCardError,
@@ -72,6 +71,7 @@ export const CardRegister = () => {
     }));
   };
 
+  // 카드 등록
   const handleSubmit = () => {
     registerCard(
       {
@@ -109,10 +109,7 @@ export const CardRegister = () => {
     <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
         <View style={styles.container}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ paddingBottom: getResponsiveSize(20) }}
-          >
+          <ScrollView showsVerticalScrollIndicator={false}>
             <CustomText fontSize={16} fontWeight={"500"}>
               카드번호
             </CustomText>
@@ -177,6 +174,7 @@ export const CardRegister = () => {
           <CustomButton
             onPress={handleSubmit}
             isDisabled={!isValid || registerCardLoading}
+            marginTop={10}
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
