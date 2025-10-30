@@ -109,7 +109,10 @@ export const CardRegister = () => {
     <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
         <View style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ paddingBottom: getResponsiveSize(20) }}
+          >
             <CustomText fontSize={16} fontWeight={"500"}>
               카드번호
             </CustomText>

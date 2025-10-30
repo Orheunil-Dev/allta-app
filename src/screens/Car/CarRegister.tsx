@@ -207,7 +207,10 @@ export const CarRegister = () => {
         </CustomBottomSheet>
 
         <View style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ paddingBottom: getResponsiveSize(20) }}
+          >
             {/* 제조사 선택 */}
             <CustomText fontSize={16} fontWeight={"500"}>
               제조사
