@@ -1,4 +1,5 @@
 import {
+  FlexAlignType,
   GestureResponderEvent,
   Pressable,
   StyleSheet,
@@ -13,6 +14,7 @@ interface Props {
   isDisabled?: boolean;
   flex?: number;
   flexDirection?: ViewStyle["flexDirection"];
+  alignSelf?: "auto" | FlexAlignType | undefined;
   width?: ViewStyle["width"];
   height?: ViewStyle["height"];
   marginTop?: number;
@@ -31,6 +33,7 @@ export const CustomButton = ({
   isDisabled,
   flex,
   flexDirection = "row",
+  alignSelf,
   width = "auto",
   height = getResponsiveSize(45),
   marginTop = 0,
@@ -50,6 +53,7 @@ export const CustomButton = ({
         {
           flex: flex ?? undefined,
           flexDirection,
+          alignSelf,
           width,
           height,
           marginTop: getResponsiveSize(marginTop),
