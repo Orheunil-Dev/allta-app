@@ -76,7 +76,7 @@ export const ServiceHistory = () => {
                   style={styles.storeImage}
                 ></ImageBackground>
 
-                <View>
+                <View style={{ flex: 1 }}>
                   <CustomText fontSize={18} fontWeight={"600"}>
                     {item.store.name}
                   </CustomText>

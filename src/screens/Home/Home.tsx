@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
@@ -42,6 +42,8 @@ export const Home = () => {
 
   const bottomTabNavigation =
     useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
+
+  const scrollRef = useRef<ScrollView>(null);
 
   const [showCouponModal, setShowCouponModal] = useState<boolean>(false);
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
@@ -102,6 +104,19 @@ export const Home = () => {
       ],
     };
   });
+
+  // 푸터 버튼 이벤트
+  const handleFooterPress = () => {
+    setFooterOpen(!footerOpen);
+
+    if (!footerOpen) {
+      setTimeout(() => {
+        scrollRef.current?.scrollToEnd({
+          animated: true,
+        });
+      }, 250);
+    }
+  };
 
   // 푸시토큰 업데이트
   useEffect(() => {
@@ -202,7 +217,7 @@ export const Home = () => {
         <CustomText fontSize={16}>쿠폰함에서 바로 확인해보세요.</CustomText>
       </CustomModal>
 
-      <ScrollView>
+      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <MainBanner data={bannerData?.data} />
 
@@ -329,7 +344,7 @@ export const Home = () => {
           <View style={styles.footer}>
             <View style={styles.footerTop}>
               <Pressable
-                onPress={() => setFooterOpen(!footerOpen)}
+                onPress={handleFooterPress}
                 style={styles.footerButton}
               >
                 <CustomText color={colors.gray7} fontSize={14}>
@@ -461,6 +476,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
   },
   footerTop: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
