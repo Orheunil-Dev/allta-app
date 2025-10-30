@@ -150,13 +150,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     [
-      "expo-video",
-      {
-        supportsBackgroundPlayback: false,
-        supportsPictureInPicture: true,
-      },
-    ],
-    [
       "expo-image-picker",
       {
         photosPermission:
