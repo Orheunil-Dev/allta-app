@@ -33,7 +33,7 @@ type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpUserInfo">;
 const signUpFormSchema = z.object({
   name: z
     .string()
-    .min(3, "이름은 최소 3자 이상 입력해주세요.")
+    .min(2, "이름은 최소 2자 이상 입력해주세요.")
     .max(10, "이름은 최대 10자까지 입력해주세요.")
     .regex(regexName, "올바른 이름 형식이 아닙니다."),
   phoneNumber: z

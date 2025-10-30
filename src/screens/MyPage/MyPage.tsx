@@ -32,8 +32,10 @@ export const MyPage = () => {
 
   const insets = useSafeAreaInsets();
 
+  // 회원 프로필 조회 API
   const { data: userProfileData, error } = useUserControllerGetUserProfile({
     query: {
+      queryKey: ["profile"],
       retry: false,
       gcTime: 0,
     },
