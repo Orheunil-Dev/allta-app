@@ -173,6 +173,9 @@ export const SearchAddress = () => {
               <Pressable
                 onPress={() => {
                   return addressNavigation.navigate("RegisterAddress", {
+                    fullAddress: item.fullAddress,
+                    roadName: item.roadName,
+                    buildingName: item.buildingName,
                     lat: Number(item.lat),
                     lng: Number(item.lng),
                   });

@@ -127,7 +127,7 @@ export const CustomTextInput = ({
 };
 
 const styles = StyleSheet.create({
-  container: { position: "relative", flex: 1, backgroundColor: colors.white },
+  container: { position: "relative", backgroundColor: colors.white },
   input: {
     paddingVertical: getResponsiveSize(8),
     paddingLeft: getResponsiveSize(8),

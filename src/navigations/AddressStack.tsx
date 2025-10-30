@@ -8,6 +8,9 @@ export type AddressStackParamList = {
   AddressList: undefined;
   SearchAddress: undefined;
   RegisterAddress: {
+    fullAddress?: string;
+    roadName?: string;
+    buildingName?: string | null;
     lat: number;
     lng: number;
   };
