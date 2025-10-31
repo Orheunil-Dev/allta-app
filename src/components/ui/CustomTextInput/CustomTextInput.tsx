@@ -118,7 +118,7 @@ export const CustomTextInput = ({
               ? getResponsiveSize(32)
               : getResponsiveSize(8),
             borderBottomColor:
-              errorMessage !== "null"
+              errorMessage && errorMessage !== "null"
                 ? colors.red
                 : isFocused
                 ? colors.point2
