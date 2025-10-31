@@ -42,10 +42,16 @@ export interface PurchaseDetailItem {
    * @nullable
    */
   carNumber?: string | null;
-  /** 카드 번호 마지막 4자리 */
-  cardDisplayNumber: string;
-  /** 카드사 */
-  cardCompany: string;
+  /**
+   * 카드 번호 마지막 4자리
+   * @nullable
+   */
+  cardDisplayNumber?: string | null;
+  /**
+   * 카드사
+   * @nullable
+   */
+  cardCompany?: string | null;
   /** 생성일 */
   createdAt: string;
   /** 결제 내역 스냅샷 목록 */

@@ -84,6 +84,8 @@ export const ReceiptUploadButton = ({
 
       if (result.canceled || !result.assets[0]) return;
 
+      setIsLoading(true);
+
       const asset = result.assets[0];
 
       // 확장자 변환
@@ -94,8 +96,6 @@ export const ReceiptUploadButton = ({
       );
 
       const base64Data = manipResult.base64;
-
-      setIsLoading(true);
 
       // 클로바 OCR API 요청
       const res = await axios.post(
@@ -136,10 +136,31 @@ export const ReceiptUploadButton = ({
         approvalDate,
       };
 
+      // 영수증 이미지 업로드
+      const uploadFormData = new FormData();
+
+      uploadFormData.append("bucket", "allta-receipt");
+      uploadFormData.append("file", {
+        uri: manipResult.uri,
+        type: "image/jpeg",
+        name: `receipt_${dayjs().format("YYYYMMDDHHmmss")}.jpg`,
+      } as any);
+
+      const uploadRes = await axios.post<{
+        ok: boolean;
+        url: string;
+      }>(`${process.env.EXPO_PUBLIC_API_URL}/upload/image`, uploadFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const imageUrl = uploadRes.data.url;
+
       // 영수증 검증
       verifyReceipt(
         {
-          data: { ...receiptData },
+          data: { ...receiptData, image: imageUrl },
         },
         {
           onSuccess: (res) => {

@@ -47,7 +47,7 @@ export const ReceiptPhotoButton = ({
 
     try {
       // 클로바 OCR API 요청
-      const res = await axios.post(
+      const ocrRes = await axios.post(
         `${process.env.EXPO_PUBLIC_CLOVA_OCR_API_URL}`,
         {
           version: "V2",
@@ -69,7 +69,7 @@ export const ReceiptPhotoButton = ({
         }
       );
 
-      const raw = res.data.images[0].receipt.result;
+      const raw = ocrRes.data.images[0].receipt.result;
 
       const approvalDate = formatApprovalDate(
         raw.paymentInfo.date.text.replace(/\D/g, ""),
@@ -85,11 +85,33 @@ export const ReceiptPhotoButton = ({
         approvalDate,
       };
 
+      // 영수증 이미지 업로드
+      const uploadFormData = new FormData();
+
+      uploadFormData.append("bucket", "allta-receipt");
+      uploadFormData.append("file", {
+        uri: photo.uri,
+        type: "image/jpeg",
+        name: `receipt_${dayjs().format("YYYYMMDDHHmmss")}.jpg`,
+      } as any);
+
+      const uploadRes = await axios.post<{
+        ok: boolean;
+        url: string;
+      }>(`${process.env.EXPO_PUBLIC_API_URL}/upload/image`, uploadFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const imageUrl = uploadRes.data.url;
+
       // 영수증 검증
       verifyReceipt(
         {
           data: {
             ...receiptData,
+            image: imageUrl,
           },
         },
         {

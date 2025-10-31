@@ -15,4 +15,6 @@ export interface VerifyReceiptRequest {
   approvalDate: string;
   /** 결제 금액 */
   amount: number;
+  /** 영수증 이미지 */
+  image: string;
 }
