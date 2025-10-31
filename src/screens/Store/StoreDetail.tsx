@@ -382,7 +382,9 @@ export const StoreDetail = () => {
                 marginRight: getResponsiveSize(4),
               }}
             />
-            <CustomText>{storeData?.store.phoneNumber ?? ""}</CustomText>
+            <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
+              {storeData?.store.phoneNumber ?? ""}
+            </CustomText>
           </View>
 
           {/* 영업 시간 */}

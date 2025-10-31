@@ -237,7 +237,9 @@ export const MyStoreDetail = () => {
                 marginRight: getResponsiveSize(4),
               }}
             />
-            <CustomText>{storeData?.store.phoneNumber ?? ""}</CustomText>
+            <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
+              {storeData?.store.phoneNumber ?? ""}
+            </CustomText>
           </View>
 
           {/* 영업 시간 */}
@@ -446,8 +448,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray2,
   },
   arrow: {
-    width: getResponsiveSize(8),
-    height: getResponsiveSize(4),
+    width: getResponsiveSize(20),
+    height: getResponsiveSize(20),
   },
   notice: {
     flexDirection: "row",
