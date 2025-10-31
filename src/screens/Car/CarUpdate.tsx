@@ -126,6 +126,7 @@ export const CarUpdate = () => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["cars"] });
+          queryClient.invalidateQueries({ queryKey: ["profile"] });
 
           return carStackNavigation.goBack();
         },
