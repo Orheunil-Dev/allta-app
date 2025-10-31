@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FlexStyle,
   Image,
@@ -67,6 +68,8 @@ export const CustomTextInput = ({
   editable = true,
   onFocus,
 }: Props) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <View
       style={[
@@ -101,7 +104,11 @@ export const CustomTextInput = ({
         placeholder={placeholder ?? undefined}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
-        onFocus={onFocus}
+        onFocus={() => {
+          setIsFocused(true);
+          onFocus?.();
+        }}
+        onBlur={() => setIsFocused(false)}
         editable={editable}
         underlineColorAndroid="transparent"
         style={[
@@ -110,6 +117,12 @@ export const CustomTextInput = ({
             paddingRight: onReset
               ? getResponsiveSize(32)
               : getResponsiveSize(8),
+            borderBottomColor:
+              errorMessage !== "null"
+                ? colors.red
+                : isFocused
+                ? colors.point2
+                : colors.gray3,
           },
           styles.input,
         ]}
@@ -117,7 +130,7 @@ export const CustomTextInput = ({
 
       {errorMessage !== "null" && (
         <View style={styles.errorMessage}>
-          <CustomText color="#EF3A2F" fontSize={13}>
+          <CustomText color={colors.red} fontSize={13}>
             {errorMessage}
           </CustomText>
         </View>
@@ -133,7 +146,6 @@ const styles = StyleSheet.create({
     paddingLeft: getResponsiveSize(8),
     fontSize: getFontSize(18),
     borderBottomWidth: 1,
-    borderBottomColor: colors.gray3,
   },
   resetButton: {
     position: "absolute",
