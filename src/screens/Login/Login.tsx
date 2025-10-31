@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Image,
   Platform,
@@ -9,15 +10,20 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import CookieManager from "@react-native-cookies/cookies";
+import { login, me } from "@react-native-kakao/user";
 import * as SecureStore from "expo-secure-store";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
+import * as AppleAuthentication from "expo-apple-authentication";
+import { useSetAtom } from "jotai";
+import { jwtDecode } from "jwt-decode";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import {
   useAuthControllerAppleLoginCallback,
   useAuthControllerFindUserBySocialId,
   useAuthControllerLoginBySocialId,
 } from "@/api/auth/auth";
+import { errorModalAtom } from "@/jotai";
 import { getResponsiveSize } from "@/utils";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
@@ -30,13 +36,6 @@ import {
   loginImage,
 } from "@/assets/images";
 import { colors } from "@/styles";
-import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/jotai";
-import * as AppleAuthentication from "expo-apple-authentication";
-import { jwtDecode } from "jwt-decode";
-// import { useVideoPlayer } from "expo-video";
-import { login, me } from "@react-native-kakao/user";
-import { useState } from "react";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -69,15 +68,6 @@ export const Login = () => {
     isPending: appleLoginCallbackLoading,
     isError: appleLoginCallbackError,
   } = useAuthControllerAppleLoginCallback();
-
-  // const player = useVideoPlayer(
-  //   require("@/assets/video/login-video.mp4"),
-  //   (player) => {
-  //     player.loop = true;
-  //     player.muted = true;
-  //     player.play();
-  //   }
-  // );
 
   // 카카오 로그인
   const handleLoginKakao = async () => {
@@ -118,8 +108,10 @@ export const Login = () => {
                   const accessToken = cookies.accessToken.value;
                   const refreshToken = cookies.refreshToken.value;
 
-                  await SecureStore.setItemAsync("accessToken", accessToken);
-                  await SecureStore.setItemAsync("refreshToken", refreshToken);
+                  await Promise.all([
+                    SecureStore.setItemAsync("accessToken", accessToken),
+                    SecureStore.setItemAsync("refreshToken", refreshToken),
+                  ]);
 
                   return containerNavigation.dispatch(
                     CommonActions.reset({
@@ -193,8 +185,10 @@ export const Login = () => {
                   const accessToken = cookies.accessToken.value;
                   const refreshToken = cookies.refreshToken.value;
 
-                  await SecureStore.setItemAsync("accessToken", accessToken);
-                  await SecureStore.setItemAsync("refreshToken", refreshToken);
+                  await Promise.all([
+                    SecureStore.setItemAsync("accessToken", accessToken),
+                    SecureStore.setItemAsync("refreshToken", refreshToken),
+                  ]);
 
                   return containerNavigation.dispatch(
                     CommonActions.reset({
@@ -265,8 +259,10 @@ export const Login = () => {
               const accessToken = cookies.accessToken.value;
               const refreshToken = cookies.refreshToken.value;
 
-              await SecureStore.setItemAsync("accessToken", accessToken);
-              await SecureStore.setItemAsync("refreshToken", refreshToken);
+              await Promise.all([
+                SecureStore.setItemAsync("accessToken", accessToken),
+                SecureStore.setItemAsync("refreshToken", refreshToken),
+              ]);
 
               return containerNavigation.dispatch(
                 CommonActions.reset({
@@ -316,8 +312,10 @@ export const Login = () => {
           const accessToken = cookies.accessToken.value;
           const refreshToken = cookies.refreshToken.value;
 
-          await SecureStore.setItemAsync("accessToken", accessToken);
-          await SecureStore.setItemAsync("refreshToken", refreshToken);
+          await Promise.all([
+            SecureStore.setItemAsync("accessToken", accessToken),
+            SecureStore.setItemAsync("refreshToken", refreshToken),
+          ]);
 
           return containerNavigation.dispatch(
             CommonActions.reset({
@@ -376,11 +374,6 @@ export const Login = () => {
         </CustomText>
 
         <Pressable onPress={handleLoginTest}>
-          {/* <VideoView
-            style={styles.video}
-            player={player}
-            nativeControls={false}
-          /> */}
           <Image
             source={loginImage}
             style={{
