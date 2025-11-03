@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { shareCustomTemplate } from "@react-native-kakao/share";
 import * as Clipboard from "expo-clipboard";
 import { useSetAtom } from "jotai";
 import {
@@ -10,14 +11,14 @@ import {
 import { errorModalAtom } from "@/jotai";
 import { useToastMessage } from "@/hooks";
 import { getFontSize, getResponsiveSize } from "@/utils";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomImage } from "@/components/ui/CustomImage";
 import { Spinner } from "@/components/ui/Spinner";
 import { referralBanner } from "@/assets/images";
 import { colors, fontMap } from "@/styles";
-import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { shareCustomTemplate } from "@react-native-kakao/share";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -105,25 +106,31 @@ export const Referral = () => {
     <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
         <ScrollView>
-          <Image
-            source={referralBanner}
-            style={{
-              width: screenWidth,
-              height: (screenWidth * 388) / 375,
-            }}
-          />
+          <CustomImage source={referralBanner} width={screenWidth} />
+
+          <View style={styles.eventBannerBottom}>
+            <View style={styles.referredCount}>
+              <CustomText color={colors.white} fontSize={16}>
+                현재 초대한 친구
+              </CustomText>
+
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <CustomText
+                  marginRight={6}
+                  color="#FFC935"
+                  fontSize={24}
+                  fontWeight={"600"}
+                >
+                  {referralCodeData?.data.referredCount ?? 0}
+                </CustomText>
+                <CustomText color={colors.white} fontSize={16}>
+                  명
+                </CustomText>
+              </View>
+            </View>
+          </View>
 
           <View style={styles.container}>
-            <CustomText textAlign="center" fontSize={16}>
-              친구가 내 추천 코드로 가입하면
-            </CustomText>
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <CustomText color={colors.point2} fontSize={16}>
-                무료 세차권 쿠폰
-              </CustomText>
-              <CustomText fontSize={16}>을 받을 수 있어요!</CustomText>
-            </View>
-
             <View style={styles.referralCode}>
               <CustomText fontSize={16} fontWeight={"600"}>
                 나의 추천 코드
@@ -263,9 +270,22 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: getResponsiveSize(20),
   },
+  eventBannerBottom: {
+    paddingHorizontal: getResponsiveSize(20),
+    paddingBottom: getResponsiveSize(20),
+    backgroundColor: "#1A1A36",
+  },
+  referredCount: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: getResponsiveSize(10),
+    paddingHorizontal: getResponsiveSize(16),
+    borderBottomWidth: 1,
+    borderBottomColor: colors.white,
+  },
   referralCode: {
     alignItems: "center",
-    marginTop: getResponsiveSize(20),
     paddingVertical: 12,
     borderWidth: 1,
     borderColor: colors.gray2,
