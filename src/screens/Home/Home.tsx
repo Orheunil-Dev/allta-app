@@ -358,7 +358,7 @@ export const Home = () => {
                 </Animated.View>
               </Pressable>
 
-              <CustomText color={colors.gray5} fontSize={14}>
+              <CustomText color={colors.gray5} fontSize={14} numberOfLines={1}>
                 고객센터 운영시간(월~금 : 10-18시)
               </CustomText>
             </View>
