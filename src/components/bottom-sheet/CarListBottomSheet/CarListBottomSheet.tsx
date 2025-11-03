@@ -8,7 +8,7 @@ import { Car } from "@/types";
 import { getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
@@ -48,12 +48,13 @@ export const CarListBottomSheet = ({
     >
       <View style={styles.container}>
         {carData?.data.length ? (
-          <FlatList
-            data={carData?.data}
-            keyExtractor={(item) => item.id}
+          <ScrollView
             contentContainerStyle={{ gap: getResponsiveSize(16) }}
-            renderItem={({ item, index }) => (
+            showsVerticalScrollIndicator={false}
+          >
+            {carData?.data.map((item, index) => (
               <Pressable
+                key={index}
                 onPress={handleSelectCar(item)}
                 style={[
                   styles.car,
@@ -82,8 +83,8 @@ export const CarListBottomSheet = ({
                   </CustomText>
                 </View>
               </Pressable>
-            )}
-          />
+            ))}
+          </ScrollView>
         ) : (
           <View style={styles.emptyBox}>
             <CustomText

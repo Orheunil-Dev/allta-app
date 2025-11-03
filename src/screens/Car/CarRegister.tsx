@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -139,11 +139,13 @@ export const CarRegister = () => {
           hasCloseButton
           onClose={handleCloseBrandSelect}
         >
-          <FlatList
-            data={carVendorsData?.data}
+          <ScrollView
             style={{ width: "100%" }}
-            renderItem={({ item, index }) => (
+            showsVerticalScrollIndicator={false}
+          >
+            {carVendorsData?.data.map((item, index) => (
               <Pressable
+                key={index}
                 onPress={() => {
                   handleChangeRegisterForm("carModel", "");
                   handleChangeRegisterForm("carType", "");
@@ -151,7 +153,6 @@ export const CarRegister = () => {
                   setCarVendor(item.vendor);
                   handleCloseBrandSelect();
                 }}
-                key={index}
                 style={styles.list}
               >
                 <CustomText
@@ -165,8 +166,8 @@ export const CarRegister = () => {
                   {item.vendor}
                 </CustomText>
               </Pressable>
-            )}
-          />
+            ))}
+          </ScrollView>
         </CustomBottomSheet>
 
         {/* 차량모델 바텀시트 */}
@@ -176,34 +177,30 @@ export const CarRegister = () => {
           hasCloseButton
           onClose={handleCloseModelSelect}
         >
-          {carModelsData?.data && (
-            <FlatList
-              data={carModelsData?.data}
-              style={{ width: "100%" }}
-              renderItem={({ item, index }) => (
-                <Pressable
-                  onPress={() => {
-                    handleChangeRegisterForm("carModel", item.name!);
-                    handleChangeRegisterForm("carType", item.type!);
-                    handleCloseModelSelect();
-                  }}
-                  key={index}
-                  style={styles.list}
+          <ScrollView style={{ width: "100%" }}>
+            {carModelsData?.data.map((item, index) => (
+              <Pressable
+                key={index}
+                onPress={() => {
+                  handleChangeRegisterForm("carModel", item.name!);
+                  handleChangeRegisterForm("carType", item.type!);
+                  handleCloseModelSelect();
+                }}
+                style={styles.list}
+              >
+                <CustomText
+                  color={
+                    registerForm.carModel === item.name
+                      ? colors.main
+                      : colors.black
+                  }
+                  fontSize={16}
                 >
-                  <CustomText
-                    color={
-                      registerForm.carModel === item.name
-                        ? colors.main
-                        : colors.black
-                    }
-                    fontSize={16}
-                  >
-                    {item.name}
-                  </CustomText>
-                </Pressable>
-              )}
-            />
-          )}
+                  {item.name}
+                </CustomText>
+              </Pressable>
+            ))}
+          </ScrollView>
         </CustomBottomSheet>
 
         <View style={styles.container}>

@@ -1,5 +1,5 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { GetCardListResponse } from "@/api/models";
 import {
@@ -18,9 +18,6 @@ interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
   card: Card | null;
   setCard: React.Dispatch<React.SetStateAction<Card | null>>;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  cardCompany: string;
-  carDisplayNumber: string;
   cardData: GetCardListResponse | undefined;
   onPressRegister: () => void;
 }
@@ -29,9 +26,6 @@ export const CardChangeBottomSheet = ({
   ref,
   card,
   setCard,
-  setShowModal,
-  cardCompany,
-  carDisplayNumber,
   cardData,
   onPressRegister,
 }: Props) => {
@@ -58,12 +52,13 @@ export const CardChangeBottomSheet = ({
     >
       <View style={styles.container}>
         {cardData?.data.length ? (
-          <FlatList
-            data={cardData?.data}
-            keyExtractor={(item) => item.id}
+          <ScrollView
             contentContainerStyle={{ gap: getResponsiveSize(16) }}
-            renderItem={({ item, index }) => (
+            showsVerticalScrollIndicator={false}
+          >
+            {cardData?.data.map((item, index) => (
               <Pressable
+                key={index}
                 onPress={handleSelectCard(item)}
                 style={[
                   styles.card,
@@ -89,8 +84,8 @@ export const CardChangeBottomSheet = ({
                   </CustomText>
                 </View>
               </Pressable>
-            )}
-          />
+            ))}
+          </ScrollView>
         ) : (
           <View style={styles.emptyBox}>
             <CustomText
