@@ -41,7 +41,7 @@ export const useCurrentWeather = () => {
 
       // 현재 좌표 조회
       const loc = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Low,
+        accuracy: Location.Accuracy.Balanced,
       });
 
       const lat = loc.coords.latitude;

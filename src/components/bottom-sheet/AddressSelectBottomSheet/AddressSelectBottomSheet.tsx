@@ -21,7 +21,7 @@ import { colors } from "@/styles";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
-import { FlatList } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { GetAddressListResponse } from "@/api/models";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { LAST_USED_ADDRESS } from "@/constants";
@@ -85,7 +85,7 @@ export const AddressSelectBottomSheet = ({
     }
 
     const loc = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Low,
+      accuracy: Location.Accuracy.Balanced,
     });
 
     setCoordinate({
@@ -129,13 +129,17 @@ export const AddressSelectBottomSheet = ({
           </CustomText>
         </CustomButton>
 
-        <FlatList
-          data={addressData}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ gap: getResponsiveSize(16) }}
-          style={{ marginVertical: getResponsiveSize(16) }}
-          renderItem={({ item, index }) => (
+        <ScrollView
+          style={{
+            marginVertical: getResponsiveSize(16),
+          }}
+          contentContainerStyle={{
+            gap: getResponsiveSize(16),
+          }}
+        >
+          {addressData?.map((item, index) => (
             <Pressable
+              key={index}
               onPress={() => {
                 setCoordinate({
                   id: item.id,
@@ -172,8 +176,8 @@ export const AddressSelectBottomSheet = ({
                 {item.fullAddress}
               </CustomText>
             </Pressable>
-          )}
-        />
+          ))}
+        </ScrollView>
       </View>
 
       <CustomButton

@@ -64,9 +64,13 @@ export const SearchAddress = () => {
       }
     }
 
+    console.log("aaaaaaaaa");
+
     const loc = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Low,
+      accuracy: Location.Accuracy.Balanced,
     });
+
+    console.log(loc);
 
     return addressNavigation.navigate("RegisterAddress", {
       lat: loc.coords.latitude,
