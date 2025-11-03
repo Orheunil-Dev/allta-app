@@ -2,6 +2,7 @@ import {
   Alert,
   Image,
   Linking,
+  Platform,
   Pressable,
   StyleSheet,
   View,
@@ -136,26 +137,38 @@ export const ReceiptUploadButton = ({
         approvalDate,
       };
 
+      // 파일 경로
+      const fileUri =
+        Platform.OS === "android" && !manipResult.uri.startsWith("file://")
+          ? "file://" + manipResult.uri
+          : manipResult.uri;
+
       // 영수증 이미지 업로드
       const uploadFormData = new FormData();
 
       uploadFormData.append("bucket", "allta-receipt");
       uploadFormData.append("file", {
-        uri: manipResult.uri,
+        uri: fileUri,
         type: "image/jpeg",
         name: `receipt_${dayjs().format("YYYYMMDDHHmmss")}.jpg`,
       } as any);
 
-      const uploadRes = await axios.post<{
-        ok: boolean;
-        url: string;
-      }>(`${process.env.EXPO_PUBLIC_API_URL}/upload/image`, uploadFormData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const uploadRes = await fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/upload/image`,
+        {
+          method: "POST",
+          body: uploadFormData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      const imageUrl = uploadRes.data.url;
+      const uploadResJson = await uploadRes.json();
+
+      console.log(uploadResJson.url);
+
+      const imageUrl = uploadResJson.url;
 
       // 영수증 검증
       verifyReceipt(
