@@ -242,6 +242,7 @@ export const SignUpUserInfo = () => {
               maxLength={13}
               keyboardType="number-pad"
               placeholder="휴대폰 번호를 입력해주세요."
+              flex={1}
             />
             <Pressable
               onPress={handleSendVerificationCode}

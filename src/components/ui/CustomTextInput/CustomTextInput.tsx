@@ -36,6 +36,7 @@ interface Props {
   maxLength?: number;
   placeholder?: string;
   errorMessage?: string;
+  flex?: number;
   justifyContent?: FlexStyle["justifyContent"];
   marginTop?: number;
   marginBottom?: number;
@@ -57,6 +58,7 @@ export const CustomTextInput = ({
   maxLength,
   placeholder,
   errorMessage,
+  flex,
   justifyContent = "center",
   marginTop = 0,
   marginBottom = 0,
@@ -74,11 +76,12 @@ export const CustomTextInput = ({
     <View
       style={[
         {
+          flex,
+          justifyContent: justifyContent,
           marginTop: getResponsiveSize(marginTop),
           marginBottom: getResponsiveSize(marginBottom),
           marginRight: getResponsiveSize(marginRight),
           marginLeft: getResponsiveSize(marginLeft),
-          justifyContent: justifyContent,
         },
         styles.container,
       ]}
@@ -114,6 +117,7 @@ export const CustomTextInput = ({
         style={[
           {
             fontFamily: fontMap[fontWeight],
+            color: editable ? colors.black : colors.gray5,
             paddingRight: onReset
               ? getResponsiveSize(32)
               : getResponsiveSize(8),
