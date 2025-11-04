@@ -1,4 +1,21 @@
-import { PassType } from "@/types";
+export const formatLoginKind = (text: string): string => {
+  switch (text) {
+    case "KAKAO":
+      return "카카오";
+
+    case "GOOGLE":
+      return "구글";
+
+    case "APPLE":
+      return "애플";
+
+    case "TEST":
+      return "테스트";
+
+    default:
+      return text;
+  }
+};
 
 // 전화번호 포매팅 (ex. 010-0000-0000)
 export const formatPhoneNumber = (value: string) => {

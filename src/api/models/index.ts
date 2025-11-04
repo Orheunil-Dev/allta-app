@@ -150,6 +150,8 @@ export * from './updateMarketingAgreementStatusResponse';
 export * from './updatePushTokenRequest';
 export * from './updateSubscriptionCardRequest';
 export * from './updateSubscriptionCardResponse';
+export * from './updateUserProfileRequest';
+export * from './updateUserProfileResponse';
 export * from './uploadImageRequest';
 export * from './uploadImageResponse';
 export * from './useSubscriptionRequest';

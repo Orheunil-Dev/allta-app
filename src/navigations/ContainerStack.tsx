@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   NavigationContainer,
   NavigatorScreenParams,
@@ -31,9 +32,9 @@ import { ServiceHistory } from "@/screens/ServiceHistory";
 import { Coupon } from "@/screens/Coupon";
 import { Referral } from "@/screens/Referral";
 import { Faq } from "@/screens/Faq";
+import { Profile } from "@/screens/Profile";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
-import { useEffect, useRef } from "react";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -60,6 +61,12 @@ export type ContainerStackParamList = {
   EventStack: NavigatorScreenParams<EventStackParamList>;
   NoticeStack: NavigatorScreenParams<NoticeStackParamList>;
   Faq: undefined;
+  Profile: {
+    name: string;
+    email: string | null;
+    loginKind: string;
+    phoneNumber: string;
+  };
 };
 
 interface Props {
@@ -305,6 +312,13 @@ export const ContainerStack = ({
           component={Faq}
           options={{
             header: () => <CustomHeader title="고객센터" showBackButton />,
+          }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            header: () => <CustomHeader title="내 정보" showBackButton />,
           }}
         />
       </Stack.Navigator>

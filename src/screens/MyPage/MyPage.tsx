@@ -86,7 +86,16 @@ export const MyPage = () => {
                 {userProfileData.name} 님
               </CustomText>
 
-              <Pressable>
+              <Pressable
+                onPress={() =>
+                  containerNavigation.navigate("Profile", {
+                    name: userProfileData.name,
+                    phoneNumber: userProfileData.phoneNumber,
+                    loginKind: userProfileData.loginKind,
+                    email: userProfileData.email ?? null,
+                  })
+                }
+              >
                 <Image source={rigthArrowIcon} style={styles.icon} />
               </Pressable>
             </View>
