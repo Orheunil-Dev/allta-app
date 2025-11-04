@@ -1,4 +1,4 @@
-import { Image, Platform, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
@@ -11,7 +11,7 @@ import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { IS_NOTIFICATION_GRANTED } from "@/constants";
+import { IS_NOTIFICATION_GRANTED, IS_GET_PERMISSION } from "@/constants";
 import {
   PermissionAlarmIcon,
   PermissionCameraIcon,
@@ -44,6 +44,8 @@ export const Permission = () => {
     await ImagePicker.requestMediaLibraryPermissionsAsync();
     // ATT 권한 요청
     await TrackingTransparency.requestTrackingPermissionsAsync();
+
+    mmkvStorage.setBoolean(IS_GET_PERMISSION, true);
 
     containerNavigation.dispatch(
       CommonActions.reset({

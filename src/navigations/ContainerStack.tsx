@@ -9,7 +9,6 @@ import analytics from "@react-native-firebase/analytics";
 import * as Linking from "expo-linking";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
-import { checkIsFirstLaunch, formatEllipsis } from "@/utils";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
 import { StoreStack, StoreStackParamList } from "./StoreStack";
 import { AddressStack, AddressStackParamList } from "./AddressStack";
@@ -33,8 +32,11 @@ import { Coupon } from "@/screens/Coupon";
 import { Referral } from "@/screens/Referral";
 import { Faq } from "@/screens/Faq";
 import { Profile } from "@/screens/Profile";
+import mmkvStorage from "@/libs/mmkv-storage";
+import { formatEllipsis } from "@/utils";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
+import { IS_GET_PERMISSION } from "@/constants";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -100,6 +102,8 @@ export const ContainerStack = ({
 
   const routeNameRef = useRef<string | undefined>(undefined);
 
+  const isGetPermission = mmkvStorage.getBoolean(IS_GET_PERMISSION);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       const currentRoute = navigationRef.getCurrentRoute();
@@ -111,8 +115,6 @@ export const ContainerStack = ({
 
     return () => clearTimeout(timeout);
   }, []);
-
-  const isFirstLaunch = checkIsFirstLaunch();
 
   return (
     <NavigationContainer
@@ -155,7 +157,7 @@ export const ContainerStack = ({
       <ErrorModal />
 
       <Stack.Navigator
-        initialRouteName={isFirstLaunch ? `IntroStack` : `BottomTab`}
+        initialRouteName={isGetPermission ? `BottomTab` : `IntroStack`}
       >
         <Stack.Screen
           name="IntroStack"
