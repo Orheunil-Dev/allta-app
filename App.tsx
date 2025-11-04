@@ -29,6 +29,16 @@ import { Update } from "@/screens/Update";
 import { Splash } from "@/screens/Splash";
 import { colors } from "@/styles";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true, // 알림 UI
+    shouldPlaySound: true, // 사운드
+    shouldSetBadge: false, // 앱 아이콘 배지
+    shouldShowBanner: true, // iOS 14+ 배너
+    shouldShowList: true, // 알림 센터 리스트
+  }),
+});
+
 initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_APP_KEY);
 
 export default function App() {
@@ -105,16 +115,6 @@ export default function App() {
   // 포그라운드 알림 처리
   useEffect(() => {
     const setupNotification = async () => {
-      Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-          shouldShowAlert: true, // 알림 UI
-          shouldPlaySound: true, // 사운드
-          shouldSetBadge: false, // 앱 아이콘 배지
-          shouldShowBanner: true, // iOS 14+ 배너
-          shouldShowList: true, // 알림 센터 리스트
-        }),
-      });
-
       // 안드로이드 채널 설정
       if (Platform.OS === "android") {
         await Notifications.setNotificationChannelAsync("default", {
