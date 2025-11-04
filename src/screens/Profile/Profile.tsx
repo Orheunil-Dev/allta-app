@@ -3,15 +3,17 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSetAtom } from "jotai";
 import { z } from "zod";
 import {
   useUserControllerCheckPhoneNumber,
-  useUserControllerCreateUser,
   useUserControllerSendVerificationCode,
   useUserControllerUpdateUserProfile,
   useUserControllerVerifyPhoneNumber,
 } from "@/api/user/user";
+import { ContainerStackParamList } from "@/navigations";
+import { errorModalAtom } from "@/jotai";
 import { useToastMessage } from "@/hooks";
 import {
   formatLoginKind,
@@ -27,17 +29,21 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
+import { Spinner } from "@/components/ui/Spinner";
 import { colors } from "@/styles";
 
 type ProfileRouteProp = RouteProp<ContainerStackParamList, "Profile">;
 
 // 유효성 검사
-const signUpFormSchema = z.object({
+const nameSchema = z.object({
   name: z
     .string()
     .min(2, "이름은 최소 2자 이상 입력해주세요.")
     .max(10, "이름은 최대 10자까지 입력해주세요.")
     .regex(regexName, "올바른 이름 형식이 아닙니다."),
+});
+
+const phoneNumberSchema = z.object({
   phoneNumber: z
     .string()
     .regex(regexPhoneNumber, "올바른 휴대폰 번호 형식이 아닙니다."),
@@ -46,19 +52,27 @@ const signUpFormSchema = z.object({
 export const Profile = () => {
   const route = useRoute<ProfileRouteProp>();
 
-  const loginStackNavigation =
-    useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
+  const queryClient = useQueryClient();
+
+  const containerNavigation =
+    useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const scrollRef = useRef<ScrollView>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const secondsRef = useRef<NodeJS.Timeout | null>(null);
 
-  const [isValid, setIsValid] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-  const [isSended, setIsSended] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
+  const setErrorModal = useSetAtom(errorModalAtom);
+
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const [isSended, setIsSended] = useState<boolean>(false);
+  const [verificationCode, setVerificationCode] = useState<string>("");
   const [seconds, setSeconds] = useState<number>(180);
-  const [infoForm, setInfoForm] = useState({
+  const [userInfo, setUserInfo] = useState<{
+    name: string;
+    phoneNumber: string;
+  }>({
     name: route.params.name,
     phoneNumber: route.params.phoneNumber,
   });
@@ -94,11 +108,11 @@ export const Profile = () => {
     isError: updateUserProfileError,
   } = useUserControllerUpdateUserProfile();
 
-  const handleChangeSignUpForm = (
-    key: keyof typeof infoForm,
+  const handleChangeProfileForm = (
+    key: keyof typeof userInfo,
     value: string
   ) => {
-    setInfoForm((prev) => ({
+    setUserInfo((prev) => ({
       ...prev,
       [key]: value,
     }));
@@ -111,7 +125,7 @@ export const Profile = () => {
     sendVerificationCode(
       {
         data: {
-          phoneNumber: infoForm.phoneNumber,
+          phoneNumber: userInfo.phoneNumber,
         },
       },
       {
@@ -126,22 +140,67 @@ export const Profile = () => {
     );
   };
 
-  const handleNext = () => {
-    verifyPhoneNumber({
-      data: {
-        phoneNumber: infoForm.phoneNumber,
-        verificationCode,
+  // 휴대폰 인증번호 검증
+  const handleVerifyPhoneNumber = () => {
+    verifyPhoneNumber(
+      {
+        data: {
+          phoneNumber: userInfo.phoneNumber,
+          verificationCode,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          setIsSended(true);
+          setIsActive(true);
+          setSeconds(180);
+
+          return SuccessToast("휴대폰 인증이 완료되었습니다.");
+        },
+      }
+    );
+  };
+
+  // 프로필 수정
+  const handleUpdateProfile = () => {
+    if (
+      userInfo.name === route.name &&
+      userInfo.phoneNumber === route.params.phoneNumber
+    ) {
+      return ErrorToast("변경된 내용이 없습니다.");
+    }
+
+    updateUserProfile(
+      {
+        data: {
+          name: userInfo.name,
+          phoneNumber: userInfo.phoneNumber,
+        },
+      },
+      {
+        onSuccess: (res) => {
+          queryClient.invalidateQueries({ queryKey: ["profile"] });
+          SuccessToast("프로필이 수정되었습니다.");
+
+          return containerNavigation.goBack();
+        },
+        onError: (error: any) => {
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "프로필 수정 중 에러가 발생했습니다.",
+          });
+        },
+      }
+    );
   };
 
   // 휴대폰번호 입력 시 자동으로 검증 요청
   useEffect(() => {
     if (
-      infoForm.phoneNumber.length !== 13 ||
-      infoForm.phoneNumber === route.params.phoneNumber
+      userInfo.phoneNumber.length !== 13 ||
+      userInfo.phoneNumber === route.params.phoneNumber
     ) {
-      setIsValid(false);
+      setIsPhoneNumberValid(false);
       return;
     }
 
@@ -152,7 +211,7 @@ export const Profile = () => {
     debounceRef.current = setTimeout(() => {
       checkPhoneNumber({
         data: {
-          phoneNumber: infoForm.phoneNumber,
+          phoneNumber: userInfo.phoneNumber,
         },
       });
     }, 500);
@@ -160,21 +219,21 @@ export const Profile = () => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [infoForm.phoneNumber]);
+  }, [userInfo.phoneNumber]);
 
-  // 이름, 휴대폰 번호 입력 완료해야 인증코드 발송 가능
+  // 휴대폰 번호 입력 완료해야 인증코드 발송 가능
   useEffect(() => {
-    if (infoForm.phoneNumber.length !== 13) {
+    if (userInfo.phoneNumber.length !== 13) {
       return;
     } else if (
       checkPhoneNumberData &&
-      signUpFormSchema.safeParse(infoForm).success
+      phoneNumberSchema.safeParse(userInfo).success
     ) {
-      setIsValid(true);
+      setIsPhoneNumberValid(true);
     } else {
-      setIsValid(false);
+      setIsPhoneNumberValid(false);
     }
-  }, [checkPhoneNumberData, signUpFormSchema]);
+  }, [checkPhoneNumberData, phoneNumberSchema]);
 
   // 인증코드 타이머
   useEffect(() => {
@@ -192,12 +251,26 @@ export const Profile = () => {
     };
   }, [isActive, seconds]);
 
-  // 인증코드 입력 완료 시 자동으로 검증 후 화면 이동
   useEffect(() => {
-    if (verificationCode.length === 6) {
-      handleNext();
+    const isNameChanged = userInfo.name !== route.params.name;
+    const isPhoneNumberChanged =
+      userInfo.phoneNumber !== route.params.phoneNumber;
+
+    const isNameValid = nameSchema.safeParse({ name: userInfo.name }).success;
+    const isPhoneValid = phoneNumberSchema.safeParse({
+      phoneNumber: userInfo.phoneNumber,
+    }).success;
+
+    if (isNameChanged && !isPhoneNumberChanged) {
+      setIsValid(isNameValid);
+    } else if (!isNameChanged && isPhoneNumberChanged) {
+      setIsValid(isPhoneValid && isPhoneNumberValid);
+    } else if (isNameChanged && isPhoneNumberChanged) {
+      setIsValid(isNameValid && isPhoneValid && isPhoneNumberValid);
+    } else {
+      setIsValid(false);
     }
-  }, [verificationCode]);
+  }, [userInfo]);
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
@@ -212,8 +285,8 @@ export const Profile = () => {
             이름
           </CustomText>
           <CustomTextInput
-            value={infoForm.name}
-            onChangeText={(text) => handleChangeSignUpForm("name", text)}
+            value={userInfo.name}
+            onChangeText={(text) => handleChangeProfileForm("name", text)}
             placeholder="이름을 입력해주세요."
             maxLength={10}
           />
@@ -223,12 +296,12 @@ export const Profile = () => {
           </CustomText>
           <View style={styles.inputBox}>
             <CustomTextInput
-              value={infoForm.phoneNumber}
+              value={userInfo.phoneNumber}
               onChangeText={(value) =>
-                handleChangeSignUpForm("phoneNumber", formatPhoneNumber(value))
+                handleChangeProfileForm("phoneNumber", formatPhoneNumber(value))
               }
               errorMessage={
-                infoForm.phoneNumber.length === 13
+                userInfo.phoneNumber.length === 13
                   ? (checkPhoneNumberError as CustomError)?.message ?? undefined
                   : undefined
               }
@@ -239,16 +312,16 @@ export const Profile = () => {
             />
             <Pressable
               onPress={handleSendVerificationCode}
-              disabled={!isValid}
+              disabled={!isPhoneNumberValid}
               style={[
                 styles.sendCodeButton,
                 {
-                  borderColor: isValid ? colors.main : colors.gray5,
+                  borderColor: isPhoneNumberValid ? colors.main : colors.gray5,
                 },
               ]}
             >
               <CustomText
-                color={isValid ? colors.main : colors.gray5}
+                color={isPhoneNumberValid ? colors.main : colors.gray5}
                 fontSize={12}
                 fontWeight={"500"}
                 textAlign="center"
@@ -267,6 +340,7 @@ export const Profile = () => {
                 <CustomTextInput
                   value={verificationCode}
                   onChangeText={(text) => setVerificationCode(text)}
+                  flex={1}
                   maxLength={6}
                   keyboardType="number-pad"
                   errorMessage={
@@ -305,18 +379,22 @@ export const Profile = () => {
           }}
         >
           <CustomButton
-            onPress={handleNext}
+            onPress={handleUpdateProfile}
             isDisabled={!isValid}
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
-            <CustomText
-              color={isValid ? colors.white : colors.gray5}
-              fontSize={16}
-              fontWeight={"600"}
-            >
-              저장하기
-            </CustomText>
+            {updateUserProfileLoading ? (
+              <Spinner />
+            ) : (
+              <CustomText
+                color={isValid ? colors.white : colors.gray5}
+                fontSize={16}
+                fontWeight={"600"}
+              >
+                저장하기
+              </CustomText>
+            )}
           </CustomButton>
         </View>
       </CustomKeyboardAvoidingView>

@@ -274,6 +274,7 @@ export const SignUpUserInfo = () => {
                 <CustomTextInput
                   value={verificationCode}
                   onChangeText={(text) => setVerificationCode(text)}
+                  flex={1}
                   maxLength={6}
                   keyboardType="number-pad"
                   errorMessage={
