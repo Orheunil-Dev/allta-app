@@ -36,8 +36,9 @@ export const MyPage = () => {
   const { data: userProfileData, error } = useUserControllerGetUserProfile({
     query: {
       queryKey: ["profile"],
-      retry: false,
+      staleTime: 0,
       gcTime: 0,
+      refetchOnMount: "always",
     },
   });
 
