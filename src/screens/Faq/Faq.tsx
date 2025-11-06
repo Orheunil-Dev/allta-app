@@ -16,7 +16,9 @@ type Category = (typeof faqs)[number]["category"];
 
 const FaqItem = ({ value, isOpen, onToggle }: any) => {
   const animatedAnswerStyle = useAnimatedStyle(() => ({
-    height: withTiming(isOpen ? value.height ?? 80 : 0, { duration: 250 }),
+    height: withTiming(isOpen ? value.height ?? 80 : 0, {
+      duration: 250,
+    }),
     opacity: withTiming(isOpen ? 1 : 0, { duration: 250 }),
   }));
 
@@ -51,7 +53,8 @@ const FaqItem = ({ value, isOpen, onToggle }: any) => {
       <Animated.View style={[animatedAnswerStyle, { overflow: "hidden" }]}>
         <View style={styles.answer}>
           <Image source={aIcon} style={styles.icon} />
-          <View style={{ flex: 1, paddingRight: getResponsiveSize(40) }}>
+
+          <View style={{ flex: 1, paddingRight: getResponsiveSize(20) }}>
             <CustomText>{value.answer}</CustomText>
           </View>
         </View>
