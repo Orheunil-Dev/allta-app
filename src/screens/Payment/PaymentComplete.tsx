@@ -79,7 +79,7 @@ export const PaymentComplete = () => {
             borderWidth={1}
           >
             <CustomText fontSize={18} fontWeight={"600"}>
-              결재 내역 보기
+              결제 내역 보기
             </CustomText>
           </CustomButton>
 

@@ -88,7 +88,7 @@ export const Faq = () => {
               고객센터 문의
             </CustomText>
             <CustomText color={colors.point2} fontSize={20} fontWeight={"600"}>
-              1669-1620
+              1668-1620
             </CustomText>
           </View>
 
