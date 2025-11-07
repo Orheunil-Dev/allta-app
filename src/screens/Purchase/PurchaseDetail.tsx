@@ -136,7 +136,9 @@ export const PurchaseDetail = () => {
                   </CustomText>
                   <CustomText fontSize={16}>
                     {formatCardCompany(purchaseData.data.cardCompany)}{" "}
-                    {purchaseData.data.cardDisplayNumber}
+                    {formatCardDisplayNumber(
+                      purchaseData.data.cardDisplayNumber
+                    )}
                   </CustomText>
                 </View>
 
@@ -188,7 +190,9 @@ export const PurchaseDetail = () => {
                   </CustomText>
                   <CustomText fontSize={16}>
                     {formatCardCompany(purchaseData.data.cardCompany)}{" "}
-                    {purchaseData.data.cardDisplayNumber}
+                    {formatCardDisplayNumber(
+                      purchaseData.data.cardDisplayNumber
+                    )}
                   </CustomText>
                 </View>
 

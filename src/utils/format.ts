@@ -198,12 +198,16 @@ export const formatCouponPassType = (
 };
 
 // 카드번호 포매팅
-export const formatCardDisplayNumber = (value: string) => {
+export const formatCardDisplayNumber = (value?: string | null) => {
+  if (!value) return "";
+
   return `****-****-****-${value}`;
 };
 
 // 카드사 포매팅
-export const formatCardCompany = (value: string) => {
+export const formatCardCompany = (value?: string | null) => {
+  if (!value) return "";
+
   const cardCompanyMap: Record<string, string> = {
     "01": "BC",
     "02": "신한",
