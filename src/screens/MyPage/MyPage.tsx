@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useUserControllerGetUserProfile } from "@/api/user/user";
 import { ContainerStackParamList } from "@/navigations";
@@ -30,17 +31,29 @@ export const MyPage = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
+  const isFocus = useIsFocused();
+
   const insets = useSafeAreaInsets();
 
   // 회원 프로필 조회 API
-  const { data: userProfileData, error } = useUserControllerGetUserProfile({
+  const {
+    data: userProfileData,
+    isPending: userProfileLoading,
+    error: userProfileError,
+    refetch: userProfileRefetch,
+  } = useUserControllerGetUserProfile({
     query: {
       queryKey: ["profile"],
-      staleTime: 0,
+      retry: false,
       gcTime: 0,
-      refetchOnMount: "always",
     },
   });
+
+  useEffect(() => {
+    if (isFocus) {
+      userProfileRefetch();
+    }
+  }, [isFocus]);
 
   return (
     <CustomSafeAreaView edges={["top"]}>
