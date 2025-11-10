@@ -1,27 +1,27 @@
 import { useRef, useState } from "react";
-import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { CarStackParamList } from "@/navigations";
-import { z } from "zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { getResponsiveSize, regexCarNumber } from "@/utils";
-import { CustomText } from "@/components/ui/CustomText";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
-import { colors } from "@/styles";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { blackDownArrow, grayErrorIcon } from "@/assets/images";
+import { z } from "zod";
 import {
   useCarControllerGetCarModels,
   useCarControllerGetCarVendors,
   useCarControllerRegisterCar,
 } from "@/api/car/car";
+import { CarStackParamList } from "@/navigations";
+import { getResponsiveSize, regexCarNumber } from "@/utils";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
-import { useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "@/components/ui/Spinner";
+import { CustomText } from "@/components/ui/CustomText";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
+import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { blackDownArrow, grayErrorIcon } from "@/assets/images";
+import { colors } from "@/styles";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -119,6 +119,7 @@ export const CarRegister = () => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["cars"] });
+          queryClient.invalidateQueries({ queryKey: ["profile"] });
 
           return carStackNavigation.goBack();
         },
@@ -138,11 +139,13 @@ export const CarRegister = () => {
           hasCloseButton
           onClose={handleCloseBrandSelect}
         >
-          <FlatList
-            data={carVendorsData?.data}
+          <ScrollView
             style={{ width: "100%" }}
-            renderItem={({ item, index }) => (
+            showsVerticalScrollIndicator={false}
+          >
+            {carVendorsData?.data.map((item, index) => (
               <Pressable
+                key={index}
                 onPress={() => {
                   handleChangeRegisterForm("carModel", "");
                   handleChangeRegisterForm("carType", "");
@@ -150,7 +153,6 @@ export const CarRegister = () => {
                   setCarVendor(item.vendor);
                   handleCloseBrandSelect();
                 }}
-                key={index}
                 style={styles.list}
               >
                 <CustomText
@@ -164,8 +166,8 @@ export const CarRegister = () => {
                   {item.vendor}
                 </CustomText>
               </Pressable>
-            )}
-          />
+            ))}
+          </ScrollView>
         </CustomBottomSheet>
 
         {/* 차량모델 바텀시트 */}
@@ -175,34 +177,30 @@ export const CarRegister = () => {
           hasCloseButton
           onClose={handleCloseModelSelect}
         >
-          {carModelsData?.data && (
-            <FlatList
-              data={carModelsData?.data}
-              style={{ width: "100%" }}
-              renderItem={({ item, index }) => (
-                <Pressable
-                  onPress={() => {
-                    handleChangeRegisterForm("carModel", item.name!);
-                    handleChangeRegisterForm("carType", item.type!);
-                    handleCloseModelSelect();
-                  }}
-                  key={index}
-                  style={styles.list}
+          <ScrollView style={{ width: "100%" }}>
+            {carModelsData?.data.map((item, index) => (
+              <Pressable
+                key={index}
+                onPress={() => {
+                  handleChangeRegisterForm("carModel", item.name!);
+                  handleChangeRegisterForm("carType", item.type!);
+                  handleCloseModelSelect();
+                }}
+                style={styles.list}
+              >
+                <CustomText
+                  color={
+                    registerForm.carModel === item.name
+                      ? colors.main
+                      : colors.black
+                  }
+                  fontSize={16}
                 >
-                  <CustomText
-                    color={
-                      registerForm.carModel === item.name
-                        ? colors.main
-                        : colors.black
-                    }
-                    fontSize={16}
-                  >
-                    {item.name}
-                  </CustomText>
-                </Pressable>
-              )}
-            />
-          )}
+                  {item.name}
+                </CustomText>
+              </Pressable>
+            ))}
+          </ScrollView>
         </CustomBottomSheet>
 
         <View style={styles.container}>
@@ -289,6 +287,7 @@ export const CarRegister = () => {
             onPress={handleSubmit}
             isDisabled={!isValid || registerCarLoading}
             height={getResponsiveSize(53)}
+            marginTop={10}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
             {registerCarLoading ? (

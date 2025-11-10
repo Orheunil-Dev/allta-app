@@ -1,6 +1,4 @@
-import { inputResetButton } from "@/assets/images";
-import { colors } from "@/styles";
-import { getFontSize, getResponsiveSize } from "@/utils";
+import { useState } from "react";
 import {
   FlexStyle,
   Image,
@@ -12,7 +10,10 @@ import {
   View,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomText } from "../CustomText/CustomText";
+import { inputResetButton } from "@/assets/images";
+import { colors } from "@/styles";
 
 const fontMap: Record<string, string> = {
   "100": "Pretendard-Thin",
@@ -35,6 +36,7 @@ interface Props {
   maxLength?: number;
   placeholder?: string;
   errorMessage?: string;
+  flex?: number;
   justifyContent?: FlexStyle["justifyContent"];
   marginTop?: number;
   marginBottom?: number;
@@ -56,6 +58,7 @@ export const CustomTextInput = ({
   maxLength,
   placeholder,
   errorMessage,
+  flex,
   justifyContent = "center",
   marginTop = 0,
   marginBottom = 0,
@@ -67,15 +70,18 @@ export const CustomTextInput = ({
   editable = true,
   onFocus,
 }: Props) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <View
       style={[
         {
+          flex,
+          justifyContent: justifyContent,
           marginTop: getResponsiveSize(marginTop),
           marginBottom: getResponsiveSize(marginBottom),
           marginRight: getResponsiveSize(marginRight),
           marginLeft: getResponsiveSize(marginLeft),
-          justifyContent: justifyContent,
         },
         styles.container,
       ]}
@@ -101,15 +107,26 @@ export const CustomTextInput = ({
         placeholder={placeholder ?? undefined}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
-        onFocus={onFocus}
+        onFocus={() => {
+          setIsFocused(true);
+          onFocus?.();
+        }}
+        onBlur={() => setIsFocused(false)}
         editable={editable}
         underlineColorAndroid="transparent"
         style={[
           {
             fontFamily: fontMap[fontWeight],
+            color: editable ? colors.black : colors.gray5,
             paddingRight: onReset
               ? getResponsiveSize(32)
               : getResponsiveSize(8),
+            borderBottomColor:
+              errorMessage && errorMessage !== "null"
+                ? colors.red
+                : isFocused
+                ? colors.point2
+                : colors.gray3,
           },
           styles.input,
         ]}
@@ -117,7 +134,7 @@ export const CustomTextInput = ({
 
       {errorMessage !== "null" && (
         <View style={styles.errorMessage}>
-          <CustomText color="#EF3A2F" fontSize={13}>
+          <CustomText color={colors.red} fontSize={13}>
             {errorMessage}
           </CustomText>
         </View>
@@ -127,13 +144,12 @@ export const CustomTextInput = ({
 };
 
 const styles = StyleSheet.create({
-  container: { position: "relative", flex: 1, backgroundColor: colors.white },
+  container: { position: "relative", backgroundColor: colors.white },
   input: {
     paddingVertical: getResponsiveSize(8),
     paddingLeft: getResponsiveSize(8),
     fontSize: getFontSize(18),
     borderBottomWidth: 1,
-    borderBottomColor: colors.gray3,
   },
   resetButton: {
     position: "absolute",

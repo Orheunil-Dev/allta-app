@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
@@ -8,6 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import * as TrackingTransparency from "expo-tracking-transparency";
 import * as Notifications from "expo-notifications";
 import {
   useNotificationControllerGetUnreadNotificationsCount,
@@ -41,6 +42,8 @@ export const Home = () => {
 
   const bottomTabNavigation =
     useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
+
+  const scrollRef = useRef<ScrollView>(null);
 
   const [showCouponModal, setShowCouponModal] = useState<boolean>(false);
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
@@ -102,6 +105,19 @@ export const Home = () => {
     };
   });
 
+  // 푸터 버튼 이벤트
+  const handleFooterPress = () => {
+    setFooterOpen(!footerOpen);
+
+    if (!footerOpen) {
+      setTimeout(() => {
+        scrollRef.current?.scrollToEnd({
+          animated: true,
+        });
+      }, 250);
+    }
+  };
+
   // 푸시토큰 업데이트
   useEffect(() => {
     const checkNotificationPermission = async () => {
@@ -143,6 +159,15 @@ export const Home = () => {
     if (mmkvStorage.getBoolean(IS_COUPON_RECEIVED)) {
       setShowCouponModal(true);
     }
+  }, []);
+
+  // ATT 권한 요청
+  useEffect(() => {
+    const requestTrakingPermission = async () => {
+      await TrackingTransparency.requestTrackingPermissionsAsync();
+    };
+
+    requestTrakingPermission();
   }, []);
 
   return (
@@ -192,7 +217,7 @@ export const Home = () => {
         <CustomText fontSize={16}>쿠폰함에서 바로 확인해보세요.</CustomText>
       </CustomModal>
 
-      <ScrollView>
+      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <MainBanner data={bannerData?.data} />
 
@@ -296,14 +321,14 @@ export const Home = () => {
                   fontSize={18}
                   fontWeight={"600"}
                 >
-                  QR 스캔
+                  세차권 사용
                 </CustomText>
                 <CustomText
                   color={colors.white}
                   fontSize={13}
                   fontWeight={"500"}
                 >
-                  스캔 후 세차하기
+                  QR 스캔
                 </CustomText>
 
                 <Image source={qrIcon} style={styles.buttonIcon} />
@@ -319,7 +344,7 @@ export const Home = () => {
           <View style={styles.footer}>
             <View style={styles.footerTop}>
               <Pressable
-                onPress={() => setFooterOpen(!footerOpen)}
+                onPress={handleFooterPress}
                 style={styles.footerButton}
               >
                 <CustomText color={colors.gray7} fontSize={14}>
@@ -333,7 +358,7 @@ export const Home = () => {
                 </Animated.View>
               </Pressable>
 
-              <CustomText color={colors.gray5} fontSize={14}>
+              <CustomText color={colors.gray5} fontSize={14} numberOfLines={1}>
                 고객센터 운영시간(월~금 : 10-18시)
               </CustomText>
             </View>
@@ -349,7 +374,7 @@ export const Home = () => {
                 통신판매번호 : 2024-경기하남-2769
               </CustomText>
               <CustomText color={colors.gray5} fontSize={14}>
-                주소 : 경기도 하남시 미사강변한강로 155, 1031호
+                주소 : 경기도 하남시 미사강변한강로 155
               </CustomText>
               <CustomText color={colors.gray5} fontSize={14}>
                 대표전화 : 1668-1620
@@ -451,6 +476,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
   },
   footerTop: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

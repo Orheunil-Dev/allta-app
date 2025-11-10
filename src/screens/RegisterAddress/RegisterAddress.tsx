@@ -20,6 +20,8 @@ import { CustomText } from "@/components/ui/CustomText";
 import { KakaoMap } from "@/components/store/KakaoMap";
 import { colors } from "@/styles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 
 type RegisterAddressRouteProp = RouteProp<
   AddressStackParamList,
@@ -29,7 +31,7 @@ type RegisterAddressRouteProp = RouteProp<
 const { width: screenWidth } = Dimensions.get("window");
 
 export const RegisterAddress = () => {
-  const route = useRoute<RegisterAddressRouteProp>();
+  const router = useRoute<RegisterAddressRouteProp>();
 
   const addressNavigation =
     useNavigation<NativeStackNavigationProp<AddressStackParamList>>();
@@ -39,26 +41,28 @@ export const RegisterAddress = () => {
   const insets = useSafeAreaInsets();
 
   const [addressForm, setAddressForm] = useState<RegisterAddresssRequest>({
-    nickname: "",
-    buildingName: null,
-    fullAddress: "",
-    lat: route.params.lat,
-    lng: route.params.lng,
+    nickname: router.params.buildingName ?? "",
+    buildingName: router.params.buildingName ?? null,
+    fullAddress: router.params.fullAddress ?? "",
+    lat: router.params.lat,
+    lng: router.params.lng,
     region1DepthName: "",
     region2DepthName: "",
     region3DepthName: "",
-    roadName: null,
+    roadName: router.params.roadName ?? null,
   });
   const [nicknameType, setNicknameType] = useState<"HOME" | "COMPANY" | "ETC">(
     "ETC"
   );
 
+  // 주소 등록 API
   const {
     mutate: registerAddress,
     isError: registerAddressError,
     isPending: regiserAddressLoading,
   } = useAddressControllerRegisterAddresses({});
 
+  // 주소 등록
   const handleSubmit = () => {
     registerAddress(
       { data: { ...addressForm } },
@@ -104,8 +108,8 @@ export const RegisterAddress = () => {
           "https://dapi.kakao.com/v2/local/geo/coord2address.json",
           {
             params: {
-              x: route.params.lng,
-              y: route.params.lat,
+              x: router.params.lng,
+              y: router.params.lat,
             },
             headers: {
               Authorization: `KakaoAK ${process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY}`,
@@ -116,10 +120,16 @@ export const RegisterAddress = () => {
         setAddressForm((prev) => ({
           ...prev,
           nickname:
-            response.data.documents[0].road_address?.building_name ?? "",
+            router.params.buildingName ??
+            response.data.documents[0].road_address?.building_name ??
+            "",
           buildingName:
-            response.data.documents[0].road_address?.building_name ?? null,
-          fullAddress: response.data.documents[0].address.address_name,
+            router.params.buildingName ??
+            response.data.documents[0].road_address?.building_name ??
+            "",
+          fullAddress:
+            router.params.fullAddress ??
+            response.data.documents[0].address.address_name,
           region1DepthName:
             response.data.documents[0].address.region_1depth_name,
           region2DepthName:
@@ -127,142 +137,153 @@ export const RegisterAddress = () => {
           region3DepthName:
             response.data.documents[0].address.region_3depth_name,
           roadName:
-            response.data.documents[0].road_address?.address_name ?? null,
+            router.params.roadName ??
+            response.data.documents[0].road_address?.address_name ??
+            response.data.documents[0].address.address_name ??
+            null,
         }));
       };
 
       getAddresses();
-    }, [route.params])
+    }, [router.params])
   );
 
   return (
-    <CustomSafeAreaView edges={[]}>
-      <View
-        style={[
-          styles.container,
-          { paddingBottom: insets.bottom + getResponsiveSize(10) },
-        ]}
-      >
+    <CustomSafeAreaView edges={["bottom"]}>
+      <CustomKeyboardAvoidingView>
         <View style={{ flex: 1 }}>
-          <KakaoMap
-            width={screenWidth - getResponsiveSize(40)}
-            height={screenWidth - getResponsiveSize(40)}
-            lat={route.params.lat}
-            lng={route.params.lng}
-          />
-
-          <CustomText marginTop={20} fontSize={18} fontWeight={"600"}>
-            {addressForm.fullAddress}
-          </CustomText>
-          {addressForm.roadName && (
-            <CustomText marginTop={4} color={colors.gray5} fontSize={16}>
-              [도로명] {addressForm.roadName}
-            </CustomText>
-          )}
-
-          <View style={styles.buttonArea}>
-            <Pressable
-              onPress={() => setNicknameType("HOME")}
-              disabled={nicknameType === "HOME"}
-              style={[
-                nicknameType === "HOME"
-                  ? {
-                      backgroundColor: colors.white,
-                      borderWidth: 1,
-                      borderColor: colors.gray2,
-                    }
-                  : { backgroundColor: colors.gray1 },
-                styles.nicknameButton,
-              ]}
-            >
-              <CustomText
-                color={nicknameType === "HOME" ? colors.black : colors.gray5}
-                fontSize={15}
-                fontWeight={"500"}
-              >
-                집
-              </CustomText>
-            </Pressable>
-
-            <Pressable
-              onPress={() => setNicknameType("COMPANY")}
-              disabled={nicknameType === "COMPANY"}
-              style={[
-                nicknameType === "COMPANY"
-                  ? {
-                      backgroundColor: colors.white,
-                      borderWidth: 1,
-                      borderColor: colors.gray2,
-                    }
-                  : { backgroundColor: colors.gray1 },
-                styles.nicknameButton,
-              ]}
-            >
-              <CustomText
-                color={nicknameType === "COMPANY" ? colors.black : colors.gray5}
-                fontSize={15}
-                fontWeight={"500"}
-              >
-                회사
-              </CustomText>
-            </Pressable>
-
-            <Pressable
-              onPress={() => setNicknameType("ETC")}
-              disabled={nicknameType === "ETC"}
-              style={[
-                nicknameType === "ETC"
-                  ? {
-                      backgroundColor: colors.white,
-                      borderWidth: 1,
-                      borderColor: colors.gray2,
-                    }
-                  : { backgroundColor: colors.gray1 },
-                styles.nicknameButton,
-              ]}
-            >
-              <CustomText
-                color={nicknameType === "ETC" ? colors.black : colors.gray5}
-                fontSize={15}
-                fontWeight={"500"}
-              >
-                기타
-              </CustomText>
-            </Pressable>
-          </View>
-
-          {nicknameType === "ETC" && (
-            <CustomTextInput
-              value={addressForm.nickname}
-              onChangeText={(text) =>
-                setAddressForm((prev) => ({
-                  ...prev,
-                  nickname: text,
-                }))
-              }
-              onReset={() => {
-                setAddressForm((prev) => ({
-                  ...prev,
-                  nickname: "",
-                }));
-              }}
-              maxLength={30}
-              marginTop={12}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <KakaoMap
+              width={screenWidth}
+              height={getResponsiveSize(320)}
+              lat={router.params.lat}
+              lng={router.params.lng}
             />
-          )}
-        </View>
 
-        <CustomButton
-          onPress={handleSubmit}
-          width={"100%"}
-          marginTop={20}
-          backgroundColor={colors.main}
-        >
-          <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-            확인
-          </CustomText>
-        </CustomButton>
-      </View>
+            <View style={{ flex: 1, paddingHorizontal: getResponsiveSize(20) }}>
+              <CustomText marginTop={20} fontSize={18} fontWeight={"600"}>
+                {addressForm.roadName}{" "}
+                {addressForm.buildingName?.trim() &&
+                  `(${addressForm.buildingName})`}
+              </CustomText>
+              {addressForm.roadName && (
+                <CustomText marginTop={4} color={colors.gray5} fontSize={16}>
+                  {addressForm.fullAddress}
+                </CustomText>
+              )}
+
+              <View style={styles.buttonArea}>
+                <Pressable
+                  onPress={() => setNicknameType("HOME")}
+                  disabled={nicknameType === "HOME"}
+                  style={[
+                    nicknameType === "HOME"
+                      ? {
+                          backgroundColor: colors.white,
+                          borderWidth: 1,
+                          borderColor: colors.gray2,
+                        }
+                      : { backgroundColor: colors.gray1 },
+                    styles.nicknameButton,
+                  ]}
+                >
+                  <CustomText
+                    color={
+                      nicknameType === "HOME" ? colors.black : colors.gray5
+                    }
+                    fontSize={15}
+                    fontWeight={"500"}
+                  >
+                    집
+                  </CustomText>
+                </Pressable>
+
+                <Pressable
+                  onPress={() => setNicknameType("COMPANY")}
+                  disabled={nicknameType === "COMPANY"}
+                  style={[
+                    nicknameType === "COMPANY"
+                      ? {
+                          backgroundColor: colors.white,
+                          borderWidth: 1,
+                          borderColor: colors.gray2,
+                        }
+                      : { backgroundColor: colors.gray1 },
+                    styles.nicknameButton,
+                  ]}
+                >
+                  <CustomText
+                    color={
+                      nicknameType === "COMPANY" ? colors.black : colors.gray5
+                    }
+                    fontSize={15}
+                    fontWeight={"500"}
+                  >
+                    회사
+                  </CustomText>
+                </Pressable>
+
+                <Pressable
+                  onPress={() => setNicknameType("ETC")}
+                  disabled={nicknameType === "ETC"}
+                  style={[
+                    nicknameType === "ETC"
+                      ? {
+                          backgroundColor: colors.white,
+                          borderWidth: 1,
+                          borderColor: colors.gray2,
+                        }
+                      : { backgroundColor: colors.gray1 },
+                    styles.nicknameButton,
+                  ]}
+                >
+                  <CustomText
+                    color={nicknameType === "ETC" ? colors.black : colors.gray5}
+                    fontSize={15}
+                    fontWeight={"500"}
+                  >
+                    기타
+                  </CustomText>
+                </Pressable>
+              </View>
+
+              {nicknameType === "ETC" && (
+                <CustomTextInput
+                  value={addressForm.nickname}
+                  onChangeText={(text) =>
+                    setAddressForm((prev) => ({
+                      ...prev,
+                      nickname: text,
+                    }))
+                  }
+                  onReset={() => {
+                    setAddressForm((prev) => ({
+                      ...prev,
+                      nickname: "",
+                    }));
+                  }}
+                  maxLength={30}
+                  marginTop={12}
+                  placeholder="별명을 입력해주세요"
+                />
+              )}
+            </View>
+          </ScrollView>
+
+          <CustomButton
+            onPress={handleSubmit}
+            alignSelf="center"
+            width={screenWidth - getResponsiveSize(20)}
+            marginTop={20}
+            marginBottom={getResponsiveSize(20)}
+            backgroundColor={colors.main}
+          >
+            <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
+              확인
+            </CustomText>
+          </CustomButton>
+        </View>
+      </CustomKeyboardAvoidingView>
     </CustomSafeAreaView>
   );
 };
@@ -270,7 +291,6 @@ export const RegisterAddress = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: getResponsiveSize(20),
   },
   buttonArea: {
     flexDirection: "row",

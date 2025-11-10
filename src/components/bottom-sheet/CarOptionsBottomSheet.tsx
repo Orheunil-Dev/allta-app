@@ -61,6 +61,8 @@ export const CarOptionsBottomSheet = ({
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["cars"] });
+          queryClient.invalidateQueries({ queryKey: ["profile"] });
+
           setShowDeleteModal(false);
           onClose();
           SuccessToast("차량이 삭제되었습니다.");
@@ -91,6 +93,8 @@ export const CarOptionsBottomSheet = ({
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["cars"] });
+          queryClient.invalidateQueries({ queryKey: ["profile"] });
+
           onClose();
           SuccessToast("대표 차량이 변경되었습니다.");
         },

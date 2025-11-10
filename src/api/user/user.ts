@@ -38,6 +38,8 @@ import type {
   SendVerificationCodeResponse,
   UpdateMarketingAgreementStatusRequest,
   UpdateMarketingAgreementStatusResponse,
+  UpdateUserProfileRequest,
+  UpdateUserProfileResponse,
   UserControllerCheckIsRejoinParams,
   VerifyPhoneNumberRequest,
   VerifyPhoneNumberResponse,
@@ -513,7 +515,64 @@ export function useUserControllerGetUserProfile<TData = Awaited<ReturnType<typeo
 
 
 
-export const userControllerGetMarketingAgreementStatus = (
+export const userControllerUpdateUserProfile = (
+    updateUserProfileRequest: UpdateUserProfileRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<UpdateUserProfileResponse>(
+      {url: `/user/profile`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: updateUserProfileRequest
+    },
+      options);
+    }
+  
+
+
+export const getUserControllerUpdateUserProfileMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerUpdateUserProfile>>, TError,{data: UpdateUserProfileRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof userControllerUpdateUserProfile>>, TError,{data: UpdateUserProfileRequest}, TContext> => {
+
+const mutationKey = ['userControllerUpdateUserProfile'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerUpdateUserProfile>>, {data: UpdateUserProfileRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  userControllerUpdateUserProfile(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UserControllerUpdateUserProfileMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerUpdateUserProfile>>>
+    export type UserControllerUpdateUserProfileMutationBody = UpdateUserProfileRequest
+    export type UserControllerUpdateUserProfileMutationError = unknown
+
+    export const useUserControllerUpdateUserProfile = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerUpdateUserProfile>>, TError,{data: UpdateUserProfileRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof userControllerUpdateUserProfile>>,
+        TError,
+        {data: UpdateUserProfileRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUserControllerUpdateUserProfileMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const userControllerGetMarketingAgreementStatus = (
     
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {

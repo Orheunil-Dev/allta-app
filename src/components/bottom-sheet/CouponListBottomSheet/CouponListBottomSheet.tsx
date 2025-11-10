@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import dayjs from "dayjs";
 import { GetAvailableCouponListResponse } from "@/api/models";
@@ -65,11 +65,11 @@ export const CouponListBottomSheet = ({
     >
       <View style={styles.container}>
         {couponData?.data.length ? (
-          <FlatList
-            data={couponData?.data}
-            keyExtractor={(item) => item.id}
+          <ScrollView
             contentContainerStyle={{ gap: getResponsiveSize(16) }}
-            renderItem={({ item, index }) => (
+            showsVerticalScrollIndicator={false}
+          >
+            {couponData?.data.map((item, index) => (
               <Pressable
                 onPress={handleSelectCoupon(item)}
                 style={[
@@ -107,8 +107,8 @@ export const CouponListBottomSheet = ({
                   </CustomText>
                 </View>
               </Pressable>
-            )}
-          />
+            ))}
+          </ScrollView>
         ) : (
           <View style={styles.emptyBox}>
             <CustomText

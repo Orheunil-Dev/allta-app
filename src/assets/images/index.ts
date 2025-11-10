@@ -38,6 +38,7 @@ export { default as PermissionPhotoIcon } from "./permission-photo-icon.png";
 export { default as kakaoLoginIcon } from "./kakao-login-icon.png";
 export { default as googleLoginIcon } from "./google-login-icon.png";
 export { default as appleLoginIcon } from "./apple-login-icon.png";
+export { default as loginImage } from "./login-image.gif";
 
 // 회원가입
 export { default as checkAllButton } from "./check-all-button.png";
@@ -82,6 +83,12 @@ export { default as receptFrame4 } from "./receipt-frame-4.png";
 export { default as cameraButton } from "./camera-button.png";
 export { default as albumIcon } from "./album-icon.png";
 
+// QR 스캔
+export { default as qrFrame1 } from "./qr-frame-1.png";
+export { default as qrFrame2 } from "./qr-frame-2.png";
+export { default as qrFrame3 } from "./qr-frame-3.png";
+export { default as qrFrame4 } from "./qr-frame-4.png";
+
 // 마이페이지
 export { default as settingIcon } from "./setting-icon.png";
 export { default as carIcon } from "./car-icon.png";
@@ -104,3 +111,4 @@ export { default as referralBanner } from "./referral-banner.png";
 export { default as qIcon } from "./q-icon.png";
 export { default as aIcon } from "./a-icon.png";
 export { default as shareIcon } from "./share-icon.png";
+export { default as searchIcon } from "./search-icon.png";

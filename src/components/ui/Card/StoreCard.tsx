@@ -81,7 +81,7 @@ export const StoreCard = ({
           style={styles.storeImage}
         ></ImageBackground>
 
-        <View>
+        <View style={{ flex: 1 }}>
           <CustomText fontSize={18} fontWeight={"600"}>
             {formatEllipsis(store.name, 14)}
           </CustomText>
@@ -141,7 +141,7 @@ export const StoreCard = ({
 
         {store.passPrice && (
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <CustomText color={colors.gray7} fontSize={14}>
+            <CustomText color={colors.gray7} fontSize={14} numberOfLines={1}>
               이용권 최저가
             </CustomText>
 
@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   bottom: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

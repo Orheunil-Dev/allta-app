@@ -9,6 +9,15 @@
 export interface GetUserProfileResponse {
   /** 이름 */
   name: string;
+  /**
+   * 이메일
+   * @nullable
+   */
+  email?: string | null;
+  /** 로그인 종류 */
+  loginKind: string;
+  /** 전화번호 */
+  phoneNumber: string;
   /** 보유 일회권 개수 */
   totalTickets: number;
   /** 보유 스탠다드 구독권 개수 */

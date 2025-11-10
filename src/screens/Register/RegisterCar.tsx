@@ -127,12 +127,13 @@ export const RegisterCar = () => {
           hasCloseButton
           onClose={handleCloseBrandSelect}
         >
-          <FlatList
-            data={carVendorsData?.data}
-            keyExtractor={(item) => item.vendor}
+          <ScrollView
             style={{ width: "100%" }}
-            renderItem={({ item, index }) => (
+            showsVerticalScrollIndicator={false}
+          >
+            {carVendorsData?.data.map((item, index) => (
               <Pressable
+                key={index}
                 onPress={() => {
                   handleChangeRegisterForm("carModel", "");
                   handleChangeRegisterForm("carType", "");
@@ -140,7 +141,6 @@ export const RegisterCar = () => {
                   setCarVendor(item.vendor);
                   handleCloseBrandSelect();
                 }}
-                key={index}
                 style={styles.list}
               >
                 <CustomText
@@ -154,8 +154,8 @@ export const RegisterCar = () => {
                   {item.vendor}
                 </CustomText>
               </Pressable>
-            )}
-          />
+            ))}
+          </ScrollView>
         </CustomBottomSheet>
 
         {/* 차량모델 바텀시트 */}
@@ -166,18 +166,15 @@ export const RegisterCar = () => {
           onClose={handleCloseModelSelect}
         >
           {carModelsData?.data && (
-            <FlatList
-              data={carModelsData?.data}
-              keyExtractor={(item) => item.name!}
-              style={{ width: "100%" }}
-              renderItem={({ item, index }) => (
+            <ScrollView style={{ width: "100%" }}>
+              {carModelsData?.data.map((item, index) => (
                 <Pressable
+                  key={index}
                   onPress={() => {
                     handleChangeRegisterForm("carModel", item.name!);
                     handleChangeRegisterForm("carType", item.type!);
                     handleCloseModelSelect();
                   }}
-                  key={index}
                   style={styles.list}
                 >
                   <CustomText
@@ -191,8 +188,8 @@ export const RegisterCar = () => {
                     {item.name}
                   </CustomText>
                 </Pressable>
-              )}
-            />
+              ))}
+            </ScrollView>
           )}
         </CustomBottomSheet>
 

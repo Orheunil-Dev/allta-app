@@ -29,6 +29,16 @@ import { Update } from "@/screens/Update";
 import { Splash } from "@/screens/Splash";
 import { colors } from "@/styles";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true, // 알림 UI
+    shouldPlaySound: true, // 사운드
+    shouldSetBadge: false, // 앱 아이콘 배지
+    shouldShowBanner: true, // iOS 14+ 배너
+    shouldShowList: true, // 알림 센터 리스트
+  }),
+});
+
 initializeKakaoSDK(process.env.EXPO_PUBLIC_KAKAO_APP_KEY);
 
 export default function App() {
@@ -87,12 +97,55 @@ export default function App() {
     initializeApp();
   }, []);
 
+  // 푸시알림 딥링크 처리
+  useEffect(() => {
+    const listener = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        const url = response.notification.request.content.data?.url;
+
+        if (url) {
+          Linking.openURL(url as string);
+        }
+      }
+    );
+
+    return () => listener.remove();
+  }, []);
+
+  // 포그라운드 알림 처리
+  useEffect(() => {
+    const setupNotification = async () => {
+      // 안드로이드 채널 설정
+      if (Platform.OS === "android") {
+        await Notifications.setNotificationChannelAsync("default", {
+          name: "Default",
+          importance: Notifications.AndroidImportance.MAX,
+          sound: "default",
+          vibrationPattern: [0, 250],
+        });
+      }
+    };
+
+    setupNotification();
+  }, []);
+
+  // 스플래시
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1250));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setShowSplash(false);
+      }
+    };
+
+    prepare();
+  }, []);
+
   // 앱 업데이트 체크
   useEffect(() => {
-    const appEnv = process.env.EXPO_PUBLIC_APP_ENV;
-
-    if (appEnv !== "PROD") return;
-
     const storeUrl = {
       iosStoreURL: "https://apps.apple.com/kr/app/allta/id6467127880",
       androidStoreURL:
@@ -132,7 +185,7 @@ export default function App() {
 
             setTimeout(async () => {
               await Updates.reloadAsync();
-            }, 250);
+            }, 500);
           }
         }
       } catch (error: any) {
@@ -147,86 +200,26 @@ export default function App() {
     checkUpdate();
   }, []);
 
-  // 스플래시
-  useEffect(() => {
-    const prepare = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1250));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setShowSplash(false);
-      }
-    };
-
-    prepare();
-  }, []);
-
-  // 푸시알림 딥링크 처리
-  useEffect(() => {
-    const listener = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
-        const url = response.notification.request.content.data?.url;
-
-        if (url) {
-          Linking.openURL(url as string);
-        }
-      }
-    );
-
-    return () => listener.remove();
-  }, []);
-
-  // 포그라운드 알림 처리
-  useEffect(() => {
-    const setupNotification = async () => {
-      Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-          shouldShowAlert: true, // 알림 UI
-          shouldPlaySound: true, // 사운드
-          shouldSetBadge: false, // 앱 아이콘 배지
-          shouldShowBanner: true, // iOS 14+ 배너
-          shouldShowList: true, // 알림 센터 리스트
-        }),
-      });
-
-      // 안드로이드 채널 설정
-      if (Platform.OS === "android") {
-        await Notifications.setNotificationChannelAsync("default", {
-          name: "Default",
-          importance: Notifications.AndroidImportance.MAX,
-          sound: "default",
-          vibrationPattern: [0, 250],
-        });
-      }
-    };
-
-    setupNotification();
-  }, []);
-
-  if (showUpdate) {
-    return (
-      <Update
-        isVersionUpdate={isVersionUpdate}
-        isUpdateFinished={isUpdateFinished}
-      />
-    );
-  }
-
-  if (showSplash) {
-    return <Splash />;
-  }
-
   return (
     <SafeAreaProvider style={{ backgroundColor: colors.bg }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <KeyboardProvider>
             <BottomSheetModalProvider>
-              <ContainerStack
-                showLoginModal={showLoginModal}
-                setShowLoginModal={setShowLoginModal}
-              />
+              {showUpdate ? (
+                <Update
+                  isVersionUpdate={isVersionUpdate}
+                  isUpdateFinished={isUpdateFinished}
+                />
+              ) : showSplash ? (
+                <Splash />
+              ) : (
+                <ContainerStack
+                  showLoginModal={showLoginModal}
+                  setShowLoginModal={setShowLoginModal}
+                />
+              )}
+
               <SystemBars style="dark" />
               <StatusBar style="auto" />
               <Toast config={toastConfig} />

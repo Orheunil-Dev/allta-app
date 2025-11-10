@@ -13,7 +13,8 @@ export const useToastMessage = () => {
       Toast.show({
         type,
         text1: message,
-        topOffset: getResponsiveSize(80),
+        position: "bottom",
+        bottomOffset: getResponsiveSize(60),
         visibilityTime: 1250,
         swipeable: true,
       });

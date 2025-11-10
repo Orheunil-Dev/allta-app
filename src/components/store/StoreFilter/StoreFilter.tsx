@@ -122,6 +122,7 @@ export const StoreFilter = ({
                 styles.filterButton,
                 tags.includes(value) && {
                   backgroundColor: colors.main,
+                  borderColor: colors.main,
                 },
               ]}
             >

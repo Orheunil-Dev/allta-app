@@ -17,6 +17,7 @@ interface Props {
   lineHeight?: number;
   textDecorationLine?: TextStyle["textDecorationLine"];
   textDecorationColor?: TextStyle["textDecorationColor"];
+  numberOfLines?: number;
 }
 
 export const CustomText = ({
@@ -33,6 +34,7 @@ export const CustomText = ({
   lineHeight = 1.5,
   textDecorationLine,
   textDecorationColor,
+  numberOfLines,
 }: Props) => {
   return (
     <Text
@@ -50,7 +52,10 @@ export const CustomText = ({
         lineHeight: getFontSize(fontSize) * lineHeight,
         textDecorationLine,
         textDecorationColor,
+        includeFontPadding: false,
       }}
+      numberOfLines={numberOfLines}
+      ellipsizeMode="tail"
     >
       {children}
     </Text>

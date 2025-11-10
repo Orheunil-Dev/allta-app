@@ -146,9 +146,6 @@ export const CardChangeButton = ({
         ref={bottomSheetRef}
         card={card}
         setCard={setCard}
-        setShowModal={setShowModal}
-        cardCompany={cardCompany}
-        carDisplayNumber={cardDisplayNumber}
         cardData={cardData}
         onPressRegister={() => setShowModal(true)}
       />

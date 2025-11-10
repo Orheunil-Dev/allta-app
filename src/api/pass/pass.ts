@@ -28,11 +28,15 @@ import type {
   DiscontinueSubscriptionRequest,
   DiscontinueSubscriptionResponse,
   GetAvailablePassesResponse,
+  GetStoreSubscriptionListResponse,
+  GetStoreTicketListResponse,
   GetSubscriptionDetailResponse,
   GetSubscriptionListReponse,
   GetTicketDetailResponse,
   GetTicketListReponse,
   PassControllerGetAvailablePassesParams,
+  PassControllerGetStoreSubscriptionListParams,
+  PassControllerGetStoreTicketListParams,
   PassControllerGetSubscriptionListParams,
   PassControllerGetTicketListParams,
   ResubscribeSubscriptionRequest,
@@ -342,7 +346,93 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
       return useMutation(mutationOptions, queryClient);
     }
-    export const passControllerGetTicketDetail = (
+    export const passControllerGetStoreTicketList = (
+    params: PassControllerGetStoreTicketListParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetStoreTicketListResponse>(
+      {url: `/pass/ticket/store`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getPassControllerGetStoreTicketListQueryKey = (params?: PassControllerGetStoreTicketListParams,) => {
+    return [
+    `/pass/ticket/store`, ...(params ? [params]: [])
+    ] as const;
+    }
+
+    
+export const getPassControllerGetStoreTicketListQueryOptions = <TData = Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError = unknown>(params: PassControllerGetStoreTicketListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPassControllerGetStoreTicketListQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof passControllerGetStoreTicketList>>> = ({ signal }) => passControllerGetStoreTicketList(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PassControllerGetStoreTicketListQueryResult = NonNullable<Awaited<ReturnType<typeof passControllerGetStoreTicketList>>>
+export type PassControllerGetStoreTicketListQueryError = unknown
+
+
+export function usePassControllerGetStoreTicketList<TData = Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError = unknown>(
+ params: PassControllerGetStoreTicketListParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof passControllerGetStoreTicketList>>,
+          TError,
+          Awaited<ReturnType<typeof passControllerGetStoreTicketList>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePassControllerGetStoreTicketList<TData = Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError = unknown>(
+ params: PassControllerGetStoreTicketListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof passControllerGetStoreTicketList>>,
+          TError,
+          Awaited<ReturnType<typeof passControllerGetStoreTicketList>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePassControllerGetStoreTicketList<TData = Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError = unknown>(
+ params: PassControllerGetStoreTicketListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function usePassControllerGetStoreTicketList<TData = Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError = unknown>(
+ params: PassControllerGetStoreTicketListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreTicketList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPassControllerGetStoreTicketListQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const passControllerGetTicketDetail = (
     id: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
@@ -742,7 +832,93 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
       return useMutation(mutationOptions, queryClient);
     }
-    export const passControllerGetSubscriptionDetail = (
+    export const passControllerGetStoreSubscriptionList = (
+    params: PassControllerGetStoreSubscriptionListParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetStoreSubscriptionListResponse>(
+      {url: `/pass/subscription/store`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getPassControllerGetStoreSubscriptionListQueryKey = (params?: PassControllerGetStoreSubscriptionListParams,) => {
+    return [
+    `/pass/subscription/store`, ...(params ? [params]: [])
+    ] as const;
+    }
+
+    
+export const getPassControllerGetStoreSubscriptionListQueryOptions = <TData = Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError = unknown>(params: PassControllerGetStoreSubscriptionListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPassControllerGetStoreSubscriptionListQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>> = ({ signal }) => passControllerGetStoreSubscriptionList(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type PassControllerGetStoreSubscriptionListQueryResult = NonNullable<Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>>
+export type PassControllerGetStoreSubscriptionListQueryError = unknown
+
+
+export function usePassControllerGetStoreSubscriptionList<TData = Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError = unknown>(
+ params: PassControllerGetStoreSubscriptionListParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>,
+          TError,
+          Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePassControllerGetStoreSubscriptionList<TData = Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError = unknown>(
+ params: PassControllerGetStoreSubscriptionListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>,
+          TError,
+          Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function usePassControllerGetStoreSubscriptionList<TData = Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError = unknown>(
+ params: PassControllerGetStoreSubscriptionListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function usePassControllerGetStoreSubscriptionList<TData = Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError = unknown>(
+ params: PassControllerGetStoreSubscriptionListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof passControllerGetStoreSubscriptionList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getPassControllerGetStoreSubscriptionListQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const passControllerGetSubscriptionDetail = (
     id: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {

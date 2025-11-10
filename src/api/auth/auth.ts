@@ -25,6 +25,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  FindUserBySocialIdRequest,
+  FindUserBySocialIdResponse,
   LoginBySocialIdRequest,
   LoginBySocialIdResponse,
   SocialLoginCallbackRequest
@@ -262,6 +264,64 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getAuthControllerAppleLoginCallbackMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const authControllerFindUserBySocialId = (
+    findUserBySocialIdRequest: FindUserBySocialIdRequest,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<FindUserBySocialIdResponse>(
+      {url: `/auth/social`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: findUserBySocialIdRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getAuthControllerFindUserBySocialIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerFindUserBySocialId>>, TError,{data: FindUserBySocialIdRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authControllerFindUserBySocialId>>, TError,{data: FindUserBySocialIdRequest}, TContext> => {
+
+const mutationKey = ['authControllerFindUserBySocialId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerFindUserBySocialId>>, {data: FindUserBySocialIdRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  authControllerFindUserBySocialId(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AuthControllerFindUserBySocialIdMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerFindUserBySocialId>>>
+    export type AuthControllerFindUserBySocialIdMutationBody = FindUserBySocialIdRequest
+    export type AuthControllerFindUserBySocialIdMutationError = unknown
+
+    export const useAuthControllerFindUserBySocialId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerFindUserBySocialId>>, TError,{data: FindUserBySocialIdRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof authControllerFindUserBySocialId>>,
+        TError,
+        {data: FindUserBySocialIdRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getAuthControllerFindUserBySocialIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

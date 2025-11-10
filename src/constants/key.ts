@@ -1,5 +1,5 @@
 // 첫 실행 여부
-export const IS_FIRST_LAUCH = "app.isFirstLaunch";
+export const IS_GET_PERMISSION = "app.isGetPermission";
 
 // 알림 수신 여부
 export const IS_NOTIFICATION_GRANTED = "app.isNotificationGranted";

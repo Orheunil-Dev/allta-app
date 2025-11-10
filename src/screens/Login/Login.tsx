@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Image,
   Platform,
@@ -9,14 +10,20 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import CookieManager from "@react-native-cookies/cookies";
+import { login, me } from "@react-native-kakao/user";
 import * as SecureStore from "expo-secure-store";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
+import * as AppleAuthentication from "expo-apple-authentication";
+import { useSetAtom } from "jotai";
+import { jwtDecode } from "jwt-decode";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import {
   useAuthControllerAppleLoginCallback,
+  useAuthControllerFindUserBySocialId,
   useAuthControllerLoginBySocialId,
 } from "@/api/auth/auth";
+import { errorModalAtom } from "@/jotai";
 import { getResponsiveSize } from "@/utils";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
@@ -26,13 +33,9 @@ import {
   closeIcon,
   googleLoginIcon,
   kakaoLoginIcon,
+  loginImage,
 } from "@/assets/images";
 import { colors } from "@/styles";
-import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/jotai";
-import * as AppleAuthentication from "expo-apple-authentication";
-import { jwtDecode } from "jwt-decode";
-import { useVideoPlayer, VideoView } from "expo-video";
 
 export const Login = () => {
   const loginStackNavigation =
@@ -42,6 +45,15 @@ export const Login = () => {
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const [count, setCount] = useState<number>(0);
+
+  // 소셜 ID 체크
+  const {
+    mutate: checkSocialId,
+    isPending: checkSocialIdLoading,
+    isError: checkSocialIdError,
+  } = useAuthControllerFindUserBySocialId();
 
   // 소셜 로그인
   const {
@@ -57,37 +69,32 @@ export const Login = () => {
     isError: appleLoginCallbackError,
   } = useAuthControllerAppleLoginCallback();
 
-  const player = useVideoPlayer(
-    require("@/assets/video/login-video.mp4"),
-    (player) => {
-      player.loop = true;
-      player.muted = true;
-      player.play();
-    }
-  );
-
   // 카카오 로그인
   const handleLoginKakao = async () => {
-    try {
-      const KAKAO_REDIRECT_URI = `${process.env.EXPO_PUBLIC_API_URL}/auth/kakao`;
-      const KAKAO_CLIENT_ID = process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY;
-      const redirectUri = Linking.createURL("");
+    await login();
 
-      try {
-        const result = await WebBrowser.openAuthSessionAsync(
-          `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}`,
-          redirectUri
-        );
+    const profile = await me();
 
-        if (result.type === "success") {
-          const { queryParams } = Linking.parse(result.url);
+    const socialId = String(profile.id);
+    const email = profile.email;
 
-          const socialId = queryParams?.socialId;
-          const email = queryParams?.email;
-          const message = queryParams?.message;
+    if (!socialId) {
+      setErrorModal({
+        visible: true,
+        message: "로그인 중 오류가 발생했습니다.",
+      });
+    }
 
-          // 기존 회원
-          if (queryParams?.ok === "true") {
+    checkSocialId(
+      {
+        data: {
+          loginKind: "KAKAO",
+          socialId,
+        },
+      },
+      {
+        onSuccess: (res) => {
+          if (res.ok) {
             loginBySocialId(
               {
                 data: { socialId: socialId as string, loginKind: "KAKAO" },
@@ -101,8 +108,10 @@ export const Login = () => {
                   const accessToken = cookies.accessToken.value;
                   const refreshToken = cookies.refreshToken.value;
 
-                  await SecureStore.setItemAsync("accessToken", accessToken);
-                  await SecureStore.setItemAsync("refreshToken", refreshToken);
+                  await Promise.all([
+                    SecureStore.setItemAsync("accessToken", accessToken),
+                    SecureStore.setItemAsync("refreshToken", refreshToken),
+                  ]);
 
                   return containerNavigation.dispatch(
                     CommonActions.reset({
@@ -116,27 +125,30 @@ export const Login = () => {
                     })
                   );
                 },
+                onError: (error: any) => {
+                  return setErrorModal({
+                    visible: true,
+                    message: error.message ?? "로그인 중 오류가 발생했습니다.",
+                  });
+                },
               }
             );
-          } else if (socialId) {
+          } else {
             return loginStackNavigation.navigate("SignUpTerms", {
               loginKind: "KAKAO",
-              socialId: socialId as string,
-              email: email as string,
-            });
-          } else {
-            setErrorModal({
-              visible: true,
-              message: message ? (message as string) : "로그인에 실패했습니다.",
+              socialId: socialId,
+              email: email,
             });
           }
-        }
-      } catch (error) {
-        console.log(error);
+        },
+        onError: (error: any) => {
+          return setErrorModal({
+            visible: true,
+            message: error.message ?? "로그인 중 오류가 발생했습니다.",
+          });
+        },
       }
-    } catch (error) {
-      console.log(error);
-    }
+    );
   };
 
   // 구글 로그인
@@ -173,8 +185,10 @@ export const Login = () => {
                   const accessToken = cookies.accessToken.value;
                   const refreshToken = cookies.refreshToken.value;
 
-                  await SecureStore.setItemAsync("accessToken", accessToken);
-                  await SecureStore.setItemAsync("refreshToken", refreshToken);
+                  await Promise.all([
+                    SecureStore.setItemAsync("accessToken", accessToken),
+                    SecureStore.setItemAsync("refreshToken", refreshToken),
+                  ]);
 
                   return containerNavigation.dispatch(
                     CommonActions.reset({
@@ -245,8 +259,10 @@ export const Login = () => {
               const accessToken = cookies.accessToken.value;
               const refreshToken = cookies.refreshToken.value;
 
-              await SecureStore.setItemAsync("accessToken", accessToken);
-              await SecureStore.setItemAsync("refreshToken", refreshToken);
+              await Promise.all([
+                SecureStore.setItemAsync("accessToken", accessToken),
+                SecureStore.setItemAsync("refreshToken", refreshToken),
+              ]);
 
               return containerNavigation.dispatch(
                 CommonActions.reset({
@@ -270,6 +286,57 @@ export const Login = () => {
         }
       );
     } catch (error: any) {}
+  };
+
+  // 테스트 계정 로그인
+  const handleLoginTest = () => {
+    setCount(count + 1);
+
+    if (count < 10) return;
+
+    return loginBySocialId(
+      {
+        data: {
+          loginKind: "TEST",
+          socialId: process.env.EXPO_PUBLIC_TEST_ID,
+        },
+      },
+      {
+        onSuccess: async () => {
+          setCount(0);
+
+          const cookies = await CookieManager.get(
+            process.env.EXPO_PUBLIC_API_URL
+          );
+
+          const accessToken = cookies.accessToken.value;
+          const refreshToken = cookies.refreshToken.value;
+
+          await Promise.all([
+            SecureStore.setItemAsync("accessToken", accessToken),
+            SecureStore.setItemAsync("refreshToken", refreshToken),
+          ]);
+
+          return containerNavigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {
+                  name: "BottomTab",
+                  params: { screen: "Home" },
+                },
+              ],
+            })
+          );
+        },
+        onError: (error: any) => {
+          return setErrorModal({
+            visible: true,
+            message: error.message ?? "로그인 중 오류가 발생했습니다.",
+          });
+        },
+      }
+    );
   };
 
   const handlePressClose = () => {
@@ -306,11 +373,13 @@ export const Login = () => {
           세차를 시작하세요!
         </CustomText>
 
-        <Pressable onLongPress={() => {}}>
-          <VideoView
-            style={styles.video}
-            player={player}
-            nativeControls={false}
+        <Pressable onPress={handleLoginTest}>
+          <Image
+            source={loginImage}
+            style={{
+              width: getResponsiveSize(204),
+              height: getResponsiveSize(204),
+            }}
           />
         </Pressable>
 
@@ -358,6 +427,7 @@ export const Login = () => {
               fontFamily: "Roboto-Medium",
               fontSize: getResponsiveSize(15),
             }}
+            allowFontScaling={false}
           >
             구글 계정으로 로그인
           </Text>

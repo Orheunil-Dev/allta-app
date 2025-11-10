@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   NavigationContainer,
   NavigatorScreenParams,
@@ -8,7 +9,6 @@ import analytics from "@react-native-firebase/analytics";
 import * as Linking from "expo-linking";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
-import { checkIsFirstLaunch, formatEllipsis } from "@/utils";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
 import { StoreStack, StoreStackParamList } from "./StoreStack";
 import { AddressStack, AddressStackParamList } from "./AddressStack";
@@ -31,9 +31,12 @@ import { ServiceHistory } from "@/screens/ServiceHistory";
 import { Coupon } from "@/screens/Coupon";
 import { Referral } from "@/screens/Referral";
 import { Faq } from "@/screens/Faq";
+import { Profile } from "@/screens/Profile";
+import mmkvStorage from "@/libs/mmkv-storage";
+import { formatEllipsis } from "@/utils";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
-import { useEffect, useRef } from "react";
+import { IS_GET_PERMISSION } from "@/constants";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -60,6 +63,12 @@ export type ContainerStackParamList = {
   EventStack: NavigatorScreenParams<EventStackParamList>;
   NoticeStack: NavigatorScreenParams<NoticeStackParamList>;
   Faq: undefined;
+  Profile: {
+    name: string;
+    email: string | null;
+    loginKind: string;
+    phoneNumber: string;
+  };
 };
 
 interface Props {
@@ -93,6 +102,8 @@ export const ContainerStack = ({
 
   const routeNameRef = useRef<string | undefined>(undefined);
 
+  const isGetPermission = mmkvStorage.getBoolean(IS_GET_PERMISSION);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       const currentRoute = navigationRef.getCurrentRoute();
@@ -105,21 +116,19 @@ export const ContainerStack = ({
     return () => clearTimeout(timeout);
   }, []);
 
-  const isFirstLaunch = checkIsFirstLaunch();
-
   return (
     <NavigationContainer
       ref={navigationRef}
       linking={linking}
-      onReady={() => {
+      onReady={async () => {
         // 앱 시작 시 첫 화면 추적
         const currentRoute = navigationRef.getCurrentRoute();
 
         if (currentRoute) {
           routeNameRef.current = currentRoute.name;
-          analytics().logScreenView({
+
+          await analytics().logEvent("screen_view", {
             screen_name: currentRoute.name,
-            screen_class: currentRoute.name,
           });
         }
       }}
@@ -130,9 +139,8 @@ export const ContainerStack = ({
 
         if (currentRoute && previousRouteName !== currentRoute.name) {
           // GA4 화면 뷰 이벤트 전송
-          await analytics().logScreenView({
+          await analytics().logEvent("screen_view", {
             screen_name: currentRoute.name,
-            screen_class: currentRoute.name,
           });
         }
 
@@ -149,7 +157,7 @@ export const ContainerStack = ({
       <ErrorModal />
 
       <Stack.Navigator
-        initialRouteName={isFirstLaunch ? `IntroStack` : `BottomTab`}
+        initialRouteName={isGetPermission ? `BottomTab` : `IntroStack`}
       >
         <Stack.Screen
           name="IntroStack"
@@ -306,6 +314,13 @@ export const ContainerStack = ({
           component={Faq}
           options={{
             header: () => <CustomHeader title="고객센터" showBackButton />,
+          }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            header: () => <CustomHeader title="내 정보" showBackButton />,
           }}
         />
       </Stack.Navigator>

@@ -16,4 +16,6 @@ export interface UserReferralCodeItem {
    * @nullable
    */
   referrerCode?: string | null;
+  /** 추천받은 횟수 */
+  referredCount: number;
 }

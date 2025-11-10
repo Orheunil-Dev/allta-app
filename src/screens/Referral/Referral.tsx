@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { shareCustomTemplate } from "@react-native-kakao/share";
 import * as Clipboard from "expo-clipboard";
 import { useSetAtom } from "jotai";
 import {
@@ -10,14 +11,14 @@ import {
 import { errorModalAtom } from "@/jotai";
 import { useToastMessage } from "@/hooks";
 import { getFontSize, getResponsiveSize } from "@/utils";
+import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomImage } from "@/components/ui/CustomImage";
 import { Spinner } from "@/components/ui/Spinner";
 import { referralBanner } from "@/assets/images";
 import { colors, fontMap } from "@/styles";
-import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
-import { shareCustomTemplate } from "@react-native-kakao/share";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -105,25 +106,31 @@ export const Referral = () => {
     <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
         <ScrollView>
-          <Image
-            source={referralBanner}
-            style={{
-              width: screenWidth,
-              height: (screenWidth * 388) / 375,
-            }}
-          />
+          <CustomImage source={referralBanner} width={screenWidth} />
+
+          <View style={styles.eventBannerBottom}>
+            <View style={styles.referredCount}>
+              <CustomText color={colors.white} fontSize={16}>
+                현재 초대한 친구
+              </CustomText>
+
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <CustomText
+                  marginRight={6}
+                  color="#FFC935"
+                  fontSize={24}
+                  fontWeight={"600"}
+                >
+                  {referralCodeData?.data.referredCount ?? 0}
+                </CustomText>
+                <CustomText color={colors.white} fontSize={16}>
+                  명
+                </CustomText>
+              </View>
+            </View>
+          </View>
 
           <View style={styles.container}>
-            <CustomText textAlign="center" fontSize={16}>
-              친구가 내 추천 코드로 가입하면
-            </CustomText>
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <CustomText color={colors.point2} fontSize={16}>
-                무료 세차권 쿠폰
-              </CustomText>
-              <CustomText fontSize={16}>을 받을 수 있어요!</CustomText>
-            </View>
-
             <View style={styles.referralCode}>
               <CustomText fontSize={16} fontWeight={"600"}>
                 나의 추천 코드
@@ -235,14 +242,33 @@ export const Referral = () => {
 
           <View style={styles.terms}>
             <CustomText color={colors.gray7} fontSize={14}>
+              유의사항
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={14}>
+              • 당첨자 발표 : 2026.01.02 (금)
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={14}>
+              • 경품 지급일 : 당첨자 발표 이후 영업일 10일 이내에 리워드가
+              지급됩니다.
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={14}>
+              • 초대받은 친구 중 회원가입을 완료한 친구 수 만큼 친구 초대 이벤트
+              경품이 지급됩니다.
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={14}>
+              • 이벤트 기간부터 최종 경품 지급 시기까지 초대한 사람, 초대받은
+              사람 모두 계정을 유지해야 경품이 지급됩니다.
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={14}>
+              • 지급되는 경품의 금액이 5만원을 초과할 경우, 경품에 제세공과금이
+              부과되며, 이는 당사가 부담합니다.
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={14}>
               • 추천 코드는 가입 후 1회만 등록할 수 있으며, 이후 수정은
               불가합니다.
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
               • 본인의 추천 코드를 자신에게 등록할 수 없습니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 추천 보상은 추천을 받은 회원만가 첫 결지급됩니다.
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
               • 부정한 방법(가짜 계정, 반복 등록 등)으로 참여한 경우 혜택은
@@ -263,9 +289,22 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: getResponsiveSize(20),
   },
+  eventBannerBottom: {
+    paddingHorizontal: getResponsiveSize(20),
+    paddingBottom: getResponsiveSize(20),
+    backgroundColor: "#1A1A36",
+  },
+  referredCount: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: getResponsiveSize(10),
+    paddingHorizontal: getResponsiveSize(16),
+    borderBottomWidth: 1,
+    borderBottomColor: colors.white,
+  },
   referralCode: {
     alignItems: "center",
-    marginTop: getResponsiveSize(20),
     paddingVertical: 12,
     borderWidth: 1,
     borderColor: colors.gray2,
@@ -292,6 +331,7 @@ const styles = StyleSheet.create({
     fontSize: getFontSize(15),
     fontWeight: "500",
     paddingHorizontal: getResponsiveSize(12),
+    backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.gray2,
     borderRadius: 8,

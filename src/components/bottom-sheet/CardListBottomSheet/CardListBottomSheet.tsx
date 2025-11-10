@@ -12,7 +12,7 @@ import {
 } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
@@ -53,12 +53,13 @@ export const CardListBottomSheet = ({
     >
       <View style={styles.container}>
         {cardData?.data.length ? (
-          <FlatList
-            data={cardData?.data}
-            keyExtractor={(item) => item.id}
+          <ScrollView
             contentContainerStyle={{ gap: getResponsiveSize(16) }}
-            renderItem={({ item, index }) => (
+            showsVerticalScrollIndicator={false}
+          >
+            {cardData?.data.map((item, index) => (
               <Pressable
+                key={index}
                 onPress={handleSelectCard(item)}
                 style={[
                   styles.card,
@@ -84,8 +85,8 @@ export const CardListBottomSheet = ({
                   </CustomText>
                 </View>
               </Pressable>
-            )}
-          />
+            ))}
+          </ScrollView>
         ) : (
           <View style={styles.emptyBox}>
             <CustomText

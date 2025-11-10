@@ -126,6 +126,7 @@ export const CarUpdate = () => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["cars"] });
+          queryClient.invalidateQueries({ queryKey: ["profile"] });
 
           return carStackNavigation.goBack();
         },
@@ -151,11 +152,13 @@ export const CarUpdate = () => {
           hasCloseButton
           onClose={handleCloseBrandSelect}
         >
-          <FlatList
-            data={carVendorsData?.data}
+          <ScrollView
             style={{ width: "100%" }}
-            renderItem={({ item, index }) => (
+            showsVerticalScrollIndicator={false}
+          >
+            {carVendorsData?.data.map((item, index) => (
               <Pressable
+                key={index}
                 onPress={() => {
                   handleChangeUpdateForm("vendor", item.vendor);
                   handleChangeUpdateForm("type", "");
@@ -163,7 +166,6 @@ export const CarUpdate = () => {
                   setVendor(item.vendor);
                   handleCloseBrandSelect();
                 }}
-                key={index}
                 style={styles.list}
               >
                 <CustomText
@@ -177,8 +179,8 @@ export const CarUpdate = () => {
                   {item.vendor}
                 </CustomText>
               </Pressable>
-            )}
-          />
+            ))}
+          </ScrollView>
         </CustomBottomSheet>
 
         {/* 차량모델 바텀시트 */}
@@ -188,34 +190,28 @@ export const CarUpdate = () => {
           hasCloseButton
           onClose={handleCloseModelSelect}
         >
-          {carModelsData?.data && (
-            <FlatList
-              data={carModelsData?.data}
-              style={{ width: "100%" }}
-              renderItem={({ item, index }) => (
-                <Pressable
-                  onPress={() => {
-                    handleChangeUpdateForm("model", item.name!);
-                    handleChangeUpdateForm("type", item.type!);
-                    handleCloseModelSelect();
-                  }}
-                  key={index}
-                  style={styles.list}
+          <ScrollView style={{ width: "100%" }}>
+            {carModelsData?.data.map((item, index) => (
+              <Pressable
+                onPress={() => {
+                  handleChangeUpdateForm("model", item.name!);
+                  handleChangeUpdateForm("type", item.type!);
+                  handleCloseModelSelect();
+                }}
+                key={index}
+                style={styles.list}
+              >
+                <CustomText
+                  color={
+                    updateForm.model === item.name ? colors.main : colors.black
+                  }
+                  fontSize={16}
                 >
-                  <CustomText
-                    color={
-                      updateForm.model === item.name
-                        ? colors.main
-                        : colors.black
-                    }
-                    fontSize={16}
-                  >
-                    {item.name}
-                  </CustomText>
-                </Pressable>
-              )}
-            />
-          )}
+                  {item.name}
+                </CustomText>
+              </Pressable>
+            ))}
+          </ScrollView>
         </CustomBottomSheet>
 
         <View style={styles.container}>

@@ -78,7 +78,7 @@ export const CustomHeader = ({
         />
       )}
 
-      <CustomText fontSize={20} fontWeight={"600"} textAlign="center">
+      <CustomText fontSize={16} fontWeight={"600"} textAlign="center">
         {title}
       </CustomText>
 

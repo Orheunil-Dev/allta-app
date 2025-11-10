@@ -1,4 +1,4 @@
-import { Linking, Platform, StyleSheet, View } from "react-native";
+import { Image, Linking, Platform, StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -18,8 +18,6 @@ interface Props {
 export const Update = ({ isVersionUpdate, isUpdateFinished }: Props) => {
   const [visible, setVisible] = useState(false);
 
-  const logoY = getResponsiveSize(80);
-
   // 앱 버전 업데이트
   const handleOpenStore = async () => {
     const storeUrl =
@@ -33,17 +31,6 @@ export const Update = ({ isVersionUpdate, isUpdateFinished }: Props) => {
       console.log(error.message ?? error);
     }
   };
-
-  const splashAnimatedStyle = useAnimatedStyle(() => {
-    "worklet";
-
-    return {
-      marginTop: withTiming(visible ? 0 : logoY, {
-        duration: 300,
-      }),
-      opacity: withTiming(visible ? 1 : 0, { duration: 300 }),
-    };
-  });
 
   const progressBarAnimatedStyle = useAnimatedStyle(() => {
     "worklet";
@@ -84,15 +71,12 @@ export const Update = ({ isVersionUpdate, isUpdateFinished }: Props) => {
         </CustomText>
       </CustomModal>
 
-      <Animated.Image
+      <Image
         source={splashIamge}
-        style={[
-          {
-            width: getResponsiveSize(154),
-            height: getResponsiveSize(233),
-          },
-          splashAnimatedStyle,
-        ]}
+        style={{
+          width: getResponsiveSize(154),
+          height: getResponsiveSize(233),
+        }}
       />
 
       <View style={styles.loading}>

@@ -28,6 +28,11 @@ export interface RegisterStoreRequest {
    */
   mainImage?: string | null;
   /**
+   * 태그
+   * @nullable
+   */
+  tags?: string | null;
+  /**
    * 매장 소개
    * @nullable
    */

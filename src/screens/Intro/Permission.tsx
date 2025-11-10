@@ -5,12 +5,13 @@ import { ContainerStackParamList } from "@/navigations";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 import * as ImagePicker from "expo-image-picker";
+import * as TrackingTransparency from "expo-tracking-transparency";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
-import { IS_NOTIFICATION_GRANTED } from "@/constants";
+import { IS_NOTIFICATION_GRANTED, IS_GET_PERMISSION } from "@/constants";
 import {
   PermissionAlarmIcon,
   PermissionCameraIcon,
@@ -41,6 +42,10 @@ export const Permission = () => {
     await ImagePicker.requestCameraPermissionsAsync();
     // 앨범 권한 요청
     await ImagePicker.requestMediaLibraryPermissionsAsync();
+    // ATT 권한 요청
+    await TrackingTransparency.requestTrackingPermissionsAsync();
+
+    mmkvStorage.setBoolean(IS_GET_PERMISSION, true);
 
     containerNavigation.dispatch(
       CommonActions.reset({

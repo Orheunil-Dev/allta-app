@@ -1,4 +1,21 @@
-import { PassType } from "@/types";
+export const formatLoginKind = (text: string): string => {
+  switch (text) {
+    case "KAKAO":
+      return "카카오";
+
+    case "GOOGLE":
+      return "구글";
+
+    case "APPLE":
+      return "애플";
+
+    case "TEST":
+      return "테스트";
+
+    default:
+      return text;
+  }
+};
 
 // 전화번호 포매팅 (ex. 010-0000-0000)
 export const formatPhoneNumber = (value: string) => {
@@ -181,12 +198,16 @@ export const formatCouponPassType = (
 };
 
 // 카드번호 포매팅
-export const formatCardDisplayNumber = (value: string) => {
+export const formatCardDisplayNumber = (value?: string | null) => {
+  if (!value) return "";
+
   return `****-****-****-${value}`;
 };
 
 // 카드사 포매팅
-export const formatCardCompany = (value: string) => {
+export const formatCardCompany = (value?: string | null) => {
+  if (!value) return "";
+
   const cardCompanyMap: Record<string, string> = {
     "01": "BC",
     "02": "신한",

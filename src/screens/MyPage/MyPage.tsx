@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useUserControllerGetUserProfile } from "@/api/user/user";
 import { ContainerStackParamList } from "@/navigations";
@@ -30,14 +31,29 @@ export const MyPage = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
+  const isFocus = useIsFocused();
+
   const insets = useSafeAreaInsets();
 
-  const { data: userProfileData, error } = useUserControllerGetUserProfile({
+  // 회원 프로필 조회 API
+  const {
+    data: userProfileData,
+    isPending: userProfileLoading,
+    error: userProfileError,
+    refetch: userProfileRefetch,
+  } = useUserControllerGetUserProfile({
     query: {
+      queryKey: ["profile"],
       retry: false,
       gcTime: 0,
     },
   });
+
+  useEffect(() => {
+    if (isFocus) {
+      userProfileRefetch();
+    }
+  }, [isFocus]);
 
   return (
     <CustomSafeAreaView edges={["top"]}>
@@ -49,7 +65,7 @@ export const MyPage = () => {
       >
         <View style={{ width: getResponsiveSize(24) }} />
 
-        <CustomText fontSize={18} fontWeight={"600"}>
+        <CustomText fontSize={16} fontWeight={"600"}>
           마이페이지
         </CustomText>
 
@@ -72,7 +88,7 @@ export const MyPage = () => {
 
       <ScrollView style={styles.container}>
         {userProfileData ? (
-          <View style={styles.box}>
+          <View style={styles.profileBox}>
             <View
               style={{
                 flexDirection: "row",
@@ -84,7 +100,16 @@ export const MyPage = () => {
                 {userProfileData.name} 님
               </CustomText>
 
-              <Pressable>
+              <Pressable
+                onPress={() =>
+                  containerNavigation.navigate("Profile", {
+                    name: userProfileData.name,
+                    phoneNumber: userProfileData.phoneNumber,
+                    loginKind: userProfileData.loginKind,
+                    email: userProfileData.email ?? null,
+                  })
+                }
+              >
                 <Image source={rigthArrowIcon} style={styles.icon} />
               </Pressable>
             </View>
@@ -109,14 +134,18 @@ export const MyPage = () => {
               </View>
             ) : (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <CustomText fontSize={15} fontWeight={"600"}>
+                <CustomText
+                  color={colors.gray5}
+                  fontSize={15}
+                  fontWeight={"600"}
+                >
                   차량을 등록해주세요
                 </CustomText>
               </View>
             )}
           </View>
         ) : (
-          <View style={styles.box}>
+          <View style={styles.profileBox}>
             <View
               style={{
                 flexDirection: "row",
@@ -143,7 +172,7 @@ export const MyPage = () => {
           </View>
         )}
 
-        <View style={styles.box}>
+        <View style={styles.profileBox}>
           <View
             style={{
               flexDirection: "row",
@@ -390,13 +419,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(20),
     backgroundColor: colors.bg,
   },
-  box: {
+  profileBox: {
     marginBottom: getResponsiveSize(16),
     padding: getResponsiveSize(16),
     gap: getResponsiveSize(4),
     backgroundColor: colors.white,
     borderRadius: 12,
   },
+  box: {
+    marginBottom: getResponsiveSize(16),
+    paddingVertical: getResponsiveSize(4),
+    paddingHorizontal: getResponsiveSize(16),
+    gap: getResponsiveSize(4),
+    backgroundColor: colors.white,
+    borderRadius: 12,
+  },
+
   divider: {
     width: "100%",
     height: 2,

@@ -8,6 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "credentialsSource": "remote",
+      "channel": "development",
       "environment": "development"
     },
     "preview": {
@@ -15,6 +16,7 @@
       "developmentClient": false,
       "distribution": "internal",
       "credentialsSource": "remote",
+      "channel": "preview",
       "environment": "preview"
     },
     "production": {
@@ -22,7 +24,21 @@
       "developmentClient": false,
       "distribution": "store",
       "credentialsSource": "remote",
+      "channel": "production",
       "environment": "production"
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./cert/pc-api-6370483001735393901-86-de97afc9d127.json",
+        "track": "internal"
+      },
+      "ios": {
+        "appleId": "osh4761@hanmail.net",
+        "ascAppId": "6467127880",
+        "appleTeamId": "F256JX6J9L"
+      }
     }
   }
 }

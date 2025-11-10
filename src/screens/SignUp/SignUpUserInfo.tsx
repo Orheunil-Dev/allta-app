@@ -33,9 +33,9 @@ type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpUserInfo">;
 const signUpFormSchema = z.object({
   name: z
     .string()
-    .min(3, "이름은 최소 3자 이상 입력해주세요.")
-    .max(10, "이름은 최대 10자까지 입력해주세요.")
-    .regex(regexName, "올바른 이름 형식이 아닙니다."),
+    .min(2, "닉네임은 최소 2자 이상 입력해주세요.")
+    .max(10, "닉네임은 최대 10자까지 입력해주세요.")
+    .regex(regexName, "올바른 닉네임 형식이 아닙니다."),
   phoneNumber: z
     .string()
     .regex(regexPhoneNumber, "올바른 휴대폰 번호 형식이 아닙니다."),
@@ -165,7 +165,7 @@ export const SignUpUserInfo = () => {
     };
   }, [infoForm.phoneNumber]);
 
-  // 이름, 휴대폰 번호 입력 완료해야 인증코드 발송 가능
+  // 닉네임, 휴대폰 번호 입력 완료해야 인증코드 발송 가능
   useEffect(() => {
     if (infoForm.phoneNumber.length !== 13) {
       return;
@@ -216,12 +216,12 @@ export const SignUpUserInfo = () => {
           </CustomText>
 
           <CustomText fontSize={16} marginTop={32}>
-            이름
+            닉네임
           </CustomText>
           <CustomTextInput
             value={infoForm.name}
             onChangeText={(text) => handleChangeSignUpForm("name", text)}
-            placeholder="이름을 입력해주세요."
+            placeholder="닉네임을 입력해주세요."
             maxLength={10}
           />
 
@@ -242,6 +242,7 @@ export const SignUpUserInfo = () => {
               maxLength={13}
               keyboardType="number-pad"
               placeholder="휴대폰 번호를 입력해주세요."
+              flex={1}
             />
             <Pressable
               onPress={handleSendVerificationCode}
@@ -273,6 +274,7 @@ export const SignUpUserInfo = () => {
                 <CustomTextInput
                   value={verificationCode}
                   onChangeText={(text) => setVerificationCode(text)}
+                  flex={1}
                   maxLength={6}
                   keyboardType="number-pad"
                   errorMessage={

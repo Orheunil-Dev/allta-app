@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { useServiceHistoryControllerGetServiceHistoryList } from "@/api/service-history/service-history";
 import { GetSerivceHistoryListResponse } from "@/api/models";
 import { ContainerStackParamList } from "@/navigations";
-import { formatPassType, getResponsiveSize } from "@/utils";
+import { formatPassType, formatServiceType, getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { defaultStoreImage } from "@/assets/images";
@@ -62,9 +62,23 @@ export const ServiceHistory = () => {
           contentContainerStyle={styles.container}
           renderItem={({ item, index }) => (
             <View style={styles.card}>
-              <CustomText color={colors.gray7} fontSize={13} fontWeight={"500"}>
-                {dayjs(item.createdAt).format("YYYY.MM.DD HH:mm")}
-              </CustomText>
+              <View style={{ flexDirection: "row" }}>
+                <CustomText
+                  color={colors.gray7}
+                  fontSize={13}
+                  fontWeight={"500"}
+                >
+                  {dayjs(item.createdAt).format("YYYY.MM.DD HH:mm")}
+                </CustomText>
+                <CustomText
+                  marginLeft={6}
+                  color={colors.gray7}
+                  fontSize={13}
+                  fontWeight={"500"}
+                >
+                  {formatServiceType(item.serviceType)}
+                </CustomText>
+              </View>
 
               <View style={styles.serviceHistory}>
                 <ImageBackground
@@ -76,7 +90,7 @@ export const ServiceHistory = () => {
                   style={styles.storeImage}
                 ></ImageBackground>
 
-                <View>
+                <View style={{ flex: 1 }}>
                   <CustomText fontSize={18} fontWeight={"600"}>
                     {item.store.name}
                   </CustomText>

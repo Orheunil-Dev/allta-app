@@ -56,6 +56,7 @@ export const QrScanComplete = () => {
   const [car, setCar] = useState<Car | null>(null);
   const [pass, setPass] = useState<Pass | null>(null);
 
+  // 보유 이용권 목록 조회 API
   const {
     data: passData,
     isLoading: passLoading,
@@ -74,12 +75,14 @@ export const QrScanComplete = () => {
     }
   );
 
+  // 일회권 사용 API
   const {
     mutate: useTicket,
     isPending: useTicketLoading,
     isError: useTicketError,
   } = usePassControllerUseTicket();
 
+  // 구독권 사용 API
   const {
     mutate: useSubscription,
     isPending: useSubscriptionLoading,
