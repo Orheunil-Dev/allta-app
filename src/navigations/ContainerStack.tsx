@@ -85,6 +85,7 @@ const linking = {
   config: {
     screens: {
       Coupon: "coupon",
+      Referral: "referral",
       EventStack: {
         path: "event",
         screens: {
