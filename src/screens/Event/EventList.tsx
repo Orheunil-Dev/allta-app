@@ -46,29 +46,7 @@ export const EventList = () => {
           </CustomText>
         </View>
 
-        <FlatList
-          data={eventData?.data}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContainer}
-          renderItem={({ item, index }) => (
-            <Pressable
-              onPress={() =>
-                eventStackNavigation.navigate("EventDetail", {
-                  id: item.id,
-                })
-              }
-              style={styles.card}
-            >
-              <ImageBackground
-                source={{ uri: item.thumbnail }}
-                style={styles.thumbnail}
-                resizeMode="cover"
-              />
-            </Pressable>
-          )}
-        />
-
-        {!eventLoading && eventData?.data.length === 0 && (
+        {!eventLoading && eventData?.data.length === 0 ? (
           <View style={styles.emptyBox}>
             <CustomText
               marginBottom={4}
@@ -82,6 +60,28 @@ export const EventList = () => {
               이벤트 소식을 곧 전해드릴게요!
             </CustomText>
           </View>
+        ) : (
+          <FlatList
+            data={eventData?.data}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listContainer}
+            renderItem={({ item, index }) => (
+              <Pressable
+                onPress={() =>
+                  eventStackNavigation.navigate("EventDetail", {
+                    id: item.id,
+                  })
+                }
+                style={styles.card}
+              >
+                <ImageBackground
+                  source={{ uri: item.thumbnail }}
+                  style={styles.thumbnail}
+                  resizeMode="cover"
+                />
+              </Pressable>
+            )}
+          />
         )}
       </View>
     </CustomSafeAreaView>
