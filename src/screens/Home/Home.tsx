@@ -36,7 +36,12 @@ import {
 } from "@/assets/images";
 import { colors } from "@/styles";
 
-export const Home = () => {
+interface Props {
+  showSplash?: boolean;
+  showUpdate?: boolean;
+}
+
+export const Home = ({ showSplash, showUpdate }: Props) => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -182,7 +187,7 @@ export const Home = () => {
       />
 
       {/* 팝업 바텀시트 */}
-      <Popup data={bannerData?.data} />
+      {!showSplash && !showUpdate && <Popup data={bannerData?.data} />}
 
       {/* 웰컴쿠폰 모달 */}
       <CustomModal

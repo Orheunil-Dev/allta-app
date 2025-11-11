@@ -209,6 +209,8 @@ export default function App() {
                 />
               ) : (
                 <ContainerStack
+                  showSplash={showSplash}
+                  showUpdate={showUpdate}
                   showLoginModal={showLoginModal}
                   setShowLoginModal={setShowLoginModal}
                 />

@@ -72,6 +72,8 @@ export type ContainerStackParamList = {
 };
 
 interface Props {
+  showSplash: boolean;
+  showUpdate: boolean;
   showLoginModal: boolean;
   setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -95,6 +97,8 @@ const linking = {
 };
 
 export const ContainerStack = ({
+  showSplash,
+  showUpdate,
   showLoginModal,
   setShowLoginModal,
 }: Props) => {
@@ -167,13 +171,15 @@ export const ContainerStack = ({
             presentation: "transparentModal",
           }}
         />
-        <Stack.Screen
-          name="BottomTab"
-          component={BottomTab}
-          options={{
-            headerShown: false,
-          }}
-        />
+        <Stack.Screen name="BottomTab" options={{ headerShown: false }}>
+          {(props) => (
+            <BottomTab
+              {...props}
+              showSplash={showSplash}
+              showUpdate={showUpdate}
+            />
+          )}
+        </Stack.Screen>
         <Stack.Screen
           name="Notification"
           component={Notification}
