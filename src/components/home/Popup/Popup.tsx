@@ -51,6 +51,8 @@ export const Popup = ({ data }: Props) => {
 
     if (!isCanOpen) return;
 
+    popupRef?.current?.close();
+
     return Linking.openURL(url);
   };
 
