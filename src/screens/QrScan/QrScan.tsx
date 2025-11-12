@@ -45,6 +45,7 @@ export const QrScan = () => {
   const [permission, requestPermission] = useCameraPermissions();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isCameraActive, setIsCameraActive] = useState(false);
 
   const {
     mutate: verifyQrCode,
@@ -144,6 +145,15 @@ export const QrScan = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      setIsCameraActive(true);
+      return () => {
+        setIsCameraActive(false);
+      };
+    }, [])
+  );
+
   return (
     <SafeAreaProvider style={{ backgroundColor: colors.black }}>
       {isLoading && (
@@ -152,7 +162,7 @@ export const QrScan = () => {
         </View>
       )}
 
-      {permission?.status === "granted" && (
+      {isCameraActive && permission?.status === "granted" && (
         <CameraView
           ref={cameraRef}
           barcodeScannerSettings={{
