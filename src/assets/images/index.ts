@@ -97,7 +97,7 @@ export { default as addressIcon } from "./address-icon.png";
 export { default as purchaseIcon } from "./purchase-icon.png";
 export { default as passIcon } from "./pass-icon.png";
 export { default as serviceHistoryIcon } from "./service-history-icon.png";
-export { default as couponIcon } from "./purchase-icon.png";
+export { default as couponIcon } from "./coupon-icon.png";
 export { default as eventIcon } from "./event-icon.png";
 export { default as referralIcon } from "./referral-icon.png";
 export { default as noticeIcon } from "./notice-icon.png";
