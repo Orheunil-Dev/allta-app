@@ -44,9 +44,9 @@ export const Splash = ({
 
     return {
       marginTop: withTiming(visible ? 0 : logoY, {
-        duration: 300,
+        duration: 500,
       }),
-      opacity: withTiming(visible ? 1 : 0, { duration: 300 }),
+      opacity: withTiming(visible ? 1 : 0, { duration: 500 }),
     };
   });
 
@@ -93,6 +93,8 @@ export const Splash = ({
         source={splashIamge}
         style={[
           {
+            marginTop: logoY,
+            opacity: 0,
             width: getResponsiveSize(154),
             height: getResponsiveSize(233),
           },

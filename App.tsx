@@ -131,7 +131,7 @@ export default function App() {
   // 스플래시
   useEffect(() => {
     const prepare = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1250));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       if (!showUpdate) setShowSplash(false);
     };
