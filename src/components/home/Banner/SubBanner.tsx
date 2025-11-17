@@ -33,6 +33,8 @@ export const SubBanner = ({ data }: Props) => {
     return Linking.openURL(url);
   };
 
+  if (!subBanners.length) return;
+
   return (
     <View style={styles.container}>
       <Carousel
