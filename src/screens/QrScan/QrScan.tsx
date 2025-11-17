@@ -52,6 +52,7 @@ export const QrScan = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // QR코드 검증 API
   const {
     mutate: verifyQrCode,
     isError: verifyQrCodeError,

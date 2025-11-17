@@ -250,8 +250,7 @@ export const PassInfo = ({
                 fontSize={20}
                 fontWeight={"600"}
               >
-                월 {Math.min(...Object.values(prices.TICKET)).toLocaleString()}
-                원 ~
+                {Math.min(...Object.values(prices.TICKET)).toLocaleString()}원 ~
               </CustomText>
 
               <View style={styles.row}>
