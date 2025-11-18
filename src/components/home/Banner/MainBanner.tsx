@@ -39,8 +39,8 @@ export const MainBanner = ({ data }: Props) => {
         data={mainBanners}
         width={screenWidth}
         height={getResponsiveSize(200)}
-        loop
-        autoPlay
+        loop={mainBanners.length > 1}
+        autoPlay={mainBanners.length > 1}
         scrollAnimationDuration={1000}
         autoPlayInterval={2500}
         onSnapToItem={(index) => setCurrentSlide(index)}

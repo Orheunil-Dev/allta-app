@@ -104,7 +104,7 @@ export const Popup = ({ data }: Props) => {
             data={popups}
             width={screenWidth}
             height={getResponsiveSize(300)}
-            loop
+            loop={popups.length > 1}
             onSnapToItem={(index) => setCurrentSlide(index)}
             renderItem={({ item, index }) => (
               <Pressable

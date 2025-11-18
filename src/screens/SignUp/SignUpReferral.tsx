@@ -138,8 +138,6 @@ export const SignUpReferral = () => {
       }
     } catch (error) {}
 
-    console.log(address);
-
     createUser(
       {
         data: {
