@@ -1,4 +1,3 @@
-import { useAuthControllerLogout } from "@/api/auth/auth";
 import { CustomText } from "@/components/ui/CustomText";
 import { ContainerStackParamList, SettingStackParamList } from "@/navigations";
 import { colors } from "@/styles";
@@ -16,6 +15,7 @@ import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/jotai";
 import checkVersion from "react-native-store-version";
 import * as Application from "expo-application";
+import { useAuthControllerUserLogout } from "@/api/auth/auth";
 
 export const Setting = () => {
   const [appVersion, setAppVersion] = useState<string>("");
@@ -33,7 +33,7 @@ export const Setting = () => {
 
   // 로그아웃 API
   const { mutateAsync: logout, isPending: logoutLoading } =
-    useAuthControllerLogout();
+    useAuthControllerUserLogout();
 
   // 앱 버전 업데이트
   const handleOpenStore = async () => {
