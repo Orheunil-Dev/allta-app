@@ -21,6 +21,11 @@ export interface CreateUserRequest {
   /** 전화번호 */
   phoneNumber: string;
   /**
+   * 주소
+   * @nullable
+   */
+  address?: string | null;
+  /**
    * 회원이 등록한 추천인 코드
    * @nullable
    */

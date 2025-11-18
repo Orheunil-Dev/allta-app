@@ -12,6 +12,7 @@ import { LoginStackParamList } from "@/navigations";
 import CookieManager from "@react-native-cookies/cookies";
 import analytics from "@react-native-firebase/analytics";
 import * as SecureStore from "expo-secure-store";
+import * as Location from "expo-location";
 import { useReferralControllerVerifyReferralCode } from "@/api/referral/referral";
 import {
   useUserControllerCheckIsRejoin,
@@ -31,6 +32,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CustomTextInput } from "@/components/ui/CustomTextInput";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { IS_COUPON_RECEIVED } from "@/constants";
+import axios from "axios";
 
 type SignUpReferralRouteProp = RouteProp<LoginStackParamList, "SignUpReferral">;
 
@@ -94,11 +96,55 @@ export const SignUpReferral = () => {
   } = useAuthControllerLoginBySocialId();
 
   // 회원가입
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
+    let lat: number | undefined = undefined;
+    let lng: number | undefined = undefined;
+    let address: string | undefined = undefined;
+
+    try {
+      // 위치 권한 요청
+      let { status, canAskAgain } =
+        await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted" && canAskAgain) {
+        const res = await Location.requestForegroundPermissionsAsync();
+        status = res.status;
+      }
+
+      // 권한 허용된 경우만 위치 정보 가져오기
+      if (status === "granted") {
+        const loc = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+
+        lat = loc.coords.latitude;
+        lng = loc.coords.longitude;
+
+        console.log(lat, lng);
+
+        // 좌표 -> 주소 변환
+        const kakaoRes = await axios.get(
+          "https://dapi.kakao.com/v2/local/geo/coord2address.json",
+          {
+            headers: {
+              Authorization:
+                "KakaoAK " + process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY,
+            },
+            params: { x: lng, y: lat },
+          }
+        );
+
+        address = kakaoRes.data.documents[0]?.address?.address_name;
+      }
+    } catch (error) {}
+
+    console.log(address);
+
     createUser(
       {
         data: {
           ...route.params,
+          ...(address ? { address } : {}),
           ...(isValid ? { referrerCode: referralCode } : {}),
         },
       },

@@ -54,7 +54,7 @@ export const WeatherCast = () => {
     //     {
     //       headers: {
     //         Authorization:
-    //           "KakaoAK " + process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY,
+    //           "KakaoAK " + process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY,
     //       },
     //       params: { x: lng, y: lat },
     //     }
