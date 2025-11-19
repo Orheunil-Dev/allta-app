@@ -279,7 +279,7 @@ export const SignUpReferral = () => {
 
           <CustomButton
             onPress={handleSignUp}
-            isDisabled={!isValid || createUserLoading}
+            isDisabled={!isValid || createUserLoading || loginBySocialIdLoading}
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
@@ -296,7 +296,7 @@ export const SignUpReferral = () => {
 
       <Pressable
         onPress={handleSignUp}
-        disabled={createUserLoading}
+        disabled={createUserLoading || loginBySocialIdLoading}
         style={{
           position: "absolute",
           bottom: insets.bottom + getResponsiveSize(60),
