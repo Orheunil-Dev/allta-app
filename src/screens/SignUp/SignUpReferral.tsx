@@ -122,8 +122,6 @@ export const SignUpReferral = () => {
         lat = loc.coords.latitude;
         lng = loc.coords.longitude;
 
-        console.log(lat, lng);
-
         // 좌표 -> 주소 변환
         const kakaoRes = await axios.get(
           "https://dapi.kakao.com/v2/local/geo/coord2address.json",
