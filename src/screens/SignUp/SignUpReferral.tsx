@@ -97,7 +97,7 @@ export const SignUpReferral = () => {
 
   // 회원가입
   const handleSignUp = async () => {
-    if (createUserLoading) return;
+    if (createUserLoading || loginBySocialIdLoading) return;
 
     let lat: number | undefined = undefined;
     let lng: number | undefined = undefined;
