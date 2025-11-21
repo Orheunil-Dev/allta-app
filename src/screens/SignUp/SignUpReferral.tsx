@@ -50,6 +50,7 @@ export const SignUpReferral = () => {
 
   const [referralCode, setReferralCode] = useState("");
   const [isValid, setIsValid] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // 재가입 여부 조회 API
   const {
@@ -97,118 +98,123 @@ export const SignUpReferral = () => {
 
   // 회원가입
   const handleSignUp = async () => {
-    if (createUserLoading || loginBySocialIdLoading) return;
+    if (isProcessing || createUserLoading || loginBySocialIdLoading) return;
+    setIsProcessing(true);
 
     let lat: number | undefined = undefined;
     let lng: number | undefined = undefined;
     let address: string | undefined = undefined;
 
     try {
-      // 위치 권한 요청
-      let { status, canAskAgain } =
-        await Location.requestForegroundPermissionsAsync();
+      try {
+        // 위치 권한 요청
+        let { status, canAskAgain } =
+          await Location.requestForegroundPermissionsAsync();
 
-      if (status !== "granted" && canAskAgain) {
-        const res = await Location.requestForegroundPermissionsAsync();
-        status = res.status;
-      }
+        if (status !== "granted" && canAskAgain) {
+          const res = await Location.requestForegroundPermissionsAsync();
+          status = res.status;
+        }
 
-      // 권한 허용된 경우만 위치 정보 가져오기
-      if (status === "granted") {
-        const loc = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced,
-        });
-
-        lat = loc.coords.latitude;
-        lng = loc.coords.longitude;
-
-        // 좌표 -> 주소 변환
-        const kakaoRes = await axios.get(
-          "https://dapi.kakao.com/v2/local/geo/coord2address.json",
-          {
-            headers: {
-              Authorization:
-                "KakaoAK " + process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY,
-            },
-            params: { x: lng, y: lat },
-          }
-        );
-
-        address = kakaoRes.data.documents[0]?.address?.address_name;
-      }
-    } catch (error) {}
-
-    createUser(
-      {
-        data: {
-          ...route.params,
-          ...(address ? { address } : {}),
-          ...(isValid ? { referrerCode: referralCode } : {}),
-        },
-      },
-      {
-        onSuccess: async (res) => {
-          const isRejoined = res.isRejoined;
-          const isCouponReceived = res.isCouponReceived;
-
-          await analytics().logEvent("sign_up_complete", {
-            platform: Platform.OS,
-            is_rejoined: isRejoined,
-            coupon_received: isCouponReceived,
+        // 권한 허용된 경우만 위치 정보 가져오기
+        if (status === "granted") {
+          const loc = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Balanced,
           });
 
-          loginBySocialId(
+          lat = loc.coords.latitude;
+          lng = loc.coords.longitude;
+
+          // 좌표 -> 주소 변환
+          const kakaoRes = await axios.get(
+            "https://dapi.kakao.com/v2/local/geo/coord2address.json",
             {
-              data: {
-                loginKind: route.params.loginKind,
-                socialId: route.params.socialId,
+              headers: {
+                Authorization:
+                  "KakaoAK " + process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY,
               },
-            },
-            {
-              onSuccess: async (res) => {
-                const cookies = await CookieManager.get(
-                  process.env.EXPO_PUBLIC_API_URL!
-                );
-
-                const accessToken = cookies.accessToken.value;
-                const refreshToken = cookies.refreshToken.value;
-
-                await SecureStore.setItemAsync("accessToken", accessToken);
-                await SecureStore.setItemAsync("refreshToken", refreshToken);
-
-                mmkvStorage.setBoolean(IS_COUPON_RECEIVED, isCouponReceived);
-
-                loginStackNavigation.dispatch(
-                  CommonActions.reset({
-                    index: 0,
-                    routes: [
-                      {
-                        name: "SignUpComplete",
-                        params: {
-                          isRejoined,
-                        },
-                      },
-                    ],
-                  })
-                );
-              },
-              onError: (error: any) => {
-                setErrorModal({
-                  visible: true,
-                  message: error?.message ?? "로그인에 실패했습니다.",
-                });
-              },
+              params: { x: lng, y: lat },
             }
           );
+
+          address = kakaoRes.data.documents[0]?.address?.address_name;
+        }
+      } catch (error) {}
+
+      createUser(
+        {
+          data: {
+            ...route.params,
+            ...(address ? { address } : {}),
+            ...(isValid ? { referrerCode: referralCode } : {}),
+          },
         },
-        onError: (error: any) => {
-          setErrorModal({
-            visible: true,
-            message: error?.message ?? "회원가입에 실패했습니다.",
-          });
-        },
-      }
-    );
+        {
+          onSuccess: async (res) => {
+            const isRejoined = res.isRejoined;
+            const isCouponReceived = res.isCouponReceived;
+
+            await analytics().logEvent("sign_up_complete", {
+              platform: Platform.OS,
+              is_rejoined: isRejoined,
+              coupon_received: isCouponReceived,
+            });
+
+            loginBySocialId(
+              {
+                data: {
+                  loginKind: route.params.loginKind,
+                  socialId: route.params.socialId,
+                },
+              },
+              {
+                onSuccess: async (res) => {
+                  const cookies = await CookieManager.get(
+                    process.env.EXPO_PUBLIC_API_URL!
+                  );
+
+                  const accessToken = cookies.accessToken.value;
+                  const refreshToken = cookies.refreshToken.value;
+
+                  await SecureStore.setItemAsync("accessToken", accessToken);
+                  await SecureStore.setItemAsync("refreshToken", refreshToken);
+
+                  mmkvStorage.setBoolean(IS_COUPON_RECEIVED, isCouponReceived);
+
+                  loginStackNavigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [
+                        {
+                          name: "SignUpComplete",
+                          params: {
+                            isRejoined,
+                          },
+                        },
+                      ],
+                    })
+                  );
+                },
+                onError: (error: any) => {
+                  setErrorModal({
+                    visible: true,
+                    message: error?.message ?? "로그인에 실패했습니다.",
+                  });
+                },
+              }
+            );
+          },
+          onError: (error: any) => {
+            setErrorModal({
+              visible: true,
+              message: error?.message ?? "회원가입에 실패했습니다.",
+            });
+          },
+        }
+      );
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   // 재가입 회원일 경우 바로 회원가입 요청
@@ -279,7 +285,12 @@ export const SignUpReferral = () => {
 
           <CustomButton
             onPress={handleSignUp}
-            isDisabled={!isValid || createUserLoading || loginBySocialIdLoading}
+            isDisabled={
+              !isValid ||
+              isProcessing ||
+              createUserLoading ||
+              loginBySocialIdLoading
+            }
             height={getResponsiveSize(53)}
             backgroundColor={isValid ? colors.main : colors.gray2}
           >
@@ -296,7 +307,7 @@ export const SignUpReferral = () => {
 
       <Pressable
         onPress={handleSignUp}
-        disabled={createUserLoading || loginBySocialIdLoading}
+        disabled={isProcessing || createUserLoading || loginBySocialIdLoading}
         style={{
           position: "absolute",
           bottom: insets.bottom + getResponsiveSize(60),
