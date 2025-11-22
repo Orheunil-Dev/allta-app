@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   thumbnail: {
-    width: screenWidth - getResponsiveSize(20),
+    width: screenWidth - getResponsiveSize(40),
     height: getResponsiveSize(142),
   },
   emptyBox: {
