@@ -86,6 +86,12 @@ const linking = {
     screens: {
       Coupon: "coupon",
       Referral: "referral",
+      PassStack: {
+        path: "pass",
+        screens: {
+          PassList: "",
+        },
+      },
       EventStack: {
         path: "event",
         screens: {
