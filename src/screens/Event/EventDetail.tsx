@@ -124,6 +124,13 @@ export const EventDetail = () => {
                     fontSize: getFontSize(14),
                     lineHeight: getFontSize(14) * 1.5,
                   },
+                  strong: {
+                    fontFamily: "Pretendard-SemiBold",
+                    color: colors.black,
+                    fontSize: getFontSize(14),
+                    fontWeight: "600",
+                    lineHeight: getFontSize(14) * 1.5,
+                  },
                   li: {
                     fontFamily: "Pretendard-Regular",
                     color: colors.black,

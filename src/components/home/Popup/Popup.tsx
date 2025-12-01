@@ -51,6 +51,8 @@ export const Popup = ({ data }: Props) => {
 
     if (!isCanOpen) return;
 
+    popupRef?.current?.close();
+
     return Linking.openURL(url);
   };
 
@@ -101,8 +103,8 @@ export const Popup = ({ data }: Props) => {
           <Carousel
             data={popups}
             width={screenWidth}
-            height={getResponsiveSize(300)}
-            loop
+            height={getResponsiveSize(278)}
+            loop={popups.length > 1}
             onSnapToItem={(index) => setCurrentSlide(index)}
             renderItem={({ item, index }) => (
               <Pressable

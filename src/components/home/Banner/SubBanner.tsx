@@ -33,14 +33,16 @@ export const SubBanner = ({ data }: Props) => {
     return Linking.openURL(url);
   };
 
+  if (!subBanners.length) return;
+
   return (
     <View style={styles.container}>
       <Carousel
         data={subBanners}
         width={screenWidth}
         height={getResponsiveSize(108)}
-        loop
-        autoPlay
+        loop={subBanners.length > 1}
+        autoPlay={subBanners.length > 1}
         scrollAnimationDuration={1000}
         autoPlayInterval={2500}
         onSnapToItem={(index) => setCurrentSlide(index)}

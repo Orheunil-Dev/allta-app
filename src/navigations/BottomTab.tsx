@@ -22,8 +22,16 @@ import { Home } from "@/screens/Home";
 import { QrScanStack, QrScanStackParamList } from "./QrScanStack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+interface Props {
+  showSplash: boolean;
+  showUpdate: boolean;
+}
+
 export type BottomTabParamList = {
-  Home: undefined;
+  Home: {
+    showSplash?: boolean;
+    showUpdate?: boolean;
+  };
   QrScanStack: NavigatorScreenParams<QrScanStackParamList>;
   MyStoreStack: NavigatorScreenParams<MyStoreStackParamList>;
   MyPageStack: undefined;
@@ -33,7 +41,7 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const screenHeight = Dimensions.get("window").height;
 
-export const BottomTab = () => {
+export const BottomTab = ({ showSplash, showUpdate }: Props) => {
   const insets = useSafeAreaInsets();
 
   const TAB_HEIGHT =
@@ -62,7 +70,6 @@ export const BottomTab = () => {
     >
       <Tab.Screen
         name="Home"
-        component={Home}
         options={{
           title: "홈",
           headerShown: false,
@@ -76,7 +83,11 @@ export const BottomTab = () => {
             />
           ),
         }}
-      />
+      >
+        {(props) => (
+          <Home {...props} showSplash={showSplash} showUpdate={showUpdate} />
+        )}
+      </Tab.Screen>
       <Tab.Screen
         name="MyStoreStack"
         component={MyStoreStack}

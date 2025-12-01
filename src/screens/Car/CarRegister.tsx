@@ -22,6 +22,8 @@ import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { blackDownArrow, grayErrorIcon } from "@/assets/images";
 import { colors } from "@/styles";
+import { useSetAtom } from "jotai";
+import { errorModalAtom } from "@/jotai";
 
 // 유효성 검사
 const registerFormSchema = z.object({
@@ -45,6 +47,8 @@ export const CarRegister = () => {
 
   const brandSelectRef = useRef<BottomSheetModal>(null);
   const modelSelectRef = useRef<BottomSheetModal>(null);
+
+  const setErrorModal = useSetAtom(errorModalAtom);
 
   const [carVendor, setCarVendor] = useState<string | null>(null);
   const [registerForm, setRegisterForm] = useState({
@@ -122,6 +126,12 @@ export const CarRegister = () => {
           queryClient.invalidateQueries({ queryKey: ["profile"] });
 
           return carStackNavigation.goBack();
+        },
+        onError: (error: any) => {
+          setErrorModal({
+            visible: true,
+            message: error?.message ?? "프로필 수정 중 에러가 발생했습니다.",
+          });
         },
       }
     );
@@ -254,7 +264,7 @@ export const CarRegister = () => {
               onChangeText={(text) =>
                 handleChangeRegisterForm("carNumber", text)
               }
-              maxLength={8}
+              maxLength={10}
               errorMessage={
                 registerForm.carNumber.length > 6
                   ? carNumberSchema.safeParse(registerForm.carNumber).error

@@ -1,5 +1,4 @@
-import { CameraView, useCameraPermissions } from "expo-camera";
-import { CustomText } from "@/components/ui/CustomText";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Alert,
   Dimensions,
@@ -9,10 +8,25 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { colors } from "@/styles";
-import { getResponsiveSize } from "@/utils";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { CameraView, useCameraPermissions } from "expo-camera";
+import { QrScanStackParamList } from "@/navigations";
+import { usePassControllerVerifyQrCode } from "@/api/pass/pass";
+import { getResponsiveSize } from "@/utils";
+import { CustomText } from "@/components/ui/CustomText";
+import { Spinner } from "@/components/ui/Spinner";
 import {
   qrFrame1,
   qrFrame2,
@@ -20,17 +34,7 @@ import {
   qrFrame4,
   whiteCloseIcon,
 } from "@/assets/images";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { QrScanStackParamList } from "@/navigations";
-import { Spinner } from "@/components/ui/Spinner";
-import { usePassControllerVerifyQrCode } from "@/api/pass/pass";
+import { colors } from "@/styles";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -42,10 +46,13 @@ export const QrScan = () => {
 
   const cameraRef = useRef<CameraView>(null);
 
+  const isFocused = useIsFocused();
+
   const [permission, requestPermission] = useCameraPermissions();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // QR코드 검증 API
   const {
     mutate: verifyQrCode,
     isError: verifyQrCodeError,
@@ -152,7 +159,7 @@ export const QrScan = () => {
         </View>
       )}
 
-      {permission?.status === "granted" && (
+      {isFocused && permission?.status === "granted" && (
         <CameraView
           ref={cameraRef}
           barcodeScannerSettings={{

@@ -25,7 +25,6 @@ import {
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { toastConfig } from "@/libs";
 import { ContainerStack } from "@/navigations";
-import { Update } from "@/screens/Update";
 import { Splash } from "@/screens/Splash";
 import { colors } from "@/styles";
 
@@ -132,17 +131,13 @@ export default function App() {
   // 스플래시
   useEffect(() => {
     const prepare = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1250));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setShowSplash(false);
-      }
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      if (!showUpdate) setShowSplash(false);
     };
 
     prepare();
-  }, []);
+  }, [showUpdate]);
 
   // 앱 업데이트 체크
   useEffect(() => {
@@ -206,15 +201,16 @@ export default function App() {
         <QueryClientProvider client={queryClient}>
           <KeyboardProvider>
             <BottomSheetModalProvider>
-              {showUpdate ? (
-                <Update
+              {showSplash || showUpdate ? (
+                <Splash
+                  showUpdate={showUpdate}
                   isVersionUpdate={isVersionUpdate}
                   isUpdateFinished={isUpdateFinished}
                 />
-              ) : showSplash ? (
-                <Splash />
               ) : (
                 <ContainerStack
+                  showSplash={showSplash}
+                  showUpdate={showUpdate}
                   showLoginModal={showLoginModal}
                   setShowLoginModal={setShowLoginModal}
                 />

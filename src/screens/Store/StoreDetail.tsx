@@ -9,16 +9,17 @@ import {
   View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
 import {
   RouteProp,
   useFocusEffect,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
-import Animated, {
-  useAnimatedStyle,
-  withTiming,
-} from "react-native-reanimated";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import { GetStoreGroupListResponse } from "@/api/models";
 import {
@@ -44,7 +45,6 @@ import {
   storeNoticeIcon,
 } from "@/assets/images";
 import { colors } from "@/styles";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type StoreDetailRouteProp = RouteProp<StoreStackParamList, "StoreDetail">;
 
@@ -69,6 +69,7 @@ export const StoreDetail = () => {
   const [tab, setTab] = useState<"PASS" | "STORE" | "INFO">("PASS");
   const [skip, setSkip] = useState(0);
 
+  // 매장 상제 조회 API
   const {
     data: storeData,
     isLoading: storeLoading,
@@ -77,6 +78,7 @@ export const StoreDetail = () => {
     query: { enabled: !!router.params.storeId },
   });
 
+  // 직영 매장 목록 조회 API
   const {
     data: groupData,
     isLoading: groupLoading,

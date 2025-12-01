@@ -32,6 +32,7 @@ import { Coupon } from "@/screens/Coupon";
 import { Referral } from "@/screens/Referral";
 import { Faq } from "@/screens/Faq";
 import { Profile } from "@/screens/Profile";
+import { Guide } from "@/screens/Guide";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { formatEllipsis } from "@/utils";
 import { CustomHeader } from "@/components/layout/CustomHeader";
@@ -69,9 +70,12 @@ export type ContainerStackParamList = {
     loginKind: string;
     phoneNumber: string;
   };
+  Guide: undefined;
 };
 
 interface Props {
+  showSplash: boolean;
+  showUpdate: boolean;
   showLoginModal: boolean;
   setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -83,6 +87,13 @@ const linking = {
   config: {
     screens: {
       Coupon: "coupon",
+      Referral: "referral",
+      PassStack: {
+        path: "pass",
+        screens: {
+          PassList: "",
+        },
+      },
       EventStack: {
         path: "event",
         screens: {
@@ -90,11 +101,14 @@ const linking = {
           EventDetail: ":id",
         },
       },
+      Guide: "guide",
     },
   },
 };
 
 export const ContainerStack = ({
+  showSplash,
+  showUpdate,
   showLoginModal,
   setShowLoginModal,
 }: Props) => {
@@ -167,13 +181,15 @@ export const ContainerStack = ({
             presentation: "transparentModal",
           }}
         />
-        <Stack.Screen
-          name="BottomTab"
-          component={BottomTab}
-          options={{
-            headerShown: false,
-          }}
-        />
+        <Stack.Screen name="BottomTab" options={{ headerShown: false }}>
+          {(props) => (
+            <BottomTab
+              {...props}
+              showSplash={showSplash}
+              showUpdate={showUpdate}
+            />
+          )}
+        </Stack.Screen>
         <Stack.Screen
           name="Notification"
           component={Notification}
@@ -321,6 +337,15 @@ export const ContainerStack = ({
           component={Profile}
           options={{
             header: () => <CustomHeader title="내 정보" showBackButton />,
+          }}
+        />
+        <Stack.Screen
+          name="Guide"
+          component={Guide}
+          options={{
+            header: () => (
+              <CustomHeader title="올타 이용 가이드" showBackButton />
+            ),
           }}
         />
       </Stack.Navigator>

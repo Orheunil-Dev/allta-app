@@ -245,7 +245,7 @@ export const Referral = () => {
               유의사항
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
-              • 당첨자 발표 : 2026.01.02 (금)
+              • 당첨자 발표 : 2026.01.06 (화)
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
               • 경품 지급일 : 당첨자 발표 이후 영업일 10일 이내에 리워드가

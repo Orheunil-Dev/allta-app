@@ -28,7 +28,6 @@ import type {
   FindUserBySocialIdRequest,
   FindUserBySocialIdResponse,
   LoginBySocialIdRequest,
-  LoginBySocialIdResponse,
   SocialLoginCallbackRequest
 } from '.././models';
 
@@ -331,7 +330,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 ) => {
       
       
-      return customInstance<LoginBySocialIdResponse>(
+      return customInstance<void>(
       {url: `/auth/social/login`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: loginBySocialIdRequest, signal
@@ -383,7 +382,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
       return useMutation(mutationOptions, queryClient);
     }
-    export const authControllerGetNewAccessToken = (
+    export const authControllerGetNewUserAccessToken = (
     
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
@@ -397,11 +396,11 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   
 
 
-export const getAuthControllerGetNewAccessTokenMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerGetNewAccessToken>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerGetNewAccessToken>>, TError,void, TContext> => {
+export const getAuthControllerGetNewUserAccessTokenMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerGetNewUserAccessToken>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authControllerGetNewUserAccessToken>>, TError,void, TContext> => {
 
-const mutationKey = ['authControllerGetNewAccessToken'];
+const mutationKey = ['authControllerGetNewUserAccessToken'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -411,10 +410,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerGetNewAccessToken>>, void> = () => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerGetNewUserAccessToken>>, void> = () => {
           
 
-          return  authControllerGetNewAccessToken(requestOptions)
+          return  authControllerGetNewUserAccessToken(requestOptions)
         }
 
         
@@ -422,24 +421,24 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AuthControllerGetNewAccessTokenMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerGetNewAccessToken>>>
+    export type AuthControllerGetNewUserAccessTokenMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerGetNewUserAccessToken>>>
     
-    export type AuthControllerGetNewAccessTokenMutationError = unknown
+    export type AuthControllerGetNewUserAccessTokenMutationError = unknown
 
-    export const useAuthControllerGetNewAccessToken = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerGetNewAccessToken>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+    export const useAuthControllerGetNewUserAccessToken = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerGetNewUserAccessToken>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerGetNewAccessToken>>,
+        Awaited<ReturnType<typeof authControllerGetNewUserAccessToken>>,
         TError,
         void,
         TContext
       > => {
 
-      const mutationOptions = getAuthControllerGetNewAccessTokenMutationOptions(options);
+      const mutationOptions = getAuthControllerGetNewUserAccessTokenMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
-    export const authControllerLogout = (
+    export const authControllerUserLogout = (
     
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
@@ -453,11 +452,11 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   
 
 
-export const getAuthControllerLogoutMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLogout>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerLogout>>, TError,void, TContext> => {
+export const getAuthControllerUserLogoutMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerUserLogout>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authControllerUserLogout>>, TError,void, TContext> => {
 
-const mutationKey = ['authControllerLogout'];
+const mutationKey = ['authControllerUserLogout'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -467,10 +466,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerLogout>>, void> = () => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerUserLogout>>, void> = () => {
           
 
-          return  authControllerLogout(requestOptions)
+          return  authControllerUserLogout(requestOptions)
         }
 
         
@@ -478,20 +477,20 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AuthControllerLogoutMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerLogout>>>
+    export type AuthControllerUserLogoutMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerUserLogout>>>
     
-    export type AuthControllerLogoutMutationError = unknown
+    export type AuthControllerUserLogoutMutationError = unknown
 
-    export const useAuthControllerLogout = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerLogout>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+    export const useAuthControllerUserLogout = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerUserLogout>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof authControllerLogout>>,
+        Awaited<ReturnType<typeof authControllerUserLogout>>,
         TError,
         void,
         TContext
       > => {
 
-      const mutationOptions = getAuthControllerLogoutMutationOptions(options);
+      const mutationOptions = getAuthControllerUserLogoutMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

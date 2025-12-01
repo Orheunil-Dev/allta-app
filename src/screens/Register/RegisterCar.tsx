@@ -248,7 +248,7 @@ export const RegisterCar = () => {
               onChangeText={(text) =>
                 handleChangeRegisterForm("carNumber", text)
               }
-              maxLength={8}
+              maxLength={10}
               errorMessage={
                 registerForm.carNumber.length > 6
                   ? carNumberSchema.safeParse(registerForm.carNumber).error
