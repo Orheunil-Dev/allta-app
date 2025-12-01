@@ -25,6 +25,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       usesNonExemptEncryption: false,
     },
     usesAppleSignIn: true,
+    associatedDomains: ["applinks:allta.airbridge.io", "applinks:allta.abr.ge"],
     infoPlist: {
       NSCameraUsageDescription:
         "이용권 확인을 위한 QR스캔 기능 및 주유 영수증 할인을 위한 영수증 촬영 기능을 위한 카메라 접근 권한이 필요합니다.",
@@ -54,6 +55,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       NSAppTransportSecurity: {
         NSAllowsArbitraryLoads: true,
       },
+
       UIBackgroundModes: [],
     },
   },
@@ -78,6 +80,21 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "NOTIFICATIONS",
       "FOREGROUND_SERVICE",
       "com.google.android.gms.permission.AD_ID",
+    ],
+
+    intentFilters: [
+      {
+        autoVerify: true,
+        action: "VIEW",
+        data: { scheme: "https", host: "allta.airbridge.io" },
+        category: ["BROWSABLE", "DEFAULT"],
+      },
+      {
+        autoVerify: true,
+        action: "VIEW",
+        data: { scheme: "https", host: "allta.abr.ge" },
+        category: ["BROWSABLE", "DEFAULT"],
+      },
     ],
   },
   web: {
@@ -157,6 +174,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           "영수증 사진 업로드를 위해 사진 접근 권한이 필요합니다.",
       },
     ],
+    [
+      "airbridge-expo-sdk",
+      {
+        appName: process.env.EXPO_PUBLIC_AIRBRIDGE_APP_NAME,
+        appToken: process.env.EXPO_PUBLIC_AIRBRIDGE_APP_SDK_TOKEN,
+      },
+    ],
+    "./plugins/withAndroidManifestFix",
   ],
   owner: "orheunil-dev",
   // experiments: {

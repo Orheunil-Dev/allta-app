@@ -1,0 +1,5 @@
+{
+  "logLevel": "debug",
+  "autoDetermineTrackingAuthorizationTimeoutInSecond": 30,
+  "trackAirbridgeDeeplinkOnlyEnabled": true
+}

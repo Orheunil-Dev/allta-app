@@ -1,0 +1,5 @@
+{
+  "logLevel": "SDK 로그 확인하기",
+  "autoDetermineTrackingAuthorizationTimeoutInSecond": "ATT 프롬프트 제공하기",
+  "trackAirbridgeDeeplinkOnlyEnabled": "에어브릿지 딥링크만 추적하기"
+}
