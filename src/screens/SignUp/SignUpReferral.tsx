@@ -151,8 +151,9 @@ export const SignUpReferral = () => {
         },
         {
           onSuccess: async (res) => {
-            const isRejoined = res.isRejoined;
-            const isCouponReceived = res.isCouponReceived;
+            const userId = res.data.userId;
+            const isRejoined = res.data.isRejoined;
+            const isCouponReceived = res.data.isCouponReceived;
 
             await analytics().logEvent("sign_up_complete", {
               platform: Platform.OS,

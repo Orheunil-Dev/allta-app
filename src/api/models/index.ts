@@ -28,6 +28,7 @@ export * from './createCouponInfoRequest';
 export * from './createCouponInfoResponse';
 export * from './createUserRequest';
 export * from './createUserResponse';
+export * from './createUserResult';
 export * from './deleteAddressRequest';
 export * from './deleteAddressResponse';
 export * from './deleteCarRequest';

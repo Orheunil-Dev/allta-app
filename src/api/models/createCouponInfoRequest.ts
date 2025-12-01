@@ -43,7 +43,7 @@ export interface CreateCouponInfoRequest {
   /** 쿠폰 사용기간 */
   validDays: number;
   /**
-   * 최대 발급 수량
+   * 발급 수량
    * @nullable
    */
   maxQuantity?: number | null;
