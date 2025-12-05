@@ -275,7 +275,11 @@ export const Referral = () => {
               회수되며, 서비스 이용이 제한될 수 있습니다.
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
-              • 상품 지급 대상자는 선착순 100명으로 한정됩니다.
+              • 상품 지급 대상자는 각 상품 당 선착순 100명으로 한정됩니다.
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={14}>
+              • 이벤트 당첨자 및 지급 대상자는 당사 기준에 따라 문자(SMS)를 통해
+              개별 안내드립니다.
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
               • 본 이벤트는 당사의 사정에 따라 변경 또는 종료될 수 있습니다.

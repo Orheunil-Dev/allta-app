@@ -95,6 +95,8 @@ export const AddressSelectBottomSheet = ({
       lng: loc.coords.longitude,
     });
 
+    mmkvStorage.removeItem(LAST_USED_ADDRESS);
+
     return onClose();
   };
 
