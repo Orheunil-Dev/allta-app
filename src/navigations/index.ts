@@ -16,3 +16,4 @@ export * from "./MyStoreStack";
 export * from "./QrScanStack";
 export * from "./SettingStack";
 export * from "./EventStack";
+export * from "./InquiryStack";

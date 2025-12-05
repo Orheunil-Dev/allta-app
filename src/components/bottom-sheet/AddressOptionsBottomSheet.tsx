@@ -70,7 +70,7 @@ export const AddressOptionsBottomSheet = ({ ref, id, onClose }: Props) => {
         onClose={() => setShowDeleteModal(false)}
         closeButtonText="취소"
         onNext={handleDeleteAddress}
-        nextButtonText="확인"
+        nextButtonText="삭제"
         isNextButtonDisable={deleteAddressLoading}
       >
         <CustomText marginTop={12} fontSize={18} fontWeight={"600"}>

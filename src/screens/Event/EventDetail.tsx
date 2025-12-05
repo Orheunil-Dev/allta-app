@@ -31,6 +31,7 @@ export const EventDetail = () => {
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
+  // 이벤트 상세 조회 API
   const { data: eventData } = useEventControllerGetEventDetail(
     router.params.id,
     {

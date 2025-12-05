@@ -248,7 +248,7 @@ export const Referral = () => {
               • 당첨자 발표 : 2026.01.06 (화)
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
-              • 경품 지급일 : 당첨자 발표 이후 영업일 10일 이내에 리워드가
+              • 경품 지급일 : 당첨자 발표 이후 영업일 30일 이내에 리워드가
               지급됩니다.
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
@@ -273,6 +273,9 @@ export const Referral = () => {
             <CustomText color={colors.gray7} fontSize={14}>
               • 부정한 방법(가짜 계정, 반복 등록 등)으로 참여한 경우 혜택은
               회수되며, 서비스 이용이 제한될 수 있습니다.
+            </CustomText>
+            <CustomText color={colors.gray7} fontSize={14}>
+              • 상품 지급 대상자는 선착순 100명으로 한정됩니다.
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
               • 본 이벤트는 당사의 사정에 따라 변경 또는 종료될 수 있습니다.

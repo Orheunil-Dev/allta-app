@@ -120,7 +120,7 @@ export const CarOptionsBottomSheet = ({
         onClose={() => setShowDeleteModal(false)}
         closeButtonText="취소"
         onNext={handleDeleteCar}
-        nextButtonText="확인"
+        nextButtonText="삭제"
         isNextButtonDisable={deleteCarLoading}
       >
         <CustomText marginTop={12} fontSize={18} fontWeight={"600"}>

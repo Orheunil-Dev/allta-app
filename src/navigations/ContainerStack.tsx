@@ -38,6 +38,7 @@ import { formatEllipsis } from "@/utils";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 import { IS_GET_PERMISSION } from "@/constants";
+import { InquiryStack, InquiryStackParamList } from "./InquiryStack";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -63,6 +64,7 @@ export type ContainerStackParamList = {
   Referral: undefined;
   EventStack: NavigatorScreenParams<EventStackParamList>;
   NoticeStack: NavigatorScreenParams<NoticeStackParamList>;
+  InquiryStack: NavigatorScreenParams<InquiryStackParamList>;
   Faq: undefined;
   Profile: {
     name: string;
@@ -94,6 +96,13 @@ const linking = {
           PassList: "",
         },
       },
+      InquiryStack: {
+        path: "inquiry",
+        screens: {
+          InquiryList: "",
+          InquiryDetail: ":id",
+        },
+      },
       EventStack: {
         path: "event",
         screens: {
@@ -101,6 +110,7 @@ const linking = {
           EventDetail: ":id",
         },
       },
+
       Guide: "guide",
     },
   },
@@ -329,7 +339,14 @@ export const ContainerStack = ({
           name="Faq"
           component={Faq}
           options={{
-            header: () => <CustomHeader title="고객센터" showBackButton />,
+            header: () => <CustomHeader title="FAQ" showBackButton />,
+          }}
+        />
+        <Stack.Screen
+          name="InquiryStack"
+          component={InquiryStack}
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen

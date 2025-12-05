@@ -52,7 +52,7 @@ export const toastConfig = {
 const styles = StyleSheet.create({
   infoToast: {
     backgroundColor: "rgba(38, 38, 39, 0.8)",
-    width: getResponsiveSize(215),
+    width: getResponsiveSize(235),
     paddingVertical: getResponsiveSize(8),
     borderRadius: 8,
   },
