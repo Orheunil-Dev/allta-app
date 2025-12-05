@@ -35,6 +35,8 @@ export * from './deleteCarRequest';
 export * from './deleteCarResponse';
 export * from './deleteCardRequest';
 export * from './deleteCardResponse';
+export * from './deleteInquiryRequest';
+export * from './deleteInquiryResponse';
 export * from './discontinueSubscriptionRequest';
 export * from './discontinueSubscriptionResponse';
 export * from './eventDetailItem';

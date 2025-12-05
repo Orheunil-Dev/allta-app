@@ -105,7 +105,7 @@ export const InquiryList = () => {
                 </View>
 
                 <CustomText
-                  fontSize={15}
+                  fontSize={16}
                   color={item.isAnswered ? colors.point2 : colors.gray5}
                   fontWeight={"500"}
                 >
@@ -113,13 +113,13 @@ export const InquiryList = () => {
                 </CustomText>
               </View>
 
-              <CustomText marginTop={12} fontSize={14} numberOfLines={1}>
+              <CustomText marginTop={12} fontSize={16} numberOfLines={1}>
                 {item.content}
               </CustomText>
 
               <CustomText
                 marginTop={4}
-                fontSize={12}
+                fontSize={13}
                 color={colors.gray5}
                 fontWeight={"500"}
               >

@@ -25,6 +25,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  DeleteInquiryRequest,
+  DeleteInquiryResponse,
   GetInquiryDetailResponse,
   GetInquiryListResponse,
   InquiryControllerGetInquiryListParams,
@@ -180,6 +182,63 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getInquiryControllerRegisterInquiryMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const inquiryControllerDeleteInquiry = (
+    deleteInquiryRequest: DeleteInquiryRequest,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<DeleteInquiryResponse>(
+      {url: `/inquiry`, method: 'DELETE',
+      headers: {'Content-Type': 'application/json', },
+      data: deleteInquiryRequest
+    },
+      options);
+    }
+  
+
+
+export const getInquiryControllerDeleteInquiryMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof inquiryControllerDeleteInquiry>>, TError,{data: DeleteInquiryRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof inquiryControllerDeleteInquiry>>, TError,{data: DeleteInquiryRequest}, TContext> => {
+
+const mutationKey = ['inquiryControllerDeleteInquiry'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof inquiryControllerDeleteInquiry>>, {data: DeleteInquiryRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  inquiryControllerDeleteInquiry(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type InquiryControllerDeleteInquiryMutationResult = NonNullable<Awaited<ReturnType<typeof inquiryControllerDeleteInquiry>>>
+    export type InquiryControllerDeleteInquiryMutationBody = DeleteInquiryRequest
+    export type InquiryControllerDeleteInquiryMutationError = unknown
+
+    export const useInquiryControllerDeleteInquiry = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof inquiryControllerDeleteInquiry>>, TError,{data: DeleteInquiryRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof inquiryControllerDeleteInquiry>>,
+        TError,
+        {data: DeleteInquiryRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getInquiryControllerDeleteInquiryMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
