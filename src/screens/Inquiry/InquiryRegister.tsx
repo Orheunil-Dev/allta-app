@@ -17,6 +17,7 @@ import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
 import { colors } from "@/styles";
+import { Spinner } from "@/components/ui/Spinner";
 
 export const InquiryRegister = () => {
   const queryClient = useQueryClient();
@@ -99,13 +100,18 @@ export const InquiryRegister = () => {
         <BottomButtonArea>
           <CustomButton
             onPress={handleSubmit}
+            isDisabled={registerLoading}
             width={"100%"}
             height={getResponsiveSize(53)}
             backgroundColor={colors.point2}
           >
-            <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-              등록
-            </CustomText>
+            {registerLoading ? (
+              <Spinner />
+            ) : (
+              <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
+                등록
+              </CustomText>
+            )}
           </CustomButton>
         </BottomButtonArea>
       </CustomKeyboardAvoidingView>

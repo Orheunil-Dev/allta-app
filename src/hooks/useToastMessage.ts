@@ -15,7 +15,6 @@ export const useToastMessage = () => {
         text1: message,
         position: "bottom",
         bottomOffset: getResponsiveSize(120),
-        keyboardOffset: getResponsiveSize(90),
         visibilityTime: 1250,
         swipeable: true,
       });
