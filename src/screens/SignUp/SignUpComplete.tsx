@@ -8,6 +8,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Notifications from "expo-notifications";
+import { Airbridge } from "airbridge-react-native-sdk";
 import mmkvStorage from "@/libs/mmkv-storage";
 import { useNotificationControllerUpdatePushToken } from "@/api/notification/notification";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
@@ -83,6 +84,13 @@ export const SignUpComplete = () => {
     };
 
     checkNotificationPermission();
+  }, []);
+
+  // 화면 진입 이벤트 수집
+  useEffect(() => {
+    Airbridge.trackEvent("page_view", {
+      page_name: "SignUpComplete",
+    });
   }, []);
 
   return (

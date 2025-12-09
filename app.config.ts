@@ -142,7 +142,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         backgroundColor: "#ffffff",
       },
     ],
-    "@react-native-firebase/app",
     [
       "@react-native-kakao/core",
       {

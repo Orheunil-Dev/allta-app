@@ -3,9 +3,10 @@ import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { LoginStackParamList } from "@/navigations";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import RenderHtml from "react-native-render-html";
+import { LoginStackParamList } from "@/navigations";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
@@ -77,6 +78,13 @@ export const SignUpTerms = () => {
 
     setIsValid(requiredChecked);
   }, [checked]);
+
+  // 화면 진입 이벤트 수집
+  useEffect(() => {
+    Airbridge.trackEvent("page_view", {
+      page_name: "SignUpStep1",
+    });
+  }, []);
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>

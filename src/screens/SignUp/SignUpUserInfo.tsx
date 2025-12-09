@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { LoginStackParamList } from "@/navigations";
 import { z } from "zod";
 import {
@@ -201,6 +202,13 @@ export const SignUpUserInfo = () => {
       handleNext();
     }
   }, [verificationCode]);
+
+  // 화면 진입 이벤트 수집
+  useEffect(() => {
+    Airbridge.trackEvent("page_view", {
+      page_name: "SignUpStep2",
+    });
+  }, []);
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>
