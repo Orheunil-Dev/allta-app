@@ -11,7 +11,7 @@ export const regexEmoji =
 export const regexPhoneNumber = /^\d{3}-\d{4}-\d{4}$/;
 
 // 차량 번호
-export const regexCarNumber = /^[가-힣]{2}\d{1,3}[가-힣]\d{4}$/;
+export const regexCarNumber = /^(?:[가-힣]{2})?\d{1,3}[가-힣]\d{4}$/;
 
 // 매장 번호
 export const regexStorePhoneNumber = new RegExp(
