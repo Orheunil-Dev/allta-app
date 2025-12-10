@@ -71,8 +71,6 @@ export const ReceiptPhotoButton = ({
 
       const raw = ocrRes.data.images[0].receipt.result;
 
-      console.log(raw.paymentInfo.date.text);
-
       const approvalDate = formatApprovalDate(
         raw.paymentInfo.date.text.replace(/\D/g, "")
       );
