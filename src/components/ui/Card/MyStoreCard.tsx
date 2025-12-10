@@ -35,7 +35,7 @@ export const MyStoreCard = ({
   const myStoreNavigation =
     useNavigation<NativeStackNavigationProp<MyStoreStackParamList>>();
 
-  const { ErrorToast } = useToastMessage();
+  const { SuccessToast, ErrorToast } = useToastMessage();
   const { getDistance } = useDistanceCalculator();
 
   // TMAP 네비게이션 열기
@@ -43,11 +43,7 @@ export const MyStoreCard = ({
     const destination = encodeURIComponent(store.name);
     const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
 
-    const isCanOpen = await Linking.canOpenURL(tmapScheme);
-
-    if (!isCanOpen) {
-      return ErrorToast("티맵이 설치되어 있지 않습니다.");
-    }
+    SuccessToast("티맵으로 이동합니다.");
 
     return Linking.openURL(tmapScheme);
   };
@@ -60,8 +56,6 @@ export const MyStoreCard = ({
     store.breakTime,
     store.holidays
   );
-
-  console.log(bi);
 
   return (
     <View style={styles.card}>

@@ -81,7 +81,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "FOREGROUND_SERVICE",
       "com.google.android.gms.permission.AD_ID",
     ],
-
     intentFilters: [
       {
         autoVerify: true,

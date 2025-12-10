@@ -26,10 +26,6 @@ export const SubBanner = ({ data }: Props) => {
   const handleOpenUrl = (url?: string | null) => async () => {
     if (!url) return;
 
-    const isCanOpen = await Linking.canOpenURL(url);
-
-    if (!isCanOpen) return;
-
     return Linking.openURL(url);
   };
 
