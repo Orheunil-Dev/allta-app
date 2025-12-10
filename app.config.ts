@@ -8,7 +8,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   currentFullName: "@orheunil/allta-user",
   originalFullName: "@orheunil/allta-user",
   scheme: "allta-user",
-  version: "1.3.0",
+  version: "1.3.1",
   runtimeVersion: {
     policy: "appVersion",
   },
