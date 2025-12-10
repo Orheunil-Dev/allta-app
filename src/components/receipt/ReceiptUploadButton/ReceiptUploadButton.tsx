@@ -124,8 +124,7 @@ export const ReceiptUploadButton = ({
       const raw = res.data.images[0].receipt.result;
 
       const approvalDate = formatApprovalDate(
-        raw.paymentInfo.date.text.replace(/\D/g, ""),
-        raw.paymentInfo.time.text
+        raw.paymentInfo.date.text.replace(/\D/g, "")
       ).replace(/\D/g, "");
 
       const receiptData = {

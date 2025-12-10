@@ -264,11 +264,10 @@ export const formatStorePhoneNumber = (value: string): string => {
 };
 
 // 영수증 승인 날짜 포매팅
-export const formatApprovalDate = (date: string, time: string): string => {
+export const formatApprovalDate = (date: string): string => {
   const dateFormat = date.length === 6 ? `20${date}` : date;
-  const timeFormat = time.length === 4 ? `${time}00` : time;
 
-  return dateFormat + timeFormat;
+  return dateFormat
 };
 
 // 남은 사용 횟수 포매팅

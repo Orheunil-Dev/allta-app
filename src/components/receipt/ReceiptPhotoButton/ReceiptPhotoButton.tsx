@@ -71,10 +71,11 @@ export const ReceiptPhotoButton = ({
 
       const raw = ocrRes.data.images[0].receipt.result;
 
+      console.log(raw.paymentInfo.date.text);
+
       const approvalDate = formatApprovalDate(
-        raw.paymentInfo.date.text.replace(/\D/g, ""),
-        raw.paymentInfo.time.text
-      ).replace(/\D/g, "");
+        raw.paymentInfo.date.text.replace(/\D/g, "")
+      );
 
       const receiptData = {
         amount: Number(raw.totalPrice.price.text.replace(/\D/g, "")),
