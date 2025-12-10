@@ -193,6 +193,7 @@ export const SignUpReferral = () => {
                   mmkvStorage.setBoolean(IS_COUPON_RECEIVED, isCouponReceived);
 
                   Airbridge.setUserID(userId);
+                  Airbridge.trackEvent(AirbridgeCategory.SIGN_IN);
 
                   loginStackNavigation.dispatch(
                     CommonActions.reset({
