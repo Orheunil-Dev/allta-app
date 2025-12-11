@@ -5,8 +5,9 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CookieManager from "@react-native-cookies/cookies";
 import * as SecureStore from "expo-secure-store";
 import { useSetAtom } from "jotai";
-import { commonModalAtom, errorModalAtom } from "@/jotai";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { useUserControllerWithdrawalUser } from "@/api/user/user";
+import { commonModalAtom, errorModalAtom } from "@/jotai";
 import { getResponsiveSize } from "@/utils";
 import { ContainerStackParamList } from "@/navigations";
 import { CustomModal } from "@/components/ui/CustomModal";
@@ -55,6 +56,10 @@ export const Withdrawal = () => {
           await SecureStore.deleteItemAsync("refreshToken");
 
           await CookieManager.clearAll();
+
+          // 회원 탈퇴 이벤트 트래킹
+          Airbridge.trackEvent("withdrawal");
+          Airbridge.clearUser();
 
           setCommonModal({
             visible: true,

@@ -15,7 +15,6 @@ import * as SecureStore from "expo-secure-store";
 import * as Notifications from "expo-notifications";
 import * as Linking from "expo-linking";
 import * as Application from "expo-application";
-import analytics from "@react-native-firebase/analytics";
 import { initializeKakaoSDK } from "@react-native-kakao/core";
 import {
   QueryCache,
@@ -81,20 +80,6 @@ export default function App() {
       },
     }),
   });
-
-  // 파이어 베이스 초기화
-  useEffect(() => {
-    async function initializeApp() {
-      try {
-        await analytics().setAnalyticsCollectionEnabled(true);
-        console.log("firebase 초기화 성공");
-      } catch (error) {
-        console.error("firebase 초기화 실패:", error);
-      }
-    }
-
-    initializeApp();
-  }, []);
 
   // 푸시알림 딥링크 처리
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Platform, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
   CommonActions,
@@ -10,9 +10,9 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoginStackParamList } from "@/navigations";
 import CookieManager from "@react-native-cookies/cookies";
-import analytics from "@react-native-firebase/analytics";
 import * as SecureStore from "expo-secure-store";
 import * as Location from "expo-location";
+import { Airbridge, AirbridgeCategory } from "airbridge-react-native-sdk";
 import { useReferralControllerVerifyReferralCode } from "@/api/referral/referral";
 import {
   useUserControllerCheckIsRejoin,
@@ -145,8 +145,8 @@ export const SignUpReferral = () => {
         {
           data: {
             ...route.params,
-            ...(address ? { address } : {}),
-            ...(isValid ? { referrerCode: referralCode } : {}),
+            ...(address && { address }),
+            ...(isValid && { referrerCode: referralCode }),
           },
         },
         {
@@ -155,11 +155,21 @@ export const SignUpReferral = () => {
             const isRejoined = res.data.isRejoined;
             const isCouponReceived = res.data.isCouponReceived;
 
-            await analytics().logEvent("sign_up_complete", {
-              platform: Platform.OS,
-              is_rejoined: isRejoined,
-              coupon_received: isCouponReceived,
-            });
+            Airbridge.setUserID(userId);
+            Airbridge.setUserPhone(route.params.phoneNumber);
+
+            if (route.params.email) {
+              Airbridge.setUserEmail(route.params.email);
+            }
+
+            if (address) {
+              const [region1, region2] = address.split(" ");
+
+              if (region1) Airbridge.setUserAttribute("region_1", region1);
+              if (region2) Airbridge.setUserAttribute("region_2", region2);
+            }
+
+            Airbridge.trackEvent(AirbridgeCategory.SIGN_UP);
 
             loginBySocialId(
               {
@@ -181,6 +191,9 @@ export const SignUpReferral = () => {
                   await SecureStore.setItemAsync("refreshToken", refreshToken);
 
                   mmkvStorage.setBoolean(IS_COUPON_RECEIVED, isCouponReceived);
+
+                  Airbridge.setUserID(userId);
+                  Airbridge.trackEvent(AirbridgeCategory.SIGN_IN);
 
                   loginStackNavigation.dispatch(
                     CommonActions.reset({
@@ -248,6 +261,7 @@ export const SignUpReferral = () => {
     };
   }, [referralCode]);
 
+  // 추첰코드 검증
   useEffect(() => {
     if (referralCode.length !== 6) {
       return;
@@ -257,6 +271,11 @@ export const SignUpReferral = () => {
       setIsValid(false);
     }
   }, [verifyReferralCodeData, referralCode]);
+
+  // 화면 진입 이벤트 수집
+  useEffect(() => {
+    Airbridge.trackEvent("SignUpStep3");
+  }, []);
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>

@@ -25,18 +25,14 @@ export const StoreInfo = ({
   description,
   policy,
 }: Props) => {
-  const { ErrorToast } = useToastMessage();
+  const { SuccessToast, ErrorToast } = useToastMessage();
 
   // TMAP 네비게이션 열기
   const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(storeName);
     const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
 
-    const isCanOpen = await Linking.canOpenURL(tmapScheme);
-
-    if (!isCanOpen) {
-      return ErrorToast("티맵이 설치되어 있지 않습니다.");
-    }
+    SuccessToast("티맵으로 이동합니다.");
 
     return Linking.openURL(tmapScheme);
   };

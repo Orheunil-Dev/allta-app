@@ -27,7 +27,7 @@ export const StoreList = () => {
 
   const [skip, setSkip] = useState<number>(0);
   const [serviceType, setServiceType] = useState<ServiceType>(
-    route.params.serviceType
+    route.params?.serviceType ?? "AUTO"
   );
   const [tags, setTags] = useState<string[]>([]);
   const [stores, setStores] = useState<GetStoreListResponse["data"]>([]);

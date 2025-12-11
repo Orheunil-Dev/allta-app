@@ -5,7 +5,6 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import analytics from "@react-native-firebase/analytics";
 import * as Linking from "expo-linking";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
@@ -110,7 +109,6 @@ const linking = {
           EventDetail: ":id",
         },
       },
-
       Guide: "guide",
     },
   },
@@ -141,37 +139,7 @@ export const ContainerStack = ({
   }, []);
 
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      linking={linking}
-      onReady={async () => {
-        // 앱 시작 시 첫 화면 추적
-        const currentRoute = navigationRef.getCurrentRoute();
-
-        if (currentRoute) {
-          routeNameRef.current = currentRoute.name;
-
-          await analytics().logEvent("screen_view", {
-            screen_name: currentRoute.name,
-          });
-        }
-      }}
-      onStateChange={async () => {
-        // 화면 전환 감지
-        const previousRouteName = routeNameRef.current;
-        const currentRoute = navigationRef.getCurrentRoute();
-
-        if (currentRoute && previousRouteName !== currentRoute.name) {
-          // GA4 화면 뷰 이벤트 전송
-          await analytics().logEvent("screen_view", {
-            screen_name: currentRoute.name,
-          });
-        }
-
-        // 현재 화면 이름 저장
-        routeNameRef.current = currentRoute?.name;
-      }}
-    >
+    <NavigationContainer ref={navigationRef} linking={linking}>
       <LoginModal
         navigationRef={navigationRef}
         visible={showLoginModal}

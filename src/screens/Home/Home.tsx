@@ -10,6 +10,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as TrackingTransparency from "expo-tracking-transparency";
 import * as Notifications from "expo-notifications";
+import { Airbridge, AirbridgeCategory } from "airbridge-react-native-sdk";
 import {
   useNotificationControllerGetUnreadNotificationsCount,
   useNotificationControllerUpdatePushToken,
@@ -173,6 +174,11 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
     };
 
     requestTrakingPermission();
+  }, []);
+
+  // 홈 화면 진입 이벤트 수집
+  useEffect(() => {
+    Airbridge.trackEvent(AirbridgeCategory.HOME_VIEWED);
   }, []);
 
   return (

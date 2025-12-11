@@ -47,10 +47,6 @@ export const Popup = ({ data }: Props) => {
   const handleOpenUrl = (url?: string | null) => async () => {
     if (!url) return;
 
-    const isCanOpen = await Linking.canOpenURL(url);
-
-    if (!isCanOpen) return;
-
     popupRef?.current?.close();
 
     return Linking.openURL(url);

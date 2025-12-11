@@ -1,0 +1,6 @@
+{
+  "logLevel": "SDK 로그 확인하기",
+  "autoDetermineTrackingAuthorizationTimeoutInSecond": "ATT 프롬프트 제공",
+  "trackAirbridgeDeeplinkOnlyEnabled": "에어브릿지 딥링크만 추적",
+  "trackInSessionLifecycleEventEnabled": "세션내 생명주기 이벤트 수집"
+}
