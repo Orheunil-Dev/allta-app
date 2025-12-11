@@ -274,9 +274,7 @@ export const SignUpReferral = () => {
 
   // 화면 진입 이벤트 수집
   useEffect(() => {
-    Airbridge.trackEvent("page_view", {
-      page_name: "SignUpStep3",
-    });
+    Airbridge.trackEvent("SignUpStep3");
   }, []);
 
   return (

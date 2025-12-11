@@ -88,9 +88,7 @@ export const SignUpComplete = () => {
 
   // 화면 진입 이벤트 수집
   useEffect(() => {
-    Airbridge.trackEvent("page_view", {
-      page_name: "SignUpComplete",
-    });
+    Airbridge.trackEvent("SignUpComplete");
   }, []);
 
   return (
