@@ -101,6 +101,8 @@ export const QrScanComplete = () => {
   const handleUsePass = () => {
     if (!pass || !passData) return;
 
+    if (useTicketLoading || useSubscriptionLoading) return;
+
     let passId: string | undefined;
 
     switch (pass) {
