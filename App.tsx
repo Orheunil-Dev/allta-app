@@ -6,10 +6,10 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import "react-native-get-random-values";
 import Toast from "react-native-toast-message";
+import { SystemBars } from "react-native-edge-to-edge";
 import checkVersion from "react-native-store-version";
 import * as Font from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { SystemBars } from "react-native-edge-to-edge";
 import * as Updates from "expo-updates";
 import * as SecureStore from "expo-secure-store";
 import * as Notifications from "expo-notifications";
@@ -21,6 +21,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { toastConfig } from "@/libs";
 import { ContainerStack } from "@/navigations";
@@ -73,6 +74,8 @@ export default function App() {
           (async () => {
             await SecureStore.deleteItemAsync("accessToken");
             await SecureStore.deleteItemAsync("refreshToken");
+
+            Airbridge.clearUser();
 
             setShowLoginModal(true);
           })();
