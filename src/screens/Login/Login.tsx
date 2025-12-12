@@ -17,6 +17,7 @@ import * as Linking from "expo-linking";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { useSetAtom } from "jotai";
 import { jwtDecode } from "jwt-decode";
+import { Airbridge, AirbridgeCategory } from "airbridge-react-native-sdk";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import {
   useAuthControllerAppleLoginCallback,
@@ -107,11 +108,29 @@ export const Login = () => {
 
                   const accessToken = cookies.accessToken.value;
                   const refreshToken = cookies.refreshToken.value;
+                  const rawUser = cookies.user?.value;
 
                   await Promise.all([
                     SecureStore.setItemAsync("accessToken", accessToken),
                     SecureStore.setItemAsync("refreshToken", refreshToken),
                   ]);
+
+                  let user = null;
+
+                  try {
+                    if (rawUser) {
+                      const decoded = decodeURIComponent(rawUser);
+                      user = JSON.parse(decoded);
+                    }
+                  } catch (e) {}
+
+                  const userId = user?.id;
+
+                  if (userId) {
+                    Airbridge.setUserID(userId);
+                  }
+
+                  Airbridge.trackEvent(AirbridgeCategory.SIGN_IN);
 
                   return containerNavigation.dispatch(
                     CommonActions.reset({
@@ -184,11 +203,29 @@ export const Login = () => {
 
                   const accessToken = cookies.accessToken.value;
                   const refreshToken = cookies.refreshToken.value;
+                  const rawUser = cookies.user?.value;
 
                   await Promise.all([
                     SecureStore.setItemAsync("accessToken", accessToken),
                     SecureStore.setItemAsync("refreshToken", refreshToken),
                   ]);
+
+                  let user = null;
+
+                  try {
+                    if (rawUser) {
+                      const decoded = decodeURIComponent(rawUser);
+                      user = JSON.parse(decoded);
+                    }
+                  } catch (e) {}
+
+                  const userId = user?.id;
+
+                  if (userId) {
+                    Airbridge.setUserID(userId);
+                  }
+
+                  Airbridge.trackEvent(AirbridgeCategory.SIGN_IN);
 
                   return containerNavigation.dispatch(
                     CommonActions.reset({
@@ -258,11 +295,29 @@ export const Login = () => {
 
               const accessToken = cookies.accessToken.value;
               const refreshToken = cookies.refreshToken.value;
+              const rawUser = cookies.user?.value;
 
               await Promise.all([
                 SecureStore.setItemAsync("accessToken", accessToken),
                 SecureStore.setItemAsync("refreshToken", refreshToken),
               ]);
+
+              let user = null;
+
+              try {
+                if (rawUser) {
+                  const decoded = decodeURIComponent(rawUser);
+                  user = JSON.parse(decoded);
+                }
+              } catch (e) {}
+
+              const userId = user?.id;
+
+              if (userId) {
+                Airbridge.setUserID(userId);
+              }
+
+              Airbridge.trackEvent(AirbridgeCategory.SIGN_IN);
 
               return containerNavigation.dispatch(
                 CommonActions.reset({
