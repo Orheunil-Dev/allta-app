@@ -1,21 +1,22 @@
-import { CustomText } from "@/components/ui/CustomText";
-import { ContainerStackParamList, SettingStackParamList } from "@/navigations";
-import { colors } from "@/styles";
-import { getResponsiveSize } from "@/utils";
+import { useEffect, useState } from "react";
+import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
-import * as SecureStore from "expo-secure-store";
 import CookieManager from "@react-native-cookies/cookies";
-import * as Linking from "expo-linking";
-import { useEffect, useState } from "react";
-import { CustomModal } from "@/components/ui/CustomModal";
-import { rigthArrowIcon } from "@/assets/images";
-import { useSetAtom } from "jotai";
-import { errorModalAtom } from "@/jotai";
 import checkVersion from "react-native-store-version";
 import * as Application from "expo-application";
+import * as SecureStore from "expo-secure-store";
+import * as Linking from "expo-linking";
+import { useSetAtom } from "jotai";
+import { Airbridge } from "airbridge-react-native-sdk";
+import { ContainerStackParamList, SettingStackParamList } from "@/navigations";
 import { useAuthControllerUserLogout } from "@/api/auth/auth";
+import { errorModalAtom } from "@/jotai";
+import { getResponsiveSize } from "@/utils";
+import { CustomText } from "@/components/ui/CustomText";
+import { CustomModal } from "@/components/ui/CustomModal";
+import { rigthArrowIcon } from "@/assets/images";
+import { colors } from "@/styles";
 
 export const Setting = () => {
   const [appVersion, setAppVersion] = useState<string>("");
@@ -62,6 +63,10 @@ export const Setting = () => {
     await SecureStore.deleteItemAsync("refreshToken");
 
     await CookieManager.clearAll();
+
+    // 회원 탈퇴 이벤트 트래킹
+    Airbridge.trackEvent("Logout");
+    Airbridge.clearUser();
 
     return containerNavigation.dispatch(
       CommonActions.reset({

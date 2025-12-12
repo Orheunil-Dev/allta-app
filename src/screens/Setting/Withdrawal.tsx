@@ -58,7 +58,7 @@ export const Withdrawal = () => {
           await CookieManager.clearAll();
 
           // 회원 탈퇴 이벤트 트래킹
-          Airbridge.trackEvent("withdrawal");
+          Airbridge.trackEvent("Withdrawal");
           Airbridge.clearUser();
 
           setCommonModal({

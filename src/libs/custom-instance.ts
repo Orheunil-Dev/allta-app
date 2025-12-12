@@ -6,6 +6,7 @@ import Axios, {
 } from "axios";
 import * as SecureStore from "expo-secure-store";
 import CookieManager from "@react-native-cookies/cookies";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { CustomError } from "@/types";
 
 interface AxiosRequestConfigWithRetry extends InternalAxiosRequestConfig {
@@ -34,6 +35,8 @@ const getNewAccessToken = async (): Promise<void> => {
         code: "TOKEN_REFRESH_FAILED",
       };
 
+      Airbridge.clearUser();
+
       throw error;
     }
 
@@ -49,6 +52,8 @@ const getNewAccessToken = async (): Promise<void> => {
         status: 401,
         code: "TOKEN_REFRESH_FAILED",
       };
+
+      Airbridge.clearUser();
 
       throw error;
     }
@@ -74,6 +79,8 @@ const getNewAccessToken = async (): Promise<void> => {
       status: 401,
       code: "TOKEN_REFRESH_FAILED",
     };
+
+    Airbridge.clearUser();
 
     throw error;
   }
@@ -145,6 +152,8 @@ AXIOS_INSTANCE.interceptors.response.use(
           status: 401,
           code: "TOKEN_REFRESH_FAILED",
         };
+
+        Airbridge.clearUser();
 
         return Promise.reject(customError);
       }
