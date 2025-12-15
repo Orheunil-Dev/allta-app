@@ -6,6 +6,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Linking from "expo-linking";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
@@ -84,7 +85,12 @@ interface Props {
 const Stack = createNativeStackNavigator<ContainerStackParamList>();
 
 const linking = {
-  prefixes: [Linking.createURL("/"), "allta-user://"],
+  prefixes: [
+    Linking.createURL("/"),
+    "allta-user://",
+    "https://allta.airbridge.io",
+    "https://allta.abr.ge",
+  ],
   config: {
     screens: {
       Coupon: "coupon",
@@ -95,18 +101,18 @@ const linking = {
           PassList: "",
         },
       },
-      InquiryStack: {
-        path: "inquiry",
-        screens: {
-          InquiryList: "",
-          InquiryDetail: ":id",
-        },
-      },
       EventStack: {
         path: "event",
         screens: {
           EventList: "",
           EventDetail: ":id",
+        },
+      },
+      InquiryStack: {
+        path: "inquiry",
+        screens: {
+          InquiryList: "",
+          InquiryDetail: ":id",
         },
       },
       Guide: "guide",
@@ -120,8 +126,7 @@ export const ContainerStack = ({
   showLoginModal,
   setShowLoginModal,
 }: Props) => {
-  const navigationRef = useNavigationContainerRef();
-
+  const navigationRef = useNavigationContainerRef<ContainerStackParamList>();
   const routeNameRef = useRef<string | undefined>(undefined);
 
   const isGetPermission = mmkvStorage.getBoolean(IS_GET_PERMISSION);
@@ -136,6 +141,68 @@ export const ContainerStack = ({
     }, 0);
 
     return () => clearTimeout(timeout);
+  }, []);
+
+  // 딥링크 처리
+  useEffect(() => {
+    Airbridge.setOnDeeplinkReceived((url) => {
+      if (!navigationRef.isReady()) return;
+
+      const { hostname, path } = Linking.parse(url);
+
+      switch (hostname) {
+        // 가이드
+        case "guide": {
+          return navigationRef.navigate("Guide");
+        }
+
+        // 이용권
+        case "pass": {
+          return navigationRef.navigate("PassStack", {
+            screen: "PassList",
+            params: {},
+          });
+        }
+
+        // 쿠폰
+        case "coupon": {
+          return navigationRef.navigate("Referral");
+        }
+
+        // 이벤트
+        case "event": {
+          if (path) {
+            return navigationRef.navigate("EventStack", {
+              screen: "EventDetail",
+              params: { id: path },
+            });
+          } else {
+            return navigationRef.navigate("EventStack", {
+              screen: "EventList",
+            });
+          }
+        }
+
+        // 친구추천
+        case "referral": {
+          return navigationRef.navigate("Referral");
+        }
+
+        // 문의
+        case "inquiry": {
+          if (path) {
+            return navigationRef.navigate("InquiryStack", {
+              screen: "InquiryDetail",
+              params: { id: path },
+            });
+          } else {
+            return navigationRef.navigate("InquiryStack", {
+              screen: "InquiryList",
+            });
+          }
+        }
+      }
+    });
   }, []);
 
   return (
