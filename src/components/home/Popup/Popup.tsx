@@ -31,7 +31,7 @@ export const Popup = ({ data }: Props) => {
   const [popup, setPopup] = useAtom(popupAtom);
 
   const TAB_HEIGHT =
-    screenHeight < 680 ? getResponsiveSize(365) : getResponsiveSize(350);
+    screenHeight < 680 ? getResponsiveSize(345) : getResponsiveSize(330);
 
   const snapPoints = useMemo(() => [insets.bottom + TAB_HEIGHT], []);
 
@@ -156,17 +156,17 @@ const styles = StyleSheet.create({
   carouselContainer: {
     position: "relative",
     width: "100%",
-    height: getResponsiveSize(300),
+    height: getResponsiveSize(278),
   },
   popupCard: {
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    height: getResponsiveSize(300),
+    height: getResponsiveSize(278),
   },
   popupImage: {
     width: "100%",
-    height: getResponsiveSize(300),
+    height: getResponsiveSize(278),
   },
   indicator: {
     position: "absolute",
