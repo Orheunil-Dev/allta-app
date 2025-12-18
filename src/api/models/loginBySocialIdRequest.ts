@@ -11,4 +11,6 @@ export interface LoginBySocialIdRequest {
   loginKind: string;
   /** 소셜 로그인 ID */
   socialId: string;
+  /** 클라이언트 타입 */
+  clientType: string;
 }

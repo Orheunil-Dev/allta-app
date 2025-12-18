@@ -7,6 +7,7 @@
  */
 
 export * from './addressItem';
+export * from './appleLoginCallbackRequest';
 export * from './availableCouponListItem';
 export * from './bannerListItem';
 export * from './car';
@@ -133,7 +134,9 @@ export * from './sendVerificationCodeResponse';
 export * from './serviceHistoryControllerGetServiceHistoryListParams';
 export * from './serviceHistoryItem';
 export * from './serviceHistoryStoreItem';
-export * from './socialLoginCallbackRequest';
+export * from './signUpFromWebRequest';
+export * from './signUpFromWebResponse';
+export * from './signUpFromWebResult';
 export * from './storeControllerGetMyStoreListParams';
 export * from './storeControllerGetStoreGroupListParams';
 export * from './storeControllerGetStoreListParams';

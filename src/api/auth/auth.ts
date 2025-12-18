@@ -25,10 +25,10 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AppleLoginCallbackRequest,
   FindUserBySocialIdRequest,
   FindUserBySocialIdResponse,
-  LoginBySocialIdRequest,
-  SocialLoginCallbackRequest
+  LoginBySocialIdRequest
 } from '.././models';
 
 import { customInstance } from '../../libs/custom-instance';
@@ -209,7 +209,7 @@ export function useAuthControllerGoogleLoginCallback<TData = Awaited<ReturnType<
 
 
 export const authControllerAppleLoginCallback = (
-    socialLoginCallbackRequest: SocialLoginCallbackRequest,
+    appleLoginCallbackRequest: AppleLoginCallbackRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
@@ -217,7 +217,7 @@ export const authControllerAppleLoginCallback = (
       return customInstance<void>(
       {url: `/auth/apple`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: socialLoginCallbackRequest, signal
+      data: appleLoginCallbackRequest, signal
     },
       options);
     }
@@ -225,8 +225,8 @@ export const authControllerAppleLoginCallback = (
 
 
 export const getAuthControllerAppleLoginCallbackMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, TError,{data: SocialLoginCallbackRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, TError,{data: SocialLoginCallbackRequest}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, TError,{data: AppleLoginCallbackRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, TError,{data: AppleLoginCallbackRequest}, TContext> => {
 
 const mutationKey = ['authControllerAppleLoginCallback'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -238,7 +238,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, {data: SocialLoginCallbackRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, {data: AppleLoginCallbackRequest}> = (props) => {
           const {data} = props ?? {};
 
           return  authControllerAppleLoginCallback(data,requestOptions)
@@ -250,15 +250,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type AuthControllerAppleLoginCallbackMutationResult = NonNullable<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>>
-    export type AuthControllerAppleLoginCallbackMutationBody = SocialLoginCallbackRequest
+    export type AuthControllerAppleLoginCallbackMutationBody = AppleLoginCallbackRequest
     export type AuthControllerAppleLoginCallbackMutationError = unknown
 
     export const useAuthControllerAppleLoginCallback = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, TError,{data: SocialLoginCallbackRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authControllerAppleLoginCallback>>, TError,{data: AppleLoginCallbackRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof authControllerAppleLoginCallback>>,
         TError,
-        {data: SocialLoginCallbackRequest},
+        {data: AppleLoginCallbackRequest},
         TContext
       > => {
 

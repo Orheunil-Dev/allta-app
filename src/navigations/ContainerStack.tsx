@@ -166,7 +166,7 @@ export const ContainerStack = ({
 
         // 쿠폰
         case "coupon": {
-          return navigationRef.navigate("Referral");
+          return navigationRef.navigate("Coupon");
         }
 
         // 이벤트

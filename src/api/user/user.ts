@@ -36,6 +36,8 @@ import type {
   RegisterExtraInfoResponse,
   SendVerificationCodeRequest,
   SendVerificationCodeResponse,
+  SignUpFromWebRequest,
+  SignUpFromWebResponse,
   UpdateMarketingAgreementStatusRequest,
   UpdateMarketingAgreementStatusResponse,
   UpdateUserProfileRequest,
@@ -369,6 +371,64 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getUserControllerCreateUserMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const userControllerSignUpFromWeb = (
+    signUpFromWebRequest: SignUpFromWebRequest,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<SignUpFromWebResponse>(
+      {url: `/user/sign-up/web`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: signUpFromWebRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getUserControllerSignUpFromWebMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerSignUpFromWeb>>, TError,{data: SignUpFromWebRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof userControllerSignUpFromWeb>>, TError,{data: SignUpFromWebRequest}, TContext> => {
+
+const mutationKey = ['userControllerSignUpFromWeb'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof userControllerSignUpFromWeb>>, {data: SignUpFromWebRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  userControllerSignUpFromWeb(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UserControllerSignUpFromWebMutationResult = NonNullable<Awaited<ReturnType<typeof userControllerSignUpFromWeb>>>
+    export type UserControllerSignUpFromWebMutationBody = SignUpFromWebRequest
+    export type UserControllerSignUpFromWebMutationError = unknown
+
+    export const useUserControllerSignUpFromWeb = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof userControllerSignUpFromWeb>>, TError,{data: SignUpFromWebRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof userControllerSignUpFromWeb>>,
+        TError,
+        {data: SignUpFromWebRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUserControllerSignUpFromWebMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

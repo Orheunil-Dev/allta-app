@@ -98,7 +98,11 @@ export const Login = () => {
           if (res.ok) {
             loginBySocialId(
               {
-                data: { socialId: socialId as string, loginKind: "KAKAO" },
+                data: {
+                  clientType: "APP",
+                  socialId: socialId as string,
+                  loginKind: "KAKAO",
+                },
               },
               {
                 onSuccess: async () => {
@@ -193,7 +197,11 @@ export const Login = () => {
           if (queryParams?.ok === "true") {
             loginBySocialId(
               {
-                data: { socialId: socialId as string, loginKind: "GOOGLE" },
+                data: {
+                  clientType: "APP",
+                  socialId: socialId as string,
+                  loginKind: "GOOGLE",
+                },
               },
               {
                 onSuccess: async () => {
@@ -279,6 +287,7 @@ export const Login = () => {
       appleLoginCallback(
         {
           data: {
+            clientType: "APP",
             loginKind: "APPLE",
             socialId: data.user,
             email: data.email,
@@ -352,6 +361,7 @@ export const Login = () => {
     return loginBySocialId(
       {
         data: {
+          clientType: "APP",
           loginKind: "TEST",
           socialId: process.env.EXPO_PUBLIC_TEST_ID,
         },
