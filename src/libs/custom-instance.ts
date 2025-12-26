@@ -40,7 +40,9 @@ const getNewAccessToken = async (): Promise<void> => {
       throw error;
     }
 
-    await AXIOS_INSTANCE_REFRESH.post("auth/token/refresh", {});
+    await AXIOS_INSTANCE_REFRESH.post("auth/token/refresh", {
+      clientType: "APP",
+    });
 
     const cookies = await CookieManager.get(process.env.EXPO_PUBLIC_API_URL!);
     const newAccessToken = cookies.accessToken?.value;
