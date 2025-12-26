@@ -208,7 +208,7 @@ export const Referral = () => {
                 borderColor={colors.gray2}
               >
                 {registerReferralCodeLoading ? (
-                  <Spinner />
+                  <Spinner color={colors.gray2} />
                 ) : (
                   <CustomText fontSize={15} fontWeight={"500"}>
                     코드등록
@@ -308,6 +308,7 @@ const styles = StyleSheet.create({
     width: getResponsiveSize(74),
     height: getResponsiveSize(45),
     backgroundColor: colors.gray1,
+    borderRadius: 8,
   },
   terms: {
     marginBottom: getResponsiveSize(20),
