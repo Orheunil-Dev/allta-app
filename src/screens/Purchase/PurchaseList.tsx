@@ -10,6 +10,7 @@ import { PurchaseStackParamList } from "@/navigations";
 import {
   formatPassType,
   formatPurchaseStatus,
+  formatServiceType,
   getResponsiveSize,
 } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
@@ -73,34 +74,37 @@ export const PurchaseList = () => {
               }
               style={styles.itemBox}
             >
-              <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
-                {dayjs(item.createdAt).format("YY.MM.DD")}
-              </CustomText>
-              <CustomText
-                color={
-                  item.status === "REFUNDED" ||
-                  item.status === "PARTIAL_REFUNDED"
-                    ? colors.red
-                    : colors.black
-                }
-                marginTop={16}
-                fontSize={16}
-                fontWeight={"600"}
-              >
-                {formatPurchaseStatus(item.status)}
-              </CustomText>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <CustomText color={colors.gray7} fontSize={13}>
+                  {dayjs(item.createdAt).format("YY.MM.DD")}
+                </CustomText>
+
+                <View style={styles.divider} />
+
+                <CustomText
+                  color={
+                    item.status === "REFUNDED" ||
+                    item.status === "PARTIAL_REFUNDED"
+                      ? colors.red
+                      : colors.gray7
+                  }
+                  fontSize={13}
+                >
+                  {formatPurchaseStatus(item.status)}
+                </CustomText>
+              </View>
 
               <View style={styles.row}>
-                <CustomText fontSize={18}>
-                  {formatPassType(item.productType)}
+                <CustomText fontSize={16} fontWeight={"600"}>
+                  {item.storeName} {formatServiceType(item.serviceType)}
                 </CustomText>
-                <CustomText fontSize={18} fontWeight={"600"}>
+                <CustomText fontSize={16} fontWeight={"600"}>
                   {item.totalAmount.toLocaleString()}원
                 </CustomText>
               </View>
 
-              <CustomText color={colors.gray5} fontSize={14}>
-                {item.storeName}
+              <CustomText marginTop={4} color={colors.gray5} fontSize={14}>
+                {formatPassType(item.productType)}
                 {item.carNumber ? ` • ${item.carNumber}` : ""}
               </CustomText>
             </Pressable>
@@ -124,8 +128,8 @@ export const PurchaseList = () => {
 
 const styles = StyleSheet.create({
   itemBox: {
-    paddingTop: getResponsiveSize(12),
-    paddingBottom: getResponsiveSize(16),
+    paddingTop: getResponsiveSize(16),
+    paddingBottom: getResponsiveSize(20),
     paddingHorizontal: getResponsiveSize(20),
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
@@ -134,7 +138,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: getResponsiveSize(4),
+    marginTop: getResponsiveSize(8),
+  },
+  divider: {
+    width: 1,
+    height: getResponsiveSize(10),
+    marginHorizontal: getResponsiveSize(6),
+    backgroundColor: colors.gray7,
   },
   emptyBox: {
     flex: 1,

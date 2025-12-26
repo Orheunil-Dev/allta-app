@@ -47,32 +47,10 @@ export const PurchaseDetail = () => {
               <View style={styles.content}>
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    이용권 금액
+                    결제 일시
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {purchaseData.data.originalAmount.toLocaleString()}원
-                  </CustomText>
-                </View>
-
-                <View style={styles.row}>
-                  <CustomText color={colors.gray5} fontSize={16}>
-                    쿠폰 할인
-                  </CustomText>
-                  <CustomText fontSize={16}>
-                    - {purchaseData.data.discountAmount.toLocaleString()}원
-                  </CustomText>
-                </View>
-
-                <View style={styles.row}>
-                  <CustomText color={colors.gray5} fontSize={16}>
-                    결제 금액
-                  </CustomText>
-                  <CustomText
-                    color={colors.point2}
-                    fontSize={20}
-                    fontWeight={"600"}
-                  >
-                    {purchaseData.data.totalAmount.toLocaleString()}원
+                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
                   </CustomText>
                 </View>
 
@@ -90,10 +68,35 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    결제 일시
+                    이용권 금액
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
+                    {purchaseData.data.originalAmount.toLocaleString()}원
+                  </CustomText>
+                </View>
+
+                <View style={styles.row}>
+                  <CustomText color={colors.gray5} fontSize={16}>
+                    쿠폰 할인
+                  </CustomText>
+                  <CustomText fontSize={16}>
+                    {purchaseData.data.discountAmount > 0
+                      ? `- ${purchaseData.data.discountAmount.toLocaleString()}`
+                      : "0"}
+                    원
+                  </CustomText>
+                </View>
+
+                <View style={styles.row}>
+                  <CustomText fontSize={16} fontWeight={"600"}>
+                    총 결제 금액
+                  </CustomText>
+                  <CustomText
+                    color={colors.point2}
+                    fontSize={16}
+                    fontWeight={"600"}
+                  >
+                    {purchaseData.data.totalAmount.toLocaleString()}원
                   </CustomText>
                 </View>
               </View>
@@ -110,23 +113,10 @@ export const PurchaseDetail = () => {
               <View style={styles.content}>
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    결제 금액
+                    환불 일시
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {purchaseData.data.totalAmount.toLocaleString()}원
-                  </CustomText>
-                </View>
-
-                <View style={styles.row}>
-                  <CustomText color={colors.gray5} fontSize={16}>
-                    환불 금액
-                  </CustomText>
-                  <CustomText
-                    color={colors.point2}
-                    fontSize={20}
-                    fontWeight={"600"}
-                  >
-                    -{amount.toLocaleString()}원
+                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
                   </CustomText>
                 </View>
 
@@ -144,10 +134,23 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    환불 일시
+                    결제 금액
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
+                    {purchaseData.data.totalAmount.toLocaleString()}원
+                  </CustomText>
+                </View>
+
+                <View style={styles.row}>
+                  <CustomText fontSize={16} fontWeight={"600"}>
+                    총 환불 금액
+                  </CustomText>
+                  <CustomText
+                    color={colors.point2}
+                    fontSize={16}
+                    fontWeight={"600"}
+                  >
+                    -{amount.toLocaleString()}원
                   </CustomText>
                 </View>
               </View>
@@ -164,23 +167,10 @@ export const PurchaseDetail = () => {
               <View style={styles.content}>
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    결제 금액
+                    환불 일시
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {purchaseData.data.totalAmount.toLocaleString()}원
-                  </CustomText>
-                </View>
-
-                <View style={styles.row}>
-                  <CustomText color={colors.gray5} fontSize={16}>
-                    환불 금액
-                  </CustomText>
-                  <CustomText
-                    color={colors.point2}
-                    fontSize={20}
-                    fontWeight={"600"}
-                  >
-                    -{amount.toLocaleString()}원
+                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
                   </CustomText>
                 </View>
 
@@ -198,10 +188,23 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    환불 일시
+                    결제 금액
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
+                    {purchaseData.data.totalAmount.toLocaleString()}원
+                  </CustomText>
+                </View>
+
+                <View style={styles.row}>
+                  <CustomText fontSize={16} fontWeight={"600"}>
+                    총 환불 금액
+                  </CustomText>
+                  <CustomText
+                    color={colors.point2}
+                    fontSize={16}
+                    fontWeight={"600"}
+                  >
+                    -{amount.toLocaleString()}원
                   </CustomText>
                 </View>
               </View>
@@ -218,7 +221,7 @@ export const PurchaseDetail = () => {
       {purchaseData && (
         <ScrollView style={styles.container}>
           <View style={[styles.box, { paddingTop: getResponsiveSize(20) }]}>
-            <CustomText fontSize={18} fontWeight={"600"}>
+            <CustomText fontSize={20} fontWeight={"600"}>
               {dayjs(purchaseData.data.createdAt).format("YYYY.MM.DD")}
             </CustomText>
 
@@ -231,11 +234,11 @@ export const PurchaseDetail = () => {
                     ? colors.gray5
                     : colors.red
                 }
-                fontSize={16}
+                fontSize={18}
               >
                 {formatPaymentStatus(purchaseData.data.status)}
               </CustomText>
-              <CustomText color={colors.gray5} fontSize={16}>
+              <CustomText color={colors.gray5} fontSize={18}>
                 {purchaseData.data.status === "APPROVED" ? "가" : "이"} 완료
                 되었습니다.
               </CustomText>
@@ -301,8 +304,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(20),
   },
   box: {
-    marginBottom: getResponsiveSize(40),
-    paddingBottom: getResponsiveSize(40),
+    marginBottom: getResponsiveSize(24),
+    paddingBottom: getResponsiveSize(24),
     borderBottomWidth: 6,
     borderBottomColor: colors.gray1,
   },
@@ -313,6 +316,6 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: getResponsiveSize(12),
-    gap: getResponsiveSize(8),
+    gap: getResponsiveSize(6),
   },
 });

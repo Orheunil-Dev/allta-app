@@ -6,18 +6,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type NoticeControllerGetNoticeListParams = {
+export type EventControllerGetEventListParams = {
 /**
  * 법인 코드
  * @nullable
  */
 companyCode?: string | null;
-/**
- * 가져올 데이터 수
- */
-take: number;
-/**
- * 건너뛸 데이터 수
- */
-skip: number;
 };

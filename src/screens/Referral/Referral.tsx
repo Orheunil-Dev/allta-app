@@ -44,7 +44,7 @@ export const Referral = () => {
     isError: registerReferralCodeError,
   } = useReferralControllerRegisterReferralCode();
 
-  // 추첱코드 등록
+  // 추천코드 등록
   const handleRegisterReferralCode = () => {
     if (referralCode.length !== 6) {
       return ErrorToast("추천코드는 6자 입니다.");
@@ -107,28 +107,6 @@ export const Referral = () => {
       <CustomKeyboardAvoidingView>
         <ScrollView>
           <CustomImage source={referralBanner} width={screenWidth} />
-
-          <View style={styles.eventBannerBottom}>
-            <View style={styles.referredCount}>
-              <CustomText color={colors.white} fontSize={16}>
-                현재 초대한 친구
-              </CustomText>
-
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <CustomText
-                  marginRight={6}
-                  color="#FFC935"
-                  fontSize={24}
-                  fontWeight={"600"}
-                >
-                  {referralCodeData?.data.referredCount ?? 0}
-                </CustomText>
-                <CustomText color={colors.white} fontSize={16}>
-                  명
-                </CustomText>
-              </View>
-            </View>
-          </View>
 
           <View style={styles.container}>
             <View style={styles.referralCode}>
@@ -245,25 +223,6 @@ export const Referral = () => {
               유의사항
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
-              • 당첨자 발표 : 2026.01.06 (화)
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 경품 지급일 : 당첨자 발표 이후 영업일 30일 이내에 리워드가
-              지급됩니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 초대받은 친구 중 회원가입을 완료한 친구 수 만큼 친구 초대 이벤트
-              경품이 지급됩니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 이벤트 기간부터 최종 경품 지급 시기까지 초대한 사람, 초대받은
-              사람 모두 계정을 유지해야 경품이 지급됩니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 지급되는 경품의 금액이 5만원을 초과할 경우, 경품에 제세공과금이
-              부과되며, 이는 당사가 부담합니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
               • 추천 코드는 가입 후 1회만 등록할 수 있으며, 이후 수정은
               불가합니다.
             </CustomText>
@@ -273,13 +232,6 @@ export const Referral = () => {
             <CustomText color={colors.gray7} fontSize={14}>
               • 부정한 방법(가짜 계정, 반복 등록 등)으로 참여한 경우 혜택은
               회수되며, 서비스 이용이 제한될 수 있습니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 상품 지급 대상자는 각 상품 당 선착순 100명으로 한정됩니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 이벤트 당첨자 및 지급 대상자는 당사 기준에 따라 문자(SMS)를 통해
-              개별 안내드립니다.
             </CustomText>
             <CustomText color={colors.gray7} fontSize={14}>
               • 본 이벤트는 당사의 사정에 따라 변경 또는 종료될 수 있습니다.
