@@ -56,7 +56,7 @@ export const Setting = () => {
   // 로그아웃
   const handleLogout = async () => {
     try {
-      await logout();
+      await logout({ data: { clientType: "APP" } });
     } catch (e) {}
 
     await SecureStore.deleteItemAsync("accessToken");

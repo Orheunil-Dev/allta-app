@@ -175,6 +175,7 @@ export * from './useTicketRequest';
 export * from './useTicketResponse';
 export * from './useTicketServiceData';
 export * from './userControllerCheckIsRejoinParams';
+export * from './userLogoutRequest';
 export * from './userReferralCodeItem';
 export * from './verifyPhoneNumberRequest';
 export * from './verifyPhoneNumberResponse';
