@@ -269,7 +269,7 @@ export const CarRegister = () => {
                       ?.issues?.[0]?.message
                   : undefined
               }
-              placeholder="12가3456"
+              placeholder="예) 12가3456"
               onReset={() => handleChangeRegisterForm("carNumber", "")}
             />
 
