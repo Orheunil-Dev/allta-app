@@ -338,7 +338,7 @@ export const StoreDetail = () => {
           <ImageBackground
             source={
               storeData?.store?.mainImage
-                ? { uri: storeData?.store?.mainImage }
+                ? { uri: storeData.store.mainImage }
                 : defaultStoreImage
             }
             style={styles.storeImage}
