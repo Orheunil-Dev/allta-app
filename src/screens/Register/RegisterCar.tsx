@@ -211,7 +211,6 @@ export const RegisterCar = () => {
                 <CustomTextInput
                   value={registerForm.carVendor}
                   onChangeText={() => {}}
-                  editable={false}
                   placeholder="선택"
                 />
               </View>
@@ -231,7 +230,6 @@ export const RegisterCar = () => {
                 <CustomTextInput
                   value={registerForm.carModel}
                   onChangeText={() => {}}
-                  editable={false}
                   placeholder="선택"
                 />
               </View>

@@ -231,7 +231,6 @@ export const CarUpdate = () => {
                 <CustomTextInput
                   value={updateForm.vendor}
                   onChangeText={() => {}}
-                  editable={false}
                   placeholder="선택"
                 />
               </View>
@@ -251,7 +250,6 @@ export const CarUpdate = () => {
                 <CustomTextInput
                   value={updateForm.model}
                   onChangeText={() => {}}
-                  editable={false}
                   placeholder="선택"
                 />
               </View>
