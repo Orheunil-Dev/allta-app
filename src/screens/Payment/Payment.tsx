@@ -289,7 +289,7 @@ export const Payment = () => {
             <Spinner />
           ) : (
             <CustomText
-              color={agree ? colors.white : colors.gray5}
+              color={isValid ? colors.white : colors.gray5}
               fontSize={18}
               fontWeight={"600"}
             >
