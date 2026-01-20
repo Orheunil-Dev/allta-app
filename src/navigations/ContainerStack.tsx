@@ -93,14 +93,14 @@ const linking = {
   ],
   config: {
     screens: {
-      Coupon: "coupon",
-      Referral: "referral",
+      Guide: "guide",
       PassStack: {
         path: "pass",
         screens: {
           PassList: "",
         },
       },
+      Coupon: "coupon",
       EventStack: {
         path: "event",
         screens: {
@@ -108,6 +108,7 @@ const linking = {
           EventDetail: ":id",
         },
       },
+      Referral: "referral",
       InquiryStack: {
         path: "inquiry",
         screens: {
@@ -115,7 +116,13 @@ const linking = {
           InquiryDetail: ":id",
         },
       },
-      Guide: "guide",
+      NoticeStack: {
+        path: "notice",
+        screens: {
+          NoticeList: "",
+          NoticeDetail: ":id",
+        },
+      },
     },
   },
 };
@@ -198,6 +205,20 @@ export const ContainerStack = ({
           } else {
             return navigationRef.navigate("InquiryStack", {
               screen: "InquiryList",
+            });
+          }
+        }
+
+        // 공지사항
+        case "notice": {
+          if (path) {
+            return navigationRef.navigate("NoticeStack", {
+              screen: "NoticeDetail",
+              params: { id: path },
+            });
+          } else {
+            return navigationRef.navigate("NoticeStack", {
+              screen: "NoticeList",
             });
           }
         }
