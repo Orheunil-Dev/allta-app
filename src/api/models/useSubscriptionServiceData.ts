@@ -11,26 +11,14 @@ export interface UseSubscriptionServiceData {
   serviceType: string;
   /** 매장 이름 */
   storeName: string;
-  /**
-   * 제조사
-   * @nullable
-   */
-  carBrand?: string | null;
-  /**
-   * 차량 종류
-   * @nullable
-   */
-  carType?: string | null;
-  /**
-   * 모델명
-   * @nullable
-   */
-  carModel?: string | null;
-  /**
-   * 차량 번호
-   * @nullable
-   */
-  carNumber?: string | null;
   /** 생성일 */
   createdAt: string;
+  /** 차종 */
+  carBrand: string;
+  /** 차량번호 */
+  carType: string;
+  /** 차종 */
+  carModel: string;
+  /** 차량번호 */
+  carNumber: string;
 }

@@ -6,19 +6,13 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface UseTicketServiceData {
-  /** 서비스 종류 */
-  serviceType: string;
-  /** 매장 이름 */
+export interface UsePassAtWachenResult {
+  /** 매장명 */
   storeName: string;
-  /** 생성일 */
-  createdAt: string;
   /** 차종 */
-  carBrand: string;
-  /** 차량번호 */
   carType: string;
-  /** 차종 */
-  carModel: string;
   /** 차량번호 */
   carNumber: string;
+  /** 승인 날짜 */
+  approvedAt: string;
 }

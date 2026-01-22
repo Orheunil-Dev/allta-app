@@ -1,11 +1,4 @@
-import dayjs from "dayjs";
-import { completeIcon } from "@/assets/images";
-import { CustomButton } from "@/components/ui/CustomButton";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { CustomText } from "@/components/ui/CustomText";
-import { ContainerStackParamList, QrScanStackParamList } from "@/navigations";
-import { colors } from "@/styles";
-import { formatPassType, formatServiceType, getResponsiveSize } from "@/utils";
+import { Image, StyleSheet, View } from "react-native";
 import {
   CommonActions,
   RouteProp,
@@ -13,7 +6,14 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Image, StyleSheet, View } from "react-native";
+import dayjs from "dayjs";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { CustomText } from "@/components/ui/CustomText";
+import { ContainerStackParamList, QrScanStackParamList } from "@/navigations";
+import { formatPassType, formatServiceType, getResponsiveSize } from "@/utils";
+import { completeIcon } from "@/assets/images";
+import { colors } from "@/styles";
 
 type QrScanRouteProp = RouteProp<QrScanStackParamList, "UsePassCompelete">;
 
@@ -33,7 +33,7 @@ export const UsePassComplete = () => {
             params: { screen: "Home" },
           },
         ],
-      })
+      }),
     );
   };
 
@@ -46,7 +46,7 @@ export const UsePassComplete = () => {
             name: "ServiceHistory",
           },
         ],
-      })
+      }),
     );
   };
 

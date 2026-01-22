@@ -13,4 +13,6 @@ export interface LoginBySocialIdRequest {
   socialId: string;
   /** 클라이언트 타입 */
   clientType: string;
+  /** 법인 코드 */
+  companyCode?: string;
 }

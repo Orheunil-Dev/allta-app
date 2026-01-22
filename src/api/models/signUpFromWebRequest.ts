@@ -47,4 +47,24 @@ export interface SignUpFromWebRequest {
    * @nullable
    */
   birthDate?: string | null;
+  /**
+   * 제조사
+   * @nullable
+   */
+  carVendor?: string | null;
+  /**
+   * 차종
+   * @nullable
+   */
+  carType?: string | null;
+  /**
+   * 모델명
+   * @nullable
+   */
+  carModel?: string | null;
+  /**
+   * 차량 번호
+   * @nullable
+   */
+  carNumber?: string | null;
 }

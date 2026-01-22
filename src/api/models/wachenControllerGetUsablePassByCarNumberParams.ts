@@ -6,9 +6,9 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface CheckPhoneNumberRequest {
-  /** 전화번호 */
-  phoneNumber: string;
-  /** 법인 코드 */
-  companyCode?: string;
-}
+export type WachenControllerGetUsablePassByCarNumberParams = {
+/**
+ * 차량번호
+ */
+carNumber: string;
+};
