@@ -67,6 +67,9 @@ export default function App() {
       queries: {
         retry: 0,
       },
+      mutations: {
+        retry: 0,
+      },
     },
     queryCache: new QueryCache({
       onError: (error: any) => {
@@ -93,7 +96,7 @@ export default function App() {
         if (url) {
           Linking.openURL(url as string);
         }
-      }
+      },
     );
 
     return () => listener.remove();
