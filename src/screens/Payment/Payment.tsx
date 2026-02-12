@@ -1,10 +1,24 @@
-import { usePurchaseControllerPurchasePass } from "@/api/purchase/purchase";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import {
-  checkAllButton,
-  checkedCheckAllButton,
-  defaultStoreImage,
-  rigthArrowIcon,
-} from "@/assets/images";
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ScrollView } from "react-native-gesture-handler";
+import { useSetAtom } from "jotai";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { PaymentStackParamList } from "@/navigations";
+import { usePurchaseControllerPurchasePass } from "@/api/purchase/purchase";
+import { errorModalAtom } from "@/jotai";
+import {
+  formatPurchaseType,
+  formatServiceType,
+  getResponsiveSize,
+} from "@/utils";
+import { Car, Card, CarType, Coupon } from "@/types";
 import { PaymentTermsBottomSheet } from "@/components/bottom-sheet/PaymentTermsBottomSheet";
 import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
 import { CardSelectButton } from "@/components/payment/CardSelectButton";
@@ -13,23 +27,15 @@ import { CouponSelectButton } from "@/components/payment/CouponSelectButton";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
+import { CustomModal } from "@/components/ui/CustomModal";
 import { Spinner } from "@/components/ui/Spinner";
-import { PaymentStackParamList } from "@/navigations";
-import { errorModalAtom } from "@/jotai";
-import { colors } from "@/styles";
-import { Car, Card, CarType, Coupon } from "@/types";
 import {
-  formatPurchaseType,
-  formatServiceType,
-  getResponsiveSize,
-} from "@/utils";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useSetAtom } from "jotai";
-import { useEffect, useRef, useState } from "react";
-import { Image, ImageBackground, StyleSheet, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+  checkAllButton,
+  checkedCheckAllButton,
+  defaultStoreImage,
+  rigthArrowIcon,
+} from "@/assets/images";
+import { colors } from "@/styles";
 
 type PaymentRouteProp = RouteProp<PaymentStackParamList, "Payment">;
 
@@ -48,6 +54,7 @@ export const Payment = () => {
   const [car, setCar] = useState<Car | null>(null);
   const [card, setCard] = useState<Card | null>(null);
   const [agree, setAgree] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const {
     mutate: purchasePass,
@@ -102,7 +109,7 @@ export const Payment = () => {
             message: error?.message ?? "결제 요청 중 오류가 발생했습니다.",
           });
         },
-      }
+      },
     );
   };
 
@@ -132,8 +139,29 @@ export const Payment = () => {
     return setPrice(router.params.price[carTypeKey]);
   }, [car, router.params]);
 
+  useFocusEffect(
+    useCallback(() => {
+      setShowModal(true);
+
+      return () => {
+        setShowModal(false);
+      };
+    }, []),
+  );
+
   return (
     <CustomSafeAreaView edges={["bottom"]}>
+      <CustomModal visible={showModal} onClose={() => setShowModal(false)}>
+        <CustomText fontSize={18} fontWeight="600">
+          이용권 구매 안내
+        </CustomText>
+
+        <CustomText textAlign="center" marginTop={8}>
+          세차 설비 보호 및 안전을 위해{"\n"}외부 부착물이나 구조 변경(과도한
+          튜닝)이 있는{"\n"}차량은 이용이 어려울 수 있습니다.
+        </CustomText>
+      </CustomModal>
+
       <PaymentTermsBottomSheet ref={termsBottomSheetRef} />
 
       <ScrollView style={styles.container}>
@@ -169,7 +197,7 @@ export const Payment = () => {
               -{" "}
               {getDiscountAmount(
                 coupon?.discountType,
-                coupon?.discountValue
+                coupon?.discountValue,
               ).toLocaleString()}
               원
             </CustomText>
@@ -226,7 +254,7 @@ export const Payment = () => {
               -{" "}
               {getDiscountAmount(
                 coupon?.discountType,
-                coupon?.discountValue
+                coupon?.discountValue,
               ).toLocaleString()}
               원
             </CustomText>
