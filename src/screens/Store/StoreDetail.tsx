@@ -22,6 +22,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { GetStoreGroupListResponse } from "@/api/models";
 import {
   useStoreControllerGetStoreDetail,
@@ -339,6 +340,16 @@ export const StoreDetail = () => {
         isFocused = false;
       };
     }, []),
+  );
+
+  // 화면 진입 이벤트 수집
+  useFocusEffect(
+    useCallback(() => {
+      Airbridge.trackEvent("StoreDetail", {
+        storeId: router.params.storeId,
+        storeName: router.params.storeName,
+      });
+    }, [router.params.storeId]),
   );
 
   return (

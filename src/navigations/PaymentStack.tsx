@@ -13,9 +13,10 @@ export type PaymentStackParamList = {
     price: Record<CarType, number>;
   };
   PaymentComplete: {
+    storeId: string;
+    storeName: string;
     serviceType: string;
     productType: string;
-    storeName: string;
     carNumber: string;
     approvedAt: string;
     totalAmount: number;

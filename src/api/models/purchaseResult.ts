@@ -7,12 +7,14 @@
  */
 
 export interface PurchaseResult {
+  /** 매장 ID */
+  storeId: string;
+  /** 매장 이름 */
+  storeName: string;
   /** 서비스 종류 */
   serviceType: string;
   /** 이용권 종류 */
   productType: string;
-  /** 매장 이름 */
-  storeName: string;
   /** 차량 번호 */
   carNumber: string;
   /** 결제 일시 */

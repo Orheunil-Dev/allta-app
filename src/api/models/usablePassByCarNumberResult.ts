@@ -17,4 +17,8 @@ export interface UsablePassByCarNumberResult {
   passId: string;
   /** 이용권 종류 */
   passType: string;
+  /** 하부세차 여부 */
+  isUnderbodyWash: boolean;
+  /** 유리막코팅 여부 */
+  isGlassCoating: boolean;
 }

@@ -9,6 +9,7 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSetAtom } from "jotai";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { PaymentStackParamList } from "@/navigations";
 import { usePurchaseControllerPurchasePass } from "@/api/purchase/purchase";
@@ -94,10 +95,16 @@ export const Payment = () => {
       },
       {
         onSuccess: (res) => {
+          Airbridge.trackEvent("PaymentComplete", {
+            storeId: router.params.storeId,
+            storeName: router.params.storeName,
+          });
+
           return paymentNavigation.navigate("PaymentComplete", {
+            storeId: res.data.storeId,
+            storeName: res.data.storeName,
             serviceType: res.data.serviceType,
             productType: res.data.productType,
-            storeName: res.data.storeName,
             carNumber: res.data.carNumber ?? "",
             approvedAt: res.data.approvedAt,
             totalAmount: res.data.totalAmount,
@@ -147,6 +154,16 @@ export const Payment = () => {
         setShowModal(false);
       };
     }, []),
+  );
+
+  // 화면 진입 이벤트 수집
+  useFocusEffect(
+    useCallback(() => {
+      Airbridge.trackEvent("Payment", {
+        storeId: router.params.storeId,
+        storeName: router.params.storeName,
+      });
+    }, [router.params.storeId]),
   );
 
   return (
