@@ -98,6 +98,9 @@ export const Payment = () => {
           Airbridge.trackEvent("PaymentComplete", {
             storeId: router.params.storeId,
             storeName: router.params.storeName,
+            serviceType: res.data.serviceType,
+            productType: res.data.productType,
+            totalAmount: res.data.totalAmount,
           });
 
           return paymentNavigation.navigate("PaymentComplete", {
