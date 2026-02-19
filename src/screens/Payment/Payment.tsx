@@ -9,7 +9,11 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSetAtom } from "jotai";
-import { Airbridge } from "airbridge-react-native-sdk";
+import {
+  Airbridge,
+  AirbridgeAttribute,
+  AirbridgeCategory,
+} from "airbridge-react-native-sdk";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { PaymentStackParamList } from "@/navigations";
 import { usePurchaseControllerPurchasePass } from "@/api/purchase/purchase";
@@ -95,6 +99,16 @@ export const Payment = () => {
       },
       {
         onSuccess: (res) => {
+          Airbridge.trackEvent(AirbridgeCategory.ORDER_COMPLETED, {
+            [AirbridgeAttribute.ACTION]: "Pass",
+            [AirbridgeAttribute.PRODUCT_CATEGORY_NAME]: res.data.serviceType,
+            [AirbridgeAttribute.LABEL]: res.data.productType,
+            [AirbridgeAttribute.PRODUCT_BRAND_ID]: res.data.storeId,
+            [AirbridgeAttribute.PRODUCT_BRAND_NAME]: res.data.storeName,
+            [AirbridgeAttribute.VALUE]: res.data.totalAmount,
+            [AirbridgeAttribute.CURRENCY]: "원",
+          });
+
           Airbridge.trackEvent("PaymentComplete", {
             storeId: router.params.storeId,
             storeName: router.params.storeName,
