@@ -90,6 +90,7 @@ const linking = {
     "allta-user://",
     "https://allta.airbridge.io",
     "https://allta.abr.ge",
+    "https://app.allta.io",
   ],
   config: {
     screens: {

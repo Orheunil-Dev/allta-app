@@ -25,7 +25,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       usesNonExemptEncryption: false,
     },
     usesAppleSignIn: true,
-    associatedDomains: ["applinks:allta.airbridge.io", "applinks:allta.abr.ge"],
+    associatedDomains: [
+      "applinks:allta.airbridge.io",
+      "applinks:allta.abr.ge",
+      "applinks:app.allta.io",
+    ],
     infoPlist: {
       NSCameraUsageDescription:
         "이용권 확인을 위한 QR스캔 기능 및 주유 영수증 할인을 위한 영수증 촬영 기능을 위한 카메라 접근 권한이 필요합니다.",
@@ -92,6 +96,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         autoVerify: true,
         action: "VIEW",
         data: { scheme: "https", host: "allta.abr.ge" },
+        category: ["BROWSABLE", "DEFAULT"],
+      },
+      {
+        autoVerify: true,
+        action: "VIEW",
+        data: { scheme: "https", host: "app.allta.io" },
         category: ["BROWSABLE", "DEFAULT"],
       },
     ],
