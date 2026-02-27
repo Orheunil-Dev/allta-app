@@ -157,7 +157,7 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
       }, 500);
 
       return () => clearTimeout(timer);
-    }, [])
+    }, []),
   );
 
   // 웰컴쿠폰 모달
@@ -209,7 +209,7 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
           containerNavigation.navigate("Coupon");
         }}
         nextButtonText="확인하기"
-        backgroundColor={colors.back4}
+        backgroundColor={colors.white}
       >
         <Image
           source={welcomeCoupon}
