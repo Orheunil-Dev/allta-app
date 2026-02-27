@@ -1,12 +1,12 @@
 import { Image, StyleSheet, View, Alert, Linking } from "react-native";
 import * as Location from "expo-location";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { formatWeatherIcon, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
+import { recommendPhrases } from "@/constants";
 import { cloudIcon, rainIcon, snowIcon, sunnyIcon } from "@/assets/images";
 import { colors } from "@/styles";
-import { recommendPhrases } from "@/constants";
-import { useQuery } from "@tanstack/react-query";
 
 export const WeatherCast = () => {
   // 아큐웨더 날씨 조회 요청
@@ -33,7 +33,7 @@ export const WeatherCast = () => {
               text: "설정",
               onPress: () => Linking.openSettings(),
             },
-          ]
+          ],
         );
 
         return;
@@ -72,7 +72,7 @@ export const WeatherCast = () => {
           q: `${lat},${lng}`,
           language: "ko-KR",
         },
-      }
+      },
     );
 
     const locationKey = locationRes.data.Key;
@@ -86,7 +86,7 @@ export const WeatherCast = () => {
           language: "ko-KR",
           details: true,
         },
-      }
+      },
     );
 
     const weatherData = weatherRes.data[0];
@@ -96,6 +96,8 @@ export const WeatherCast = () => {
       weatherCode: weatherData.WeatherIcon ?? null,
       temperature: weatherData.Temperature.Metric.Value ?? null,
       humidity: weatherData.RelativeHumidity ?? null,
+      hasPrecipitation: weatherData.HasPrecipitation,
+      precipitationType: weatherData.PrecipitationType,
       currentPrecipitation:
         weatherData.PrecipitationSummary.PastHour.Metric.Value ?? null,
       totalPrecipitation:
@@ -122,7 +124,7 @@ export const WeatherCast = () => {
 
     const matched = recommendPhrases.find(
       (weather) =>
-        weather.weatherText === formatWeatherIcon(weatherData.WeatherIcon)
+        weather.weatherText === formatWeatherIcon(weatherData.WeatherIcon),
     );
 
     if (!matched || matched.phrases.length === 0) return "";
