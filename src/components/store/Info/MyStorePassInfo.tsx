@@ -11,6 +11,7 @@ import {
   formatPassType,
   formatServiceType,
   formatUsageLeft,
+  getAvailablePeriod,
   getResponsiveSize,
 } from "@/utils";
 import { Car } from "@/types";
@@ -201,12 +202,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
                   {formatServiceType(value.serviceType)}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={16}>
-                  {dayjs(value.paidAt).format("YY.MM.DD")} ~{" "}
-                  {dayjs(value.paidAt)
-                    .add(1, "month")
-                    .subtract(1, "day")
-                    .format("YY.MM.")}
-                  {value.billingDate}
+                  {getAvailablePeriod(value.paidAt, value.billingDate)}
                 </CustomText>
               </View>
             </View>

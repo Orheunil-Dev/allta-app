@@ -23,6 +23,7 @@ import {
   formatPassType,
   formatServiceType,
   formatUsageLeft,
+  getAvailablePeriod,
   getResponsiveSize,
 } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
@@ -321,10 +322,7 @@ export const SubscriptionDetail = ({
               이용기간
             </CustomText>
             <CustomText fontSize={16}>
-              {`${dayjs(data.paidAt).format("YY.MM.DD")}~${dayjs(data.paidAt)
-                .add(1, "month")
-                .subtract(1, "day")
-                .format("YY.MM.")}${data.billingDate}`}
+              {getAvailablePeriod(data.paidAt, data.billingDate)}
             </CustomText>
           </View>
 
@@ -365,10 +363,9 @@ export const SubscriptionDetail = ({
             </CustomText>
             <CustomText fontSize={16}>
               {data.status === "ACTIVE"
-                ? `${
-                    dayjs(data.paidAt).add(1, "month").format("YY.MM.") +
-                    data.billingDate
-                  }`
+                ? `${dayjs(data.paidAt).add(1, "month").format("YY.MM.")}${String(
+                    data.billingDate,
+                  ).padStart(2, "0")}`
                 : "-"}
             </CustomText>
           </View>

@@ -2,7 +2,7 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { QrScanStackParamList } from "@/navigations";
 import { colors } from "@/styles";
-import { getResponsiveSize } from "@/utils";
+import { getAvailablePeriod, getResponsiveSize } from "@/utils";
 import {
   CommonActions,
   RouteProp,
@@ -339,12 +339,10 @@ export const QrScanComplete = () => {
                         | undefined
                     )?.maxUsage ?? 0
                   }
-                  availablePeriod={`~ ${dayjs(
+                  availablePeriod={getAvailablePeriod(
                     passData.autoStandard.paidAt as Date,
-                  )
-                    .add(1, "month")
-                    .subtract(1, "day")
-                    .format("YYYY.MM")}.${passData.autoStandard.billingDate}`}
+                    passData.autoStandard.billingDate as number,
+                  )}
                   onPress={handleSelectPass("autoStandard")}
                   isSelected={pass === "autoStandard"}
                   isAvailable={passData.autoStandard.isAvailable as boolean}
@@ -355,12 +353,10 @@ export const QrScanComplete = () => {
                 <PassSelectCard
                   type="PREMIUM"
                   name="자동세차 프리미엄"
-                  availablePeriod={`~ ${dayjs(
+                  availablePeriod={getAvailablePeriod(
                     passData.autoPremium.paidAt as Date,
-                  )
-                    .add(1, "month")
-                    .subtract(1, "day")
-                    .format("YYYY.MM")}.${passData.autoPremium.billingDate}`}
+                    passData.autoPremium.billingDate as number,
+                  )}
                   onPress={handleSelectPass("autoPremium")}
                   isSelected={pass === "autoPremium"}
                   isAvailable={passData.autoPremium.isAvailable as boolean}
@@ -397,12 +393,10 @@ export const QrScanComplete = () => {
                         | undefined
                     )?.maxUsage ?? 0
                   }
-                  availablePeriod={`~ ${dayjs(
+                  availablePeriod={getAvailablePeriod(
                     passData.handsStandard.paidAt as Date,
-                  )
-                    .add(1, "month")
-                    .subtract(1, "day")
-                    .format("YYYY.MM")}.${passData.handsStandard.billingDate}`}
+                    passData.handsStandard.billingDate as number,
+                  )}
                   onPress={handleSelectPass("handsStandard")}
                   isSelected={pass === "handsStandard"}
                   isAvailable={passData.handsStandard.isAvailable as boolean}
@@ -413,12 +407,10 @@ export const QrScanComplete = () => {
                 <PassSelectCard
                   type="PREMIUM"
                   name="핸즈클리닝 프리미엄"
-                  availablePeriod={`~ ${dayjs(
+                  availablePeriod={getAvailablePeriod(
                     passData.handsPremium.paidAt as Date,
-                  )
-                    .add(1, "month")
-                    .subtract(1, "day")
-                    .format("YYYY.MM")}.${passData.handsPremium.billingDate}`}
+                    passData.handsPremium.billingDate as number,
+                  )}
                   onPress={handleSelectPass("handsPremium")}
                   isSelected={pass === "handsPremium"}
                   isAvailable={passData.handsPremium.isAvailable as boolean}

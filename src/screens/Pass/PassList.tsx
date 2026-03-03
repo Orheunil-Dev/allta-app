@@ -8,7 +8,7 @@ import {
   usePassControllerGetTicketList,
 } from "@/api/pass/pass";
 import { GetTicketListReponse } from "@/api/models";
-import { getResponsiveSize } from "@/utils";
+import { getAvailablePeriod, getResponsiveSize } from "@/utils";
 import { Car, PassType, ServiceType } from "@/types";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { PassFilter } from "@/components/pass";
@@ -127,12 +127,10 @@ export const PassList = () => {
                       maxUsage={
                         value.subscriptionSnapshot.maxUsage ?? undefined
                       }
-                      availablePeriod={`${dayjs(value.paidAt).format(
-                        "YY.MM.DD",
-                      )}~${dayjs(value.paidAt)
-                        .add(1, "month")
-                        .subtract(1, "day")
-                        .format("YY.MM.")}${value.billingDate}`}
+                      availablePeriod={getAvailablePeriod(
+                        value.paidAt,
+                        value.billingDate,
+                      )}
                     />
                   ))}
               </View>
