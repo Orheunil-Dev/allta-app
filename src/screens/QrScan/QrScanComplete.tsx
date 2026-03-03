@@ -72,7 +72,7 @@ export const QrScanComplete = () => {
         enabled: !!car?.number,
         gcTime: 0,
       },
-    }
+    },
   );
 
   // 일회권 사용 API
@@ -135,7 +135,7 @@ export const QrScanComplete = () => {
                         },
                       },
                     ],
-                  })
+                  }),
                 );
               },
               onError: (error: any) => {
@@ -146,7 +146,7 @@ export const QrScanComplete = () => {
                     "이용권 사용 요청 중 오류가 발생했습니다.",
                 });
               },
-            }
+            },
           );
         } else {
           return setErrorModal({
@@ -184,7 +184,7 @@ export const QrScanComplete = () => {
                         },
                       },
                     ],
-                  })
+                  }),
                 );
               },
               onError: (error: any) => {
@@ -195,7 +195,7 @@ export const QrScanComplete = () => {
                     "이용권 사용 요청 중 오류가 발생했습니다.",
                 });
               },
-            }
+            },
           );
         } else {
           return setErrorModal({
@@ -233,7 +233,7 @@ export const QrScanComplete = () => {
                         },
                       },
                     ],
-                  })
+                  }),
                 );
               },
               onError: (error: any) => {
@@ -244,7 +244,7 @@ export const QrScanComplete = () => {
                     "이용권 사용 요청 중 오류가 발생했습니다.",
                 });
               },
-            }
+            },
           );
         } else {
           return setErrorModal({
@@ -314,7 +314,7 @@ export const QrScanComplete = () => {
                   type="TICKET"
                   name="자동세차 일회권"
                   availablePeriod={`~ ${dayjs(
-                    passData.autoTicket.expiredAt as Date
+                    passData.autoTicket.expiredAt as Date,
                   ).format("YYYY.MM.DD")} `}
                   onPress={handleSelectPass("autoTicket")}
                   isSelected={pass === "autoTicket"}
@@ -340,9 +340,10 @@ export const QrScanComplete = () => {
                     )?.maxUsage ?? 0
                   }
                   availablePeriod={`~ ${dayjs(
-                    passData.autoStandard.paidAt as Date
+                    passData.autoStandard.paidAt as Date,
                   )
                     .add(1, "month")
+                    .subtract(1, "day")
                     .format("YYYY.MM")}.${passData.autoStandard.billingDate}`}
                   onPress={handleSelectPass("autoStandard")}
                   isSelected={pass === "autoStandard"}
@@ -355,9 +356,10 @@ export const QrScanComplete = () => {
                   type="PREMIUM"
                   name="자동세차 프리미엄"
                   availablePeriod={`~ ${dayjs(
-                    passData.autoPremium.paidAt as Date
+                    passData.autoPremium.paidAt as Date,
                   )
                     .add(1, "month")
+                    .subtract(1, "day")
                     .format("YYYY.MM")}.${passData.autoPremium.billingDate}`}
                   onPress={handleSelectPass("autoPremium")}
                   isSelected={pass === "autoPremium"}
@@ -370,7 +372,7 @@ export const QrScanComplete = () => {
                   type="TICKET"
                   name="핸즈클리닝 일회권"
                   availablePeriod={`~ ${dayjs(
-                    passData.handsTicket.expiredAt as Date
+                    passData.handsTicket.expiredAt as Date,
                   ).format("YYYY.MM.DD")} `}
                   onPress={handleSelectPass("handsTicket")}
                   isSelected={pass === "handsTicket"}
@@ -396,9 +398,10 @@ export const QrScanComplete = () => {
                     )?.maxUsage ?? 0
                   }
                   availablePeriod={`~ ${dayjs(
-                    passData.handsStandard.paidAt as Date
+                    passData.handsStandard.paidAt as Date,
                   )
                     .add(1, "month")
+                    .subtract(1, "day")
                     .format("YYYY.MM")}.${passData.handsStandard.billingDate}`}
                   onPress={handleSelectPass("handsStandard")}
                   isSelected={pass === "handsStandard"}
@@ -411,9 +414,10 @@ export const QrScanComplete = () => {
                   type="PREMIUM"
                   name="핸즈클리닝 프리미엄"
                   availablePeriod={`~ ${dayjs(
-                    passData.handsPremium.paidAt as Date
+                    passData.handsPremium.paidAt as Date,
                   )
                     .add(1, "month")
+                    .subtract(1, "day")
                     .format("YYYY.MM")}.${passData.handsPremium.billingDate}`}
                   onPress={handleSelectPass("handsPremium")}
                   isSelected={pass === "handsPremium"}
