@@ -101,6 +101,7 @@ const linking = {
           PassList: "",
         },
       },
+      ServiceHistory: "service-history",
       Coupon: "coupon",
       EventStack: {
         path: "event",
@@ -170,6 +171,11 @@ export const ContainerStack = ({
             screen: "PassList",
             params: {},
           });
+        }
+
+        // 이용 내역
+        case "service-history": {
+          return navigationRef.navigate("ServiceHistory");
         }
 
         // 쿠폰
