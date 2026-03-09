@@ -111,6 +111,14 @@ export const StoreCard = ({
       </View>
 
       <View style={styles.tagArea}>
+        {store.storeType === "WACHEN" && (
+          <View style={[styles.tag, { backgroundColor: colors.back1 }]}>
+            <CustomText color={colors.white} fontSize={12} fontWeight={"500"}>
+              무인매장
+            </CustomText>
+          </View>
+        )}
+
         {store.tags &&
           store.tags
             .trim()
@@ -119,7 +127,7 @@ export const StoreCard = ({
               <View style={styles.tag} key={index}>
                 <CustomText
                   color={colors.back1}
-                  fontSize={10}
+                  fontSize={12}
                   fontWeight={"500"}
                 >
                   {value.trim()}
@@ -149,7 +157,7 @@ export const StoreCard = ({
               {getLowestPrice(
                 store.passPrice && typeof store.passPrice === "string"
                   ? JSON.parse(store.passPrice)
-                  : store.passPrice
+                  : store.passPrice,
               )?.toLocaleString()}
               원 ~
             </CustomText>

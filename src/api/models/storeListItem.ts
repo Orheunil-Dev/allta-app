@@ -17,6 +17,8 @@ export interface StoreListItem {
   lat: number;
   /** 경도 */
   lng: number;
+  /** 매장 종류 */
+  storeType: string;
   /**
    * 대표 이미지
    * @nullable
