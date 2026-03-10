@@ -39,6 +39,7 @@ import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 import { IS_GET_PERMISSION } from "@/constants";
 import { InquiryStack, InquiryStackParamList } from "./InquiryStack";
+import { SelfGuide } from "@/screens/SelfGuide";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -73,6 +74,7 @@ export type ContainerStackParamList = {
     phoneNumber: string;
   };
   Guide: undefined;
+  SelfGuide: undefined;
 };
 
 interface Props {
@@ -95,6 +97,7 @@ const linking = {
   config: {
     screens: {
       Guide: "guide",
+      SelfGuid: "self-guide",
       PassStack: {
         path: "pass",
         screens: {
@@ -163,6 +166,11 @@ export const ContainerStack = ({
         // 가이드
         case "guide": {
           return navigationRef.navigate("Guide");
+        }
+
+        // 무인매장 가이드
+        case "self-guide": {
+          return navigationRef.navigate("SelfGuide");
         }
 
         // 이용권
@@ -425,6 +433,15 @@ export const ContainerStack = ({
           options={{
             header: () => (
               <CustomHeader title="올타 이용 가이드" showBackButton />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="SelfGuide"
+          component={SelfGuide}
+          options={{
+            header: () => (
+              <CustomHeader title="무인 매장 이용 안내" showBackButton />
             ),
           }}
         />

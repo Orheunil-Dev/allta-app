@@ -112,4 +112,5 @@ export { default as qIcon } from "./q-icon.png";
 export { default as aIcon } from "./a-icon.png";
 export { default as shareIcon } from "./share-icon.png";
 export { default as searchIcon } from "./search-icon.png";
-export { default as guidImage } from "./guide-image.png";
+export { default as guideImage } from "./guide-image.png";
+export { default as selfGuide } from "./self-guide.png";
