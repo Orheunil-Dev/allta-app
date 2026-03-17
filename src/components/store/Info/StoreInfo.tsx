@@ -30,7 +30,7 @@ export const StoreInfo = ({
   // TMAP 네비게이션 열기
   const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(storeName);
-    const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
+    const tmapScheme = `tmap://route?goalname=${destination}&goalx=${lng}&goaly=${lat}`;
 
     SuccessToast("티맵으로 이동합니다.");
 

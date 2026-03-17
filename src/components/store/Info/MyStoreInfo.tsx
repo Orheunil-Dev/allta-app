@@ -21,7 +21,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
   // TMAP 네비게이션 열기
   const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(storeData?.store.name ?? "");
-    const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${storeData?.store.lng}&rGoY=${storeData?.store.lat}`;
+    const tmapScheme = `tmap://route?goalname=${destination}&goalx=${storeData?.store.lng}&goaly=${storeData?.store.lat}`;
 
     SuccessToast("티맵으로 이동합니다.");
 

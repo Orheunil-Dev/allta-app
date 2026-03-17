@@ -41,7 +41,7 @@ export const MyStoreCard = ({
   // TMAP 네비게이션 열기
   const handleOpenNavigation = async () => {
     const destination = encodeURIComponent(store.name);
-    const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
+    const tmapScheme = `tmap://route?goalname=${destination}&goalx=${lng}&goaly=${lat}`;
 
     SuccessToast("티맵으로 이동합니다.");
 
@@ -54,7 +54,7 @@ export const MyStoreCard = ({
       { open: string; close: string }
     >,
     store.breakTime,
-    store.holidays
+    store.holidays,
   );
 
   return (
