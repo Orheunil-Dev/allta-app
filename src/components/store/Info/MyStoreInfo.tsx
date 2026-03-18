@@ -1,13 +1,15 @@
-import { Dimensions, Image, Linking, StyleSheet, View } from "react-native";
+import { useRef } from "react";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import RenderHTML from "react-native-render-html";
 import { GetStoreDetailResponse } from "@/api/models";
-import { useToastMessage } from "@/hooks";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { KakaoMap } from "../KakaoMap";
 import { colors } from "@/styles";
 import { naviIcon } from "@/assets/images";
+import { NaviBottomSheet } from "@/components/bottom-sheet";
 
 interface Props {
   storeData?: GetStoreDetailResponse;
@@ -16,22 +18,27 @@ interface Props {
 const { width: screenWidth } = Dimensions.get("window");
 
 export const MyStoreInfo = ({ storeData }: Props) => {
-  const { SuccessToast, ErrorToast } = useToastMessage();
-
-  // TMAP 네비게이션 열기
-  const handleOpenNavigation = async () => {
-    const destination = encodeURIComponent(storeData?.store.name ?? "");
-    const tmapScheme = `tmap://route?goalname=${destination}&goalx=${storeData?.store.lng}&goaly=${storeData?.store.lat}`;
-
-    SuccessToast("티맵으로 이동합니다.");
-
-    return Linking.openURL(tmapScheme);
-  };
-
   if (!storeData) return;
+
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const handleOpenBottomSheet = () => {
+    bottomSheetRef?.current?.present();
+  };
+  const handleCloseBottomSheet = () => {
+    bottomSheetRef?.current?.close();
+  };
 
   return (
     <View style={styles.infoArea}>
+      <NaviBottomSheet
+        ref={bottomSheetRef}
+        onClose={handleCloseBottomSheet}
+        lat={storeData.store.lat}
+        lng={storeData.store.lng}
+        storeName={storeData.store.name}
+      />
+
       <CustomText fontSize={18} fontWeight={"600"}>
         위치
       </CustomText>
@@ -45,7 +52,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
       </View>
 
       <CustomButton
-        onPress={handleOpenNavigation}
+        onPress={handleOpenBottomSheet}
         height={getResponsiveSize(34)}
         marginTop={8}
         borderWidth={1}
