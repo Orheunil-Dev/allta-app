@@ -60,7 +60,7 @@ export const NaviBottomSheet = ({
           길찾기
         </CustomText>
 
-        <Pressable style={styles.closeButton}>
+        <Pressable onPress={onClose} style={styles.closeButton}>
           <Image
             source={closeIcon}
             style={{
