@@ -91,6 +91,8 @@ export const WeatherCast = () => {
 
     const weatherData = weatherRes.data[0];
 
+    console.log(weatherData.PrecipitationSummary.Past24Hours.Metric.Value);
+
     const weather = {
       weatherText: weatherData.WeatherText ?? null,
       weatherCode: weatherData.WeatherIcon ?? null,

@@ -24,7 +24,11 @@ import { colors } from "@/styles";
 
 // 유효성 검사
 const registerFormSchema = z.object({
-  cardNumber: z.string().trim().length(18, "올바른 카드 번호를 입력해주세요."),
+  cardNumber: z
+    .string()
+    .trim()
+    .min(18, "올바른 카드 번호를 입력해주세요.")
+    .max(19, "올바른 카드 번호를 입력해주세요."),
   expiration: z.string().trim().length(7, "올바른 유효 기간을 입력해주세요."),
   cardPassword: z
     .string()
