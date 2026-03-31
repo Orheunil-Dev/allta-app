@@ -67,6 +67,7 @@ export const SignUpTerms = () => {
   const goNextStep = () => {
     return loginStackNavigation.navigate("SignUpUserInfo", {
       ...route.params,
+      isProvideInfo: checked[3] ?? false,
       isMarketing: checked[4] ?? false,
     });
   };
