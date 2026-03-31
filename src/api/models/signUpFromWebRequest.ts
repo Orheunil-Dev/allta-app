@@ -42,6 +42,8 @@ export interface SignUpFromWebRequest {
   referrerCode?: string | null;
   /** 마케팅 수신 여부 */
   isMarketing: boolean;
+  /** 제3자 정보 제공 여부 */
+  isProvideInfo: boolean;
   /**
    * 생년월일
    * @nullable

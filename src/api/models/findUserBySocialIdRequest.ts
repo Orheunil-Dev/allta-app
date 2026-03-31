@@ -11,6 +11,4 @@ export interface FindUserBySocialIdRequest {
   loginKind: string;
   /** 소셜 로그인 ID */
   socialId: string;
-  /** 법인 코드 */
-  companyCode?: string;
 }

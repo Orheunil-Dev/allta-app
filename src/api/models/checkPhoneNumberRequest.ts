@@ -9,6 +9,4 @@
 export interface CheckPhoneNumberRequest {
   /** 전화번호 */
   phoneNumber: string;
-  /** 법인 코드 */
-  companyCode?: string;
 }
