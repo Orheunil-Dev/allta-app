@@ -29,10 +29,8 @@ import { WeatherCast } from "@/components/home/WeatherCast";
 import { IS_COUPON_RECEIVED, IS_NOTIFICATION_GRANTED } from "@/constants";
 import {
   autoWashIcon,
-  handsWashIcon,
   homeFooterArrow,
   qrIcon,
-  receiptIcon,
   welcomeCoupon,
 } from "@/assets/images";
 import { colors } from "@/styles";
@@ -262,61 +260,6 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
                 </CustomText>
 
                 <Image source={autoWashIcon} style={styles.buttonIcon} />
-              </Pressable>
-
-              <Pressable
-                onPress={() =>
-                  containerNavigation.navigate("StoreStack", {
-                    screen: "StoreList",
-                    params: { serviceType: "HANDS" },
-                  })
-                }
-                style={styles.stores}
-              >
-                <CustomText
-                  color={colors.main}
-                  fontSize={18}
-                  fontWeight={"600"}
-                >
-                  핸즈클리닝
-                </CustomText>
-                <CustomText
-                  color={colors.gray5}
-                  fontSize={13}
-                  fontWeight={"500"}
-                >
-                  손 세차로 구석구석!
-                </CustomText>
-
-                <Image source={handsWashIcon} style={styles.buttonIcon} />
-              </Pressable>
-            </View>
-
-            <View style={styles.mainArea}>
-              <Pressable
-                onPress={() =>
-                  containerNavigation.navigate("ReceiptScanStack", {
-                    screen: "ReceiptScan",
-                  })
-                }
-                style={styles.stores}
-              >
-                <CustomText
-                  color={colors.main}
-                  fontSize={18}
-                  fontWeight={"600"}
-                >
-                  세차 할인
-                </CustomText>
-                <CustomText
-                  color={colors.gray5}
-                  fontSize={13}
-                  fontWeight={"500"}
-                >
-                  제휴매장 쿠폰 받기
-                </CustomText>
-
-                <Image source={receiptIcon} style={styles.buttonIcon} />
               </Pressable>
 
               <Pressable

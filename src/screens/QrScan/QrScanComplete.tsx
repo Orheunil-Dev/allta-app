@@ -28,13 +28,7 @@ import { Spinner } from "@/components/ui/Spinner";
 import { useSetAtom } from "jotai";
 import { errorModalAtom } from "@/jotai";
 
-type Pass =
-  | "autoTicket"
-  | "handsTicket"
-  | "autoStandard"
-  | "handsStandard"
-  | "autoPremium"
-  | "handsPremium";
+type Pass = "autoTicket" | "autoStandard" | "autoPremium";
 
 type SubscriptionSnapshot = {
   id: string;
@@ -107,7 +101,6 @@ export const QrScanComplete = () => {
 
     switch (pass) {
       case "autoTicket":
-      case "handsTicket":
         passId = (passData[pass] as { id: string })?.id;
 
         if (passId) {
@@ -156,7 +149,6 @@ export const QrScanComplete = () => {
         }
 
       case "autoStandard":
-      case "handsStandard":
         passId = (passData[pass] as { id: string })?.id;
 
         if (passId) {
@@ -205,7 +197,6 @@ export const QrScanComplete = () => {
         }
 
       case "autoPremium":
-      case "handsPremium":
         passId = (passData[pass] as { id: string })?.id;
 
         if (passId) {
@@ -362,62 +353,6 @@ export const QrScanComplete = () => {
                   onPress={handleSelectPass("autoPremium")}
                   isSelected={pass === "autoPremium"}
                   isAvailable={passData.autoPremium.isAvailable as boolean}
-                />
-              )}
-
-              {passData.handsTicket && (
-                <PassSelectCard
-                  type="TICKET"
-                  name="핸즈클리닝 일회권"
-                  availablePeriod={`~ ${dayjs(
-                    passData.handsTicket.expiredAt as Date
-                  ).format("YYYY.MM.DD")} `}
-                  onPress={handleSelectPass("handsTicket")}
-                  isSelected={pass === "handsTicket"}
-                />
-              )}
-
-              {passData.handsStandard && (
-                <PassSelectCard
-                  type="STANDARD"
-                  name="핸즈클리닝 스탠다드"
-                  usage={
-                    (
-                      passData?.handsStandard.subscriptionSnapshot as
-                        | SubscriptionSnapshot
-                        | undefined
-                    )?.usage ?? 0
-                  }
-                  maxUsage={
-                    (
-                      passData.handsStandard.subscriptionSnapshot as
-                        | SubscriptionSnapshot
-                        | undefined
-                    )?.maxUsage ?? 0
-                  }
-                  availablePeriod={`~ ${dayjs(
-                    passData.handsStandard.paidAt as Date
-                  )
-                    .add(1, "month")
-                    .format("YYYY.MM")}.${passData.handsStandard.billingDate}`}
-                  onPress={handleSelectPass("handsStandard")}
-                  isSelected={pass === "handsStandard"}
-                  isAvailable={passData.handsStandard.isAvailable as boolean}
-                />
-              )}
-
-              {passData.handsPremium && (
-                <PassSelectCard
-                  type="PREMIUM"
-                  name="핸즈클리닝 프리미엄"
-                  availablePeriod={`~ ${dayjs(
-                    passData.handsPremium.paidAt as Date
-                  )
-                    .add(1, "month")
-                    .format("YYYY.MM")}.${passData.handsPremium.billingDate}`}
-                  onPress={handleSelectPass("handsPremium")}
-                  isSelected={pass === "handsPremium"}
-                  isAvailable={passData.handsPremium.isAvailable as boolean}
                 />
               )}
             </View>

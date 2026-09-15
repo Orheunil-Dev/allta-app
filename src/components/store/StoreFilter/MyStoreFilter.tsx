@@ -65,24 +65,6 @@ export const MyStoreFilter = ({
             자동세차
           </CustomText>
         </Pressable>
-        <Pressable
-          onPress={handleServiceType("HANDS")}
-          style={[
-            styles.serviceButton,
-            serviceType === "HANDS" && {
-              borderBottomColor: colors.black,
-              borderBottomWidth: 2,
-            },
-          ]}
-        >
-          <CustomText
-            color={serviceType === "HANDS" ? colors.black : colors.gray5}
-            fontSize={16}
-            fontWeight={serviceType === "HANDS" ? "600" : "500"}
-          >
-            핸즈클리닝
-          </CustomText>
-        </Pressable>
       </View>
 
       <View style={styles.filterWrapper}>

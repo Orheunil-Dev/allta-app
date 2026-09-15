@@ -19,7 +19,6 @@ type QrScanRouteProps = RouteProp<QrScanStackParamList, "QrScanError">;
 
 interface PassPrice {
   AUTO?: Record<string, number>;
-  HANDS?: Record<string, number>;
 }
 
 export const QrScanError = () => {
@@ -44,33 +43,19 @@ export const QrScanError = () => {
 
     const passPrice = storeData?.store.passPrice as PassPrice;
 
-    if (passPrice?.AUTO) {
-      return containerNavigation.navigate("StoreStack", {
-        screen: "StoreDetail",
-        params: {
-          serviceType: "AUTO",
-          storeId: storeData.store.id,
-          storeName: storeData.store.name,
-          ...(storeData.store.storeGroupId && {
-            storeGroupId: storeData.store.storeGroupId,
-          }),
-        },
-      });
-    } else if (passPrice?.HANDS) {
-      return containerNavigation.navigate("StoreStack", {
-        screen: "StoreDetail",
-        params: {
-          serviceType: "HANDS",
-          storeId: storeData.store.id,
-          storeName: storeData.store.name,
-          ...(storeData.store.storeGroupId && {
-            storeGroupId: storeData.store.storeGroupId,
-          }),
-        },
-      });
-    } else {
-      return handleRouteHome();
-    }
+    if (!passPrice?.AUTO) return handleRouteHome();
+
+    return containerNavigation.navigate("StoreStack", {
+      screen: "StoreDetail",
+      params: {
+        serviceType: "AUTO",
+        storeId: storeData.store.id,
+        storeName: storeData.store.name,
+        ...(storeData.store.storeGroupId && {
+          storeGroupId: storeData.store.storeGroupId,
+        }),
+      },
+    });
   };
 
   // 홈으로 이동

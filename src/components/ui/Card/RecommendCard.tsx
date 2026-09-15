@@ -32,16 +32,10 @@ export const RecommendCard = ({
   const handleRouteStoreDetail = () => {
     if (!passPrice) return;
 
-    const serviceType = passPrice?.AUTO
-      ? "AUTO"
-      : passPrice?.HANDS
-      ? "HANDS"
-      : "AUTO";
-
     return containerNavigation.navigate("StoreStack", {
       screen: "StoreDetail",
       params: {
-        serviceType,
+        serviceType: "AUTO",
         storeId: id,
         storeName: name,
         storeGroupId: storeGroupId ?? undefined,
