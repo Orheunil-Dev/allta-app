@@ -24,9 +24,11 @@ import type {
   GetMyStoreListResponse,
   GetStoreDetailResponse,
   GetStoreGroupListResponse,
+  GetStoreListForWebResponse,
   GetStoreListResponse,
   StoreControllerGetMyStoreListParams,
   StoreControllerGetStoreGroupListParams,
+  StoreControllerGetStoreListForWebParams,
   StoreControllerGetStoreListParams
 } from '.././models';
 
@@ -295,6 +297,92 @@ export function useStoreControllerGetMyStoreList<TData = Awaited<ReturnType<type
 
 
 
+export const storeControllerGetStoreListForWeb = (
+    params: StoreControllerGetStoreListForWebParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetStoreListForWebResponse>(
+      {url: `/store/web`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getStoreControllerGetStoreListForWebQueryKey = (params?: StoreControllerGetStoreListForWebParams,) => {
+    return [
+    `/store/web`, ...(params ? [params]: [])
+    ] as const;
+    }
+
+    
+export const getStoreControllerGetStoreListForWebQueryOptions = <TData = Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError = unknown>(params: StoreControllerGetStoreListForWebParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getStoreControllerGetStoreListForWebQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>> = ({ signal }) => storeControllerGetStoreListForWeb(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type StoreControllerGetStoreListForWebQueryResult = NonNullable<Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>>
+export type StoreControllerGetStoreListForWebQueryError = unknown
+
+
+export function useStoreControllerGetStoreListForWeb<TData = Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError = unknown>(
+ params: StoreControllerGetStoreListForWebParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>,
+          TError,
+          Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useStoreControllerGetStoreListForWeb<TData = Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError = unknown>(
+ params: StoreControllerGetStoreListForWebParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>,
+          TError,
+          Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useStoreControllerGetStoreListForWeb<TData = Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError = unknown>(
+ params: StoreControllerGetStoreListForWebParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useStoreControllerGetStoreListForWeb<TData = Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError = unknown>(
+ params: StoreControllerGetStoreListForWebParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreListForWeb>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getStoreControllerGetStoreListForWebQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 export const storeControllerGetStoreDetail = (
     id: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
@@ -370,6 +458,91 @@ export function useStoreControllerGetStoreDetail<TData = Awaited<ReturnType<type
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getStoreControllerGetStoreDetailQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const storeControllerGetStoreDetailForWeb = (
+    id: string,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetStoreDetailResponse>(
+      {url: `/store/web/${id}`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getStoreControllerGetStoreDetailForWebQueryKey = (id?: string,) => {
+    return [
+    `/store/web/${id}`
+    ] as const;
+    }
+
+    
+export const getStoreControllerGetStoreDetailForWebQueryOptions = <TData = Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError = unknown>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getStoreControllerGetStoreDetailForWebQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>> = ({ signal }) => storeControllerGetStoreDetailForWeb(id, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type StoreControllerGetStoreDetailForWebQueryResult = NonNullable<Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>>
+export type StoreControllerGetStoreDetailForWebQueryError = unknown
+
+
+export function useStoreControllerGetStoreDetailForWeb<TData = Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError = unknown>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>,
+          TError,
+          Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useStoreControllerGetStoreDetailForWeb<TData = Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>,
+          TError,
+          Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useStoreControllerGetStoreDetailForWeb<TData = Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useStoreControllerGetStoreDetailForWeb<TData = Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof storeControllerGetStoreDetailForWeb>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getStoreControllerGetStoreDetailForWebQueryOptions(id,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

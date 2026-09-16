@@ -73,6 +73,8 @@ export { default as myLocationIcon } from "./my-location-icon.png";
 export { default as storeNoticeIcon } from "./store-notice-icon.png";
 export { default as naviIcon } from "./navi-icon.png";
 export { default as phoneIcon } from "./phone-icon.png";
+export { default as tmapIcon } from "./tmap-icon.png";
+export { default as kakaoMapIcon } from "./kakao-map-icon.png";
 
 // 영수증 스캔
 export { default as receptFrame } from "./receipt-frame.png";
@@ -112,4 +114,5 @@ export { default as qIcon } from "./q-icon.png";
 export { default as aIcon } from "./a-icon.png";
 export { default as shareIcon } from "./share-icon.png";
 export { default as searchIcon } from "./search-icon.png";
-export { default as guidImage } from "./guide-image.png";
+export { default as guideImage } from "./guide-image.png";
+export { default as selfGuide } from "./self-guide.png";

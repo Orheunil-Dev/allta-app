@@ -17,6 +17,8 @@ export interface MyStoreListItem {
   lat: number;
   /** 경도 */
   lng: number;
+  /** 매장 종류 */
+  storeType: string;
   /**
    * 대표 이미지
    * @nullable
@@ -33,15 +35,15 @@ export interface MyStoreListItem {
    */
   businessHours?: string | null;
   /**
-   * 휴게 시간
-   * @nullable
-   */
-  breakTime?: string | null;
-  /**
    * 휴무일
    * @nullable
    */
   holidays?: string | null;
+  /**
+   * 휴게 시간
+   * @nullable
+   */
+  breakTime?: string | null;
   /**
    * 직영 ID
    * @nullable

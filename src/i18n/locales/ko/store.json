@@ -39,7 +39,8 @@
   },
   "card": {
     "groupCount": "매장 {{count}}곳 포함",
-    "lowestPrice": "이용권 최저가"
+    "lowestPrice": "이용권 최저가",
+    "unmanned": "무인매장"
   },
   "detail": {
     "breakTime": "브레이크 타임 {{time}}",
@@ -52,9 +53,14 @@
   },
   "info": {
     "openTmap": "티맵으로 이동합니다.",
+    "openKakaoMap": "카카오맵으로 이동합니다.",
     "location": "위치",
     "description": "매장 소개",
     "policy": "매장 유의사항"
+  },
+  "navi": {
+    "kakaoMap": "카카오맵",
+    "tmap": "티맵"
   },
   "pass": {
     "guide": "이용안내",

@@ -25,7 +25,11 @@ import { colors } from "@/styles";
 
 // 유효성 검사
 const registerFormSchema = z.object({
-  cardNumber: z.string().trim().length(19, "올바른 카드 번호를 입력해주세요."),
+  cardNumber: z
+    .string()
+    .trim()
+    .min(18, "올바른 카드 번호를 입력해주세요.")
+    .max(19, "올바른 카드 번호를 입력해주세요."),
   expiration: z.string().trim().length(7, "올바른 유효 기간을 입력해주세요."),
   cardPassword: z
     .string()
@@ -36,7 +40,7 @@ const registerFormSchema = z.object({
     .trim()
     .refine(
       (val) => val.length === 6 || val.length === 10,
-      "올바른 생년월일을 입력해주세요."
+      "올바른 생년월일을 입력해주세요.",
     ),
 });
 
@@ -66,7 +70,7 @@ export const CardRegister = () => {
 
   const handleChangeRegisterForm = (
     key: keyof typeof registerForm,
-    value: string
+    value: string,
   ) => {
     setRegisterForm((prev) => ({
       ...prev,
@@ -102,7 +106,7 @@ export const CardRegister = () => {
             message: error?.message ?? t("cardRegister.registerError"),
           });
         },
-      }
+      },
     );
   };
 
@@ -135,7 +139,7 @@ export const CardRegister = () => {
               onChangeText={(value) =>
                 handleChangeRegisterForm(
                   "expiration",
-                  formatCardExpiration(value)
+                  formatCardExpiration(value),
                 )
               }
               maxLength={7}

@@ -39,7 +39,8 @@
   },
   "card": {
     "groupCount": "含 {{count}} 間門市",
-    "lowestPrice": "使用券最低價"
+    "lowestPrice": "使用券最低價",
+    "unmanned": "無人門市"
   },
   "detail": {
     "breakTime": "休息時間 {{time}}",
@@ -52,9 +53,14 @@
   },
   "info": {
     "openTmap": "即將開啟 TMAP。",
+    "openKakaoMap": "即將開啟 KakaoMap。",
     "location": "位置",
     "description": "門市介紹",
     "policy": "門市注意事項"
+  },
+  "navi": {
+    "kakaoMap": "KakaoMap",
+    "tmap": "TMAP"
   },
   "pass": {
     "guide": "使用說明",

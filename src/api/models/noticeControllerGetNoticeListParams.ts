@@ -8,6 +8,11 @@
 
 export type NoticeControllerGetNoticeListParams = {
 /**
+ * 법인 코드
+ * @nullable
+ */
+companyCode?: string | null;
+/**
  * 가져올 데이터 수
  */
 take: number;

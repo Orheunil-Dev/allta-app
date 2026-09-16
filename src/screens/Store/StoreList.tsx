@@ -1,23 +1,24 @@
-import { StoreStackParamList } from "@/navigations";
-import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, FlatList, Linking, StyleSheet, View } from "react-native";
+import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import * as Location from "expo-location";
 import { useTranslation } from "react-i18next";
-import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
-import { getResponsiveSize } from "@/utils";
-import { CustomText } from "@/components/ui/CustomText";
-import { colors } from "@/styles";
-import { StoreFilter } from "@/components/store/StoreFilter";
-import { ServiceType } from "@/types";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { useStoreControllerGetStoreList } from "@/api/store/store";
-import { GetAddressListResponse, GetStoreListResponse } from "@/api/models";
-import { AddressSelectBottomSheet } from "@/components/bottom-sheet/AddressSelectBottomSheet";
-import { StoreCard } from "@/components/ui/Card";
-import { useAddressControllerGetAddressList } from "@/api/address/address";
+import { StoreStackParamList } from "@/navigations";
 import mmkvStorage from "@/libs/mmkv-storage";
+import { useStoreControllerGetStoreList } from "@/api/store/store";
+import { useAddressControllerGetAddressList } from "@/api/address/address";
+import { GetAddressListResponse, GetStoreListResponse } from "@/api/models";
+import { getResponsiveSize } from "@/utils";
+import { ServiceType } from "@/types";
+import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
+import { CustomText } from "@/components/ui/CustomText";
+import { StoreFilter } from "@/components/store/StoreFilter";
+import { StoreCard } from "@/components/ui/Card";
+import { AddressSelectBottomSheet } from "@/components/bottom-sheet/AddressSelectBottomSheet";
 import { LAST_USED_ADDRESS } from "@/constants";
+import { colors } from "@/styles";
 
 type StoreRouteProp = RouteProp<StoreStackParamList, "StoreList">;
 
@@ -30,7 +31,7 @@ export const StoreList = () => {
 
   const [skip, setSkip] = useState<number>(0);
   const [serviceType, setServiceType] = useState<ServiceType>(
-    route.params?.serviceType ?? "AUTO"
+    route.params?.serviceType ?? "AUTO",
   );
   const [tags, setTags] = useState<string[]>([]);
   const [stores, setStores] = useState<GetStoreListResponse["data"]>([]);
@@ -65,7 +66,7 @@ export const StoreList = () => {
         retry: false,
         gcTime: 0,
       },
-    }
+    },
   );
 
   // 주소 조회 API
@@ -101,7 +102,7 @@ export const StoreList = () => {
       addressesData.data && lastUsedAddress
         ? addressesData.data.find(
             (data: GetAddressListResponse["data"][0]) =>
-              data.id === lastUsedAddress.id
+              data.id === lastUsedAddress.id,
           )
         : null;
 
@@ -163,7 +164,7 @@ export const StoreList = () => {
                   text: t("address:locationPermission.openSettings"),
                   onPress: () => Linking.openSettings(),
                 },
-              ]
+              ],
             );
             return;
           }
@@ -188,7 +189,14 @@ export const StoreList = () => {
       return () => {
         isFocused = false;
       };
-    }, [])
+    }, []),
+  );
+
+  // 화면 진입 이벤트 수집
+  useFocusEffect(
+    useCallback(() => {
+      Airbridge.trackEvent("StoreList");
+    }, []),
   );
 
   return (

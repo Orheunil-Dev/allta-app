@@ -1,10 +1,30 @@
-import { usePurchaseControllerPurchasePass } from "@/api/purchase/purchase";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import {
-  checkAllButton,
-  checkedCheckAllButton,
-  defaultStoreImage,
-  rigthArrowIcon,
-} from "@/assets/images";
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ScrollView } from "react-native-gesture-handler";
+import { useSetAtom } from "jotai";
+import {
+  Airbridge,
+  AirbridgeAttribute,
+  AirbridgeCategory,
+} from "airbridge-react-native-sdk";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { PaymentStackParamList } from "@/navigations";
+import { usePurchaseControllerPurchasePass } from "@/api/purchase/purchase";
+import { errorModalAtom } from "@/jotai";
+import {
+  formatPurchaseType,
+  formatServiceType,
+  getResponsiveSize,
+} from "@/utils";
+import { Car, Card, CarType, Coupon } from "@/types";
 import { PaymentTermsBottomSheet } from "@/components/bottom-sheet/PaymentTermsBottomSheet";
 import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
 import { CardSelectButton } from "@/components/payment/CardSelectButton";
@@ -13,24 +33,15 @@ import { CouponSelectButton } from "@/components/payment/CouponSelectButton";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
+import { CustomModal } from "@/components/ui/CustomModal";
 import { Spinner } from "@/components/ui/Spinner";
-import { PaymentStackParamList } from "@/navigations";
-import { errorModalAtom } from "@/jotai";
-import { colors } from "@/styles";
-import { Car, Card, CarType, Coupon } from "@/types";
 import {
-  formatPurchaseType,
-  formatServiceType,
-  getResponsiveSize,
-} from "@/utils";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useSetAtom } from "jotai";
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Image, ImageBackground, StyleSheet, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+  checkAllButton,
+  checkedCheckAllButton,
+  defaultStoreImage,
+  rigthArrowIcon,
+} from "@/assets/images";
+import { colors } from "@/styles";
 
 type PaymentRouteProp = RouteProp<PaymentStackParamList, "Payment">;
 
@@ -51,6 +62,7 @@ export const Payment = () => {
   const [car, setCar] = useState<Car | null>(null);
   const [card, setCard] = useState<Card | null>(null);
   const [agree, setAgree] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const {
     mutate: purchasePass,
@@ -90,10 +102,29 @@ export const Payment = () => {
       },
       {
         onSuccess: (res) => {
-          return paymentNavigation.navigate("PaymentComplete", {
+          Airbridge.trackEvent(AirbridgeCategory.ORDER_COMPLETED, {
+            [AirbridgeAttribute.ACTION]: "Pass",
+            [AirbridgeAttribute.PRODUCT_CATEGORY_NAME]: res.data.serviceType,
+            [AirbridgeAttribute.LABEL]: res.data.productType,
+            [AirbridgeAttribute.PRODUCT_BRAND_ID]: res.data.storeId,
+            [AirbridgeAttribute.PRODUCT_BRAND_NAME]: res.data.storeName,
+            [AirbridgeAttribute.VALUE]: res.data.totalAmount,
+            [AirbridgeAttribute.CURRENCY]: "원",
+          });
+
+          Airbridge.trackEvent("PaymentComplete", {
+            storeId: router.params.storeId,
+            storeName: router.params.storeName,
             serviceType: res.data.serviceType,
             productType: res.data.productType,
+            totalAmount: res.data.totalAmount,
+          });
+
+          return paymentNavigation.navigate("PaymentComplete", {
+            storeId: res.data.storeId,
             storeName: res.data.storeName,
+            serviceType: res.data.serviceType,
+            productType: res.data.productType,
             carNumber: res.data.carNumber ?? "",
             approvedAt: res.data.approvedAt,
             totalAmount: res.data.totalAmount,
@@ -105,7 +136,7 @@ export const Payment = () => {
             message: error?.message ?? t("payment.requestError"),
           });
         },
-      }
+      },
     );
   };
 
@@ -129,7 +160,7 @@ export const Payment = () => {
 
   const discountAmount = getDiscountAmount(
     coupon?.discountType,
-    coupon?.discountValue
+    coupon?.discountValue,
   );
   const totalAmount = (price ?? 0) - discountAmount;
 
@@ -141,8 +172,38 @@ export const Payment = () => {
     return setPrice(router.params.price[carTypeKey]);
   }, [car, router.params]);
 
+  useFocusEffect(
+    useCallback(() => {
+      setShowModal(true);
+
+      return () => {
+        setShowModal(false);
+      };
+    }, []),
+  );
+
+  // 화면 진입 이벤트 수집
+  useFocusEffect(
+    useCallback(() => {
+      Airbridge.trackEvent("Payment", {
+        storeId: router.params.storeId,
+        storeName: router.params.storeName,
+      });
+    }, [router.params.storeId]),
+  );
+
   return (
     <CustomSafeAreaView edges={["bottom"]}>
+      <CustomModal visible={showModal} onClose={() => setShowModal(false)}>
+        <CustomText fontSize={18} fontWeight="600">
+          {t("payment.noticeTitle")}
+        </CustomText>
+
+        <CustomText textAlign="center" marginTop={8}>
+          {t("payment.noticeDescription")}
+        </CustomText>
+      </CustomModal>
+
       <PaymentTermsBottomSheet ref={termsBottomSheetRef} />
 
       <ScrollView style={styles.container}>
@@ -292,7 +353,7 @@ export const Payment = () => {
             <Spinner />
           ) : (
             <CustomText
-              color={agree ? colors.white : colors.gray5}
+              color={isValid ? colors.white : colors.gray5}
               fontSize={18}
               fontWeight={"600"}
             >

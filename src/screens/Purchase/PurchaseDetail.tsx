@@ -49,39 +49,10 @@ export const PurchaseDetail = () => {
               <View style={styles.content}>
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.passAmount")}
+                    {t("purchase.detail.paidAt")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {t("common:currency", {
-                      amount: purchaseData.data.originalAmount.toLocaleString(),
-                    })}
-                  </CustomText>
-                </View>
-
-                <View style={styles.row}>
-                  <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.couponDiscount")}
-                  </CustomText>
-                  <CustomText fontSize={16}>
-                    -{" "}
-                    {t("common:currency", {
-                      amount: purchaseData.data.discountAmount.toLocaleString(),
-                    })}
-                  </CustomText>
-                </View>
-
-                <View style={styles.row}>
-                  <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.totalAmount")}
-                  </CustomText>
-                  <CustomText
-                    color={colors.point2}
-                    fontSize={20}
-                    fontWeight={"600"}
-                  >
-                    {t("common:currency", {
-                      amount: purchaseData.data.totalAmount.toLocaleString(),
-                    })}
+                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
                   </CustomText>
                 </View>
 
@@ -99,10 +70,41 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.paidAt")}
+                    {t("purchase.detail.passAmount")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
+                    {t("common:currency", {
+                      amount: purchaseData.data.originalAmount.toLocaleString(),
+                    })}
+                  </CustomText>
+                </View>
+
+                <View style={styles.row}>
+                  <CustomText color={colors.gray5} fontSize={16}>
+                    {t("purchase.detail.couponDiscount")}
+                  </CustomText>
+                  <CustomText fontSize={16}>
+                    {t("common:currency", {
+                      amount:
+                        purchaseData.data.discountAmount > 0
+                          ? `- ${purchaseData.data.discountAmount.toLocaleString()}`
+                          : "0",
+                    })}
+                  </CustomText>
+                </View>
+
+                <View style={styles.row}>
+                  <CustomText fontSize={16} fontWeight={"600"}>
+                    {t("purchase.detail.totalPaidAmount")}
+                  </CustomText>
+                  <CustomText
+                    color={colors.point2}
+                    fontSize={16}
+                    fontWeight={"600"}
+                  >
+                    {t("common:currency", {
+                      amount: purchaseData.data.totalAmount.toLocaleString(),
+                    })}
                   </CustomText>
                 </View>
               </View>
@@ -119,28 +121,10 @@ export const PurchaseDetail = () => {
               <View style={styles.content}>
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.totalAmount")}
+                    {t("purchase.detail.refundedAt")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {t("common:currency", {
-                      amount: purchaseData.data.totalAmount.toLocaleString(),
-                    })}
-                  </CustomText>
-                </View>
-
-                <View style={styles.row}>
-                  <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.refundAmount")}
-                  </CustomText>
-                  <CustomText
-                    color={colors.point2}
-                    fontSize={20}
-                    fontWeight={"600"}
-                  >
-                    -
-                    {t("common:currency", {
-                      amount: amount.toLocaleString(),
-                    })}
+                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
                   </CustomText>
                 </View>
 
@@ -158,10 +142,25 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.refundedAt")}
+                    {t("purchase.detail.totalAmount")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
+                    {t("common:currency", {
+                      amount: purchaseData.data.totalAmount.toLocaleString(),
+                    })}
+                  </CustomText>
+                </View>
+
+                <View style={styles.row}>
+                  <CustomText fontSize={16} fontWeight={"600"}>
+                    {t("purchase.detail.totalRefundAmount")}
+                  </CustomText>
+                  <CustomText
+                    color={colors.point2}
+                    fontSize={16}
+                    fontWeight={"600"}
+                  >
+                    -{t("common:currency", { amount: amount.toLocaleString() })}
                   </CustomText>
                 </View>
               </View>
@@ -178,28 +177,10 @@ export const PurchaseDetail = () => {
               <View style={styles.content}>
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.totalAmount")}
+                    {t("purchase.detail.refundedAt")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {t("common:currency", {
-                      amount: purchaseData.data.totalAmount.toLocaleString(),
-                    })}
-                  </CustomText>
-                </View>
-
-                <View style={styles.row}>
-                  <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.refundAmount")}
-                  </CustomText>
-                  <CustomText
-                    color={colors.point2}
-                    fontSize={20}
-                    fontWeight={"600"}
-                  >
-                    -
-                    {t("common:currency", {
-                      amount: amount.toLocaleString(),
-                    })}
+                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
                   </CustomText>
                 </View>
 
@@ -217,10 +198,25 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    {t("purchase.detail.refundedAt")}
+                    {t("purchase.detail.totalAmount")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
+                    {t("common:currency", {
+                      amount: purchaseData.data.totalAmount.toLocaleString(),
+                    })}
+                  </CustomText>
+                </View>
+
+                <View style={styles.row}>
+                  <CustomText fontSize={16} fontWeight={"600"}>
+                    {t("purchase.detail.totalRefundAmount")}
+                  </CustomText>
+                  <CustomText
+                    color={colors.point2}
+                    fontSize={16}
+                    fontWeight={"600"}
+                  >
+                    -{t("common:currency", { amount: amount.toLocaleString() })}
                   </CustomText>
                 </View>
               </View>
@@ -237,7 +233,7 @@ export const PurchaseDetail = () => {
       {purchaseData && (
         <ScrollView style={styles.container}>
           <View style={[styles.box, { paddingTop: getResponsiveSize(20) }]}>
-            <CustomText fontSize={18} fontWeight={"600"}>
+            <CustomText fontSize={20} fontWeight={"600"}>
               {dayjs(purchaseData.data.createdAt).format("YYYY.MM.DD")}
             </CustomText>
 
@@ -250,11 +246,11 @@ export const PurchaseDetail = () => {
                     ? colors.gray5
                     : colors.red
                 }
-                fontSize={16}
+                fontSize={18}
               >
                 {formatPaymentStatus(purchaseData.data.status)}
               </CustomText>
-              <CustomText color={colors.gray5} fontSize={16}>
+              <CustomText color={colors.gray5} fontSize={18}>
                 {purchaseData.data.status === "APPROVED"
                   ? t("purchase.detail.completed.approved")
                   : t("purchase.detail.completed.refunded")}
@@ -321,8 +317,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: getResponsiveSize(20),
   },
   box: {
-    marginBottom: getResponsiveSize(40),
-    paddingBottom: getResponsiveSize(40),
+    marginBottom: getResponsiveSize(24),
+    paddingBottom: getResponsiveSize(24),
     borderBottomWidth: 6,
     borderBottomColor: colors.gray1,
   },
@@ -333,6 +329,6 @@ const styles = StyleSheet.create({
   },
   content: {
     marginTop: getResponsiveSize(12),
-    gap: getResponsiveSize(8),
+    gap: getResponsiveSize(6),
   },
 });

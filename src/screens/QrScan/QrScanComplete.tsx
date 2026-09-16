@@ -2,7 +2,7 @@ import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { QrScanStackParamList } from "@/navigations";
 import { colors } from "@/styles";
-import { getResponsiveSize } from "@/utils";
+import { getAvailablePeriod, getResponsiveSize } from "@/utils";
 import {
   CommonActions,
   RouteProp,
@@ -69,7 +69,7 @@ export const QrScanComplete = () => {
         enabled: !!car?.number,
         gcTime: 0,
       },
-    }
+    },
   );
 
   // 일회권 사용 API
@@ -131,7 +131,7 @@ export const QrScanComplete = () => {
                         },
                       },
                     ],
-                  })
+                  }),
                 );
               },
               onError: (error: any) => {
@@ -141,7 +141,7 @@ export const QrScanComplete = () => {
                     error?.message ?? t("qrScanComplete.error.useRequest"),
                 });
               },
-            }
+            },
           );
         } else {
           return setErrorModal({
@@ -178,7 +178,7 @@ export const QrScanComplete = () => {
                         },
                       },
                     ],
-                  })
+                  }),
                 );
               },
               onError: (error: any) => {
@@ -188,7 +188,7 @@ export const QrScanComplete = () => {
                     error?.message ?? t("qrScanComplete.error.useRequest"),
                 });
               },
-            }
+            },
           );
         } else {
           return setErrorModal({
@@ -225,7 +225,7 @@ export const QrScanComplete = () => {
                         },
                       },
                     ],
-                  })
+                  }),
                 );
               },
               onError: (error: any) => {
@@ -235,7 +235,7 @@ export const QrScanComplete = () => {
                     error?.message ?? t("qrScanComplete.error.useRequest"),
                 });
               },
-            }
+            },
           );
         } else {
           return setErrorModal({
@@ -307,7 +307,7 @@ export const QrScanComplete = () => {
                   type="TICKET"
                   name={t("qrScanComplete.pass.ticket")}
                   availablePeriod={`~ ${dayjs(
-                    passData.autoTicket.expiredAt as Date
+                    passData.autoTicket.expiredAt as Date,
                   ).format("YYYY.MM.DD")} `}
                   onPress={handleSelectPass("autoTicket")}
                   isSelected={pass === "autoTicket"}
@@ -332,11 +332,10 @@ export const QrScanComplete = () => {
                         | undefined
                     )?.maxUsage ?? 0
                   }
-                  availablePeriod={`~ ${dayjs(
-                    passData.autoStandard.paidAt as Date
-                  )
-                    .add(1, "month")
-                    .format("YYYY.MM")}.${passData.autoStandard.billingDate}`}
+                  availablePeriod={getAvailablePeriod(
+                    passData.autoStandard.paidAt as Date,
+                    passData.autoStandard.billingDate as number,
+                  )}
                   onPress={handleSelectPass("autoStandard")}
                   isSelected={pass === "autoStandard"}
                   isAvailable={passData.autoStandard.isAvailable as boolean}
@@ -347,11 +346,10 @@ export const QrScanComplete = () => {
                 <PassSelectCard
                   type="PREMIUM"
                   name={t("qrScanComplete.pass.premium")}
-                  availablePeriod={`~ ${dayjs(
-                    passData.autoPremium.paidAt as Date
-                  )
-                    .add(1, "month")
-                    .format("YYYY.MM")}.${passData.autoPremium.billingDate}`}
+                  availablePeriod={getAvailablePeriod(
+                    passData.autoPremium.paidAt as Date,
+                    passData.autoPremium.billingDate as number,
+                  )}
                   onPress={handleSelectPass("autoPremium")}
                   isSelected={pass === "autoPremium"}
                   isAvailable={passData.autoPremium.isAvailable as boolean}

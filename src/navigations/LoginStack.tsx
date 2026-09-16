@@ -24,6 +24,7 @@ export type LoginStackParamList = {
     loginKind: string;
     socialId: string;
     email: string | null;
+    isProvideInfo: boolean;
     isMarketing: boolean;
   };
   SignUpReferral: {
@@ -32,6 +33,7 @@ export type LoginStackParamList = {
     email: string | null;
     name: string;
     phoneNumber: string;
+    isProvideInfo: boolean;
     isMarketing: boolean;
   };
   SignUpComplete: {

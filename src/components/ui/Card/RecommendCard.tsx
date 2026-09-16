@@ -45,7 +45,10 @@ export const RecommendCard = ({
 
   return (
     <Pressable onPress={handleRouteStoreDetail} style={styles.container}>
-      <Image src={mainImage ?? defaultStoreImage} style={styles.storeImage} />
+      <Image
+        source={mainImage ? { uri: mainImage } : defaultStoreImage}
+        style={styles.storeImage}
+      />
 
       <View>
         <CustomText fontSize={16} fontWeight={"600"}>

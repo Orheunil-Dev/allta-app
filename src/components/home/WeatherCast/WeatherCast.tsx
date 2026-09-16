@@ -1,12 +1,12 @@
 import { Image, StyleSheet, View, Alert, Linking } from "react-native";
 import * as Location from "expo-location";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { formatWeatherIcon, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
+import { weatherPhraseKeys } from "@/constants";
 import { cloudIcon, rainIcon, snowIcon, sunnyIcon } from "@/assets/images";
 import { colors } from "@/styles";
-import { weatherPhraseKeys } from "@/constants";
-import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { AppLanguage, DEFAULT_LANGUAGE } from "@/i18n";
 
@@ -46,7 +46,7 @@ export const WeatherCast = () => {
               text: t("locationPermission.settings"),
               onPress: () => Linking.openSettings(),
             },
-          ]
+          ],
         );
 
         return;
@@ -85,7 +85,7 @@ export const WeatherCast = () => {
           q: `${lat},${lng}`,
           language: accuWeatherLanguage,
         },
-      }
+      },
     );
 
     const locationKey = locationRes.data.Key;
@@ -99,16 +99,20 @@ export const WeatherCast = () => {
           language: accuWeatherLanguage,
           details: true,
         },
-      }
+      },
     );
 
     const weatherData = weatherRes.data[0];
+
+    console.log(weatherData.PrecipitationSummary.Past24Hours.Metric.Value);
 
     const weather = {
       weatherText: weatherData.WeatherText ?? null,
       weatherCode: weatherData.WeatherIcon ?? null,
       temperature: weatherData.Temperature.Metric.Value ?? null,
       humidity: weatherData.RelativeHumidity ?? null,
+      hasPrecipitation: weatherData.HasPrecipitation,
+      precipitationType: weatherData.PrecipitationType,
       currentPrecipitation:
         weatherData.PrecipitationSummary.PastHour.Metric.Value ?? null,
       totalPrecipitation:

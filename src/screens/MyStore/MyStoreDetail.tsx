@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import {
   Image,
   ImageBackground,
+  Linking,
   Pressable,
   StyleSheet,
   View,
@@ -85,6 +86,15 @@ export const MyStoreDetail = () => {
     };
   });
 
+  // 전화번호 터치
+  const handlePressPhoneNumber = () => {
+    const phoneNumber = storeData?.store.phoneNumber;
+
+    if (!phoneNumber) return;
+
+    return Linking.openURL(`tel:${phoneNumber}`);
+  };
+
   // 영업 시간 터치
   const handleToggleBusinessHours = () => {
     setShowBusinessHours(!showBusinessHours);
@@ -159,7 +169,7 @@ export const MyStoreDetail = () => {
       return () => {
         isFocused = false;
       };
-    }, [])
+    }, []),
   );
 
   return (
@@ -194,7 +204,7 @@ export const MyStoreDetail = () => {
                   coordinate?.lat,
                   coordinate?.lng,
                   storeData?.store?.lat as number,
-                  storeData?.store?.lng as number
+                  storeData?.store?.lng as number,
                 ),
               })}
             </CustomText>
@@ -207,7 +217,7 @@ export const MyStoreDetail = () => {
           </View>
 
           {/* 전화번호 */}
-          <View style={styles.phone}>
+          <Pressable onPress={handlePressPhoneNumber} style={styles.phone}>
             <Image
               source={phoneIcon}
               style={{
@@ -219,7 +229,7 @@ export const MyStoreDetail = () => {
             <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
               {storeData?.store.phoneNumber ?? ""}
             </CustomText>
-          </View>
+          </Pressable>
 
           {/* 영업 시간 */}
           {storeData?.store?.businessHours && (
@@ -246,7 +256,7 @@ export const MyStoreDetail = () => {
                         { open: string; close: string }
                       >,
                       storeData.store.breakTime,
-                      storeData.store.holidays
+                      storeData.store.holidays,
                     ).status
                   }
                 </CustomText>
@@ -271,7 +281,7 @@ export const MyStoreDetail = () => {
                             { open: string; close: string }
                           >,
                           storeData.store.breakTime,
-                          storeData.store.holidays
+                          storeData.store.holidays,
                         ).hours
                       }
                     </CustomText>

@@ -1,16 +1,12 @@
-import {
-  Image,
-  ImageBackground,
-  Linking,
-  StyleSheet,
-  View,
-} from "react-native";
+import { useRef } from "react";
+import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { MyStoreListItem } from "@/api/models";
 import { MyStoreStackParamList } from "@/navigations";
-import { useDistanceCalculator, useToastMessage } from "@/hooks";
+import { useDistanceCalculator } from "@/hooks";
 import {
   formatEllipsis,
   formatPassType,
@@ -19,6 +15,7 @@ import {
 } from "@/utils";
 import { CustomText } from "../CustomText";
 import { CustomButton } from "../CustomButton";
+import { NaviBottomSheet } from "@/components/bottom-sheet";
 import { defaultStoreImage, locationIcon } from "@/assets/images";
 import { colors } from "@/styles";
 
@@ -38,17 +35,15 @@ export const MyStoreCard = ({
   const myStoreNavigation =
     useNavigation<NativeStackNavigationProp<MyStoreStackParamList>>();
 
-  const { SuccessToast, ErrorToast } = useToastMessage();
   const { getDistance } = useDistanceCalculator();
 
-  // TMAP 네비게이션 열기
-  const handleOpenNavigation = async () => {
-    const destination = encodeURIComponent(store.name);
-    const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
-    SuccessToast(t("info.openTmap"));
-
-    return Linking.openURL(tmapScheme);
+  const handleOpenBottomSheet = () => {
+    bottomSheetRef?.current?.present();
+  };
+  const handleCloseBottomSheet = () => {
+    bottomSheetRef?.current?.close();
   };
 
   const bi = getStoreBusinessHours(
@@ -57,11 +52,19 @@ export const MyStoreCard = ({
       { open: string; close: string }
     >,
     store.breakTime,
-    store.holidays
+    store.holidays,
   );
 
   return (
     <View style={styles.card}>
+      <NaviBottomSheet
+        ref={bottomSheetRef}
+        onClose={handleCloseBottomSheet}
+        lat={store.lat}
+        lng={store.lng}
+        storeName={store.name}
+      />
+
       <View style={styles.top}>
         <ImageBackground
           source={
@@ -146,7 +149,7 @@ export const MyStoreCard = ({
         </CustomButton>
 
         <CustomButton
-          onPress={handleOpenNavigation}
+          onPress={handleOpenBottomSheet}
           flex={1}
           height={getResponsiveSize(34)}
           backgroundColor={colors.point2}

@@ -24,6 +24,7 @@ import {
   formatPassType,
   formatServiceType,
   formatUsageLeft,
+  getAvailablePeriod,
   getResponsiveSize,
 } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
@@ -36,7 +37,7 @@ import { colors } from "@/styles";
 interface Props {
   data: GetSubscriptionDetailResponse["data"];
   subscriptionRefetch: (
-    options?: RefetchOptions
+    options?: RefetchOptions,
   ) => Promise<QueryObserverResult<GetSubscriptionDetailResponse, unknown>>;
   router: RouteProp<PassStackParamList, "PassDetail">;
   coordinate: {
@@ -105,7 +106,7 @@ export const SubscriptionDetail = ({
 
           setShowDicontinueModal(false);
         },
-      }
+      },
     );
   };
 
@@ -133,7 +134,7 @@ export const SubscriptionDetail = ({
 
           setShowResubscribeModal(false);
         },
-      }
+      },
     );
   };
 
@@ -150,7 +151,7 @@ export const SubscriptionDetail = ({
         passTermsOpen ? passTermsHeight : passTermsInitialHeight,
         {
           duration: 300,
-        }
+        },
       ),
     };
   });
@@ -173,7 +174,7 @@ export const SubscriptionDetail = ({
         refundTermsOpen ? refundTermsHeight : refundTermsInitialHeight,
         {
           duration: 300,
-        }
+        },
       ),
     };
   });
@@ -263,7 +264,7 @@ export const SubscriptionDetail = ({
                   coordinate.lat,
                   coordinate.lng,
                   data.store.lat,
-                  data.store.lng
+                  data.store.lng,
                 )}
                 km
               </CustomText>
@@ -319,9 +320,7 @@ export const SubscriptionDetail = ({
               {t("labels.usagePeriod")}
             </CustomText>
             <CustomText fontSize={16}>
-              {`${dayjs(data.paidAt).format("YY.MM.DD")}~${dayjs(data.paidAt)
-                .add(1, "month")
-                .format("YY.MM.")}${data.billingDate}`}
+              {getAvailablePeriod(data.paidAt, data.billingDate)}
             </CustomText>
           </View>
 
@@ -336,7 +335,7 @@ export const SubscriptionDetail = ({
                   color={
                     formatUsageLeft(
                       data.subscriptionSnapshot.usage ?? 0,
-                      data.subscriptionSnapshot.maxUsage ?? 0
+                      data.subscriptionSnapshot.maxUsage ?? 0,
                     ) > 0
                       ? colors.point2
                       : colors.gray5
@@ -346,7 +345,7 @@ export const SubscriptionDetail = ({
                 >
                   {formatUsageLeft(
                     data.subscriptionSnapshot.usage ?? 0,
-                    data.subscriptionSnapshot.maxUsage ?? 0
+                    data.subscriptionSnapshot.maxUsage ?? 0,
                   )}
                 </CustomText>
                 <CustomText fontSize={15} fontWeight={"500"}>
@@ -364,10 +363,9 @@ export const SubscriptionDetail = ({
             </CustomText>
             <CustomText fontSize={16}>
               {data.status === "ACTIVE"
-                ? `${
-                    dayjs(data.paidAt).add(1, "month").format("YY.MM.") +
-                    data.billingDate
-                  }`
+                ? `${dayjs(data.paidAt).add(1, "month").format("YY.MM.")}${String(
+                    data.billingDate,
+                  ).padStart(2, "0")}`
                 : "-"}
             </CustomText>
           </View>

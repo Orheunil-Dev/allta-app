@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   Image,
   ImageBackground,
+  Linking,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
@@ -22,6 +23,7 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import { useTranslation } from "react-i18next";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { GetStoreGroupListResponse } from "@/api/models";
 import {
   useStoreControllerGetStoreDetail,
@@ -97,7 +99,7 @@ export const StoreDetail = () => {
         enabled: !!router.params.storeGroupId,
         gcTime: 0,
       },
-    }
+    },
   );
 
   const { getDistance } = useDistanceCalculator();
@@ -147,6 +149,15 @@ export const StoreDetail = () => {
     }
 
     return setPass(passType);
+  };
+
+  // 전화번호 터치
+  const handlePressPhoneNumber = () => {
+    const phoneNumber = storeData?.store.phoneNumber;
+
+    if (!phoneNumber) return;
+
+    return Linking.openURL(`tel:${phoneNumber}`);
   };
 
   // 영업 시간 터치
@@ -331,7 +342,17 @@ export const StoreDetail = () => {
       return () => {
         isFocused = false;
       };
-    }, [])
+    }, []),
+  );
+
+  // 화면 진입 이벤트 수집
+  useFocusEffect(
+    useCallback(() => {
+      Airbridge.trackEvent("StoreDetail", {
+        storeId: router.params.storeId,
+        storeName: router.params.storeName,
+      });
+    }, [router.params.storeId]),
   );
 
   return (
@@ -341,7 +362,7 @@ export const StoreDetail = () => {
           <ImageBackground
             source={
               storeData?.store?.mainImage
-                ? { uri: storeData?.store?.mainImage }
+                ? { uri: storeData.store.mainImage }
                 : defaultStoreImage
             }
             style={styles.storeImage}
@@ -366,7 +387,7 @@ export const StoreDetail = () => {
                   coordinate?.lat,
                   coordinate?.lng,
                   storeData?.store?.lat as number,
-                  storeData?.store?.lng as number
+                  storeData?.store?.lng as number,
                 ),
               })}
             </CustomText>
@@ -379,7 +400,7 @@ export const StoreDetail = () => {
           </View>
 
           {/* 전화번호 */}
-          <View style={styles.phone}>
+          <Pressable onPress={handlePressPhoneNumber} style={styles.phone}>
             <Image
               source={phoneIcon}
               style={{
@@ -391,7 +412,7 @@ export const StoreDetail = () => {
             <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
               {storeData?.store.phoneNumber ?? ""}
             </CustomText>
-          </View>
+          </Pressable>
 
           {/* 영업 시간 */}
           {storeData?.store?.businessHours && (
@@ -418,7 +439,7 @@ export const StoreDetail = () => {
                         { open: string; close: string }
                       >,
                       storeData.store.breakTime,
-                      storeData.store.holidays
+                      storeData.store.holidays,
                     ).status
                   }
                 </CustomText>
@@ -443,7 +464,7 @@ export const StoreDetail = () => {
                             { open: string; close: string }
                           >,
                           storeData.store.breakTime,
-                          storeData.store.holidays
+                          storeData.store.holidays,
                         ).hours
                       }
                     </CustomText>

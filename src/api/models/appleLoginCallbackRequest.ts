@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface SocialLoginCallbackRequest {
+export interface AppleLoginCallbackRequest {
   /**
    * 이메일
    * @nullable
@@ -16,4 +16,6 @@ export interface SocialLoginCallbackRequest {
   loginKind: string;
   /** 소셜 로그인 ID */
   socialId: string;
+  /** 클라이언트 타입 */
+  clientType: string;
 }

@@ -25,7 +25,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       usesNonExemptEncryption: false,
     },
     usesAppleSignIn: true,
-    associatedDomains: ["applinks:allta.airbridge.io", "applinks:allta.abr.ge"],
+    associatedDomains: [
+      "applinks:allta.airbridge.io",
+      "applinks:allta.abr.ge",
+      "applinks:app.allta.io",
+    ],
     infoPlist: {
       NSCameraUsageDescription:
         "需要相機權限，以掃描 QR Code 確認使用券，以及拍攝加油收據以享優惠。",
@@ -51,6 +55,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "kakaoplus",
         "kakaotalk",
         "tmap",
+        "kakaomap",
       ],
       NSAppTransportSecurity: {
         NSAllowsArbitraryLoads: true,
@@ -92,6 +97,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         autoVerify: true,
         action: "VIEW",
         data: { scheme: "https", host: "allta.abr.ge" },
+        category: ["BROWSABLE", "DEFAULT"],
+      },
+      {
+        autoVerify: true,
+        action: "VIEW",
+        data: { scheme: "https", host: "app.allta.io" },
         category: ["BROWSABLE", "DEFAULT"],
       },
     ],

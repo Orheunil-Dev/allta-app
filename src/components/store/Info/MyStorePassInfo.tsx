@@ -12,6 +12,7 @@ import {
   formatPassType,
   formatServiceType,
   formatUsageLeft,
+  getAvailablePeriod,
   getResponsiveSize,
 } from "@/utils";
 import { Car } from "@/types";
@@ -33,7 +34,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
   const [car, setCar] = useState<Car | undefined>(undefined);
   const [skip, setSkip] = useState<number>(0);
   const [tickets, setTickets] = useState<GetStoreTicketListResponse["data"]>(
-    []
+    [],
   );
 
   // 차량 목록 조회 API
@@ -63,7 +64,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
         enabled: !!car?.number,
         gcTime: 0,
       },
-    }
+    },
   );
 
   // 구독권 목록 조회 API
@@ -82,7 +83,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
         enabled: !!car?.number,
         gcTime: 0,
       },
-    }
+    },
   );
 
   // 다음 페이지 요청
@@ -177,7 +178,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
                       color={
                         formatUsageLeft(
                           value.subscriptionSnapshot.usage ?? 0,
-                          value.subscriptionSnapshot.maxUsage ?? 0
+                          value.subscriptionSnapshot.maxUsage ?? 0,
                         ) > 0
                           ? colors.point2
                           : colors.gray5
@@ -187,7 +188,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
                     >
                       {`${formatUsageLeft(
                         value.subscriptionSnapshot.usage ?? 0,
-                        value.subscriptionSnapshot.maxUsage ?? 0
+                        value.subscriptionSnapshot.maxUsage ?? 0,
                       )}`}
                     </CustomText>
                     <CustomText fontSize={15} fontWeight={"500"}>
@@ -206,9 +207,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
                   {formatServiceType(value.serviceType)}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={16}>
-                  {dayjs(value.paidAt).format("YY.MM.DD")} ~{" "}
-                  {dayjs(value.paidAt).add(1, "month").format("YY.MM.")}
-                  {value.billingDate}
+                  {getAvailablePeriod(value.paidAt, value.billingDate)}
                 </CustomText>
               </View>
             </View>

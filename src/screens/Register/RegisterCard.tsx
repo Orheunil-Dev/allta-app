@@ -43,7 +43,8 @@ export const RegisterCard = () => {
         cardNumber: z
           .string()
           .trim()
-          .length(19, t("validation.cardNumberInvalid")),
+          .min(18, t("validation.cardNumberInvalid"))
+          .max(19, t("validation.cardNumberInvalid")),
         expiration: z
           .string()
           .trim()
@@ -57,10 +58,10 @@ export const RegisterCard = () => {
           .trim()
           .refine(
             (val) => val.length === 6 || val.length === 10,
-            t("validation.birthDateInvalid")
+            t("validation.birthDateInvalid"),
           ),
       }),
-    [t]
+    [t],
   );
 
   const loginStackNavigation =
@@ -86,7 +87,7 @@ export const RegisterCard = () => {
 
   const handleRegisterForm = (
     key: keyof typeof registerForm,
-    value: string
+    value: string,
   ) => {
     setRegisterForm((prev) => ({
       ...prev,
@@ -109,7 +110,7 @@ export const RegisterCard = () => {
               },
             },
           ],
-        })
+        }),
       );
     }
 
@@ -145,7 +146,7 @@ export const RegisterCard = () => {
                   },
                 },
               ],
-            })
+            }),
           );
         },
         onError: (error: any) => {
@@ -155,7 +156,7 @@ export const RegisterCard = () => {
               error?.message ?? t("register.card.error.registerFailed"),
           });
         },
-      }
+      },
     );
   };
 

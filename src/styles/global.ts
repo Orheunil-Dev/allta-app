@@ -8,6 +8,8 @@ export const colors = {
   line: "#ECECEE",
   point1: "#202046",
   point2: "#6865E7",
+  kuna1: "#F82F2F",
+  kuna2: "#3D3D3D",
   back1: "#61618A",
   back4: "#F2F2FD",
   gray1: "#F7F7F8",

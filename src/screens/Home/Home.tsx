@@ -54,6 +54,7 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
 
   const [showCouponModal, setShowCouponModal] = useState<boolean>(false);
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
+  const [footerContentHeight, setFooterContentHeight] = useState<number>(0);
 
   // 배너 목록 조회 API
   const {
@@ -84,13 +85,13 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
   };
 
   // getResponsive 함수 애니메이션 함수 안에 넣을 시 에러 발생
-  const footerHeight = getResponsiveSize(100);
   const footerMarginTop = getResponsiveSize(12);
 
   // 푸터 애니메이션
   const openAnimatedStyle = useAnimatedStyle(() => {
     return {
-      height: withTiming(footerOpen ? footerHeight : 0, {
+      // 언어별로 줄 수가 달라지므로 고정값 대신 측정한 내용 높이로 펼친다
+      height: withTiming(footerOpen ? footerContentHeight : 0, {
         duration: 250,
       }),
       marginTop: withTiming(footerOpen ? footerMarginTop : 0, {
@@ -158,7 +159,7 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
       }, 500);
 
       return () => clearTimeout(timer);
-    }, [])
+    }, []),
   );
 
   // 웰컴쿠폰 모달
@@ -210,7 +211,7 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
           containerNavigation.navigate("Coupon");
         }}
         nextButtonText={t("welcomeCoupon.check")}
-        backgroundColor={colors.back4}
+        backgroundColor={colors.white}
       >
         <Image
           source={welcomeCoupon}
@@ -321,27 +322,33 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
             </View>
 
             <Animated.View style={[styles.footerBottom, openAnimatedStyle]}>
-              <CustomText color={colors.gray5} fontSize={14}>
-                {t("footer.ceo")}
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                {t("footer.businessNumber")}
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                {t("footer.salesNumber")}
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                {t("footer.address")}
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                {t("footer.phone")}
-              </CustomText>
+              <View
+                onLayout={(event) =>
+                  setFooterContentHeight(event.nativeEvent.layout.height)
+                }
+              >
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.ceo")}
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.businessNumber")}
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.salesNumber")}
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.address")}
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.phone")}
+                </CustomText>
+              </View>
             </Animated.View>
-          </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+      </View>
+    </ScrollView>
+  </SafeAreaView>
+);
 };
 
 const styles = StyleSheet.create({
@@ -447,7 +454,6 @@ const styles = StyleSheet.create({
     height: getResponsiveSize(20),
   },
   footerBottom: {
-    justifyContent: "center",
     overflow: "hidden",
   },
 });

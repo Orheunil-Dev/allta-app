@@ -24,16 +24,9 @@ import { colors, fontMap } from "@/styles";
 const { width: screenWidth } = Dimensions.get("window");
 
 const REFERRAL_NOTICE_KEYS = [
-  "announcement",
-  "rewardDate",
-  "rewardPerFriend",
-  "keepAccount",
-  "tax",
   "oneTimeOnly",
   "noSelfCode",
   "fraud",
-  "limitedQuantity",
-  "notification",
   "subjectToChange",
 ] as const;
 
@@ -61,7 +54,7 @@ export const Referral = () => {
     isError: registerReferralCodeError,
   } = useReferralControllerRegisterReferralCode();
 
-  // 추첱코드 등록
+  // 추천코드 등록
   const handleRegisterReferralCode = () => {
     if (referralCode.length !== 6) {
       return ErrorToast(t("referral.codeLength"));
@@ -124,28 +117,6 @@ export const Referral = () => {
       <CustomKeyboardAvoidingView>
         <ScrollView>
           <CustomImage source={referralBanner} width={screenWidth} />
-
-          <View style={styles.eventBannerBottom}>
-            <View style={styles.referredCount}>
-              <CustomText color={colors.white} fontSize={16}>
-                {t("referral.invitedFriends")}
-              </CustomText>
-
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <CustomText
-                  marginRight={6}
-                  color="#FFC935"
-                  fontSize={24}
-                  fontWeight={"600"}
-                >
-                  {referralCodeData?.data.referredCount ?? 0}
-                </CustomText>
-                <CustomText color={colors.white} fontSize={16}>
-                  {t("referral.countUnit")}
-                </CustomText>
-              </View>
-            </View>
-          </View>
 
           <View style={styles.container}>
             <View style={styles.referralCode}>
@@ -247,7 +218,7 @@ export const Referral = () => {
                 borderColor={colors.gray2}
               >
                 {registerReferralCodeLoading ? (
-                  <Spinner />
+                  <Spinner color={colors.gray2} />
                 ) : (
                   <CustomText fontSize={15} fontWeight={"500"}>
                     {t("referral.registerCode")}
@@ -338,6 +309,7 @@ const styles = StyleSheet.create({
     width: getResponsiveSize(74),
     height: getResponsiveSize(45),
     backgroundColor: colors.gray1,
+    borderRadius: 8,
   },
   terms: {
     marginBottom: getResponsiveSize(20),

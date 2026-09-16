@@ -14,8 +14,11 @@ export interface ServiceHistoryItem {
   serviceType: string;
   /** 이용권 종류 */
   passType: string;
-  /** 차량 번호 */
-  carNumber: string;
+  /**
+   * 차량 번호
+   * @nullable
+   */
+  carNumber?: string | null;
   /** 생성일 */
   createdAt: string;
   /** 매장 정보 */

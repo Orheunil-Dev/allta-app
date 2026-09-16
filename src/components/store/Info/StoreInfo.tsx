@@ -1,13 +1,15 @@
-import { Dimensions, Image, Linking, StyleSheet, View } from "react-native";
+import { useRef } from "react";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import RenderHTML from "react-native-render-html";
 import { useTranslation } from "react-i18next";
-import { useToastMessage } from "@/hooks";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { KakaoMap } from "../KakaoMap";
 import { naviIcon } from "@/assets/images";
 import { colors } from "@/styles";
+import { NaviBottomSheet } from "@/components/bottom-sheet";
 
 interface Props {
   storeName: string;
@@ -28,20 +30,25 @@ export const StoreInfo = ({
 }: Props) => {
   const { t } = useTranslation("store");
 
-  const { SuccessToast, ErrorToast } = useToastMessage();
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
-  // TMAP 네비게이션 열기
-  const handleOpenNavigation = async () => {
-    const destination = encodeURIComponent(storeName);
-    const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
-
-    SuccessToast(t("info.openTmap"));
-
-    return Linking.openURL(tmapScheme);
+  const handleOpenBottomSheet = () => {
+    bottomSheetRef?.current?.present();
+  };
+  const handleCloseBottomSheet = () => {
+    bottomSheetRef?.current?.close();
   };
 
   return (
     <View style={styles.container}>
+      <NaviBottomSheet
+        ref={bottomSheetRef}
+        onClose={handleCloseBottomSheet}
+        lat={lat}
+        lng={lng}
+        storeName={storeName}
+      />
+
       <CustomText fontSize={18} fontWeight={"600"}>
         {t("info.location")}
       </CustomText>
@@ -51,7 +58,7 @@ export const StoreInfo = ({
       </View>
 
       <CustomButton
-        onPress={handleOpenNavigation}
+        onPress={handleOpenBottomSheet}
         height={getResponsiveSize(34)}
         marginTop={8}
         borderWidth={1}

@@ -6,7 +6,7 @@ import { ContainerStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomImage } from "@/components/ui/CustomImage";
-import { guidImage } from "@/assets/images";
+import { guideImage } from "@/assets/images";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -30,7 +30,7 @@ export const Guide = () => {
               params: { screen: "Home" },
             },
           ],
-        })
+        }),
       );
     }
   };
@@ -38,7 +38,7 @@ export const Guide = () => {
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <ScrollView>
-        <CustomImage source={guidImage} width={screenWidth} />
+        <CustomImage source={guideImage} width={screenWidth} />
       </ScrollView>
     </CustomSafeAreaView>
   );

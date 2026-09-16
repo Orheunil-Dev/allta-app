@@ -16,6 +16,11 @@ export interface PaymentItem {
   productType: string;
   /** 서비스 종류 */
   serviceType: string;
+  /**
+   * 서비스 옵션
+   * @nullable
+   */
+  serviceOptions?: string | null;
   /** 매장 이름 */
   storeName: string;
   /** 변동 금액 */

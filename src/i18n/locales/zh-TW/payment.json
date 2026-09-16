@@ -18,7 +18,9 @@
     "registeredCar": "已登錄車輛",
     "amountTitle": "付款金額",
     "totalAmount": "最終付款金額",
-    "pay": "立即付款"
+    "pay": "立即付款",
+    "noticeTitle": "使用券購買須知",
+    "noticeDescription": "為保護洗車設備及確保安全，\n有外部附加物或結構改裝（過度改裝）的\n車輛可能無法使用服務。"
   },
   "complete": {
     "title": "付款完成！",

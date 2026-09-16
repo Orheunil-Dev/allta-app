@@ -19,8 +19,6 @@
     "registered": "推薦碼已登錄。",
     "registerError": "登錄推薦碼時發生錯誤。",
     "copied": "推薦碼已複製。",
-    "invitedFriends": "目前已邀請的好友",
-    "countUnit": "位",
     "myCode": "我的推薦碼",
     "shareKakao": "用 KakaoTalk 邀請",
     "copyCode": "複製推薦碼",
@@ -30,16 +28,9 @@
     "registerCode": "登錄代碼",
     "notice": {
       "title": "注意事項",
-      "announcement": "得獎名單公布：2026.01.06 (二)",
-      "rewardDate": "獎品發放日：得獎名單公布後 30 個工作天內發放獎勵。",
-      "rewardPerFriend": "依受邀好友中完成註冊的人數發放邀請好友活動獎品。",
-      "keepAccount": "自活動期間起至最終獎品發放為止，邀請人與受邀人皆須維持帳號有效，方可獲得獎品。",
-      "tax": "若獎品金額超過 50,000 元，獎品所產生的稅費由本公司負擔。",
       "oneTimeOnly": "推薦碼於註冊後僅可登錄 1 次，之後無法修改。",
       "noSelfCode": "無法將自己的推薦碼登錄給自己。",
       "fraud": "若以不正當方式（假帳號、重複登錄等）參與，將收回優惠，並可能限制服務使用。",
-      "limitedQuantity": "各獎品的發放對象以前 100 名為限。",
-      "notification": "活動得獎者及獎品發放對象將依本公司標準以簡訊 (SMS) 個別通知。",
       "subjectToChange": "本活動可能因本公司因素而變更或結束。"
     }
   },

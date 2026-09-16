@@ -90,7 +90,9 @@
       "fullRefundInfo": "全額退款資訊",
       "refundAmount": "退款金額",
       "refundMethod": "退款方式",
-      "refundedAt": "退款時間"
+      "refundedAt": "退款時間",
+      "totalPaidAmount": "總付款金額",
+      "totalRefundAmount": "總退款金額"
     }
   }
 }

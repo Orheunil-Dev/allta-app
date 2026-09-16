@@ -26,7 +26,8 @@
     "referral": "친구 초대 / 등록",
     "faq": "FAQ",
     "profile": "내 정보",
-    "guide": "올타 이용 가이드"
+    "guide": "올타 이용 가이드",
+    "selfGuide": "무인 매장 이용 안내"
   },
   "event": {
     "list": "이벤트"

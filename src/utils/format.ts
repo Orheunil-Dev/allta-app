@@ -33,7 +33,7 @@ export const formatPhoneNumber = (value: string) => {
     default:
       return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(
         7,
-        11
+        11,
       )}`;
   }
 };
@@ -177,7 +177,7 @@ export const formatCouponValue = (type: string, value: number): string => {
 // 쿠폰 적용 이용권 포매팅
 export const formatCouponPassType = (
   serviceType: string | null,
-  passType: string | null
+  passType: string | null,
 ): string => {
   let serviceLabel = "";
   if (serviceType === "AUTO") serviceLabel = i18n.t("format:serviceType.auto");
@@ -291,7 +291,7 @@ export const formatStorePhoneNumber = (value: string): string => {
 export const formatApprovalDate = (date: string): string => {
   const dateFormat = date.length === 6 ? `20${date}` : date;
 
-  return dateFormat
+  return dateFormat;
 };
 
 // 남은 사용 횟수 포매팅
@@ -327,6 +327,12 @@ export const formatPaymentStatus = (text: string): string => {
 
     case "REFUNDED":
       return i18n.t("format:paymentStatus.refunded");
+
+    case "PENDING":
+      return i18n.t("format:paymentStatus.pending");
+
+    case "ERROR":
+      return i18n.t("format:paymentStatus.error");
 
     default:
       return text;

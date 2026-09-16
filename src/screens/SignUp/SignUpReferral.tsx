@@ -177,6 +177,7 @@ export const SignUpReferral = () => {
             loginBySocialId(
               {
                 data: {
+                  clientType: "APP",
                   loginKind: route.params.loginKind,
                   socialId: route.params.socialId,
                 },

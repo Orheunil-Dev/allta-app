@@ -66,6 +66,8 @@
   "paymentStatus": {
     "approved": "付款",
     "partialRefunded": "部分退款",
-    "refunded": "全額退款"
+    "refunded": "全額退款",
+    "pending": "付款進行中",
+    "error": "付款錯誤"
   }
 }

@@ -66,6 +66,8 @@
   "paymentStatus": {
     "approved": "결제",
     "partialRefunded": "부분환불",
-    "refunded": "전체환불"
+    "refunded": "전체환불",
+    "pending": "결제 진행중",
+    "error": "결제오류"
   }
 }

@@ -9,7 +9,7 @@ import {
   usePassControllerGetTicketList,
 } from "@/api/pass/pass";
 import { GetTicketListReponse } from "@/api/models";
-import { getResponsiveSize } from "@/utils";
+import { getAvailablePeriod, getResponsiveSize } from "@/utils";
 import { Car, PassType, ServiceType } from "@/types";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { PassFilter } from "@/components/pass";
@@ -25,7 +25,7 @@ export const PassList = () => {
 
   const [car, setCar] = useState<Car | null>(null);
   const [passType, setPassType] = useState<PassType | null>(
-    router.params.passType ?? null
+    router.params.passType ?? null,
   );
   const [skip, setSkip] = useState<number>(0);
   const [tickets, setTickets] = useState<GetTicketListReponse["data"]>([]);
@@ -47,7 +47,7 @@ export const PassList = () => {
         retry: false,
         gcTime: 0,
       },
-    }
+    },
   );
 
   // 구독권 목록 조회 API
@@ -69,7 +69,7 @@ export const PassList = () => {
         retry: false,
         gcTime: 0,
       },
-    }
+    },
   );
 
   // 페이지네이션
@@ -129,11 +129,10 @@ export const PassList = () => {
                       maxUsage={
                         value.subscriptionSnapshot.maxUsage ?? undefined
                       }
-                      availablePeriod={`${dayjs(value.paidAt).format(
-                        "YY.MM.DD"
-                      )}~${dayjs(value.paidAt)
-                        .add(1, "month")
-                        .format("YY.MM.")}${value.billingDate}`}
+                      availablePeriod={getAvailablePeriod(
+                        value.paidAt,
+                        value.billingDate,
+                      )}
                     />
                   ))}
               </View>
@@ -146,7 +145,7 @@ export const PassList = () => {
                 serviceType={item.serviceType as ServiceType}
                 storeName={item.storeName}
                 availablePeriod={`${dayjs(item.createdAt).format(
-                  "YY.MM.DD"
+                  "YY.MM.DD",
                 )} ~ ${dayjs(item.expiredAt).format("YY.MM.DD")}`}
               />
             )}

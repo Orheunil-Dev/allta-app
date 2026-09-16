@@ -7,6 +7,7 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import * as Linking from "expo-linking";
+import { Airbridge } from "airbridge-react-native-sdk";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
 import { IntroStack, IntroStackParamList } from "./IntroStack";
@@ -39,6 +40,7 @@ import { CustomHeader } from "@/components/layout/CustomHeader";
 import { CommonModal, ErrorModal, LoginModal } from "@/components/modal";
 import { IS_GET_PERMISSION } from "@/constants";
 import { InquiryStack, InquiryStackParamList } from "./InquiryStack";
+import { SelfGuide } from "@/screens/SelfGuide";
 
 export type ContainerStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
@@ -73,6 +75,7 @@ export type ContainerStackParamList = {
     phoneNumber: string;
   };
   Guide: undefined;
+  SelfGuide: undefined;
 };
 
 interface Props {
@@ -85,24 +88,25 @@ interface Props {
 const Stack = createNativeStackNavigator<ContainerStackParamList>();
 
 const linking = {
-  prefixes: [Linking.createURL("/"), "allta-user://"],
+  prefixes: [
+    Linking.createURL("/"),
+    "allta-user://",
+    "https://allta.airbridge.io",
+    "https://allta.abr.ge",
+    "https://app.allta.io",
+  ],
   config: {
     screens: {
-      Coupon: "coupon",
-      Referral: "referral",
+      Guide: "guide",
+      SelfGuid: "self-guide",
       PassStack: {
         path: "pass",
         screens: {
           PassList: "",
         },
       },
-      InquiryStack: {
-        path: "inquiry",
-        screens: {
-          InquiryList: "",
-          InquiryDetail: ":id",
-        },
-      },
+      ServiceHistory: "service-history",
+      Coupon: "coupon",
       EventStack: {
         path: "event",
         screens: {
@@ -110,7 +114,21 @@ const linking = {
           EventDetail: ":id",
         },
       },
-      Guide: "guide",
+      Referral: "referral",
+      InquiryStack: {
+        path: "inquiry",
+        screens: {
+          InquiryList: "",
+          InquiryDetail: ":id",
+        },
+      },
+      NoticeStack: {
+        path: "notice",
+        screens: {
+          NoticeList: "",
+          NoticeDetail: ":id",
+        },
+      },
     },
   },
 };
@@ -123,8 +141,7 @@ export const ContainerStack = ({
 }: Props) => {
   const { t } = useTranslation("nav");
 
-  const navigationRef = useNavigationContainerRef();
-
+  const navigationRef = useNavigationContainerRef<ContainerStackParamList>();
   const routeNameRef = useRef<string | undefined>(undefined);
 
   const isGetPermission = mmkvStorage.getBoolean(IS_GET_PERMISSION);
@@ -139,6 +156,92 @@ export const ContainerStack = ({
     }, 0);
 
     return () => clearTimeout(timeout);
+  }, []);
+
+  // 딥링크 처리
+  useEffect(() => {
+    Airbridge.setOnDeeplinkReceived((url) => {
+      if (!navigationRef.isReady()) return;
+
+      const { hostname, path } = Linking.parse(url);
+
+      switch (hostname) {
+        // 가이드
+        case "guide": {
+          return navigationRef.navigate("Guide");
+        }
+
+        // 무인매장 가이드
+        case "self-guide": {
+          return navigationRef.navigate("SelfGuide");
+        }
+
+        // 이용권
+        case "pass": {
+          return navigationRef.navigate("PassStack", {
+            screen: "PassList",
+            params: {},
+          });
+        }
+
+        // 이용 내역
+        case "service-history": {
+          return navigationRef.navigate("ServiceHistory");
+        }
+
+        // 쿠폰
+        case "coupon": {
+          return navigationRef.navigate("Coupon");
+        }
+
+        // 이벤트
+        case "event": {
+          if (path) {
+            return navigationRef.navigate("EventStack", {
+              screen: "EventDetail",
+              params: { id: path },
+            });
+          } else {
+            return navigationRef.navigate("EventStack", {
+              screen: "EventList",
+            });
+          }
+        }
+
+        // 친구추천
+        case "referral": {
+          return navigationRef.navigate("Referral");
+        }
+
+        // 문의
+        case "inquiry": {
+          if (path) {
+            return navigationRef.navigate("InquiryStack", {
+              screen: "InquiryDetail",
+              params: { id: path },
+            });
+          } else {
+            return navigationRef.navigate("InquiryStack", {
+              screen: "InquiryList",
+            });
+          }
+        }
+
+        // 공지사항
+        case "notice": {
+          if (path) {
+            return navigationRef.navigate("NoticeStack", {
+              screen: "NoticeDetail",
+              params: { id: path },
+            });
+          } else {
+            return navigationRef.navigate("NoticeStack", {
+              screen: "NoticeList",
+            });
+          }
+        }
+      }
+    });
   }, []);
 
   return (
@@ -333,6 +436,15 @@ export const ContainerStack = ({
           options={{
             header: () => (
               <CustomHeader title={t("container.guide")} showBackButton />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="SelfGuide"
+          component={SelfGuide}
+          options={{
+            header: () => (
+              <CustomHeader title={t("container.selfGuide")} showBackButton />
             ),
           }}
         />

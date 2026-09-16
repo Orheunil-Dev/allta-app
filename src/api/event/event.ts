@@ -21,6 +21,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  EventControllerGetEventListParams,
   GetEventDetailResponse,
   GetEventListResponse
 } from '.././models';
@@ -33,13 +34,14 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 export const eventControllerGetEventList = (
-    
+    params?: EventControllerGetEventListParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<GetEventListResponse>(
-      {url: `/event`, method: 'GET', signal
+      {url: `/event`, method: 'GET',
+        params, signal
     },
       options);
     }
@@ -47,23 +49,23 @@ export const eventControllerGetEventList = (
 
 
 
-export const getEventControllerGetEventListQueryKey = () => {
+export const getEventControllerGetEventListQueryKey = (params?: EventControllerGetEventListParams,) => {
     return [
-    `/event`
+    `/event`, ...(params ? [params]: [])
     ] as const;
     }
 
     
-export const getEventControllerGetEventListQueryOptions = <TData = Awaited<ReturnType<typeof eventControllerGetEventList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getEventControllerGetEventListQueryOptions = <TData = Awaited<ReturnType<typeof eventControllerGetEventList>>, TError = unknown>(params?: EventControllerGetEventListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getEventControllerGetEventListQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getEventControllerGetEventListQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof eventControllerGetEventList>>> = ({ signal }) => eventControllerGetEventList(requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof eventControllerGetEventList>>> = ({ signal }) => eventControllerGetEventList(params, requestOptions, signal);
 
       
 
@@ -77,7 +79,7 @@ export type EventControllerGetEventListQueryError = unknown
 
 
 export function useEventControllerGetEventList<TData = Awaited<ReturnType<typeof eventControllerGetEventList>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>> & Pick<
+ params: undefined |  EventControllerGetEventListParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof eventControllerGetEventList>>,
           TError,
@@ -87,7 +89,7 @@ export function useEventControllerGetEventList<TData = Awaited<ReturnType<typeof
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useEventControllerGetEventList<TData = Awaited<ReturnType<typeof eventControllerGetEventList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>> & Pick<
+ params?: EventControllerGetEventListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof eventControllerGetEventList>>,
           TError,
@@ -97,16 +99,16 @@ export function useEventControllerGetEventList<TData = Awaited<ReturnType<typeof
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useEventControllerGetEventList<TData = Awaited<ReturnType<typeof eventControllerGetEventList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params?: EventControllerGetEventListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useEventControllerGetEventList<TData = Awaited<ReturnType<typeof eventControllerGetEventList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ params?: EventControllerGetEventListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof eventControllerGetEventList>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getEventControllerGetEventListQueryOptions(options)
+  const queryOptions = getEventControllerGetEventListQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
