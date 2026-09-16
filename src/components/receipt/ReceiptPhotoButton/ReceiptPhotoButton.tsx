@@ -1,4 +1,5 @@
 import { Image, Pressable, StyleSheet } from "react-native";
+import { useTranslation } from "react-i18next";
 import { CameraView } from "expo-camera";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ReceiptScanStackParamList } from "@/navigations";
@@ -26,6 +27,8 @@ export const ReceiptPhotoButton = ({
   setIsLoading,
   receiptScanNavigation,
 }: Props) => {
+  const { t } = useTranslation("scan");
+
   const {
     mutate: verifyReceipt,
     isPending: verifyReceiptLoading,
@@ -138,7 +141,7 @@ export const ReceiptPhotoButton = ({
 
             return receiptScanNavigation.navigate("ReceiptScanError", {
               code: "001",
-              message: "영수증 인식에 실패했습니다.",
+              message: t("receiptScanError.recognitionFailed.title"),
             });
           },
         }
@@ -154,7 +157,7 @@ export const ReceiptPhotoButton = ({
       } else {
         return receiptScanNavigation.navigate("ReceiptScanError", {
           code: "001",
-          message: "영수증 인식에 실패했습니다.",
+          message: t("receiptScanError.recognitionFailed.title"),
         });
       }
     }

@@ -1,0 +1,30 @@
+{
+  "addAddress": "新增地址",
+  "setCurrentLocation": "設為目前位置",
+  "locationPermission": {
+    "title": "尚未取得位置資訊存取權限",
+    "message": "您可以在應用程式設定中允許位置資訊存取權限。要前往設定嗎？",
+    "openSettings": "設定"
+  },
+  "list": {
+    "maxCount": "地址最多可登錄 {{max}} 筆。"
+  },
+  "register": {
+    "home": "住家",
+    "company": "公司",
+    "etc": "其他",
+    "nicknamePlaceholder": "請輸入別名"
+  },
+  "search": {
+    "placeholder": "以地號、路名或建築名稱搜尋"
+  },
+  "options": {
+    "delete": "刪除",
+    "deleteConfirm": "確定要刪除所選的地址嗎？",
+    "deleteSuccess": "地址已刪除。",
+    "deleteError": "刪除地址時發生錯誤。"
+  },
+  "select": {
+    "title": "選擇地址"
+  }
+}

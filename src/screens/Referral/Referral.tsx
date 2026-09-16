@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { shareCustomTemplate } from "@react-native-kakao/share";
@@ -22,10 +23,26 @@ import { colors, fontMap } from "@/styles";
 
 const { width: screenWidth } = Dimensions.get("window");
 
+const REFERRAL_NOTICE_KEYS = [
+  "announcement",
+  "rewardDate",
+  "rewardPerFriend",
+  "keepAccount",
+  "tax",
+  "oneTimeOnly",
+  "noSelfCode",
+  "fraud",
+  "limitedQuantity",
+  "notification",
+  "subjectToChange",
+] as const;
+
 export const Referral = () => {
   const [referralCode, setReferralCode] = useState<string>("");
 
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const { t } = useTranslation("benefit");
 
   const { SuccessToast, ErrorToast } = useToastMessage();
 
@@ -47,11 +64,11 @@ export const Referral = () => {
   // 추첱코드 등록
   const handleRegisterReferralCode = () => {
     if (referralCode.length !== 6) {
-      return ErrorToast("추천코드는 6자 입니다.");
+      return ErrorToast(t("referral.codeLength"));
     }
 
     if (referralCodeData?.data.referralCode === referralCode) {
-      return ErrorToast("본인의 추천코드는 등록할 수 없습니다.");
+      return ErrorToast(t("referral.ownCode"));
     }
 
     registerReferralCode(
@@ -63,17 +80,17 @@ export const Referral = () => {
       {
         onSuccess: (res) => {
           if (!res.ok) {
-            return ErrorToast("잘못된 추천코드입니다.");
+            return ErrorToast(t("referral.invalidCode"));
           }
 
-          SuccessToast("추천코드가 등록되었습니다.");
+          SuccessToast(t("referral.registered"));
 
           return referralRefetch();
         },
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "추천코드 등록 중 오류가 발생했습니다.",
+            message: error?.message ?? t("referral.registerError"),
           });
         },
       }
@@ -98,7 +115,7 @@ export const Referral = () => {
     if (!referralCodeData?.data.referralCode.length) return;
 
     await Clipboard.setStringAsync(referralCodeData?.data.referralCode).then(
-      () => SuccessToast("추천코드가 복사되었습니다.")
+      () => SuccessToast(t("referral.copied"))
     );
   };
 
@@ -111,7 +128,7 @@ export const Referral = () => {
           <View style={styles.eventBannerBottom}>
             <View style={styles.referredCount}>
               <CustomText color={colors.white} fontSize={16}>
-                현재 초대한 친구
+                {t("referral.invitedFriends")}
               </CustomText>
 
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -124,7 +141,7 @@ export const Referral = () => {
                   {referralCodeData?.data.referredCount ?? 0}
                 </CustomText>
                 <CustomText color={colors.white} fontSize={16}>
-                  명
+                  {t("referral.countUnit")}
                 </CustomText>
               </View>
             </View>
@@ -133,7 +150,7 @@ export const Referral = () => {
           <View style={styles.container}>
             <View style={styles.referralCode}>
               <CustomText fontSize={16} fontWeight={"600"}>
-                나의 추천 코드
+                {t("referral.myCode")}
               </CustomText>
               <CustomText fontSize={24} fontWeight={"600"} letterSpacing={0.1}>
                 {referralCodeData?.data.referralCode ?? ""}
@@ -152,7 +169,7 @@ export const Referral = () => {
                   fontSize={16}
                   fontWeight={"600"}
                 >
-                  카톡으로 초대하기
+                  {t("referral.shareKakao")}
                 </CustomText>
               </CustomButton>
 
@@ -167,16 +184,16 @@ export const Referral = () => {
                   fontSize={16}
                   fontWeight={"600"}
                 >
-                  추천 코드 복사하기
+                  {t("referral.copyCode")}
                 </CustomText>
               </CustomButton>
             </View>
 
             <CustomText marginTop={40} fontSize={18} fontWeight={"600"}>
-              추천 코드 등록
+              {t("referral.registerTitle")}
             </CustomText>
             <CustomText color={colors.gray5} fontSize={14}>
-              추천 코드는 입력 후 변경할 수 없어요.
+              {t("referral.registerDescription")}
             </CustomText>
           </View>
 
@@ -200,7 +217,7 @@ export const Referral = () => {
                 keyboardType="default"
                 autoCorrect={false}
                 autoCapitalize="none"
-                placeholder="추천코드 입력"
+                placeholder={t("referral.codePlaceholder")}
                 maxLength={6}
                 underlineColorAndroid="transparent"
                 style={styles.codeInput}
@@ -214,7 +231,7 @@ export const Referral = () => {
                   fontSize={15}
                   fontWeight={"500"}
                 >
-                  코드등록
+                  {t("referral.registerCode")}
                 </CustomText>
               </View>
             ) : (
@@ -233,7 +250,7 @@ export const Referral = () => {
                   <Spinner />
                 ) : (
                   <CustomText fontSize={15} fontWeight={"500"}>
-                    코드등록
+                    {t("referral.registerCode")}
                   </CustomText>
                 )}
               </CustomButton>
@@ -242,48 +259,13 @@ export const Referral = () => {
 
           <View style={styles.terms}>
             <CustomText color={colors.gray7} fontSize={14}>
-              유의사항
+              {t("referral.notice.title")}
             </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 당첨자 발표 : 2026.01.06 (화)
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 경품 지급일 : 당첨자 발표 이후 영업일 30일 이내에 리워드가
-              지급됩니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 초대받은 친구 중 회원가입을 완료한 친구 수 만큼 친구 초대 이벤트
-              경품이 지급됩니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 이벤트 기간부터 최종 경품 지급 시기까지 초대한 사람, 초대받은
-              사람 모두 계정을 유지해야 경품이 지급됩니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 지급되는 경품의 금액이 5만원을 초과할 경우, 경품에 제세공과금이
-              부과되며, 이는 당사가 부담합니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 추천 코드는 가입 후 1회만 등록할 수 있으며, 이후 수정은
-              불가합니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 본인의 추천 코드를 자신에게 등록할 수 없습니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 부정한 방법(가짜 계정, 반복 등록 등)으로 참여한 경우 혜택은
-              회수되며, 서비스 이용이 제한될 수 있습니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 상품 지급 대상자는 각 상품 당 선착순 100명으로 한정됩니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 이벤트 당첨자 및 지급 대상자는 당사 기준에 따라 문자(SMS)를 통해
-              개별 안내드립니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={14}>
-              • 본 이벤트는 당사의 사정에 따라 변경 또는 종료될 수 있습니다.
-            </CustomText>
+            {REFERRAL_NOTICE_KEYS.map((key) => (
+              <CustomText key={key} color={colors.gray7} fontSize={14}>
+                • {t(`referral.notice.${key}`)}
+              </CustomText>
+            ))}
           </View>
         </ScrollView>
       </CustomKeyboardAvoidingView>

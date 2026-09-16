@@ -4,6 +4,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { usePurchaseControllerGetPurchaseList } from "@/api/purchase/purchase";
 import { GetPurchaseListResponse } from "@/api/models";
 import { PurchaseStackParamList } from "@/navigations";
@@ -19,6 +20,7 @@ import { colors } from "@/styles";
 export const PurchaseList = () => {
   const purchaseNavigation =
     useNavigation<NativeStackNavigationProp<PurchaseStackParamList>>();
+  const { t } = useTranslation("pass");
 
   const [skip, setSkip] = useState<number>(0);
   const [payments, setPayments] = useState<GetPurchaseListResponse["data"]>([]);
@@ -95,7 +97,9 @@ export const PurchaseList = () => {
                   {formatPassType(item.productType)}
                 </CustomText>
                 <CustomText fontSize={18} fontWeight={"600"}>
-                  {item.totalAmount.toLocaleString()}원
+                  {t("common:currency", {
+                    amount: item.totalAmount.toLocaleString(),
+                  })}
                 </CustomText>
               </View>
 
@@ -114,7 +118,7 @@ export const PurchaseList = () => {
             fontSize={20}
             fontWeight={"600"}
           >
-            결제 내역이 없습니다.
+            {t("purchase.list.empty")}
           </CustomText>
         </View>
       )}

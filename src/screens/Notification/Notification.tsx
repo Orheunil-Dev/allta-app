@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 import {
@@ -14,6 +15,8 @@ import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 
 export const Notification = () => {
+  const { t } = useTranslation("mypage");
+
   const [skip, setSkip] = useState<number>(0);
   const [notifications, setNotifications] = useState<
     GetNotificationsResponse["data"]
@@ -108,10 +111,10 @@ export const Notification = () => {
             fontSize={20}
             fontWeight={"600"}
           >
-            아직 새로운 알림이 없습니다.
+            {t("notification.empty.title")}
           </CustomText>
           <CustomText marginBottom={40} color={colors.gray5} fontSize={16}>
-            새로운 소식이 있으면 알려드릴게요!
+            {t("notification.empty.description")}
           </CustomText>
         </View>
       )}

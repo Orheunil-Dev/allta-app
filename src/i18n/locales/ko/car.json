@@ -1,0 +1,42 @@
+{
+  "list": {
+    "add": "차량 추가하기",
+    "empty": "차량을 등록해주세요",
+    "maxCount": "차량은 최대 {{count}}대까지 등록 가능합니다."
+  },
+  "mainCar": {
+    "badge": "대표차량",
+    "setAsMain": "대표 차량으로 설정하기",
+    "alreadyMain": "해당 차량은 대표 차량입니다.",
+    "changed": "대표 차량이 변경되었습니다.",
+    "changeError": "대표 차량 변경 중 오류가 발생했습니다."
+  },
+  "select": {
+    "title": "차량 선택"
+  },
+  "form": {
+    "vendor": "제조사",
+    "model": "모델",
+    "carNumber": "차량번호",
+    "carNumberPlaceholder": "12가3456",
+    "carNumberInvalid": "올바른 차량번호 형식이 아닙니다.",
+    "modelNotFound": "찾으시는 차량 모델이 목록에 없는 경우, 고객센터로 문의해 주세요."
+  },
+  "register": {
+    "submit": "등록하기",
+    "error": "차량 등록 중 오류가 발생했습니다."
+  },
+  "update": {
+    "submit": "수정하기",
+    "error": "차량 수정 중 오류가 발생했습니다."
+  },
+  "options": {
+    "edit": "수정하기",
+    "delete": "삭제하기"
+  },
+  "delete": {
+    "confirm": "선택한 차량을 삭제하시겠습니까?",
+    "success": "차량이 삭제되었습니다.",
+    "error": "차량 삭제 중 오류가 발생했습니다."
+  }
+}

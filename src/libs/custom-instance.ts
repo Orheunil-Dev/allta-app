@@ -8,6 +8,8 @@ import * as SecureStore from "expo-secure-store";
 import CookieManager from "@react-native-cookies/cookies";
 import { Airbridge } from "airbridge-react-native-sdk";
 import { CustomError } from "@/types";
+import i18n from "@/i18n";
+import { localizeServerMessage } from "./server-message";
 
 interface AxiosRequestConfigWithRetry extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -30,7 +32,7 @@ const getNewAccessToken = async (): Promise<void> => {
 
     if (!refreshToken) {
       const error: CustomError = {
-        message: "로그인이 만료되었습니다.",
+        message: i18n.t("common:error.loginExpired"),
         status: 401,
         code: "TOKEN_REFRESH_FAILED",
       };
@@ -48,7 +50,7 @@ const getNewAccessToken = async (): Promise<void> => {
 
     if (!newAccessToken || !newRefreshToken) {
       const error: CustomError = {
-        message: "로그인이 만료되었습니다.",
+        message: i18n.t("common:error.loginExpired"),
         status: 401,
         code: "TOKEN_REFRESH_FAILED",
       };
@@ -75,7 +77,7 @@ const getNewAccessToken = async (): Promise<void> => {
     });
   } catch (e) {
     const error: CustomError = {
-      message: "로그인이 만료되었습니다.",
+      message: i18n.t("common:error.loginExpired"),
       status: 401,
       code: "TOKEN_REFRESH_FAILED",
     };
@@ -89,6 +91,8 @@ const getNewAccessToken = async (): Promise<void> => {
 // Request 인터셉터
 AXIOS_INSTANCE.interceptors.request.use(
   async (config: AxiosRequestConfigWithRetry) => {
+    config.headers["Accept-Language"] = i18n.language;
+
     const accessToken = await SecureStore.getItemAsync("accessToken");
     const refreshToken = await SecureStore.getItemAsync("refreshToken");
 
@@ -148,7 +152,7 @@ AXIOS_INSTANCE.interceptors.response.use(
         return AXIOS_INSTANCE(originalRequest);
       } catch (error: any) {
         const customError: CustomError = {
-          message: "로그인 후 사용해주세요.",
+          message: i18n.t("common:error.loginRequired"),
           status: 401,
           code: "TOKEN_REFRESH_FAILED",
         };
@@ -183,13 +187,15 @@ export const customInstance = <T = any>(
       if ((error as AxiosError).isAxiosError) {
         const axiosError = error as AxiosError;
 
-        // 서버 응답 메시지가 있을 경우 error 객체에 추가
-        const message = (axiosError.response?.data as any)?.message;
+        // 서버 응답 메시지가 있을 경우 앱 언어로 치환해 error 객체에 추가
+        const message = localizeServerMessage(
+          (axiosError.response?.data as any)?.message
+        );
         const status = axiosError.response?.status;
 
         throw { message, status } as CustomError;
       } else {
-        const message = (error as any)?.message ?? "오류가 발생했습니다.";
+        const message = (error as any)?.message ?? i18n.t("common:error.generic");
         const status = (error as any)?.status ?? 500;
 
         throw { message, status } as CustomError;

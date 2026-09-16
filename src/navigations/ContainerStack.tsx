@@ -5,6 +5,7 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import * as Linking from "expo-linking";
 import { BottomTab, BottomTabParamList } from "./BottomTab";
 import { LoginStack, LoginStackParamList } from "./LoginStack";
@@ -120,6 +121,8 @@ export const ContainerStack = ({
   showLoginModal,
   setShowLoginModal,
 }: Props) => {
+  const { t } = useTranslation("nav");
+
   const navigationRef = useNavigationContainerRef();
 
   const routeNameRef = useRef<string | undefined>(undefined);
@@ -172,7 +175,7 @@ export const ContainerStack = ({
           name="Notification"
           component={Notification}
           options={{
-            header: () => <CustomHeader title="알림" showBackButton />,
+            header: () => <CustomHeader title={t("container.notification")} showBackButton />,
           }}
         />
         <Stack.Screen
@@ -270,14 +273,14 @@ export const ContainerStack = ({
           name="ServiceHistory"
           component={ServiceHistory}
           options={{
-            header: () => <CustomHeader title="이용 내역" showBackButton />,
+            header: () => <CustomHeader title={t("container.serviceHistory")} showBackButton />,
           }}
         />
         <Stack.Screen
           name="Coupon"
           component={Coupon}
           options={{
-            header: () => <CustomHeader title="쿠폰" showBackButton />,
+            header: () => <CustomHeader title={t("container.coupon")} showBackButton />,
           }}
         />
         <Stack.Screen
@@ -292,7 +295,7 @@ export const ContainerStack = ({
           component={Referral}
           options={{
             header: () => (
-              <CustomHeader title="친구 초대 / 등록" showBackButton />
+              <CustomHeader title={t("container.referral")} showBackButton />
             ),
           }}
         />
@@ -307,7 +310,7 @@ export const ContainerStack = ({
           name="Faq"
           component={Faq}
           options={{
-            header: () => <CustomHeader title="FAQ" showBackButton />,
+            header: () => <CustomHeader title={t("container.faq")} showBackButton />,
           }}
         />
         <Stack.Screen
@@ -321,7 +324,7 @@ export const ContainerStack = ({
           name="Profile"
           component={Profile}
           options={{
-            header: () => <CustomHeader title="내 정보" showBackButton />,
+            header: () => <CustomHeader title={t("container.profile")} showBackButton />,
           }}
         />
         <Stack.Screen
@@ -329,7 +332,7 @@ export const ContainerStack = ({
           component={Guide}
           options={{
             header: () => (
-              <CustomHeader title="올타 이용 가이드" showBackButton />
+              <CustomHeader title={t("container.guide")} showBackButton />
             ),
           }}
         />

@@ -20,6 +20,7 @@ import {
 import { colors } from "@/styles";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { ContainerStackParamList } from "@/navigations";
 import { ScrollView } from "react-native-gesture-handler";
 import { GetAddressListResponse } from "@/api/models";
@@ -53,6 +54,8 @@ export const AddressSelectBottomSheet = ({
   coordinate,
   setCoordinate,
 }: Props) => {
+  const { t } = useTranslation("address");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -70,12 +73,12 @@ export const AddressSelectBottomSheet = ({
 
       if (status !== "granted") {
         Alert.alert(
-          "위치정보 접근 권한이 없습니다",
-          "앱 설정에서 위치정보 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          t("locationPermission.title"),
+          t("locationPermission.message"),
           [
-            { text: "닫기", style: "cancel", onPress: onClose },
+            { text: t("common:close"), style: "cancel", onPress: onClose },
             {
-              text: "설정",
+              text: t("locationPermission.openSettings"),
               onPress: () => Linking.openSettings(),
             },
           ]
@@ -113,7 +116,7 @@ export const AddressSelectBottomSheet = ({
     <CustomBottomSheet
       ref={ref}
       height={getResponsiveSize(520)}
-      title="주소 선택"
+      title={t("select.title")}
       hasCloseButton
       onClose={onClose}
     >
@@ -127,7 +130,7 @@ export const AddressSelectBottomSheet = ({
         >
           <Image source={myLocationIcon} style={styles.locationIcon} />
           <CustomText fontSize={15} fontWeight={"500"}>
-            현재 위치로 설정
+            {t("setCurrentLocation")}
           </CustomText>
         </CustomButton>
 
@@ -189,7 +192,7 @@ export const AddressSelectBottomSheet = ({
         backgroundColor={colors.main}
       >
         <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-          주소 추가하기
+          {t("addAddress")}
         </CustomText>
       </CustomButton>
     </CustomBottomSheet>

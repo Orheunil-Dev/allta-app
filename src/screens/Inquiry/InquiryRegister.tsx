@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
@@ -19,7 +20,12 @@ import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
 import { colors } from "@/styles";
 import { Spinner } from "@/components/ui/Spinner";
 
+const MIN_CONTENT_LENGTH = 10;
+const MAX_CONTENT_LENGTH = 500;
+
 export const InquiryRegister = () => {
+  const { t } = useTranslation("mypage");
+
   const queryClient = useQueryClient();
 
   const inquiryNavigation =
@@ -42,12 +48,16 @@ export const InquiryRegister = () => {
 
   // 문의 등록
   const handleSubmit = () => {
-    if (inquiry.content.length < 10) {
-      return ErrorToast("내용은 최소 10자 이상 입력해주세요.");
+    if (inquiry.content.length < MIN_CONTENT_LENGTH) {
+      return ErrorToast(
+        t("inquiry.contentMinLength", { count: MIN_CONTENT_LENGTH })
+      );
     }
 
-    if (inquiry.content.length > 500) {
-      return ErrorToast("내용은 최대 500자 이하로 입력해주세요.");
+    if (inquiry.content.length > MAX_CONTENT_LENGTH) {
+      return ErrorToast(
+        t("inquiry.contentMaxLength", { count: MAX_CONTENT_LENGTH })
+      );
     }
 
     registerInquiry(
@@ -59,14 +69,14 @@ export const InquiryRegister = () => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["inquiries"] });
-          SuccessToast("문의 등록이 완료되었습니다.");
+          SuccessToast(t("inquiry.registerSuccess"));
 
           return inquiryNavigation.goBack();
         },
         onError: (error: any) => {
           return setErrorModal({
             visible: true,
-            message: error?.message ?? "문의 등록 중 오류가 발생했습니다.",
+            message: error?.message ?? t("inquiry.registerError"),
           });
         },
       }
@@ -84,14 +94,14 @@ export const InquiryRegister = () => {
                 setInquiry((prev) => ({ ...prev, content: text }))
               }
               multiline
-              maxLength={500}
-              placeholder="문의 내용을 입력해주세요."
+              maxLength={MAX_CONTENT_LENGTH}
+              placeholder={t("inquiry.contentPlaceholder")}
               style={styles.contentInput}
             />
 
             <View style={styles.counter}>
               <CustomText fontSize={14} color={colors.gray5}>
-                {inquiry.content.length}/500
+                {inquiry.content.length}/{MAX_CONTENT_LENGTH}
               </CustomText>
             </View>
           </View>
@@ -109,7 +119,7 @@ export const InquiryRegister = () => {
               <Spinner />
             ) : (
               <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-                등록
+                {t("common:register")}
               </CustomText>
             )}
           </CustomButton>

@@ -1,0 +1,71 @@
+{
+  "loginKind": {
+    "kakao": "Kakao",
+    "google": "Google",
+    "apple": "Apple",
+    "test": "測試"
+  },
+  "relativeDate": {
+    "today": "今天",
+    "yesterday": "昨天",
+    "daysAgo": "{{count}} 天前"
+  },
+  "serviceType": {
+    "auto": "自動洗車",
+    "hands": "手工清潔"
+  },
+  "passType": {
+    "premium": "高級",
+    "standard": "標準",
+    "ticket": "單次券"
+  },
+  "purchaseType": {
+    "premium": "高級訂閱方案",
+    "standard": "標準訂閱方案",
+    "ticket": "單次券"
+  },
+  "couponValue": {
+    "rate": "{{value}}%",
+    "price": "- {{value}} 元",
+    "fixed": "{{value}} 元特價"
+  },
+  "couponPassType": {
+    "allPasses": "所有使用券",
+    "allServicePasses": "所有{{service}}使用券",
+    "servicePasses": "{{service}} {{passes}}",
+    "separator": "、"
+  },
+  "cardCompany": {
+    "label": "{{company}}卡",
+    "bc": "BC",
+    "shinhan": "新韓",
+    "samsung": "三星",
+    "hyundai": "現代",
+    "lotte": "樂天",
+    "jcb": "JCB",
+    "kbKookmin": "KB 國民",
+    "hana": "韓亞",
+    "overseas": "海外",
+    "woori": "友利",
+    "suhyup": "水協",
+    "nonghyup": "農協",
+    "citi": "花旗",
+    "shinhyup": "信協",
+    "unionPay": "銀聯",
+    "jeju": "濟州",
+    "gwangju": "光州",
+    "jeonbuk": "全北",
+    "chohung": "朝興",
+    "jutaek": "住宅"
+  },
+  "purchaseStatus": {
+    "approved": "付款完成",
+    "partialRefunded": "部分退款",
+    "refunded": "全額退款"
+  },
+  "paymentStatus": {
+    "approved": "付款",
+    "partialRefunded": "部分退款",
+    "refunded": "全額退款"
+  }
+}

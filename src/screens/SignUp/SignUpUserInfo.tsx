@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Airbridge } from "airbridge-react-native-sdk";
@@ -30,20 +31,35 @@ import { colors } from "@/styles";
 
 type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpUserInfo">;
 
-// 유효성 검사
-const signUpFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, "이름은 최소 2자 이상 입력해주세요.")
-    .max(10, "이름은 최대 10자까지 입력해주세요.")
-    .regex(regexName, "올바른 이름 형식이 아닙니다."),
-  phoneNumber: z
-    .string()
-    .regex(regexPhoneNumber, "올바른 휴대폰 번호 형식이 아닙니다."),
-});
+const NAME_MIN_LENGTH = 2;
+const NAME_MAX_LENGTH = 10;
 
 export const SignUpUserInfo = () => {
   const route = useRoute<SignUpUserInfoRouteProp>();
+
+  const { t } = useTranslation("auth");
+
+  // 유효성 검사
+  const signUpFormSchema = useMemo(
+    () =>
+      z.object({
+        name: z
+          .string()
+          .min(
+            NAME_MIN_LENGTH,
+            t("validation.nameMin", { min: NAME_MIN_LENGTH })
+          )
+          .max(
+            NAME_MAX_LENGTH,
+            t("validation.nameMax", { max: NAME_MAX_LENGTH })
+          )
+          .regex(regexName, t("validation.nameInvalid")),
+        phoneNumber: z
+          .string()
+          .regex(regexPhoneNumber, t("validation.phoneNumberInvalid")),
+      }),
+    [t]
+  );
 
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
@@ -105,7 +121,7 @@ export const SignUpUserInfo = () => {
 
   // 인증코드 전송
   const handleSendVerificationCode = () => {
-    SuccessToast("인증코드가 전송되었습니다.");
+    SuccessToast(t("verification.codeSent"));
 
     sendVerificationCode(
       {
@@ -218,21 +234,21 @@ export const SignUpUserInfo = () => {
           style={styles.container}
         >
           <CustomText fontSize={24} fontWeight={"600"}>
-            기본 정보를 입력해주세요.
+            {t("signUp.userInfo.title")}
           </CustomText>
 
           <CustomText fontSize={16} marginTop={32}>
-            이름
+            {t("field.name")}
           </CustomText>
           <CustomTextInput
             value={infoForm.name}
             onChangeText={(text) => handleChangeSignUpForm("name", text)}
-            placeholder="이름을 입력해주세요."
+            placeholder={t("field.namePlaceholder")}
             maxLength={10}
           />
 
           <CustomText fontSize={16} marginTop={32}>
-            휴대폰 번호
+            {t("field.phoneNumber")}
           </CustomText>
           <View style={styles.inputBox}>
             <CustomTextInput
@@ -247,7 +263,7 @@ export const SignUpUserInfo = () => {
               }
               maxLength={13}
               keyboardType="number-pad"
-              placeholder="휴대폰 번호를 입력해주세요."
+              placeholder={t("field.phoneNumberPlaceholder")}
               flex={1}
             />
             <Pressable
@@ -266,7 +282,9 @@ export const SignUpUserInfo = () => {
                 fontWeight={"500"}
                 textAlign="center"
               >
-                {isSended ? "인증번호 재전송" : "인증번호 받기"}
+                {isSended
+                  ? t("verification.resend")
+                  : t("verification.request")}
               </CustomText>
             </Pressable>
           </View>
@@ -274,7 +292,7 @@ export const SignUpUserInfo = () => {
           {isSended && (
             <>
               <CustomText fontSize={16} marginTop={32}>
-                인증번호
+                {t("field.verificationCode")}
               </CustomText>
               <View style={styles.inputBox}>
                 <CustomTextInput
@@ -285,14 +303,14 @@ export const SignUpUserInfo = () => {
                   keyboardType="number-pad"
                   errorMessage={
                     !seconds
-                      ? "인증시간이 만료되었습니다."
+                      ? t("verification.expired")
                       : (verifyPhoneNumberError as CustomError)?.message ??
                         undefined
                   }
                   onFocus={() => {
                     scrollRef.current?.scrollTo({ y: 1000, animated: true });
                   }}
-                  placeholder="인증번호 6자리"
+                  placeholder={t("field.verificationCodePlaceholder")}
                 />
 
                 <View style={styles.timer}>
@@ -320,7 +338,7 @@ export const SignUpUserInfo = () => {
               fontSize={16}
               fontWeight={"600"}
             >
-              다음
+              {t("common:next")}
             </CustomText>
           </CustomButton>
         </View>

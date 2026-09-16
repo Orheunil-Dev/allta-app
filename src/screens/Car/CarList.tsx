@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -16,7 +17,11 @@ import { errorModalAtom } from "@/jotai";
 import { CarOptionsBottomSheet } from "@/components/bottom-sheet";
 import { Car } from "@/types";
 
+const MAX_CAR_COUNT = 5;
+
 export const CarList = () => {
+  const { t } = useTranslation("car");
+
   const carStackNavigation =
     useNavigation<NativeStackNavigationProp<CarStackParamList>>();
 
@@ -36,10 +41,10 @@ export const CarList = () => {
 
   // 차량 등록 화면 이동
   const handleRouteCarRegister = () => {
-    if (carData?.data.length && carData?.data.length > 4) {
+    if (carData?.data.length && carData?.data.length >= MAX_CAR_COUNT) {
       return setErrorModal({
         visible: true,
-        message: "차량은 최대 5대까지 등록 가능합니다.",
+        message: t("list.maxCount", { count: MAX_CAR_COUNT }),
       });
     }
 
@@ -87,7 +92,7 @@ export const CarList = () => {
           borderColor={colors.gray2}
         >
           <Image source={plusIcon} style={styles.plusIcon} />
-          <CustomText fontSize={16}>차량 추가하기</CustomText>
+          <CustomText fontSize={16}>{t("list.add")}</CustomText>
         </CustomButton>
 
         <FlatList
@@ -123,7 +128,7 @@ export const CarList = () => {
                       fontWeight={"500"}
                       lineHeight={1.4}
                     >
-                      대표차량
+                      {t("mainCar.badge")}
                     </CustomText>
                   </View>
                 )}

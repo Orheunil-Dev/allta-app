@@ -6,6 +6,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { GetTicketDetailResponse } from "@/api/models";
 import { useDistanceCalculator } from "@/hooks";
 import { formatEllipsis, formatServiceType, getResponsiveSize } from "@/utils";
@@ -27,6 +28,8 @@ export const TicketDetail = ({
   data,
   handleRouteMyStoreDetail,
 }: Props) => {
+  const { t } = useTranslation("pass");
+
   const [passTermsOpen, setPassTermsOpen] = useState<boolean>(false);
   const [refundTermsOpen, setRefundTermsOpen] = useState<boolean>(false);
 
@@ -88,7 +91,7 @@ export const TicketDetail = ({
     <View>
       <ScrollView style={styles.container}>
         <CustomText fontSize={18} fontWeight={"600"}>
-          매장 정보
+          {t("detail.storeInfo")}
         </CustomText>
 
         <Pressable onPress={handleRouteMyStoreDetail} style={styles.storeInfo}>
@@ -137,7 +140,7 @@ export const TicketDetail = ({
         <View style={styles.box}>
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              세차 서비스
+              {t("labels.washService")}
             </CustomText>
             <CustomText fontSize={16}>
               {formatServiceType(data.serviceType)}
@@ -146,34 +149,34 @@ export const TicketDetail = ({
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              이용권
+              {t("labels.pass")}
             </CustomText>
-            <CustomText fontSize={16}>일회권</CustomText>
+            <CustomText fontSize={16}>{t("format:passType.ticket")}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              매장
+              {t("labels.store")}
             </CustomText>
             <CustomText fontSize={16}>{data.store.name}</CustomText>
           </View>
 
           <View style={[styles.row, { borderBottomWidth: 0 }]}>
             <CustomText color={colors.gray5} fontSize={16}>
-              차량번호
+              {t("labels.carNumber")}
             </CustomText>
             <CustomText fontSize={16}>{data.carNumber}</CustomText>
           </View>
         </View>
 
         <CustomText marginTop={40} fontSize={18} fontWeight={"600"}>
-          이용권 상세 정보
+          {t("detail.passInfo")}
         </CustomText>
 
         <View style={styles.box}>
           <View style={[styles.row, { borderBottomWidth: 0 }]}>
             <CustomText color={colors.gray5} fontSize={16}>
-              이용기간
+              {t("labels.usagePeriod")}
             </CustomText>
             <CustomText fontSize={16}>
               {`${dayjs(data.createdAt).format("YY.MM.DD")}~${dayjs(
@@ -192,7 +195,7 @@ export const TicketDetail = ({
             }}
           >
             <CustomText fontSize={16} fontWeight={"600"}>
-              이용권 유의사항
+              {t("detail.terms.pass")}
             </CustomText>
 
             <Pressable onPress={() => setPassTermsOpen(!passTermsOpen)}>
@@ -205,15 +208,15 @@ export const TicketDetail = ({
 
           <View style={styles.rowDivider} />
 
-          <CustomText fontSize={14}>결제 정보 유의사항</CustomText>
+          <CustomText fontSize={14}>{t("detail.terms.paymentInfo")}</CustomText>
           <CustomText marginTop={4} color={colors.gray5} fontSize={14}>
-            • 이용권 시작일 이전까지 전액 환불 가능
+            {t("detail.terms.fullRefundBeforeStart")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 이용 중 환불 시, 사용 일수 또는 횟수를 차감한 후 정산
+            {t("detail.terms.deductUsage")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 프리미엄 이용권은 멤버가 사용한 이력도 환불 금액에 포함됩니다.
+            {t("detail.terms.premiumMemberUsage")}
           </CustomText>
         </Animated.View>
 
@@ -226,7 +229,7 @@ export const TicketDetail = ({
             }}
           >
             <CustomText fontSize={16} fontWeight={"600"}>
-              환불 유의사항
+              {t("detail.terms.refund")}
             </CustomText>
 
             <Pressable onPress={() => setRefundTermsOpen(!refundTermsOpen)}>
@@ -239,15 +242,15 @@ export const TicketDetail = ({
 
           <View style={styles.rowDivider} />
 
-          <CustomText fontSize={14}>결제 정보 유의사항</CustomText>
+          <CustomText fontSize={14}>{t("detail.terms.paymentInfo")}</CustomText>
           <CustomText marginTop={4} color={colors.gray5} fontSize={14}>
-            • 이용권 시작일 이전까지 전액 환불 가능
+            {t("detail.terms.fullRefundBeforeStart")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 이용 중 환불 시, 사용 일수 또는 횟수를 차감한 후 정산
+            {t("detail.terms.deductUsage")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 프리미엄 이용권은 멤버가 사용한 이력도 환불 금액에 포함됩니다.
+            {t("detail.terms.premiumMemberUsage")}
           </CustomText>
         </Animated.View>
       </ScrollView>

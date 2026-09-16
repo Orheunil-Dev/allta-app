@@ -1,0 +1,35 @@
+{
+  "confirm": "확인",
+  "cancel": "취소",
+  "next": "다음",
+  "done": "완료",
+  "save": "저장",
+  "delete": "삭제",
+  "edit": "수정",
+  "close": "닫기",
+  "back": "뒤로",
+  "retry": "다시 시도",
+  "more": "더보기",
+  "all": "전체",
+  "select": "선택",
+  "search": "검색",
+  "register": "등록",
+  "change": "변경",
+  "apply": "적용",
+  "yes": "예",
+  "no": "아니오",
+  "loading": "불러오는 중...",
+  "currency": "{{amount}}원",
+  "empty": "내역이 없습니다.",
+  "error": {
+    "generic": "오류가 발생했습니다.",
+    "network": "네트워크 연결을 확인해주세요.",
+    "loginExpired": "로그인이 만료되었습니다.",
+    "loginRequired": "로그인 후 사용해주세요."
+  },
+  "auth": {
+    "login": "로그인",
+    "logout": "로그아웃",
+    "signUp": "회원가입"
+  }
+}

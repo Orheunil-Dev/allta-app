@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 import * as Linking from "expo-linking";
 import {
   BottomSheetBackdrop,
@@ -24,6 +25,8 @@ interface Props {
 }
 
 export const Popup = ({ data }: Props) => {
+  const { t } = useTranslation("home");
+
   const insets = useSafeAreaInsets();
 
   const popupRef = useRef<BottomSheetModal>(null);
@@ -130,11 +133,11 @@ export const Popup = ({ data }: Props) => {
 
           <View style={styles.buttonBox}>
             <Pressable onPress={handleClose(true)}>
-              <CustomText fontSize={15}>오늘 하루 보지 않기</CustomText>
+              <CustomText fontSize={15}>{t("popup.hideForToday")}</CustomText>
             </Pressable>
 
             <Pressable onPress={handleClose(false)}>
-              <CustomText fontSize={15}>닫기</CustomText>
+              <CustomText fontSize={15}>{t("common:close")}</CustomText>
             </Pressable>
           </View>
         </View>

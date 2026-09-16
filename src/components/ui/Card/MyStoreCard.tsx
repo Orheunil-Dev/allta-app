@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { MyStoreListItem } from "@/api/models";
 import { MyStoreStackParamList } from "@/navigations";
 import { useDistanceCalculator, useToastMessage } from "@/hooks";
@@ -32,6 +33,8 @@ export const MyStoreCard = ({
   lat = 37.5759785,
   lng = 127.1935115,
 }: Props) => {
+  const { t } = useTranslation("store");
+
   const myStoreNavigation =
     useNavigation<NativeStackNavigationProp<MyStoreStackParamList>>();
 
@@ -43,7 +46,7 @@ export const MyStoreCard = ({
     const destination = encodeURIComponent(store.name);
     const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${lng}&rGoY=${lat}`;
 
-    SuccessToast("티맵으로 이동합니다.");
+    SuccessToast(t("info.openTmap"));
 
     return Linking.openURL(tmapScheme);
   };
@@ -66,7 +69,7 @@ export const MyStoreCard = ({
           }
           style={styles.storeImage}
         >
-          {bi.status !== "영업중" && (
+          {!bi.isOpen && (
             <View style={styles.overlay}>
               <CustomText color={colors.white} fontSize={15} fontWeight={"500"}>
                 {bi.status}
@@ -138,7 +141,7 @@ export const MyStoreCard = ({
           borderColor={colors.gray2}
         >
           <CustomText fontSize={13} fontWeight={"500"}>
-            매장 정보
+            {t("storeInfo")}
           </CustomText>
         </CustomButton>
 
@@ -149,7 +152,7 @@ export const MyStoreCard = ({
           backgroundColor={colors.point2}
         >
           <CustomText color={colors.white} fontSize={13} fontWeight={"500"}>
-            길찾기
+            {t("navigate")}
           </CustomText>
         </CustomButton>
       </View>

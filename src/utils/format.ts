@@ -1,16 +1,18 @@
+import i18n from "@/i18n";
+
 export const formatLoginKind = (text: string): string => {
   switch (text) {
     case "KAKAO":
-      return "카카오";
+      return i18n.t("format:loginKind.kakao");
 
     case "GOOGLE":
-      return "구글";
+      return i18n.t("format:loginKind.google");
 
     case "APPLE":
-      return "애플";
+      return i18n.t("format:loginKind.apple");
 
     case "TEST":
-      return "테스트";
+      return i18n.t("format:loginKind.test");
 
     default:
       return text;
@@ -82,13 +84,13 @@ export const formatNotificationTime = (value: string) => {
 
   switch (diffDays) {
     case 0:
-      return "오늘";
+      return i18n.t("format:relativeDate.today");
 
     case 1:
-      return "어제";
+      return i18n.t("format:relativeDate.yesterday");
 
     default:
-      return `${diffDays}일 전`;
+      return i18n.t("format:relativeDate.daysAgo", { count: diffDays });
   }
 };
 
@@ -96,10 +98,10 @@ export const formatNotificationTime = (value: string) => {
 export const formatServiceType = (text: string): string => {
   switch (text) {
     case "AUTO":
-      return "자동세차";
+      return i18n.t("format:serviceType.auto");
 
     case "HANDS":
-      return "핸즈클리닝";
+      return i18n.t("format:serviceType.hands");
 
     default:
       return text;
@@ -110,13 +112,13 @@ export const formatServiceType = (text: string): string => {
 export const formatPassType = (text: string): string | null => {
   switch (text) {
     case "PREMIUM":
-      return "프리미엄";
+      return i18n.t("format:passType.premium");
 
     case "STANDARD":
-      return "스탠다드";
+      return i18n.t("format:passType.standard");
 
     case "TICKET":
-      return "일회권";
+      return i18n.t("format:passType.ticket");
 
     default:
       return text;
@@ -127,13 +129,13 @@ export const formatPassType = (text: string): string | null => {
 export const formatPurchaseType = (text: string): string | null => {
   switch (text) {
     case "PREMIUM":
-      return "프리미엄 구독권";
+      return i18n.t("format:purchaseType.premium");
 
     case "STANDARD":
-      return "스탠다드 구독권";
+      return i18n.t("format:purchaseType.standard");
 
     case "TICKET":
-      return "일회권";
+      return i18n.t("format:purchaseType.ticket");
 
     default:
       return text;
@@ -153,16 +155,22 @@ export const formatEllipsis = (text: string, length: number) => {
 export const formatCouponValue = (type: string, value: number): string => {
   switch (type) {
     case "RATE":
-      return `${value}%`;
+      return i18n.t("format:couponValue.rate", { value });
 
     case "PRICE":
-      return `- ${value.toLocaleString()}원`;
+      return i18n.t("format:couponValue.price", {
+        value: value.toLocaleString(),
+      });
 
     case "FIXED":
-      return `${value.toLocaleString()}원 특가`;
+      return i18n.t("format:couponValue.fixed", {
+        value: value.toLocaleString(),
+      });
 
     default:
-      return `- ${value.toLocaleString()}원`;
+      return i18n.t("format:couponValue.price", {
+        value: value.toLocaleString(),
+      });
   }
 };
 
@@ -172,26 +180,36 @@ export const formatCouponPassType = (
   passType: string | null
 ): string => {
   let serviceLabel = "";
-  if (serviceType === "AUTO") serviceLabel = "자동세차";
-  else if (serviceType === "HANDS") serviceLabel = "핸즈클리닝";
+  if (serviceType === "AUTO") serviceLabel = i18n.t("format:serviceType.auto");
+  else if (serviceType === "HANDS")
+    serviceLabel = i18n.t("format:serviceType.hands");
 
   if (!passType)
-    return serviceLabel ? `모든 ${serviceLabel} 이용권` : "모든 이용권";
+    return serviceLabel
+      ? i18n.t("format:couponPassType.allServicePasses", {
+          service: serviceLabel,
+        })
+      : i18n.t("format:couponPassType.allPasses");
 
   const passTypes = passType.split(",").map((v) => v.trim());
 
   const typeMap: Record<string, string> = {
-    STANDARD: "스탠다드",
-    PREMIUM: "프리미엄",
-    TICKET: "일회권",
+    STANDARD: i18n.t("format:passType.standard"),
+    PREMIUM: i18n.t("format:passType.premium"),
+    TICKET: i18n.t("format:passType.ticket"),
   };
 
   const order = ["TICKET", "STANDARD", "PREMIUM"];
   const sorted = passTypes.sort((a, b) => order.indexOf(a) - order.indexOf(b));
-  const formatted = sorted.map((type) => typeMap[type] || type).join(", ");
+  const formatted = sorted
+    .map((type) => typeMap[type] || type)
+    .join(i18n.t("format:couponPassType.separator"));
 
   if (serviceLabel) {
-    return `${serviceLabel} ${formatted}`;
+    return i18n.t("format:couponPassType.servicePasses", {
+      service: serviceLabel,
+      passes: formatted,
+    });
   }
 
   return formatted;
@@ -208,35 +226,41 @@ export const formatCardDisplayNumber = (value?: string | null) => {
 export const formatCardCompany = (value?: string | null) => {
   if (!value) return "";
 
-  const cardCompanyMap: Record<string, string> = {
-    "01": "BC",
-    "02": "신한",
-    "03": "삼성",
-    "04": "현대",
-    "05": "롯데",
-    "06": "JCB",
-    "07": "KB국민",
-    "08": "하나",
-    "09": "해외",
-    "10": "우리",
-    "11": "수협",
-    "12": "농협",
-    "13": "시티",
-    "14": "우리",
-    "15": "시티",
-    "17": "신협",
-    "18": "은련",
-    "19": "롯데",
-    "22": "제주",
-    "23": "광주",
-    "24": "전북",
-    "25": "조흥",
-    "26": "주택",
-    "27": "하나",
-    "30": "시티",
+  // 카드사 코드 → format 네임스페이스 cardCompany 키
+  const cardCompanyKeyMap: Record<string, string> = {
+    "01": "bc",
+    "02": "shinhan",
+    "03": "samsung",
+    "04": "hyundai",
+    "05": "lotte",
+    "06": "jcb",
+    "07": "kbKookmin",
+    "08": "hana",
+    "09": "overseas",
+    "10": "woori",
+    "11": "suhyup",
+    "12": "nonghyup",
+    "13": "citi",
+    "14": "woori",
+    "15": "citi",
+    "17": "shinhyup",
+    "18": "unionPay",
+    "19": "lotte",
+    "22": "jeju",
+    "23": "gwangju",
+    "24": "jeonbuk",
+    "25": "chohung",
+    "26": "jutaek",
+    "27": "hana",
+    "30": "citi",
   };
 
-  return `${cardCompanyMap[value] ?? value} 카드`;
+  const companyKey = cardCompanyKeyMap[value];
+  const company = companyKey
+    ? i18n.t(`format:cardCompany.${companyKey}`)
+    : value;
+
+  return i18n.t("format:cardCompany.label", { company });
 };
 
 // 매장 전화번호 포매팅
@@ -279,13 +303,13 @@ export const formatUsageLeft = (usage: number, maxUsage: number): number => {
 export const formatPurchaseStatus = (text: string): string => {
   switch (text) {
     case "APPROVED":
-      return "결제완료";
+      return i18n.t("format:purchaseStatus.approved");
 
     case "PARTIAL_REFUNDED":
-      return "부분환불";
+      return i18n.t("format:purchaseStatus.partialRefunded");
 
     case "REFUNDED":
-      return "전체환불";
+      return i18n.t("format:purchaseStatus.refunded");
 
     default:
       return text;
@@ -296,19 +320,20 @@ export const formatPurchaseStatus = (text: string): string => {
 export const formatPaymentStatus = (text: string): string => {
   switch (text) {
     case "APPROVED":
-      return "결제";
+      return i18n.t("format:paymentStatus.approved");
 
     case "PARTIAL_REFUNDED":
-      return "부분환불";
+      return i18n.t("format:paymentStatus.partialRefunded");
 
     case "REFUNDED":
-      return "전체환불";
+      return i18n.t("format:paymentStatus.refunded");
 
     default:
       return text;
   }
 };
 
+// 반환값은 사용자에게 노출되지 않는 내부 구분값 (constants/weather.ts, WeatherCast에서 키로 매칭)
 export const formatWeatherIcon = (code: string | null) => {
   if (!code) {
     return "화창";

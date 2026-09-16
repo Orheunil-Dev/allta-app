@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Linking, Platform, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -21,6 +22,8 @@ export const Splash = ({
   isVersionUpdate,
   isUpdateFinished,
 }: Props) => {
+  const { t } = useTranslation("home");
+
   const [visible, setVisible] = useState(false);
 
   // 앱 버전 업데이트
@@ -75,17 +78,17 @@ export const Splash = ({
       <CustomModal
         visible={isVersionUpdate}
         onNext={handleOpenStore}
-        nextButtonText="업데이트 하기"
+        nextButtonText={t("splash.update.button")}
       >
         <CustomText marginTop={12} fontSize={18} fontWeight={"600"}>
-          업데이트
+          {t("splash.update.title")}
         </CustomText>
 
         <CustomText marginTop={8} fontSize={16}>
-          안정적인 서비스 이용을 위해
+          {t("splash.update.description1")}
         </CustomText>
         <CustomText fontSize={16}>
-          앱을 최신 버전으로 업데이트해주세요.
+          {t("splash.update.description2")}
         </CustomText>
       </CustomModal>
 
@@ -106,10 +109,10 @@ export const Splash = ({
         <View style={styles.loading}>
           <CustomText textAlign="center" marginBottom={12} fontSize={14}>
             {isUpdateFinished
-              ? "업데이트가 완료되었습니다."
+              ? t("splash.status.finished")
               : isVersionUpdate
-              ? "버전을 확인중입니다."
-              : "업데이트를 적용하고 있습니다."}
+              ? t("splash.status.checkingVersion")
+              : t("splash.status.applying")}
           </CustomText>
 
           <View style={styles.track}>

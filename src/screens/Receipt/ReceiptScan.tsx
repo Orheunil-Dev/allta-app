@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -36,6 +37,8 @@ import { ReceiptPhotoButton } from "@/components/receipt/ReceiptPhotoButton";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 export const ReceiptScan = () => {
+  const { t } = useTranslation("scan");
+
   const navigation = useNavigation();
 
   const receiptScanNavigation =
@@ -54,16 +57,16 @@ export const ReceiptScan = () => {
     if (permission.status !== "granted") {
       if (!permission.canAskAgain) {
         Alert.alert(
-          "카메라 접근 권한이 없습니다",
-          "앱 설정에서 카메라 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          t("permission.camera.title"),
+          t("permission.camera.message"),
           [
             {
-              text: "닫기",
+              text: t("common:close"),
               style: "cancel",
               onPress: () => navigation.goBack(),
             },
             {
-              text: "설정",
+              text: t("permission.settings"),
               onPress: () => {
                 Linking.openSettings();
               },
@@ -154,11 +157,13 @@ export const ReceiptScan = () => {
             style={[styles.overlay, overlayAnimatedStyle]}
             pointerEvents="none"
           >
-            <CustomText color={colors.white} fontSize={20} fontWeight={"600"}>
-              영수증의 매장정보와 결제 정보가
-            </CustomText>
-            <CustomText color={colors.white} fontSize={20} fontWeight={"600"}>
-              잘 나오게 찍어주세요
+            <CustomText
+              textAlign="center"
+              color={colors.white}
+              fontSize={20}
+              fontWeight={"600"}
+            >
+              {t("receiptScan.guide")}
             </CustomText>
           </Animated.View>
 

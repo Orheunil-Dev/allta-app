@@ -1,4 +1,5 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
@@ -30,6 +31,8 @@ export const CarOptionsBottomSheet = ({
   onClose,
   handleRouteCarUpdate,
 }: Props) => {
+  const { t } = useTranslation("car");
+
   const queryClient = useQueryClient();
 
   const setErrorModal = useSetAtom(errorModalAtom);
@@ -65,14 +68,14 @@ export const CarOptionsBottomSheet = ({
 
           setShowDeleteModal(false);
           onClose();
-          SuccessToast("차량이 삭제되었습니다.");
+          SuccessToast(t("delete.success"));
         },
         onError: (error: any) => {
           setShowDeleteModal(false);
           onClose();
           setErrorModal({
             visible: true,
-            message: error?.message ?? "차량 삭제 중 오류가 발생했습니다.",
+            message: error?.message ?? t("delete.error"),
           });
         },
       }
@@ -85,7 +88,7 @@ export const CarOptionsBottomSheet = ({
 
     if (isMain) {
       onClose();
-      return ErrorToast("해당 차량은 대표 차량입니다.");
+      return ErrorToast(t("mainCar.alreadyMain"));
     }
 
     changeMainCar(
@@ -96,13 +99,13 @@ export const CarOptionsBottomSheet = ({
           queryClient.invalidateQueries({ queryKey: ["profile"] });
 
           onClose();
-          SuccessToast("대표 차량이 변경되었습니다.");
+          SuccessToast(t("mainCar.changed"));
         },
         onError: (error: any) => {
           onClose();
           setErrorModal({
             visible: true,
-            message: error?.message ?? "대표 차량 변경 중 오류가 발생했습니다.",
+            message: error?.message ?? t("mainCar.changeError"),
           });
         },
       }
@@ -118,13 +121,13 @@ export const CarOptionsBottomSheet = ({
       <CustomModal
         visible={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
-        closeButtonText="취소"
+        closeButtonText={t("common:cancel")}
         onNext={handleDeleteCar}
-        nextButtonText="삭제"
+        nextButtonText={t("common:delete")}
         isNextButtonDisable={deleteCarLoading}
       >
         <CustomText marginTop={12} fontSize={18} fontWeight={"600"}>
-          선택한 차량을 삭제하시겠습니까?
+          {t("delete.confirm")}
         </CustomText>
       </CustomModal>
 
@@ -136,14 +139,14 @@ export const CarOptionsBottomSheet = ({
         >
           <Image source={carIcon} style={styles.icon} />
           <CustomText marginLeft={12} fontSize={18}>
-            대표 차량으로 설정하기
+            {t("mainCar.setAsMain")}
           </CustomText>
         </Pressable>
 
         <Pressable onPress={handleRouteCarUpdate} style={styles.button}>
           <Image source={editIcon} style={styles.icon} />
           <CustomText marginLeft={12} fontSize={18}>
-            수정하기
+            {t("options.edit")}
           </CustomText>
         </Pressable>
 
@@ -154,7 +157,7 @@ export const CarOptionsBottomSheet = ({
         >
           <Image source={deleteIcon} style={styles.icon} />
           <CustomText marginLeft={12} fontSize={18}>
-            삭제하기
+            {t("options.delete")}
           </CustomText>
         </Pressable>
       </View>

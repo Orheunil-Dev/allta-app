@@ -5,6 +5,7 @@ import { colors } from "@/styles";
 import { ServiceType } from "@/types";
 import { formatEllipsis, getResponsiveSize } from "@/utils";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -32,6 +33,8 @@ export const StoreFilter = ({
   coordinate,
   handleOpenAddressModal,
 }: Props) => {
+  const { t } = useTranslation("store");
+
   const [scrollEnabled, setScrollEnabled] = useState(false);
 
   const handleServiceType = (value: ServiceType) => () => {
@@ -64,7 +67,7 @@ export const StoreFilter = ({
             fontSize={16}
             fontWeight={serviceType === "AUTO" ? "600" : "500"}
           >
-            자동세차
+            {t("filter.auto")}
           </CustomText>
         </Pressable>
       </View>
@@ -74,7 +77,7 @@ export const StoreFilter = ({
           <CustomText marginRight={4} fontSize={14}>
             {coordinate.id
               ? formatEllipsis(coordinate.nickname as string, 6)
-              : "현위치"}
+              : t("filter.currentLocation")}
           </CustomText>
           <Image
             source={blackDownArrow}

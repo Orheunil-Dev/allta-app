@@ -7,6 +7,7 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
 import { Airbridge } from "airbridge-react-native-sdk";
 import mmkvStorage from "@/libs/mmkv-storage";
@@ -24,6 +25,8 @@ type SignUpCompleteRouteProp = RouteProp<LoginStackParamList, "SignUpComplete">;
 
 export const SignUpComplete = () => {
   const router = useRoute<SignUpCompleteRouteProp>();
+
+  const { t } = useTranslation("auth");
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
@@ -97,11 +100,11 @@ export const SignUpComplete = () => {
         <Image source={signupCompleteImage} style={styles.image} />
 
         <CustomText fontSize={22} fontWeight={"600"} marginBottom={12}>
-          회원가입이 완료되었어요!
+          {t("signUp.complete.title")}
         </CustomText>
 
         <CustomText textAlign="center" fontSize={16} color={colors.gray7}>
-          올타 회원이 되신 것을 환영해요.
+          {t("signUp.complete.welcome")}
         </CustomText>
         <CustomText
           textAlign="center"
@@ -109,7 +112,7 @@ export const SignUpComplete = () => {
           color={colors.gray7}
           marginBottom={40}
         >
-          첫 세차를 위해 차량과 카드를 먼저 등록해보세요!
+          {t("signUp.complete.guide")}
         </CustomText>
 
         <View style={styles.buttonBox}>
@@ -122,7 +125,7 @@ export const SignUpComplete = () => {
             borderColor={colors.gray2}
           >
             <CustomText color={colors.black} fontSize={16} fontWeight={"600"}>
-              홈으로 가기
+              {t("goHome")}
             </CustomText>
           </CustomButton>
 
@@ -133,7 +136,7 @@ export const SignUpComplete = () => {
             backgroundColor={colors.main}
           >
             <CustomText color={colors.white} fontSize={16} fontWeight={"600"}>
-              등록하기
+              {t("signUp.complete.register")}
             </CustomText>
           </CustomButton>
         </View>

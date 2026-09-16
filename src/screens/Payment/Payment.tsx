@@ -28,6 +28,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSetAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -42,6 +43,8 @@ export const Payment = () => {
   const termsBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const { t } = useTranslation("payment");
 
   const [price, setPrice] = useState<number>(0);
   const [coupon, setCoupon] = useState<Coupon | null>(null);
@@ -60,14 +63,14 @@ export const Payment = () => {
     if (!car) {
       return setErrorModal({
         visible: true,
-        message: "이용할 차량을 선택해주세요.",
+        message: t("payment.selectCarRequired"),
       });
     }
 
     if (!card) {
       return setErrorModal({
         visible: true,
-        message: "결제할 카드를 선택해주세요.",
+        message: t("payment.selectCardRequired"),
       });
     }
 
@@ -99,7 +102,7 @@ export const Payment = () => {
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "결제 요청 중 오류가 발생했습니다.",
+            message: error?.message ?? t("payment.requestError"),
           });
         },
       }
@@ -123,6 +126,12 @@ export const Payment = () => {
         return 0;
     }
   };
+
+  const discountAmount = getDiscountAmount(
+    coupon?.discountType,
+    coupon?.discountValue
+  );
+  const totalAmount = (price ?? 0) - discountAmount;
 
   const isValid = !!agree && !!car;
 
@@ -158,20 +167,19 @@ export const Payment = () => {
 
         <View style={styles.priceBox}>
           <View style={styles.price}>
-            <CustomText fontSize={14}>이용권 금액</CustomText>
+            <CustomText fontSize={14}>{t("payment.passPrice")}</CustomText>
             <CustomText fontSize={14} fontWeight={"600"}>
-              {(price ?? 0).toLocaleString()}원
+              {t("common:currency", {
+                amount: (price ?? 0).toLocaleString(),
+              })}
             </CustomText>
           </View>
           <View style={styles.dicount}>
-            <CustomText fontSize={14}>쿠폰 할인</CustomText>
+            <CustomText fontSize={14}>{t("payment.couponDiscount")}</CustomText>
             <CustomText fontSize={14} fontWeight={"600"}>
-              -{" "}
-              {getDiscountAmount(
-                coupon?.discountType,
-                coupon?.discountValue
-              ).toLocaleString()}
-              원
+              {t("payment.discountAmount", {
+                amount: discountAmount.toLocaleString(),
+              })}
             </CustomText>
           </View>
         </View>
@@ -192,7 +200,7 @@ export const Payment = () => {
           fontSize={18}
           fontWeight={"600"}
         >
-          등록 차량
+          {t("payment.registeredCar")}
         </CustomText>
 
         <CarSelectButton car={car} setCar={setCar} showRegister />
@@ -201,16 +209,18 @@ export const Payment = () => {
         <CardSelectButton card={card} setCard={setCard} />
 
         <CustomText marginTop={40} fontSize={18} fontWeight={"600"}>
-          결제 금액
+          {t("payment.amountTitle")}
         </CustomText>
 
         <View style={{ marginTop: getResponsiveSize(12) }}>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <CustomText fontSize={16}>이용권 금액</CustomText>
+            <CustomText fontSize={16}>{t("payment.passPrice")}</CustomText>
             <CustomText fontSize={16}>
-              {router.params.price["SEDAN"].toLocaleString()}원
+              {t("common:currency", {
+                amount: router.params.price["SEDAN"].toLocaleString(),
+              })}
             </CustomText>
           </View>
 
@@ -221,28 +231,21 @@ export const Payment = () => {
               marginTop: getResponsiveSize(6),
             }}
           >
-            <CustomText fontSize={16}>쿠폰 할인</CustomText>
+            <CustomText fontSize={16}>{t("payment.couponDiscount")}</CustomText>
             <CustomText color={colors.point2} fontSize={16}>
-              -{" "}
-              {getDiscountAmount(
-                coupon?.discountType,
-                coupon?.discountValue
-              ).toLocaleString()}
-              원
+              {t("payment.discountAmount", {
+                amount: discountAmount.toLocaleString(),
+              })}
             </CustomText>
           </View>
         </View>
 
         <View style={styles.totalAmount}>
           <CustomText fontSize={16} fontWeight={"600"}>
-            최종 결제 금액
+            {t("payment.totalAmount")}
           </CustomText>
           <CustomText color={colors.point2} fontSize={20} fontWeight={"600"}>
-            {(
-              (price ?? 0) -
-              getDiscountAmount(coupon?.discountType, coupon?.discountValue)
-            ).toLocaleString()}
-            원
+            {t("common:currency", { amount: totalAmount.toLocaleString() })}
           </CustomText>
         </View>
 
@@ -257,7 +260,7 @@ export const Payment = () => {
                 style={styles.check}
               />
               <CustomText fontSize={16} fontWeight={"500"}>
-                주문 내용 확인 및 결제 동의
+                {t("terms.title")}
               </CustomText>
             </View>
           </CustomButton>
@@ -293,7 +296,7 @@ export const Payment = () => {
               fontSize={18}
               fontWeight={"600"}
             >
-              결제하기
+              {t("payment.pay")}
             </CustomText>
           )}
         </CustomButton>

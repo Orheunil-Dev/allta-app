@@ -4,6 +4,7 @@ import { getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useEffect, useRef, useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { colors } from "@/styles";
 import { CarListBottomSheet } from "@/components/bottom-sheet/CarListBottomSheet";
 import { useCarControllerGetCarList } from "@/api/car/car";
@@ -20,6 +21,8 @@ interface Props {
 const { width: screenWidth } = Dimensions.get("window");
 
 export const PassFilter = ({ car, setCar, passType, setPassType }: Props) => {
+  const { t } = useTranslation("pass");
+
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   const [scrollEnabled, setScrollEnabled] = useState(false);
@@ -79,7 +82,7 @@ export const PassFilter = ({ car, setCar, passType, setPassType }: Props) => {
           style={styles.carSelectButton}
         >
           <CustomText marginRight={4} fontSize={15} fontWeight={"500"}>
-            {car ? car.number : "차량 미등록"}
+            {car ? car.number : t("filter.noCar")}
           </CustomText>
           <Image
             source={blackDownArrow}
@@ -107,7 +110,7 @@ export const PassFilter = ({ car, setCar, passType, setPassType }: Props) => {
             fontSize={15}
             fontWeight={"500"}
           >
-            프리미엄
+            {t("format:passType.premium")}
           </CustomText>
         </Pressable>
 
@@ -127,7 +130,7 @@ export const PassFilter = ({ car, setCar, passType, setPassType }: Props) => {
             fontSize={15}
             fontWeight={"500"}
           >
-            스탠다드
+            {t("format:passType.standard")}
           </CustomText>
         </Pressable>
 
@@ -147,7 +150,7 @@ export const PassFilter = ({ car, setCar, passType, setPassType }: Props) => {
             fontSize={15}
             fontWeight={"500"}
           >
-            일회권
+            {t("format:passType.ticket")}
           </CustomText>
         </Pressable>
       </ScrollView>

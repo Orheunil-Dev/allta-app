@@ -3,6 +3,7 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useQueryClient } from "@tanstack/react-query";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useSetAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 import { useAddressControllerDeleteAddress } from "@/api/address/address";
 import { errorModalAtom } from "@/jotai";
 import { useToastMessage } from "@/hooks";
@@ -19,6 +20,8 @@ interface Props {
 }
 
 export const AddressOptionsBottomSheet = ({ ref, id, onClose }: Props) => {
+  const { t } = useTranslation("address");
+
   const queryClient = useQueryClient();
 
   const setErrorModal = useSetAtom(errorModalAtom);
@@ -45,14 +48,14 @@ export const AddressOptionsBottomSheet = ({ ref, id, onClose }: Props) => {
           queryClient.invalidateQueries({ queryKey: ["addresses"] });
           setShowDeleteModal(false);
           onClose();
-          SuccessToast("주소가 삭제되었습니다.");
+          SuccessToast(t("options.deleteSuccess"));
         },
         onError: (error: any) => {
           setShowDeleteModal(false);
           onClose();
           setErrorModal({
             visible: true,
-            message: error?.message ?? "주소 삭제 중 오류가 발생했습니다.",
+            message: error?.message ?? t("options.deleteError"),
           });
         },
       }
@@ -68,13 +71,13 @@ export const AddressOptionsBottomSheet = ({ ref, id, onClose }: Props) => {
       <CustomModal
         visible={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
-        closeButtonText="취소"
+        closeButtonText={t("common:cancel")}
         onNext={handleDeleteAddress}
-        nextButtonText="삭제"
+        nextButtonText={t("common:delete")}
         isNextButtonDisable={deleteAddressLoading}
       >
         <CustomText marginTop={12} fontSize={18} fontWeight={"600"}>
-          선택한 주소를 삭제하시겠습니까?
+          {t("options.deleteConfirm")}
         </CustomText>
       </CustomModal>
 
@@ -86,7 +89,7 @@ export const AddressOptionsBottomSheet = ({ ref, id, onClose }: Props) => {
         >
           <Image source={deleteIcon} style={styles.icon} />
           <CustomText marginLeft={12} fontSize={18}>
-            삭제하기
+            {t("options.delete")}
           </CustomText>
         </Pressable>
       </View>

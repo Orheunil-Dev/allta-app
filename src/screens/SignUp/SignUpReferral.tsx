@@ -8,6 +8,7 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { LoginStackParamList } from "@/navigations";
 import CookieManager from "@react-native-cookies/cookies";
 import * as SecureStore from "expo-secure-store";
@@ -47,6 +48,8 @@ export const SignUpReferral = () => {
   const insets = useSafeAreaInsets();
 
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const { t } = useTranslation("auth");
 
   const [referralCode, setReferralCode] = useState("");
   const [isValid, setIsValid] = useState(false);
@@ -212,7 +215,7 @@ export const SignUpReferral = () => {
                 onError: (error: any) => {
                   setErrorModal({
                     visible: true,
-                    message: error?.message ?? "로그인에 실패했습니다.",
+                    message: error?.message ?? t("login.error.failed"),
                   });
                 },
               }
@@ -221,7 +224,7 @@ export const SignUpReferral = () => {
           onError: (error: any) => {
             setErrorModal({
               visible: true,
-              message: error?.message ?? "회원가입에 실패했습니다.",
+              message: error?.message ?? t("signUp.referral.error.signUpFailed"),
             });
           },
         }
@@ -286,11 +289,11 @@ export const SignUpReferral = () => {
             scrollEnabled={false}
           >
             <CustomText fontSize={24} fontWeight={"600"}>
-              추천인 코드를 입력해주세요.
+              {t("signUp.referral.title")}
             </CustomText>
 
             <CustomText fontSize={16} marginTop={32}>
-              추천인 코드
+              {t("signUp.referral.label")}
             </CustomText>
             <CustomTextInput
               value={referralCode}
@@ -299,7 +302,7 @@ export const SignUpReferral = () => {
               errorMessage={
                 (verifyReferralCodeError as CustomError)?.message ?? undefined
               }
-              placeholder="추천인 코드 6자리를 입력해주세요."
+              placeholder={t("signUp.referral.placeholder")}
             />
           </ScrollView>
 
@@ -319,7 +322,7 @@ export const SignUpReferral = () => {
               fontSize={16}
               fontWeight={"600"}
             >
-              다음
+              {t("common:next")}
             </CustomText>
           </CustomButton>
         </View>
@@ -340,7 +343,7 @@ export const SignUpReferral = () => {
           textAlign="center"
           marginBottom={16}
         >
-          건너뛰기
+          {t("skip")}
         </CustomText>
       </Pressable>
     </CustomSafeAreaView>

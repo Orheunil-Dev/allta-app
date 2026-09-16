@@ -1,5 +1,6 @@
 import { Dimensions, Image, Linking, StyleSheet, View } from "react-native";
 import RenderHTML from "react-native-render-html";
+import { useTranslation } from "react-i18next";
 import { GetStoreDetailResponse } from "@/api/models";
 import { useToastMessage } from "@/hooks";
 import { getFontSize, getResponsiveSize } from "@/utils";
@@ -16,6 +17,8 @@ interface Props {
 const { width: screenWidth } = Dimensions.get("window");
 
 export const MyStoreInfo = ({ storeData }: Props) => {
+  const { t } = useTranslation("store");
+
   const { SuccessToast, ErrorToast } = useToastMessage();
 
   // TMAP 네비게이션 열기
@@ -23,7 +26,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
     const destination = encodeURIComponent(storeData?.store.name ?? "");
     const tmapScheme = `tmap://?rGoName=${destination}&rGoX=${storeData?.store.lng}&rGoY=${storeData?.store.lat}`;
 
-    SuccessToast("티맵으로 이동합니다.");
+    SuccessToast(t("info.openTmap"));
 
     return Linking.openURL(tmapScheme);
   };
@@ -33,7 +36,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
   return (
     <View style={styles.infoArea}>
       <CustomText fontSize={18} fontWeight={"600"}>
-        위치
+        {t("info.location")}
       </CustomText>
 
       <View style={styles.map}>
@@ -53,7 +56,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
       >
         <Image source={naviIcon} style={styles.naviIcon} />
         <CustomText fontSize={13} fontWeight={"500"}>
-          길찾기
+          {t("navigate")}
         </CustomText>
       </CustomButton>
 
@@ -65,7 +68,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
             fontSize={18}
             fontWeight={"600"}
           >
-            매장 소개
+            {t("info.description")}
           </CustomText>
 
           <RenderHTML
@@ -91,7 +94,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
             fontSize={18}
             fontWeight={"600"}
           >
-            매장 유의사항
+            {t("info.policy")}
           </CustomText>
 
           <RenderHTML

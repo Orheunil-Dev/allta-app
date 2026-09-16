@@ -14,10 +14,13 @@ import {
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 type QrScanRouteProp = RouteProp<QrScanStackParamList, "UsePassCompelete">;
 
 export const UsePassComplete = () => {
+  const { t } = useTranslation("scan");
+
   const router = useRoute<QrScanRouteProp>();
 
   const containerNavigation =
@@ -61,19 +64,17 @@ export const UsePassComplete = () => {
           }}
         />
         <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-          이용권 확인 완료!
+          {t("usePassComplete.title")}
         </CustomText>
 
         <CustomText
           marginTop={8}
+          textAlign="center"
           color={colors.point2}
           fontSize={18}
           fontWeight={"500"}
         >
-          세차 진행을 위해
-        </CustomText>
-        <CustomText color={colors.point2} fontSize={18} fontWeight={"500"}>
-          직원에게 화면을 보여주세요.
+          {t("usePassComplete.description")}
         </CustomText>
 
         <View style={styles.buttonArea}>
@@ -86,7 +87,7 @@ export const UsePassComplete = () => {
             borderWidth={1}
           >
             <CustomText fontSize={16} fontWeight={"600"}>
-              이용 내역 보기
+              {t("usePassComplete.viewHistory")}
             </CustomText>
           </CustomButton>
 
@@ -99,7 +100,7 @@ export const UsePassComplete = () => {
             borderWidth={1}
           >
             <CustomText color={colors.white} fontSize={16} fontWeight={"600"}>
-              홈 화면 가기
+              {t("goHome")}
             </CustomText>
           </CustomButton>
         </View>
@@ -107,7 +108,7 @@ export const UsePassComplete = () => {
         <View style={styles.receipt}>
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              세차 서비스
+              {t("usePassComplete.service")}
             </CustomText>
             <CustomText fontSize={16}>
               {formatServiceType(router.params.serviceType)}
@@ -116,7 +117,7 @@ export const UsePassComplete = () => {
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              이용권
+              {t("usePassComplete.pass")}
             </CustomText>
             <CustomText fontSize={16}>
               {formatPassType(router.params.passType)}
@@ -125,21 +126,21 @@ export const UsePassComplete = () => {
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              매장
+              {t("store")}
             </CustomText>
             <CustomText fontSize={16}>{router.params.storeName}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              차량번호
+              {t("usePassComplete.carNumber")}
             </CustomText>
             <CustomText fontSize={16}>{router.params.carNumber}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              차량정보
+              {t("usePassComplete.carInfo")}
             </CustomText>
             <CustomText fontSize={16}>
               {router.params.carBrand} {router.params.carModel}
@@ -148,7 +149,7 @@ export const UsePassComplete = () => {
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              이용일시
+              {t("usePassComplete.usedAt")}
             </CustomText>
             <CustomText fontSize={16}>
               {dayjs(router.params.approvedAt).format("YYYY.MM.DD HH:mm")}

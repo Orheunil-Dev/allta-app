@@ -7,6 +7,7 @@ import {
 } from "@/screens/QrScan";
 import { formatEllipsis } from "@/utils";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 export type QrScanStackParamList = {
   QrScan: undefined;
@@ -33,6 +34,8 @@ export type QrScanStackParamList = {
 const Stack = createNativeStackNavigator<QrScanStackParamList>();
 
 export const QrScanStack = () => {
+  const { t } = useTranslation("nav");
+
   return (
     <Stack.Navigator initialRouteName="QrScan">
       <Stack.Screen
@@ -46,7 +49,7 @@ export const QrScanStack = () => {
         name="QrScanError"
         component={QrScanError}
         options={{
-          header: () => <CustomHeader title="이용권 확인" showCloseButton />,
+          header: () => <CustomHeader title={t("qrScan.error")} showCloseButton />,
         }}
       />
       <Stack.Screen

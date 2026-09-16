@@ -3,6 +3,7 @@ import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { Airbridge } from "airbridge-react-native-sdk";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import RenderHtml from "react-native-render-html";
@@ -13,7 +14,7 @@ import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomKeyboardAvoidingView } from "@/components/ui/CustomKeyboardAvoidingView";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
-import { terms } from "@/constants";
+import { getTerms } from "@/constants";
 import {
   checkAllButton,
   checkedCheckAllButton,
@@ -30,8 +31,12 @@ type SignUpUserInfoRouteProp = RouteProp<LoginStackParamList, "SignUpTerms">;
 export const SignUpTerms = () => {
   const route = useRoute<SignUpUserInfoRouteProp>();
 
+  const { t } = useTranslation("auth");
+
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
+
+  const terms = getTerms();
 
   const termsBottomSheetRef = useRef<BottomSheetModal>(null);
 
@@ -135,7 +140,7 @@ export const SignUpTerms = () => {
           backgroundColor={colors.main}
         >
           <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-            확인
+            {t("common:confirm")}
           </CustomText>
         </CustomButton>
       </CustomBottomSheet>
@@ -147,7 +152,7 @@ export const SignUpTerms = () => {
             scrollEnabled={false}
           >
             <CustomText fontSize={24} fontWeight={"600"}>
-              반가워요!{"\n"}약관에 동의해주세요.
+              {t("signUp.terms.title")}
             </CustomText>
 
             <View style={styles.termsBox}>
@@ -167,7 +172,7 @@ export const SignUpTerms = () => {
                   />
 
                   <CustomText fontSize={18} fontWeight={"600"}>
-                    전체 동의
+                    {t("signUp.terms.agreeAll")}
                   </CustomText>
                 </Pressable>
               </View>
@@ -189,8 +194,10 @@ export const SignUpTerms = () => {
                     />
 
                     <CustomText fontSize={16}>
-                      {value.title} 동의{" "}
-                      {value.isRequired ? "[필수]" : "[선택]"}
+                      {t("signUp.terms.agreeItem", { title: value.title })}{" "}
+                      {value.isRequired
+                        ? t("signUp.terms.required")
+                        : t("signUp.terms.optional")}
                     </CustomText>
                   </Pressable>
 
@@ -219,7 +226,7 @@ export const SignUpTerms = () => {
               fontSize={18}
               fontWeight={"600"}
             >
-              다음
+              {t("common:next")}
             </CustomText>
           </CustomButton>
         </View>

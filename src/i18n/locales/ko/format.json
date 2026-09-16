@@ -1,0 +1,71 @@
+{
+  "loginKind": {
+    "kakao": "카카오",
+    "google": "구글",
+    "apple": "애플",
+    "test": "테스트"
+  },
+  "relativeDate": {
+    "today": "오늘",
+    "yesterday": "어제",
+    "daysAgo": "{{count}}일 전"
+  },
+  "serviceType": {
+    "auto": "자동세차",
+    "hands": "핸즈클리닝"
+  },
+  "passType": {
+    "premium": "프리미엄",
+    "standard": "스탠다드",
+    "ticket": "일회권"
+  },
+  "purchaseType": {
+    "premium": "프리미엄 구독권",
+    "standard": "스탠다드 구독권",
+    "ticket": "일회권"
+  },
+  "couponValue": {
+    "rate": "{{value}}%",
+    "price": "- {{value}}원",
+    "fixed": "{{value}}원 특가"
+  },
+  "couponPassType": {
+    "allPasses": "모든 이용권",
+    "allServicePasses": "모든 {{service}} 이용권",
+    "servicePasses": "{{service}} {{passes}}",
+    "separator": ", "
+  },
+  "cardCompany": {
+    "label": "{{company}} 카드",
+    "bc": "BC",
+    "shinhan": "신한",
+    "samsung": "삼성",
+    "hyundai": "현대",
+    "lotte": "롯데",
+    "jcb": "JCB",
+    "kbKookmin": "KB국민",
+    "hana": "하나",
+    "overseas": "해외",
+    "woori": "우리",
+    "suhyup": "수협",
+    "nonghyup": "농협",
+    "citi": "시티",
+    "shinhyup": "신협",
+    "unionPay": "은련",
+    "jeju": "제주",
+    "gwangju": "광주",
+    "jeonbuk": "전북",
+    "chohung": "조흥",
+    "jutaek": "주택"
+  },
+  "purchaseStatus": {
+    "approved": "결제완료",
+    "partialRefunded": "부분환불",
+    "refunded": "전체환불"
+  },
+  "paymentStatus": {
+    "approved": "결제",
+    "partialRefunded": "부분환불",
+    "refunded": "전체환불"
+  }
+}

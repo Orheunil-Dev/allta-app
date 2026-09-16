@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
@@ -30,16 +31,16 @@ const registerFormSchema = z.object({
   vendor: z.string(),
   model: z.string(),
   type: z.string(),
-  number: z.string().regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다."),
+  number: z.string().regex(regexCarNumber),
 });
 
-const carNumberSchema = z
-  .string()
-  .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다.");
+const carNumberSchema = z.string().regex(regexCarNumber);
 
 type CarUpdateRouteProp = RouteProp<CarStackParamList, "CarUpdate">;
 
 export const CarUpdate = () => {
+  const { t } = useTranslation("car");
+
   const router = useRoute<CarUpdateRouteProp>();
 
   const carStackNavigation =
@@ -133,7 +134,7 @@ export const CarUpdate = () => {
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "차량 삭제 중 오류가 발생했습니다.",
+            message: error?.message ?? t("update.error"),
           });
         },
       }
@@ -142,13 +143,17 @@ export const CarUpdate = () => {
 
   const isValid = registerFormSchema.safeParse(updateForm).success;
 
+  const isCarNumberInvalid =
+    updateForm.number.length > 6 &&
+    !carNumberSchema.safeParse(updateForm.number).success;
+
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
         {/* 제조사 바텀시트 */}
         <CustomBottomSheet
           ref={brandSelectRef}
-          title="제조사"
+          title={t("form.vendor")}
           hasCloseButton
           onClose={handleCloseBrandSelect}
         >
@@ -186,7 +191,7 @@ export const CarUpdate = () => {
         {/* 차량모델 바텀시트 */}
         <CustomBottomSheet
           ref={modelSelectRef}
-          title="모델"
+          title={t("form.model")}
           hasCloseButton
           onClose={handleCloseModelSelect}
         >
@@ -221,7 +226,7 @@ export const CarUpdate = () => {
           >
             {/* 제조사 선택 */}
             <CustomText fontSize={16} fontWeight={"500"}>
-              제조사
+              {t("form.vendor")}
             </CustomText>
             <Pressable
               style={styles.selectInput}
@@ -232,7 +237,7 @@ export const CarUpdate = () => {
                   value={updateForm.vendor}
                   onChangeText={() => {}}
                   editable={false}
-                  placeholder="선택"
+                  placeholder={t("common:select")}
                 />
               </View>
 
@@ -241,7 +246,7 @@ export const CarUpdate = () => {
 
             {/* 차량모델 선택 */}
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              모델
+              {t("form.model")}
             </CustomText>
             <Pressable
               style={styles.selectInput}
@@ -252,7 +257,7 @@ export const CarUpdate = () => {
                   value={updateForm.model}
                   onChangeText={() => {}}
                   editable={false}
-                  placeholder="선택"
+                  placeholder={t("common:select")}
                 />
               </View>
 
@@ -261,19 +266,16 @@ export const CarUpdate = () => {
 
             {/* 차량번호 입력 */}
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              차량번호
+              {t("form.carNumber")}
             </CustomText>
             <CustomTextInput
               value={updateForm.number}
               onChangeText={(text) => handleChangeUpdateForm("number", text)}
               maxLength={8}
               errorMessage={
-                updateForm.number.length > 6
-                  ? carNumberSchema.safeParse(updateForm.number).error
-                      ?.issues?.[0]?.message
-                  : undefined
+                isCarNumberInvalid ? t("form.carNumberInvalid") : undefined
               }
-              placeholder="12가3456"
+              placeholder={t("form.carNumberPlaceholder")}
               onReset={() => handleChangeUpdateForm("number", "")}
             />
 
@@ -288,8 +290,7 @@ export const CarUpdate = () => {
 
               <View style={{ flex: 1, marginLeft: getResponsiveSize(8) }}>
                 <CustomText color={colors.gray5} fontSize={14}>
-                  찾으시는 차량 모델이 목록에 없는 경우, 고객센터로 문의해
-                  주세요.
+                  {t("form.modelNotFound")}
                 </CustomText>
               </View>
             </View>
@@ -309,7 +310,7 @@ export const CarUpdate = () => {
                 fontSize={16}
                 fontWeight={"600"}
               >
-                수정하기
+                {t("update.submit")}
               </CustomText>
             )}
           </CustomButton>

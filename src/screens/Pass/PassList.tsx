@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { PassStackParamList } from "@/navigations";
 import {
   usePassControllerGetSubscriptionList,
@@ -20,6 +21,7 @@ type PassListRouteProp = RouteProp<PassStackParamList, "PassList">;
 
 export const PassList = () => {
   const router = useRoute<PassListRouteProp>();
+  const { t } = useTranslation("pass");
 
   const [car, setCar] = useState<Car | null>(null);
   const [passType, setPassType] = useState<PassType | null>(
@@ -157,7 +159,7 @@ export const PassList = () => {
               fontSize={20}
               fontWeight={"600"}
             >
-              보유하신 이용권이 없습니다.
+              {t("list.empty")}
             </CustomText>
           </View>
         )}

@@ -1,4 +1,5 @@
 import { Image, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ContainerStackParamList } from "@/navigations";
@@ -21,6 +22,8 @@ import {
 import { colors } from "@/styles";
 
 export const Permission = () => {
+  const { t } = useTranslation("home");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -65,7 +68,7 @@ export const Permission = () => {
       <View style={styles.container}>
         <View>
           <CustomText fontSize={22} fontWeight={"600"}>
-            앱 사용을 위해
+            {t("permission.title.line1")}
           </CustomText>
           <CustomText
             marginTop={4}
@@ -73,7 +76,7 @@ export const Permission = () => {
             fontSize={22}
             fontWeight={"600"}
           >
-            접근 권한을 허용해주세요.
+            {t("permission.title.line2")}
           </CustomText>
 
           <View style={styles.box}>
@@ -88,10 +91,10 @@ export const Permission = () => {
             </View>
             <View>
               <CustomText fontSize={16} fontWeight={"600"}>
-                알림
+                {t("permission.notification.title")}
               </CustomText>
               <CustomText marginTop={4} fontSize={14}>
-                이벤트, 혜택, 공지사항 등 알림 제공
+                {t("permission.notification.description")}
               </CustomText>
             </View>
           </View>
@@ -108,10 +111,10 @@ export const Permission = () => {
             </View>
             <View>
               <CustomText fontSize={16} fontWeight={"600"}>
-                카메라
+                {t("permission.camera.title")}
               </CustomText>
               <CustomText marginTop={4} fontSize={14}>
-                매장 QR코드 스캔 및 주유 영수증 촬명
+                {t("permission.camera.description")}
               </CustomText>
             </View>
           </View>
@@ -128,10 +131,10 @@ export const Permission = () => {
             </View>
             <View>
               <CustomText fontSize={16} fontWeight={"600"}>
-                사진
+                {t("permission.photo.title")}
               </CustomText>
               <CustomText marginTop={4} fontSize={14}>
-                주유 영수증 업로드
+                {t("permission.photo.description")}
               </CustomText>
             </View>
           </View>
@@ -148,10 +151,10 @@ export const Permission = () => {
             </View>
             <View>
               <CustomText fontSize={16} fontWeight={"600"}>
-                위치
+                {t("permission.location.title")}
               </CustomText>
               <CustomText marginTop={4} fontSize={14}>
-                현 위치 기준 가까운 매장 안내
+                {t("permission.location.description")}
               </CustomText>
             </View>
           </View>
@@ -163,7 +166,7 @@ export const Permission = () => {
           backgroundColor={colors.main}
         >
           <CustomText color={colors.white} fontSize={16} fontWeight={"600"}>
-            확인
+            {t("common:confirm")}
           </CustomText>
         </CustomButton>
       </View>

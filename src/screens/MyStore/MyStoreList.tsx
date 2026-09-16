@@ -10,8 +10,11 @@ import { getResponsiveSize } from "@/utils";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 
 export const MyStoreList = () => {
+  const { t } = useTranslation("store");
+
   const [skip, setSkip] = useState<number>(0);
   const [serviceType, setServiceType] = useState<ServiceType>("AUTO");
   const [passType, setPassType] = useState<PassType | null>(null);
@@ -102,7 +105,7 @@ export const MyStoreList = () => {
       ) : (
         <View style={styles.emptyBox}>
           <CustomText color={colors.gray5} fontSize={20} fontWeight={"600"}>
-            보유한 이용권이 없습니다.
+            {t("myList.empty")}
           </CustomText>
         </View>
       )}

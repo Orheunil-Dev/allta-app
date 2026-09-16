@@ -9,6 +9,7 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import { useSetAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 import {
   usePassControllerGetSubscriptionDetail,
   usePassControllerGetTicketDetail,
@@ -22,6 +23,7 @@ type PassDetailRouteProp = RouteProp<PassStackParamList, "PassDetail">;
 
 export const PassDetail = () => {
   const router = useRoute<PassDetailRouteProp>();
+  const { t } = useTranslation("pass");
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
@@ -81,7 +83,7 @@ export const PassDetail = () => {
     if (!storeId || !storeName) {
       return setErrorModal({
         visible: true,
-        message: "매장 정보를 찾을 수 없습니다.",
+        message: t("detail.storeNotFound"),
       });
     }
 
@@ -110,12 +112,12 @@ export const PassDetail = () => {
 
           if (status !== "granted") {
             Alert.alert(
-              "위치정보 접근 권한이 없습니다",
-              "앱 설정에서 위치정보 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+              t("detail.locationPermission.title"),
+              t("detail.locationPermission.message"),
               [
-                { text: "닫기", style: "cancel" },
+                { text: t("common:close"), style: "cancel" },
                 {
-                  text: "설정",
+                  text: t("detail.locationPermission.openSettings"),
                   onPress: () => Linking.openSettings(),
                 },
               ]
@@ -141,7 +143,7 @@ export const PassDetail = () => {
       return () => {
         isFocused = false;
       };
-    }, [])
+    }, [t])
   );
 
   return (

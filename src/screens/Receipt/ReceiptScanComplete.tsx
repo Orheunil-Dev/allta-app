@@ -17,6 +17,7 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StyleSheet, View } from "react-native";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 type ReceiptRouteProps = RouteProp<
   ReceiptScanStackParamList,
@@ -24,6 +25,8 @@ type ReceiptRouteProps = RouteProp<
 >;
 
 export const ReceiptScanComplete = () => {
+  const { t } = useTranslation("scan");
+
   const router = useRoute<ReceiptRouteProps>();
 
   const containerNavigation =
@@ -54,14 +57,16 @@ export const ReceiptScanComplete = () => {
           }}
         />
         <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-          영수증 인식 완료!
+          {t("receiptScanComplete.title")}
         </CustomText>
 
-        <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-          주유 할인 쿠폰이 발급되었습니다.
-        </CustomText>
-        <CustomText color={colors.gray7} fontSize={16}>
-          마이페이지-쿠폰함에서 확인해주세요.
+        <CustomText
+          marginTop={8}
+          textAlign="center"
+          color={colors.gray7}
+          fontSize={16}
+        >
+          {t("receiptScanComplete.description")}
         </CustomText>
 
         <View style={styles.buttonArea}>
@@ -73,7 +78,7 @@ export const ReceiptScanComplete = () => {
             borderWidth={1}
           >
             <CustomText fontSize={18} fontWeight={"600"}>
-              쿠폰함 가기
+              {t("receiptScanComplete.goToCoupons")}
             </CustomText>
           </CustomButton>
 
@@ -86,7 +91,7 @@ export const ReceiptScanComplete = () => {
             borderWidth={1}
           >
             <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-              홈 화면 가기
+              {t("goHome")}
             </CustomText>
           </CustomButton>
         </View>
@@ -94,23 +99,25 @@ export const ReceiptScanComplete = () => {
         <View style={styles.receipt}>
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              매장
+              {t("store")}
             </CustomText>
             <CustomText fontSize={16}>{router.params.storeName}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              할인 금액
+              {t("receiptScanComplete.discountAmount")}
             </CustomText>
             <CustomText fontSize={16}>
-              {router.params.discountValue.toLocaleString()}원
+              {t("common:currency", {
+                amount: router.params.discountValue.toLocaleString(),
+              })}
             </CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              사용기한
+              {t("receiptScanComplete.validPeriod")}
             </CustomText>
             <CustomText fontSize={16}>
               {dayjs(router.params.createdAt).format("YYYY.MM.DD")} ~{" "}

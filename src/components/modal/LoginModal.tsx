@@ -7,6 +7,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   visible: boolean;
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export const LoginModal = ({ visible, setVisible, navigationRef }: Props) => {
+  const { t } = useTranslation("auth");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -59,18 +62,18 @@ export const LoginModal = ({ visible, setVisible, navigationRef }: Props) => {
     <CustomModal
       visible={visible}
       onNext={goLogin}
-      nextButtonText="로그인"
+      nextButtonText={t("common:auth.login")}
       onClose={goHome}
-      closeButtonText="취소"
+      closeButtonText={t("common:cancel")}
     >
       <CustomText marginTop={12} fontSize={18} fontWeight="600">
-        알림
+        {t("loginModal.title")}
       </CustomText>
       <CustomText marginTop={16} fontSize={16}>
-        로그인이 필요한 서비스입니다.
+        {t("loginModal.message")}
       </CustomText>
       <CustomText marginTop={2} fontSize={16}>
-        로그인하시겠습니까?
+        {t("loginModal.question")}
       </CustomText>
     </CustomModal>
   );

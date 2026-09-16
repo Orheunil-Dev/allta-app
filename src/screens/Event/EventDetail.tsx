@@ -9,6 +9,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { useEventControllerGetEventDetail } from "@/api/event/event";
 import { ContainerStackParamList, EventStackParamList } from "@/navigations";
 import { getFontSize, getResponsiveSize } from "@/utils";
@@ -27,6 +28,8 @@ export const EventDetail = () => {
   const router = useRoute<EventDetailRouteProp>();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+
+  const { t } = useTranslation("benefit");
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
@@ -73,7 +76,7 @@ export const EventDetail = () => {
         </Pressable>
 
         <CustomText fontSize={16} fontWeight={"600"}>
-          이벤트
+          {t("event.title")}
         </CustomText>
 
         {/* <Pressable>

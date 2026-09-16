@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { useCarControllerGetCarList } from "@/api/car/car";
 import {
   usePassControllerGetStoreSubscriptionList,
@@ -26,6 +27,8 @@ interface Props {
 const { width: screenWidth } = Dimensions.get("window");
 
 export const MyStorePassInfo = ({ storeId }: Props) => {
+  const { t } = useTranslation("store");
+
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [car, setCar] = useState<Car | undefined>(undefined);
   const [skip, setSkip] = useState<number>(0);
@@ -188,7 +191,9 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
                       )}`}
                     </CustomText>
                     <CustomText fontSize={15} fontWeight={"500"}>
-                      /{value.subscriptionSnapshot.maxUsage} 회
+                      {t("myPass.usageSuffix", {
+                        max: value.subscriptionSnapshot.maxUsage,
+                      })}
                     </CustomText>
                   </View>
                 )}
@@ -215,7 +220,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
         <View style={styles.card}>
           <View style={styles.row}>
             <CustomText color={colors.point2} fontSize={16} fontWeight={"600"}>
-              일회권
+              {t("myPass.ticket")}
             </CustomText>
           </View>
 
@@ -236,7 +241,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
           {ticketData?.meta.hasNextPage && (
             <Pressable onPress={handleLoadMore} style={styles.loadButton}>
               <CustomText color={colors.gray5} fontSize={16}>
-                더보기
+                {t("common:more")}
               </CustomText>
               <Image
                 source={grayDownArrow}
@@ -258,7 +263,7 @@ export const MyStorePassInfo = ({ storeId }: Props) => {
             fontSize={20}
             fontWeight={"600"}
           >
-            보유 이용권이 없습니다.
+            {t("myPass.empty")}
           </CustomText>
         </View>
       )}

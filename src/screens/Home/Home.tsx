@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
@@ -41,6 +42,8 @@ interface Props {
 }
 
 export const Home = ({ showSplash, showUpdate }: Props) => {
+  const { t } = useTranslation("home");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -200,13 +203,13 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
           mmkvStorage.removeItem(IS_COUPON_RECEIVED);
           setShowCouponModal(false);
         }}
-        closeButtonText="닫기"
+        closeButtonText={t("common:close")}
         onNext={() => {
           mmkvStorage.removeItem(IS_COUPON_RECEIVED);
           setShowCouponModal(false);
           containerNavigation.navigate("Coupon");
         }}
-        nextButtonText="확인하기"
+        nextButtonText={t("welcomeCoupon.check")}
         backgroundColor={colors.back4}
       >
         <Image
@@ -218,12 +221,12 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
           }}
         />
         <CustomText fontSize={18} fontWeight={"600"}>
-          웰컴쿠폰이 도착했습니다!
+          {t("welcomeCoupon.title")}
         </CustomText>
         <CustomText marginTop={8} fontSize={16}>
-          가입을 축하드립니다.
+          {t("welcomeCoupon.congrats")}
         </CustomText>
-        <CustomText fontSize={16}>쿠폰함에서 바로 확인해보세요.</CustomText>
+        <CustomText fontSize={16}>{t("welcomeCoupon.checkNow")}</CustomText>
       </CustomModal>
 
       <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
@@ -249,14 +252,14 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
                   fontSize={18}
                   fontWeight={"600"}
                 >
-                  자동세차
+                  {t("menu.autoWash.title")}
                 </CustomText>
                 <CustomText
                   color={colors.gray5}
                   fontSize={13}
                   fontWeight={"500"}
                 >
-                  최신 기계로 간단하게!
+                  {t("menu.autoWash.subtitle")}
                 </CustomText>
 
                 <Image source={autoWashIcon} style={styles.buttonIcon} />
@@ -275,14 +278,14 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
                   fontSize={18}
                   fontWeight={"600"}
                 >
-                  세차권 사용
+                  {t("menu.usePass.title")}
                 </CustomText>
                 <CustomText
                   color={colors.white}
                   fontSize={13}
                   fontWeight={"500"}
                 >
-                  QR 스캔
+                  {t("menu.usePass.subtitle")}
                 </CustomText>
 
                 <Image source={qrIcon} style={styles.buttonIcon} />
@@ -302,7 +305,7 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
                 style={styles.footerButton}
               >
                 <CustomText color={colors.gray7} fontSize={14}>
-                  (주)옳은일
+                  {t("footer.company")}
                 </CustomText>
 
                 <Animated.View
@@ -313,25 +316,25 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
               </Pressable>
 
               <CustomText color={colors.gray5} fontSize={14} numberOfLines={1}>
-                고객센터 운영시간(월~금 : 10-18시)
+                {t("footer.customerCenterHours")}
               </CustomText>
             </View>
 
             <Animated.View style={[styles.footerBottom, openAnimatedStyle]}>
               <CustomText color={colors.gray5} fontSize={14}>
-                대표이사 : 이승열
+                {t("footer.ceo")}
               </CustomText>
               <CustomText color={colors.gray5} fontSize={14}>
-                사업자등록번호 : 850-81-02703
+                {t("footer.businessNumber")}
               </CustomText>
               <CustomText color={colors.gray5} fontSize={14}>
-                통신판매번호 : 2024-경기하남-2769
+                {t("footer.salesNumber")}
               </CustomText>
               <CustomText color={colors.gray5} fontSize={14}>
-                주소 : 경기도 하남시 미사강변한강로 155
+                {t("footer.address")}
               </CustomText>
               <CustomText color={colors.gray5} fontSize={14}>
-                대표전화 : 1668-1620
+                {t("footer.phone")}
               </CustomText>
             </Animated.View>
           </View>

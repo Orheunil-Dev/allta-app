@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -46,6 +47,8 @@ export const CardRegister = () => {
   const queryClient = useQueryClient();
 
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const { t } = useTranslation("payment");
 
   const [registerForm, setRegisterForm] = useState({
     cardNumber: "",
@@ -96,7 +99,7 @@ export const CardRegister = () => {
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "카드 등록에 실패했습니다.",
+            message: error?.message ?? t("cardRegister.registerError"),
           });
         },
       }
@@ -111,7 +114,7 @@ export const CardRegister = () => {
         <View style={styles.container}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <CustomText fontSize={16} fontWeight={"500"}>
-              카드번호
+              {t("cardRegister.cardNumber")}
             </CustomText>
             <CustomTextInput
               value={registerForm.cardNumber}
@@ -125,7 +128,7 @@ export const CardRegister = () => {
             />
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              유효기간
+              {t("cardRegister.expiration")}
             </CustomText>
             <CustomTextInput
               value={registerForm.expiration}
@@ -142,7 +145,7 @@ export const CardRegister = () => {
             />
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              비밀번호
+              {t("cardRegister.password")}
             </CustomText>
             <CustomTextInput
               value={registerForm.cardPassword}
@@ -153,11 +156,11 @@ export const CardRegister = () => {
               keyboardType="number-pad"
               secureTextEntry={true}
               onReset={() => handleChangeRegisterForm("cardPassword", "")}
-              placeholder="앞 두자리"
+              placeholder={t("cardRegister.passwordPlaceholder")}
             />
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              생년월일
+              {t("cardRegister.birthDate")}
             </CustomText>
             <CustomTextInput
               value={registerForm.identityNumber}
@@ -167,7 +170,7 @@ export const CardRegister = () => {
               maxLength={10}
               keyboardType="number-pad"
               onReset={() => handleChangeRegisterForm("identityNumber", "")}
-              placeholder="생년월일 또는 사업자등록번호"
+              placeholder={t("cardRegister.birthDatePlaceholder")}
             />
           </ScrollView>
 
@@ -186,7 +189,7 @@ export const CardRegister = () => {
                 fontSize={16}
                 fontWeight={"600"}
               >
-                등록하기
+                {t("cardRegister.submit")}
               </CustomText>
             )}
           </CustomButton>

@@ -21,6 +21,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
+import { useTranslation } from "react-i18next";
 import { GetStoreGroupListResponse } from "@/api/models";
 import {
   useStoreControllerGetStoreDetail,
@@ -35,7 +36,7 @@ import { CustomText } from "@/components/ui/CustomText";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { GroupInfo, PassInfo, StoreInfo } from "@/components/store/Info";
 import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
-import { dayLabel, dayOrder } from "@/constants";
+import { dayOrder, getDayLabel } from "@/constants";
 import {
   clockIcon,
   defaultStoreImage,
@@ -51,6 +52,8 @@ type StoreDetailRouteProp = RouteProp<StoreStackParamList, "StoreDetail">;
 type BusinessHours = Partial<Record<DayKey, { open: string; close: string }>>;
 
 export const StoreDetail = () => {
+  const { t } = useTranslation("store");
+
   const router = useRoute<StoreDetailRouteProp>();
 
   const containerNavigation =
@@ -269,7 +272,7 @@ export const StoreDetail = () => {
               fontSize={15}
               fontWeight={"500"}
             >
-              {dayLabel[day]} {open} ~ {close}
+              {getDayLabel(day)} {open} ~ {close}
             </CustomText>
           );
         })}
@@ -281,7 +284,7 @@ export const StoreDetail = () => {
             fontSize={15}
             fontWeight={"500"}
           >
-            브레이크 타임 {storeData?.store?.breakTime}
+            {t("detail.breakTime", { time: storeData?.store?.breakTime })}
           </CustomText>
         )}
       </Animated.View>
@@ -358,13 +361,14 @@ export const StoreDetail = () => {
               }}
             />
             <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
-              {getDistance(
-                coordinate?.lat,
-                coordinate?.lng,
-                storeData?.store?.lat as number,
-                storeData?.store?.lng as number
-              )}
-              km
+              {t("distanceKm", {
+                distance: getDistance(
+                  coordinate?.lat,
+                  coordinate?.lng,
+                  storeData?.store?.lat as number,
+                  storeData?.store?.lng as number
+                ),
+              })}
             </CustomText>
 
             <View style={styles.divider} />
@@ -483,7 +487,7 @@ export const StoreDetail = () => {
               fontSize={16}
               fontWeight={tab === "PASS" ? "600" : "400"}
             >
-              이용권
+              {t("detail.tabs.pass")}
             </CustomText>
           </Pressable>
 
@@ -503,7 +507,7 @@ export const StoreDetail = () => {
                 fontSize={16}
                 fontWeight={tab === "STORE" ? "600" : "400"}
               >
-                이용 가능 매장
+                {t("detail.tabs.stores")}
               </CustomText>
             </Pressable>
           )}
@@ -523,7 +527,7 @@ export const StoreDetail = () => {
               fontSize={16}
               fontWeight={tab === "INFO" ? "600" : "400"}
             >
-              정보
+              {t("detail.tabs.info")}
             </CustomText>
           </Pressable>
         </View>
@@ -544,7 +548,7 @@ export const StoreDetail = () => {
             fontSize={18}
             fontWeight={"600"}
           >
-            이용권 구매하기
+            {t("detail.purchasePass")}
           </CustomText>
         </CustomButton>
       </BottomButtonArea>

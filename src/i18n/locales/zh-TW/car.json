@@ -1,0 +1,42 @@
+{
+  "list": {
+    "add": "新增車輛",
+    "empty": "請先登錄車輛",
+    "maxCount": "最多可登錄 {{count}} 輛車。"
+  },
+  "mainCar": {
+    "badge": "預設車輛",
+    "setAsMain": "設為預設車輛",
+    "alreadyMain": "此車輛已是預設車輛。",
+    "changed": "預設車輛已變更。",
+    "changeError": "變更預設車輛時發生錯誤。"
+  },
+  "select": {
+    "title": "選擇車輛"
+  },
+  "form": {
+    "vendor": "廠牌",
+    "model": "型號",
+    "carNumber": "車牌號碼",
+    "carNumberPlaceholder": "12가3456",
+    "carNumberInvalid": "車牌號碼格式不正確。",
+    "modelNotFound": "若列表中找不到您的車輛型號，請聯絡客服。"
+  },
+  "register": {
+    "submit": "登錄",
+    "error": "登錄車輛時發生錯誤。"
+  },
+  "update": {
+    "submit": "儲存變更",
+    "error": "編輯車輛時發生錯誤。"
+  },
+  "options": {
+    "edit": "編輯",
+    "delete": "刪除"
+  },
+  "delete": {
+    "confirm": "確定要刪除所選車輛嗎？",
+    "success": "車輛已刪除。",
+    "error": "刪除車輛時發生錯誤。"
+  }
+}

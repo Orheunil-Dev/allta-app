@@ -13,6 +13,7 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, View } from "react-native";
 
 type PaymentRouteProp = RouteProp<PaymentStackParamList, "PaymentComplete">;
@@ -22,6 +23,8 @@ export const PaymentComplete = () => {
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
+
+  const { t } = useTranslation("payment");
 
   const handleRouteHome = () => {
     return containerNavigation.dispatch(
@@ -62,11 +65,11 @@ export const PaymentComplete = () => {
           }}
         />
         <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-          결제 완료!
+          {t("complete.title")}
         </CustomText>
 
         <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-          이용권 결제가 완료되었습니다.
+          {t("complete.description")}
         </CustomText>
 
         <View style={styles.buttonArea}>
@@ -79,7 +82,7 @@ export const PaymentComplete = () => {
             borderWidth={1}
           >
             <CustomText fontSize={18} fontWeight={"600"}>
-              결제 내역 보기
+              {t("complete.viewHistory")}
             </CustomText>
           </CustomButton>
 
@@ -92,7 +95,7 @@ export const PaymentComplete = () => {
             borderWidth={1}
           >
             <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-              홈 화면 가기
+              {t("complete.goHome")}
             </CustomText>
           </CustomButton>
         </View>
@@ -100,7 +103,7 @@ export const PaymentComplete = () => {
         <View style={styles.receipt}>
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              세차 서비스
+              {t("complete.service")}
             </CustomText>
             <CustomText fontSize={16}>
               {formatServiceType(router.params.serviceType)}
@@ -109,7 +112,7 @@ export const PaymentComplete = () => {
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              이용권
+              {t("complete.pass")}
             </CustomText>
             <CustomText fontSize={16}>
               {formatPassType(router.params.productType)}
@@ -118,21 +121,21 @@ export const PaymentComplete = () => {
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              매장
+              {t("complete.store")}
             </CustomText>
             <CustomText fontSize={16}>{router.params.storeName}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              차량번호
+              {t("complete.carNumber")}
             </CustomText>
             <CustomText fontSize={16}>{router.params.carNumber}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              결제일시
+              {t("complete.paidAt")}
             </CustomText>
             <CustomText fontSize={16}>
               {dayjs(router.params.approvedAt).format("YYYY.MM.DD HH:mm")}
@@ -141,10 +144,12 @@ export const PaymentComplete = () => {
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              결제금액
+              {t("complete.amount")}
             </CustomText>
             <CustomText fontSize={16}>
-              {router.params.totalAmount.toLocaleString()}원
+              {t("common:currency", {
+                amount: router.params.totalAmount.toLocaleString(),
+              })}
             </CustomText>
           </View>
         </View>

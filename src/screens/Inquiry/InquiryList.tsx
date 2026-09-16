@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
 import dayjs from "dayjs";
@@ -15,7 +16,11 @@ import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { colors } from "@/styles";
 
+const MAX_UNANSWERED_INQUIRY_COUNT = 3;
+
 export const InquiryList = () => {
+  const { t } = useTranslation("mypage");
+
   const inquiryStackNavigation =
     useNavigation<NativeStackNavigationProp<InquiryStackParamList>>();
 
@@ -54,8 +59,10 @@ export const InquiryList = () => {
     const unansweredCount =
       inquiryData?.data?.filter((item) => !item.isAnswered).length || 0;
 
-    if (unansweredCount >= 3) {
-      return ErrorToast("문의는 최대 3개까지 등록 가능합니다.");
+    if (unansweredCount >= MAX_UNANSWERED_INQUIRY_COUNT) {
+      return ErrorToast(
+        t("inquiry.maxCount", { count: MAX_UNANSWERED_INQUIRY_COUNT })
+      );
     }
 
     return inquiryStackNavigation.push("InquiryRegister");
@@ -109,7 +116,9 @@ export const InquiryList = () => {
                   color={item.isAnswered ? colors.point2 : colors.gray5}
                   fontWeight={"500"}
                 >
-                  {item.isAnswered ? "답변 완료" : "답변 대기"}
+                  {item.isAnswered
+                    ? t("inquiry.answered")
+                    : t("inquiry.pending")}
                 </CustomText>
               </View>
 
@@ -131,7 +140,7 @@ export const InquiryList = () => {
       ) : (
         <View style={styles.emptyBox}>
           <CustomText color={colors.gray5} fontSize={20} fontWeight={"600"}>
-            문의 내역이 없습니다.
+            {t("inquiry.empty")}
           </CustomText>
         </View>
       )}
@@ -144,7 +153,7 @@ export const InquiryList = () => {
           backgroundColor={colors.point2}
         >
           <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-            문의하기
+            {t("inquiry.register")}
           </CustomText>
         </CustomButton>
       </BottomButtonArea>

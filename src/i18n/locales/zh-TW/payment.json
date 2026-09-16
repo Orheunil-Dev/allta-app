@@ -1,0 +1,72 @@
+{
+  "card": {
+    "selectTitle": "選擇卡片",
+    "registerPrompt": "請登錄卡片",
+    "add": "新增卡片",
+    "maxCount": "最多可登錄 5 張卡片。"
+  },
+  "terms": {
+    "title": "確認訂單內容並同意付款"
+  },
+  "payment": {
+    "selectCarRequired": "請選擇要使用的車輛。",
+    "selectCardRequired": "請選擇付款卡片。",
+    "requestError": "付款請求時發生錯誤。",
+    "passPrice": "使用券金額",
+    "couponDiscount": "優惠券折扣",
+    "discountAmount": "- {{amount}} 元",
+    "registeredCar": "已登錄車輛",
+    "amountTitle": "付款金額",
+    "totalAmount": "最終付款金額",
+    "pay": "立即付款"
+  },
+  "complete": {
+    "title": "付款完成！",
+    "description": "使用券付款已完成。",
+    "viewHistory": "查看付款紀錄",
+    "goHome": "前往首頁",
+    "service": "洗車服務",
+    "pass": "使用券",
+    "store": "門市",
+    "carNumber": "車牌號碼",
+    "paidAt": "付款時間",
+    "amount": "付款金額"
+  },
+  "cardList": {
+    "mainCard": "預設卡片"
+  },
+  "cardRegister": {
+    "registerError": "登錄卡片失敗。",
+    "cardNumber": "卡號",
+    "expiration": "有效期限",
+    "password": "密碼",
+    "passwordPlaceholder": "前 2 碼",
+    "birthDate": "出生日期",
+    "birthDatePlaceholder": "出生日期或統一編號",
+    "submit": "登錄"
+  },
+  "cardSelect": {
+    "title": "付款方式"
+  },
+  "carSelect": {
+    "maxCount": "最多可登錄 5 輛車。",
+    "registerPrompt": "請登錄車輛"
+  },
+  "couponSelect": {
+    "title": "優惠券",
+    "available": "有 {{count}} 張可用的優惠券"
+  },
+  "cardChange": {
+    "changeMethod": "變更付款方式"
+  },
+  "cardOptions": {
+    "deleted": "卡片已刪除。",
+    "deleteError": "刪除卡片時發生錯誤。",
+    "alreadyMain": "此卡片已是預設卡片。",
+    "mainChanged": "預設卡片已變更。",
+    "mainChangeError": "變更預設卡片時發生錯誤。",
+    "deleteConfirm": "確定要刪除所選的卡片嗎？",
+    "setMain": "設為預設卡片",
+    "delete": "刪除"
+  }
+}

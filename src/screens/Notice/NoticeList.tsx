@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import dayjs from "dayjs";
@@ -13,6 +14,8 @@ import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
 
 export const NoticeList = () => {
+  const { t } = useTranslation("mypage");
+
   const noticeStack =
     useNavigation<NativeStackNavigationProp<NoticeStackParamList>>();
 
@@ -66,7 +69,7 @@ export const NoticeList = () => {
               style={styles.card}
             >
               <CustomText fontSize={18} fontWeight={"600"}>
-                [공지] {item.title}
+                {t("notice.itemTitle", { title: item.title })}
               </CustomText>
               <CustomText marginTop={4} color={colors.gray5} fontSize={14}>
                 {dayjs(item.createdAt).format("YYYY.MM.DD")}
@@ -82,7 +85,7 @@ export const NoticeList = () => {
             fontSize={20}
             fontWeight={"600"}
           >
-            등록된 공지사항이 없습니다
+            {t("notice.empty")}
           </CustomText>
         </View>
       )}

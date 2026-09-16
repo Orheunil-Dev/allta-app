@@ -9,6 +9,7 @@ import { getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   ref: React.RefObject<BottomSheetModal | null>;
@@ -27,6 +28,8 @@ export const CarListBottomSheet = ({
   onPressRegister,
   showRegister,
 }: Props) => {
+  const { t } = useTranslation("car");
+
   // 차량 선택
   const handleSelectCar = (value: Car) => () => {
     setCar(value);
@@ -42,7 +45,7 @@ export const CarListBottomSheet = ({
     <CustomBottomSheet
       ref={ref}
       height={getResponsiveSize(500)}
-      title="차량 선택"
+      title={t("select.title")}
       onClose={handleClose}
       hasCloseButton
     >
@@ -93,7 +96,7 @@ export const CarListBottomSheet = ({
               fontSize={20}
               fontWeight={"600"}
             >
-              차량을 등록해주세요
+              {t("list.empty")}
             </CustomText>
           </View>
         )}
@@ -108,7 +111,7 @@ export const CarListBottomSheet = ({
           backgroundColor={colors.main}
         >
           <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-            차량 추가하기
+            {t("list.add")}
           </CustomText>
         </CustomButton>
       )}

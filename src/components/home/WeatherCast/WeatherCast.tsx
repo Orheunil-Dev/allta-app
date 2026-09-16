@@ -5,10 +5,23 @@ import { formatWeatherIcon, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { cloudIcon, rainIcon, snowIcon, sunnyIcon } from "@/assets/images";
 import { colors } from "@/styles";
-import { recommendPhrases } from "@/constants";
+import { weatherPhraseKeys } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import { AppLanguage, DEFAULT_LANGUAGE } from "@/i18n";
+
+// 앱 언어별 아큐웨더 API language 파라미터
+const ACCU_WEATHER_LANGUAGE: Record<AppLanguage, string> = {
+  "zh-TW": "zh-tw",
+  ko: "ko-kr",
+};
 
 export const WeatherCast = () => {
+  const { t, i18n } = useTranslation("home");
+  const accuWeatherLanguage =
+    ACCU_WEATHER_LANGUAGE[i18n.language as AppLanguage] ??
+    ACCU_WEATHER_LANGUAGE[DEFAULT_LANGUAGE];
+
   // 아큐웨더 날씨 조회 요청
   const fetchWeather = async () => {
     // 위치 권한 요청
@@ -25,12 +38,12 @@ export const WeatherCast = () => {
 
       if (status !== "granted") {
         Alert.alert(
-          "위치정보 접근 권한이 없습니다",
-          "앱 설정에서 위치정보 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          t("locationPermission.title"),
+          t("locationPermission.message"),
           [
-            { text: "닫기", style: "cancel" },
+            { text: t("common:close"), style: "cancel" },
             {
-              text: "설정",
+              text: t("locationPermission.settings"),
               onPress: () => Linking.openSettings(),
             },
           ]
@@ -70,7 +83,7 @@ export const WeatherCast = () => {
         params: {
           apikey: process.env.EXPO_PUBLIC_ACCU_WEATHER_API_KEY,
           q: `${lat},${lng}`,
-          language: "ko-KR",
+          language: accuWeatherLanguage,
         },
       }
     );
@@ -83,7 +96,7 @@ export const WeatherCast = () => {
       {
         params: {
           apikey: process.env.EXPO_PUBLIC_ACCU_WEATHER_API_KEY,
-          language: "ko-KR",
+          language: accuWeatherLanguage,
           details: true,
         },
       }
@@ -120,16 +133,18 @@ export const WeatherCast = () => {
   const getRecommendPhrase = () => {
     if (!weatherData) return "";
 
-    const matched = recommendPhrases.find(
-      (weather) =>
-        weather.weatherText === formatWeatherIcon(weatherData.WeatherIcon)
-    );
+    const phraseKey =
+      weatherPhraseKeys[formatWeatherIcon(weatherData.WeatherIcon)];
 
-    if (!matched || matched.phrases.length === 0) return "";
+    if (!phraseKey) return "";
 
-    const randomIndex = Math.floor(Math.random() * matched.phrases.length);
+    const phrases = t(phraseKey, { returnObjects: true }) as string[];
 
-    return matched.phrases[randomIndex];
+    if (!Array.isArray(phrases) || phrases.length === 0) return "";
+
+    const randomIndex = Math.floor(Math.random() * phrases.length);
+
+    return phrases[randomIndex];
   };
 
   // 날씨 아이콘
@@ -159,7 +174,7 @@ export const WeatherCast = () => {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image source={getWeatherIcon()} style={styles.icon} />
             <CustomText color={colors.black} fontSize={16}>
-              오늘의 날씨는 '{weatherData.WeatherText ?? ""}'
+              {t("weather.today", { weather: weatherData.WeatherText ?? "" })}
             </CustomText>
           </View>
 

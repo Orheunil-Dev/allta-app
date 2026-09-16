@@ -6,6 +6,7 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { ContainerStackParamList, LoginStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
@@ -21,6 +22,8 @@ type RegisterCompleteRouteProp = RouteProp<
 
 export const RegisterComplete = () => {
   const route = useRoute<RegisterCompleteRouteProp>();
+
+  const { t } = useTranslation("auth");
 
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
@@ -46,8 +49,8 @@ export const RegisterComplete = () => {
 
         <CustomText fontSize={22} fontWeight={"600"} marginBottom={8}>
           {route.params.isRegister
-            ? "추가 정보 등록이 완료되었습니다."
-            : "필요할 때 등록할 수 있어요."}
+            ? t("register.complete.registeredTitle")
+            : t("register.complete.skippedTitle")}
         </CustomText>
 
         {route.params.isRegister ? (
@@ -57,22 +60,17 @@ export const RegisterComplete = () => {
             color={colors.gray7}
             marginBottom={40}
           >
-            차량, 카드 정보는 언제든지 수정할 수 있어요.
+            {t("register.complete.registeredDescription")}
           </CustomText>
         ) : (
-          <>
-            <CustomText textAlign="center" fontSize={16} color={colors.gray7}>
-              차량과 카드는 마이페이지에서
-            </CustomText>
-            <CustomText
-              textAlign="center"
-              fontSize={16}
-              color={colors.gray7}
-              marginBottom={40}
-            >
-              언제든 등록할 수 있어요.
-            </CustomText>
-          </>
+          <CustomText
+            textAlign="center"
+            fontSize={16}
+            color={colors.gray7}
+            marginBottom={40}
+          >
+            {t("register.complete.skippedDescription")}
+          </CustomText>
         )}
 
         <View style={styles.buttonBox}>
@@ -85,7 +83,7 @@ export const RegisterComplete = () => {
             borderColor={colors.gray2}
           >
             <CustomText color={colors.black} fontSize={16} fontWeight={"600"}>
-              홈으로 가기
+              {t("goHome")}
             </CustomText>
           </CustomButton>
         </View>

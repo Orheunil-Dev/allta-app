@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 import { CustomText } from "../CustomText";
 import { colors } from "@/styles";
 import { getResponsiveSize } from "@/utils";
@@ -33,6 +34,8 @@ export const CustomModal = ({
   backgroundColor = colors.white,
   children,
 }: CustomModalProps) => {
+  const { t } = useTranslation("common");
+
   return (
     <Modal transparent={true} visible={visible} statusBarTranslucent>
       <Pressable onPress={onClose} style={styles.backdrop}>
@@ -54,7 +57,7 @@ export const CustomModal = ({
                     fontWeight="500"
                     color={colors.black}
                   >
-                    {closeButtonText ?? "확인"}
+                    {closeButtonText ?? t("confirm")}
                   </CustomText>
                 </CustomButton>
               )}
@@ -67,7 +70,7 @@ export const CustomModal = ({
                   backgroundColor={colors.point2}
                 >
                   <CustomText fontSize={15} fontWeight="500" color="#fff">
-                    {nextButtonText ?? "확인"}
+                    {nextButtonText ?? t("confirm")}
                   </CustomText>
                 </CustomButton>
               )}

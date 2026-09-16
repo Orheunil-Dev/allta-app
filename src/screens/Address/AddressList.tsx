@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useSetAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 import { useAddressControllerGetAddressList } from "@/api/address/address";
 import { errorModalAtom } from "@/jotai";
 import { AddressStackParamList } from "@/navigations";
@@ -16,7 +17,11 @@ import { colors } from "@/styles";
 import { AddressOptionsBottomSheet } from "@/components/bottom-sheet";
 import { Address } from "@/types";
 
+const MAX_ADDRESS_COUNT = 20;
+
 export const AddressList = () => {
+  const { t } = useTranslation("address");
+
   const addressStackNavigation =
     useNavigation<NativeStackNavigationProp<AddressStackParamList>>();
 
@@ -38,10 +43,13 @@ export const AddressList = () => {
 
   // 주소 등록
   const handleRouteAddressRegister = () => {
-    if (addressesData?.data.length && addressesData?.data.length > 19) {
+    if (
+      addressesData?.data.length &&
+      addressesData?.data.length >= MAX_ADDRESS_COUNT
+    ) {
       return setErrorModal({
         visible: true,
-        message: "주소는 최대 20개까지 등록 가능합니다.",
+        message: t("list.maxCount", { max: MAX_ADDRESS_COUNT }),
       });
     }
 
@@ -76,7 +84,7 @@ export const AddressList = () => {
           borderColor={colors.gray2}
         >
           <Image source={plusIcon} style={styles.plusIcon} />
-          <CustomText fontSize={16}>주소 추가하기</CustomText>
+          <CustomText fontSize={16}>{t("addAddress")}</CustomText>
         </CustomButton>
 
         <FlatList

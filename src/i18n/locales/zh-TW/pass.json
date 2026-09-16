@@ -1,0 +1,96 @@
+{
+  "labels": {
+    "store": "門市",
+    "pass": "使用券",
+    "washService": "洗車服務",
+    "carNumber": "車牌號碼",
+    "usagePeriod": "使用期間",
+    "validPeriod": "有效期限",
+    "remainingCount": "剩餘次數",
+    "countOf": "/{{max}} 次"
+  },
+  "list": {
+    "empty": "尚無持有的使用券。"
+  },
+  "filter": {
+    "noCar": "尚未登錄車輛"
+  },
+  "select": {
+    "oncePerDay": "每日 1 次",
+    "usedUp": "此使用券已使用完畢。",
+    "usedToday": "此使用券今日已使用。"
+  },
+  "detail": {
+    "storeNotFound": "找不到門市資訊。",
+    "locationPermission": {
+      "title": "沒有位置資訊存取權限",
+      "message": "您可以在 App 設定中允許位置資訊存取權限。要前往設定嗎？",
+      "openSettings": "設定"
+    },
+    "storeInfo": "門市資訊",
+    "passInfo": "使用券詳細資訊",
+    "nextBillingDate": "下次付款日",
+    "expectedAmount": "預計付款金額",
+    "paymentMethod": "付款方式",
+    "terms": {
+      "pass": "使用券注意事項",
+      "refund": "退款注意事項",
+      "paymentInfo": "付款資訊注意事項",
+      "cancelSubscription": "終止訂閱注意事項",
+      "fullRefundBeforeStart": "• 使用券開始日前可全額退款",
+      "deductUsage": "• 使用中申請退款時，將扣除已使用天數或次數後結算",
+      "premiumMemberUsage": "• 高級使用券的成員使用紀錄也會計入退款金額。"
+    },
+    "discontinue": {
+      "button": "終止訂閱",
+      "modalTitle": "終止訂閱",
+      "modalMessage": "使用券到期日前\n剩餘期間無法退款，並自下次付款日起\n自動停止扣款。",
+      "modalConfirm": "確定要終止嗎？",
+      "confirmButton": "終止",
+      "success": "已取消訂閱自動續訂。",
+      "error": "終止訂閱失敗。"
+    },
+    "resubscribe": {
+      "button": "重新訂閱",
+      "modalTitle": "重新訂閱",
+      "modalMessage": "要重新訂閱此使用券嗎？",
+      "confirmButton": "重新訂閱",
+      "success": "已完成重新訂閱。",
+      "error": "重新訂閱失敗。"
+    }
+  },
+  "cardChange": {
+    "modalTitle": "變更卡片",
+    "modalMessage": "自下次付款日起，將以新的付款方式\n進行自動扣款。",
+    "modalConfirm": "確定要變更嗎？",
+    "confirmButton": "變更",
+    "notSelected": "尚未選擇付款方式。",
+    "sameCard": "與目前的付款方式為同一張卡片。",
+    "success": "付款方式已變更。",
+    "error": "變更付款方式時發生錯誤。"
+  },
+  "purchase": {
+    "list": {
+      "empty": "尚無付款紀錄。"
+    },
+    "detail": {
+      "completed": {
+        "approved": "已完成",
+        "refunded": "已完成"
+      },
+      "passInfo": "使用券資訊",
+      "registeredCar": "登錄車輛",
+      "paymentInfo": "付款資訊",
+      "passAmount": "使用券金額",
+      "couponDiscount": "優惠券折扣",
+      "totalAmount": "付款金額",
+      "paymentMethod": "付款方式",
+      "paidAt": "付款時間",
+      "partialRefundInfo": "部分退款資訊",
+      "fullRefundInfo": "全額退款資訊",
+      "refundAmount": "退款金額",
+      "refundMethod": "退款方式",
+      "refundedAt": "退款時間"
+    }
+  }
+}

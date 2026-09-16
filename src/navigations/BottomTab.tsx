@@ -3,6 +3,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useTranslation } from "react-i18next";
 import { MyStoreStack, MyStoreStackParamList } from "./MyStoreStack";
 import { getResponsiveSize } from "@/utils";
 import { colors } from "@/styles";
@@ -42,6 +43,7 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 const screenHeight = Dimensions.get("window").height;
 
 export const BottomTab = ({ showSplash, showUpdate }: Props) => {
+  const { t } = useTranslation("nav");
   const insets = useSafeAreaInsets();
 
   const TAB_HEIGHT =
@@ -71,7 +73,7 @@ export const BottomTab = ({ showSplash, showUpdate }: Props) => {
       <Tab.Screen
         name="Home"
         options={{
-          title: "홈",
+          title: t("tab.home"),
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
@@ -96,7 +98,7 @@ export const BottomTab = ({ showSplash, showUpdate }: Props) => {
           const hideTabBar = routeName === "MyStoreDetail";
 
           return {
-            title: "내 매장",
+            title: t("tab.myStore"),
             headerShown: false,
             tabBarIcon: ({ focused }) => (
               <Image
@@ -120,7 +122,7 @@ export const BottomTab = ({ showSplash, showUpdate }: Props) => {
         name="QrScanStack"
         component={QrScanStack}
         options={{
-          title: "QR 스캔",
+          title: t("tab.qrScan"),
           headerShown: false,
           tabBarIcon: () => (
             <Image
@@ -138,7 +140,7 @@ export const BottomTab = ({ showSplash, showUpdate }: Props) => {
         name="MyPageStack"
         component={MyPageStack}
         options={{
-          title: "내 정보",
+          title: t("tab.myPage"),
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image

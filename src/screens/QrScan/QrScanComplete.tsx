@@ -18,6 +18,7 @@ import {
 } from "@/api/pass/pass";
 import { Car } from "@/types";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CarSelectButton } from "@/components/payment/CarSelectButton";
 import { ScrollView } from "react-native-gesture-handler";
 import { PassSelectCard } from "@/components/ui/Card/PassSelectCard";
@@ -40,6 +41,8 @@ type SubscriptionSnapshot = {
 type QrScanRouteProps = RouteProp<QrScanStackParamList, "QrScanCompelete">;
 
 export const QrScanComplete = () => {
+  const { t } = useTranslation("scan");
+
   const router = useRoute<QrScanRouteProps>();
 
   const qrScanStackNavigation =
@@ -135,8 +138,7 @@ export const QrScanComplete = () => {
                 setErrorModal({
                   visible: true,
                   message:
-                    error?.message ??
-                    "이용권 사용 요청 중 오류가 발생했습니다.",
+                    error?.message ?? t("qrScanComplete.error.useRequest"),
                 });
               },
             }
@@ -144,7 +146,7 @@ export const QrScanComplete = () => {
         } else {
           return setErrorModal({
             visible: true,
-            message: "잘못된 이용권 정보입니다.",
+            message: t("qrScanComplete.error.invalidPass"),
           });
         }
 
@@ -183,8 +185,7 @@ export const QrScanComplete = () => {
                 setErrorModal({
                   visible: true,
                   message:
-                    error?.message ??
-                    "이용권 사용 요청 중 오류가 발생했습니다.",
+                    error?.message ?? t("qrScanComplete.error.useRequest"),
                 });
               },
             }
@@ -192,7 +193,7 @@ export const QrScanComplete = () => {
         } else {
           return setErrorModal({
             visible: true,
-            message: "잘못된 이용권 정보입니다.",
+            message: t("qrScanComplete.error.invalidPass"),
           });
         }
 
@@ -231,8 +232,7 @@ export const QrScanComplete = () => {
                 setErrorModal({
                   visible: true,
                   message:
-                    error?.message ??
-                    "이용권 사용 요청 중 오류가 발생했습니다.",
+                    error?.message ?? t("qrScanComplete.error.useRequest"),
                 });
               },
             }
@@ -240,14 +240,14 @@ export const QrScanComplete = () => {
         } else {
           return setErrorModal({
             visible: true,
-            message: "잘못된 이용권 정보입니다.",
+            message: t("qrScanComplete.error.invalidPass"),
           });
         }
 
       default:
         return setErrorModal({
           visible: true,
-          message: "이용권 선택 중 오류가 발생했습니다.",
+          message: t("qrScanComplete.error.selectPass"),
         });
     }
   };
@@ -257,19 +257,21 @@ export const QrScanComplete = () => {
       <ScrollView style={styles.container}>
         <View style={styles.top}>
           <CustomText fontSize={22} fontWeight={"600"}>
-            QR 스캔 완료!
+            {t("qrScanComplete.title")}
           </CustomText>
-          <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-            이용할 차량과 이용권을 선택해주세요.
-          </CustomText>
-          <CustomText color={colors.gray7} fontSize={16}>
-            선택 후 이용권 변경이 어렵습니다.
+          <CustomText
+            marginTop={8}
+            textAlign="center"
+            color={colors.gray7}
+            fontSize={16}
+          >
+            {t("qrScanComplete.description")}
           </CustomText>
         </View>
 
         <View style={styles.bottom}>
           <CustomText marginBottom={12} fontSize={18} fontWeight={"600"}>
-            차량 선택
+            {t("qrScanComplete.selectCar")}
           </CustomText>
 
           <CarSelectButton car={car} setCar={setCar} />
@@ -280,7 +282,7 @@ export const QrScanComplete = () => {
             fontSize={18}
             fontWeight={"600"}
           >
-            이용권 선택
+            {t("qrScanComplete.selectPass")}
           </CustomText>
 
           <CustomText
@@ -289,7 +291,7 @@ export const QrScanComplete = () => {
             fontSize={12}
             fontWeight={"500"}
           >
-            * 각 이용권 종류별로 만료일이 임박한 이용권이 우선 노출됩니다.
+            {t("qrScanComplete.passOrderNotice")}
           </CustomText>
 
           {passLoading && (
@@ -303,7 +305,7 @@ export const QrScanComplete = () => {
               {passData.autoTicket && (
                 <PassSelectCard
                   type="TICKET"
-                  name="자동세차 일회권"
+                  name={t("qrScanComplete.pass.ticket")}
                   availablePeriod={`~ ${dayjs(
                     passData.autoTicket.expiredAt as Date
                   ).format("YYYY.MM.DD")} `}
@@ -315,7 +317,7 @@ export const QrScanComplete = () => {
               {passData.autoStandard && (
                 <PassSelectCard
                   type="STANDARD"
-                  name="자동세차 스탠다드"
+                  name={t("qrScanComplete.pass.standard")}
                   usage={
                     (
                       passData?.autoStandard.subscriptionSnapshot as
@@ -344,7 +346,7 @@ export const QrScanComplete = () => {
               {passData.autoPremium && (
                 <PassSelectCard
                   type="PREMIUM"
-                  name="자동세차 프리미엄"
+                  name={t("qrScanComplete.pass.premium")}
                   availablePeriod={`~ ${dayjs(
                     passData.autoPremium.paidAt as Date
                   )
@@ -366,7 +368,7 @@ export const QrScanComplete = () => {
                   fontSize={20}
                   fontWeight={"600"}
                 >
-                  사용 가능한 이용권이 없습니다.
+                  {t("qrScanComplete.noAvailablePass")}
                 </CustomText>
               </View>
             ))}
@@ -389,7 +391,7 @@ export const QrScanComplete = () => {
               fontSize={18}
               fontWeight={"600"}
             >
-              확인
+              {t("common:confirm")}
             </CustomText>
           )}
         </CustomButton>
