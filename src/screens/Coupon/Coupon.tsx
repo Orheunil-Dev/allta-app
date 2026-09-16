@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, StyleSheet, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { useSetAtom } from "jotai";
@@ -23,6 +24,8 @@ import { colors, fontMap } from "@/styles";
 
 export const Coupon = () => {
   const setErrorModal = useSetAtom(errorModalAtom);
+
+  const { t } = useTranslation("benefit");
 
   const [skip, setSkip] = useState<number>(0);
   const [coupons, setCoupons] = useState<GetCouponListResponse["data"]>([]);
@@ -58,7 +61,7 @@ export const Coupon = () => {
 
   // 쿠폰 등록
   const handleSubmit = () => {
-    if (!code.trim()) return ErrorToast("코드를 입력해주세요.");
+    if (!code.trim()) return ErrorToast(t("coupon.codeRequired"));
 
     registerCode(
       {
@@ -69,7 +72,7 @@ export const Coupon = () => {
           setSkip(0);
           setCoupons([]);
           setCode("");
-          SuccessToast("쿠폰이 등록되었습니다.");
+          SuccessToast(t("coupon.registered"));
           couponRefetch();
         },
         onError: (error) => {
@@ -103,7 +106,7 @@ export const Coupon = () => {
           keyboardType="default"
           autoCorrect={false}
           autoCapitalize="none"
-          placeholder="쿠폰번호 입력"
+          placeholder={t("coupon.codePlaceholder")}
           maxLength={30}
           underlineColorAndroid="transparent"
           style={styles.codeInput}
@@ -117,7 +120,7 @@ export const Coupon = () => {
           borderColor={colors.gray2}
         >
           <CustomText fontSize={15} fontWeight={"500"}>
-            쿠폰등록
+            {t("coupon.register")}
           </CustomText>
         </CustomButton>
       </View>
@@ -145,17 +148,20 @@ export const Coupon = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray6} fontSize={13}>
-                    {formatCouponPassType(
-                      item.serviceType ?? null,
-                      item.passType ?? null
-                    )}{" "}
-                    구매시
+                    {t("coupon.onPurchase", {
+                      passType: formatCouponPassType(
+                        item.serviceType ?? null,
+                        item.passType ?? null
+                      ),
+                    })}
                   </CustomText>
                 </View>
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray6} fontSize={13}>
-                    {dayjs(item.expiredAt).format("YYYY.MM.DD")} 까지
+                    {t("coupon.expiresAt", {
+                      date: dayjs(item.expiredAt).format("YYYY.MM.DD"),
+                    })}
                   </CustomText>
                 </View>
               </View>
@@ -164,7 +170,7 @@ export const Coupon = () => {
         ) : (
           <View style={styles.emptyBox}>
             <CustomText color={colors.gray5} fontSize={20} fontWeight={"600"}>
-              사용 가능한 쿠폰이 없습니다.
+              {t("coupon.empty")}
             </CustomText>
           </View>
         ))}

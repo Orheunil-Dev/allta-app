@@ -8,6 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 import { errorModalAtom } from "@/jotai";
 import dayjs from "dayjs";
 import {
@@ -53,6 +54,8 @@ export const SubscriptionDetail = ({
   subscriptionRefetch,
   handleRouteMyStoreDetail,
 }: Props) => {
+  const { t } = useTranslation("pass");
+
   const setErrorModal = useSetAtom(errorModalAtom);
 
   const [passTermsOpen, setPassTermsOpen] = useState<boolean>(false);
@@ -93,12 +96,12 @@ export const SubscriptionDetail = ({
         onSuccess: () => {
           subscriptionRefetch();
           setShowDicontinueModal(false);
-          SuccessToast("구독 갱신이 해지되었습니다.");
+          SuccessToast(t("detail.discontinue.success"));
         },
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "구독권 해지에 실패했습니다.",
+            message: error?.message ?? t("detail.discontinue.error"),
           });
 
           setShowDicontinueModal(false);
@@ -121,12 +124,12 @@ export const SubscriptionDetail = ({
         onSuccess: () => {
           subscriptionRefetch();
           setShowResubscribeModal(false);
-          SuccessToast("재구독이 완료되었습니다.");
+          SuccessToast(t("detail.resubscribe.success"));
         },
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "구독권 해지에 실패했습니다.",
+            message: error?.message ?? t("detail.resubscribe.error"),
           });
 
           setShowResubscribeModal(false);
@@ -192,49 +195,44 @@ export const SubscriptionDetail = ({
       <CustomModal
         visible={showDiscontinueModal}
         onClose={() => setShowDicontinueModal(false)}
-        closeButtonText="취소"
+        closeButtonText={t("common:cancel")}
         onNext={handleDiscontinue}
         isNextButtonDisable={discontinueSubscriptionLoading}
-        nextButtonText="해지하기"
+        nextButtonText={t("detail.discontinue.confirmButton")}
       >
         <CustomText fontSize={18} fontWeight={"600"}>
-          이용권 해지
+          {t("detail.discontinue.modalTitle")}
         </CustomText>
 
-        <CustomText marginTop={8} fontSize={16}>
-          이용권 종료일까지
+        <CustomText marginTop={8} textAlign="center" fontSize={16}>
+          {t("detail.discontinue.modalMessage")}
         </CustomText>
-
-        <CustomText fontSize={16}>
-          잔여 기간 환불 불가하며, 다음 결제일부터
-        </CustomText>
-        <CustomText fontSize={16}>자동으로 결제 중단됩니다.</CustomText>
 
         <CustomText marginTop={16} fontSize={16}>
-          정말 해지하시겠습니까?
+          {t("detail.discontinue.modalConfirm")}
         </CustomText>
       </CustomModal>
 
       <CustomModal
         visible={showResubscribeModal}
         onClose={() => setShowResubscribeModal(false)}
-        closeButtonText="취소"
+        closeButtonText={t("common:cancel")}
         onNext={handleResubscribe}
         isNextButtonDisable={discontinueSubscriptionLoading}
-        nextButtonText="재구독하기"
+        nextButtonText={t("detail.resubscribe.confirmButton")}
       >
         <CustomText fontSize={18} fontWeight={"600"}>
-          이용권 재구독
+          {t("detail.resubscribe.modalTitle")}
         </CustomText>
 
         <CustomText marginTop={8} fontSize={16}>
-          이용권을 다시 재구독하시겠습니까?
+          {t("detail.resubscribe.modalMessage")}
         </CustomText>
       </CustomModal>
 
       <ScrollView style={styles.container}>
         <CustomText fontSize={18} fontWeight={"600"}>
-          매장 정보
+          {t("detail.storeInfo")}
         </CustomText>
 
         <Pressable onPress={handleRouteMyStoreDetail} style={styles.storeInfo}>
@@ -283,7 +281,7 @@ export const SubscriptionDetail = ({
         <View style={styles.box}>
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              세차 서비스
+              {t("labels.washService")}
             </CustomText>
             <CustomText fontSize={16}>
               {formatServiceType(data.serviceType)}
@@ -292,34 +290,34 @@ export const SubscriptionDetail = ({
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              이용권
+              {t("labels.pass")}
             </CustomText>
             <CustomText fontSize={16}>{formatPassType(data.type)}</CustomText>
           </View>
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              매장
+              {t("labels.store")}
             </CustomText>
             <CustomText fontSize={16}>{data.store.name}</CustomText>
           </View>
 
           <View style={[styles.row, { borderBottomWidth: 0 }]}>
             <CustomText color={colors.gray5} fontSize={16}>
-              차량번호
+              {t("labels.carNumber")}
             </CustomText>
             <CustomText fontSize={16}>{data.carNumber}</CustomText>
           </View>
         </View>
 
         <CustomText marginTop={40} fontSize={18} fontWeight={"600"}>
-          이용권 상세 정보
+          {t("detail.passInfo")}
         </CustomText>
 
         <View style={styles.box}>
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              이용기간
+              {t("labels.usagePeriod")}
             </CustomText>
             <CustomText fontSize={16}>
               {getAvailablePeriod(data.paidAt, data.billingDate)}
@@ -329,7 +327,7 @@ export const SubscriptionDetail = ({
           {data.type === "STANDARD" && (
             <View style={styles.row}>
               <CustomText color={colors.gray5} fontSize={16}>
-                남은 횟수
+                {t("labels.remainingCount")}
               </CustomText>
 
               <View style={{ flexDirection: "row" }}>
@@ -351,7 +349,9 @@ export const SubscriptionDetail = ({
                   )}
                 </CustomText>
                 <CustomText fontSize={15} fontWeight={"500"}>
-                  /{data.subscriptionSnapshot.maxUsage} 회
+                  {t("labels.countOf", {
+                    max: data.subscriptionSnapshot.maxUsage,
+                  })}
                 </CustomText>
               </View>
             </View>
@@ -359,7 +359,7 @@ export const SubscriptionDetail = ({
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              다음 결제일
+              {t("detail.nextBillingDate")}
             </CustomText>
             <CustomText fontSize={16}>
               {data.status === "ACTIVE"
@@ -372,16 +372,16 @@ export const SubscriptionDetail = ({
 
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={16}>
-              예상 결제 금액
+              {t("detail.expectedAmount")}
             </CustomText>
             <CustomText fontSize={16}>
-              {data.amount.toLocaleString()}원
+              {t("common:currency", { amount: data.amount.toLocaleString() })}
             </CustomText>
           </View>
 
           <View style={[styles.row, { borderBottomWidth: 0 }]}>
             <CustomText color={colors.gray5} fontSize={16}>
-              결제수단
+              {t("detail.paymentMethod")}
             </CustomText>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <CustomText fontSize={16}>
@@ -407,7 +407,7 @@ export const SubscriptionDetail = ({
             }}
           >
             <CustomText fontSize={16} fontWeight={"600"}>
-              이용권 유의사항
+              {t("detail.terms.pass")}
             </CustomText>
 
             <Pressable onPress={() => setPassTermsOpen(!passTermsOpen)}>
@@ -420,28 +420,28 @@ export const SubscriptionDetail = ({
 
           <View style={styles.rowDivider} />
 
-          <CustomText fontSize={14}>결제 정보 유의사항</CustomText>
+          <CustomText fontSize={14}>{t("detail.terms.paymentInfo")}</CustomText>
           <CustomText marginTop={4} color={colors.gray5} fontSize={14}>
-            • 이용권 시작일 이전까지 전액 환불 가능
+            {t("detail.terms.fullRefundBeforeStart")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 이용 중 환불 시, 사용 일수 또는 횟수를 차감한 후 정산
+            {t("detail.terms.deductUsage")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 프리미엄 이용권은 멤버가 사용한 이력도 환불 금액에 포함됩니다.
+            {t("detail.terms.premiumMemberUsage")}
           </CustomText>
 
           <CustomText marginTop={20} fontSize={14}>
-            구독 해지 유의사항
+            {t("detail.terms.cancelSubscription")}
           </CustomText>
           <CustomText marginTop={4} color={colors.gray5} fontSize={14}>
-            • 이용권 시작일 이전까지 전액 환불 가능
+            {t("detail.terms.fullRefundBeforeStart")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 이용 중 환불 시, 사용 일수 또는 횟수를 차감한 후 정산
+            {t("detail.terms.deductUsage")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 프리미엄 이용권은 멤버가 사용한 이력도 환불 금액에 포함됩니다.
+            {t("detail.terms.premiumMemberUsage")}
           </CustomText>
         </Animated.View>
 
@@ -454,7 +454,7 @@ export const SubscriptionDetail = ({
             borderColor={colors.gray2}
           >
             <CustomText fontSize={16} fontWeight={"600"}>
-              이용권 해지하기
+              {t("detail.discontinue.button")}
             </CustomText>
           </CustomButton>
         )}
@@ -468,7 +468,7 @@ export const SubscriptionDetail = ({
             borderColor={colors.gray2}
           >
             <CustomText fontSize={16} fontWeight={"600"}>
-              이용권 재구독하기
+              {t("detail.resubscribe.button")}
             </CustomText>
           </CustomButton>
         )}
@@ -482,7 +482,7 @@ export const SubscriptionDetail = ({
             }}
           >
             <CustomText fontSize={16} fontWeight={"600"}>
-              환불 유의사항
+              {t("detail.terms.refund")}
             </CustomText>
 
             <Pressable onPress={() => setRefundTermsOpen(!refundTermsOpen)}>
@@ -495,28 +495,28 @@ export const SubscriptionDetail = ({
 
           <View style={styles.rowDivider} />
 
-          <CustomText fontSize={14}>결제 정보 유의사항</CustomText>
+          <CustomText fontSize={14}>{t("detail.terms.paymentInfo")}</CustomText>
           <CustomText marginTop={4} color={colors.gray5} fontSize={14}>
-            • 이용권 시작일 이전까지 전액 환불 가능
+            {t("detail.terms.fullRefundBeforeStart")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 이용 중 환불 시, 사용 일수 또는 횟수를 차감한 후 정산
+            {t("detail.terms.deductUsage")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 프리미엄 이용권은 멤버가 사용한 이력도 환불 금액에 포함됩니다.
+            {t("detail.terms.premiumMemberUsage")}
           </CustomText>
 
           <CustomText marginTop={20} fontSize={14}>
-            결제 정보 유의사항
+            {t("detail.terms.paymentInfo")}
           </CustomText>
           <CustomText marginTop={4} color={colors.gray5} fontSize={14}>
-            • 이용권 시작일 이전까지 전액 환불 가능
+            {t("detail.terms.fullRefundBeforeStart")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 이용 중 환불 시, 사용 일수 또는 횟수를 차감한 후 정산
+            {t("detail.terms.deductUsage")}
           </CustomText>
           <CustomText color={colors.gray5} fontSize={14}>
-            • 프리미엄 이용권은 멤버가 사용한 이력도 환불 금액에 포함됩니다.
+            {t("detail.terms.premiumMemberUsage")}
           </CustomText>
         </Animated.View>
       </ScrollView>

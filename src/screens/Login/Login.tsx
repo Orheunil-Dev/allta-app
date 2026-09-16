@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import CookieManager from "@react-native-cookies/cookies";
@@ -47,6 +48,8 @@ export const Login = () => {
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
+  const { t } = useTranslation("auth");
+
   const [count, setCount] = useState<number>(0);
 
   // 소셜 ID 체크
@@ -82,7 +85,7 @@ export const Login = () => {
     if (!socialId) {
       setErrorModal({
         visible: true,
-        message: "로그인 중 오류가 발생했습니다.",
+        message: t("login.error.generic"),
       });
     }
 
@@ -151,7 +154,7 @@ export const Login = () => {
                 onError: (error: any) => {
                   return setErrorModal({
                     visible: true,
-                    message: error.message ?? "로그인 중 오류가 발생했습니다.",
+                    message: error.message ?? t("login.error.generic"),
                   });
                 },
               }
@@ -167,7 +170,7 @@ export const Login = () => {
         onError: (error: any) => {
           return setErrorModal({
             visible: true,
-            message: error.message ?? "로그인 중 오류가 발생했습니다.",
+            message: error.message ?? t("login.error.generic"),
           });
         },
       }
@@ -258,7 +261,7 @@ export const Login = () => {
           } else {
             setErrorModal({
               visible: true,
-              message: message ? (message as string) : "로그인에 실패했습니다.",
+              message: message ? (message as string) : t("login.error.failed"),
             });
           }
         }
@@ -397,7 +400,7 @@ export const Login = () => {
         onError: (error: any) => {
           return setErrorModal({
             visible: true,
-            message: error.message ?? "로그인 중 오류가 발생했습니다.",
+            message: error.message ?? t("login.error.generic"),
           });
         },
       }
@@ -432,10 +435,10 @@ export const Login = () => {
         </Pressable>
 
         <CustomText fontSize={24} fontWeight={"700"}>
-          올타와 함께
+          {t("login.title")}
         </CustomText>
         <CustomText marginTop={6} fontSize={24} fontWeight={"700"}>
-          세차를 시작하세요!
+          {t("login.subtitle")}
         </CustomText>
 
         <Pressable onPress={handleLoginTest}>
@@ -465,7 +468,7 @@ export const Login = () => {
             }}
           />
           <CustomText fontSize={15} fontWeight={"500"}>
-            카카오로 로그인
+            {t("login.kakao")}
           </CustomText>
         </CustomButton>
 
@@ -494,7 +497,7 @@ export const Login = () => {
             }}
             allowFontScaling={false}
           >
-            구글 계정으로 로그인
+            {t("login.google")}
           </Text>
         </CustomButton>
 
@@ -516,7 +519,7 @@ export const Login = () => {
               }}
             />
             <CustomText color={colors.white} fontSize={15} fontWeight={"500"}>
-              Apple로 로그인
+              {t("login.apple")}
             </CustomText>
           </CustomButton>
         )}

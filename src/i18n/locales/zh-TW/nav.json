@@ -1,0 +1,67 @@
+{
+  "tab": {
+    "home": "首頁",
+    "myStore": "我的門市",
+    "qrScan": "QR 掃描",
+    "myPage": "我的資料"
+  },
+  "address": {
+    "list": "地址管理",
+    "search": "搜尋地址",
+    "register": "登錄地址"
+  },
+  "card": {
+    "list": "卡片管理",
+    "register": "登錄卡片"
+  },
+  "car": {
+    "list": "車輛管理",
+    "register": "登錄車輛",
+    "update": "編輯車輛"
+  },
+  "container": {
+    "notification": "通知",
+    "serviceHistory": "使用紀錄",
+    "coupon": "優惠券",
+    "referral": "邀請好友 / 推薦碼",
+    "faq": "常見問題",
+    "profile": "我的資料",
+    "guide": "Allta 使用指南",
+    "selfGuide": "無人門市使用說明"
+  },
+  "event": {
+    "list": "活動"
+  },
+  "inquiry": {
+    "title": "一對一諮詢"
+  },
+  "myStore": {
+    "list": "我的門市"
+  },
+  "notice": {
+    "title": "公告"
+  },
+  "pass": {
+    "list": "我的使用券",
+    "detail": "使用券詳情"
+  },
+  "payment": {
+    "payment": "付款",
+    "complete": "付款完成"
+  },
+  "purchase": {
+    "list": "付款紀錄",
+    "detail": "付款詳情"
+  },
+  "qrScan": {
+    "error": "確認使用券"
+  },
+  "setting": {
+    "setting": "App 設定",
+    "notification": "通知設定",
+    "terms": "條款與政策"
+  },
+  "store": {
+    "list": "瀏覽門市"
+  }
+}

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEventControllerGetEventList } from "@/api/event/event";
@@ -22,6 +23,8 @@ export const EventList = () => {
   const eventStackNavigation =
     useNavigation<NativeStackNavigationProp<EventStackParamList>>();
 
+  const { t } = useTranslation("benefit");
+
   // 이벤트 목록 조회 API
   const {
     data: eventData,
@@ -34,7 +37,7 @@ export const EventList = () => {
       <View style={styles.container}>
         <View style={{ flexDirection: "row" }}>
           <CustomText fontSize={16} fontWeight={"600"}>
-            진행중인 이벤트
+            {t("event.ongoing")}
           </CustomText>
           <CustomText
             marginLeft={4}
@@ -54,10 +57,10 @@ export const EventList = () => {
               fontSize={20}
               fontWeight={"600"}
             >
-              현재 진행 중인 이벤트가 없습니다.
+              {t("event.emptyTitle")}
             </CustomText>
             <CustomText marginBottom={40} color={colors.gray5} fontSize={16}>
-              이벤트 소식을 곧 전해드릴게요!
+              {t("event.emptyDescription")}
             </CustomText>
           </View>
         ) : (

@@ -17,6 +17,7 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 type ReceiptRouteProps = RouteProp<
   ReceiptScanStackParamList,
@@ -24,6 +25,8 @@ type ReceiptRouteProps = RouteProp<
 >;
 
 export const ReceiptScanError = () => {
+  const { t } = useTranslation("scan");
+
   const router = useRoute<ReceiptRouteProps>();
 
   const navigation = useNavigation();
@@ -53,14 +56,16 @@ export const ReceiptScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              영수증 인식에 실패했습니다.
+              {t("receiptScanError.recognitionFailed.title")}
             </CustomText>
 
-            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              깨끗한한 배경에 영수증을 놓고
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={16}>
-              전체가 잘 나오도록 촬영해 주세요.
+            <CustomText
+              marginTop={8}
+              textAlign="center"
+              color={colors.gray7}
+              fontSize={16}
+            >
+              {t("receiptScanError.recognitionFailed.description")}
             </CustomText>
           </View>
         );
@@ -69,14 +74,16 @@ export const ReceiptScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              이미 등록된 영수증입니다.
+              {t("receiptScanError.duplicated.title")}
             </CustomText>
 
-            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              해당 영수증은 이미 쿠폰이 발급되었습니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={16}>
-              영수증 당 1회만 쿠폰이 발급됩니다.
+            <CustomText
+              marginTop={8}
+              textAlign="center"
+              color={colors.gray7}
+              fontSize={16}
+            >
+              {t("receiptScanError.duplicated.description")}
             </CustomText>
           </View>
         );
@@ -85,11 +92,11 @@ export const ReceiptScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              올타 제휴 매장이 아닙니다.
+              {t("receiptScanError.notPartnerStore.title")}
             </CustomText>
 
             <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              영수증 할인은 제휴 매장에서만 적용 가능합니다.
+              {t("receiptScanError.notPartnerStore.description")}
             </CustomText>
           </View>
         );
@@ -98,11 +105,11 @@ export const ReceiptScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              주유 할인 대상 매장이 아닙니다.
+              {t("receiptScanError.notGasDiscountStore.title")}
             </CustomText>
 
             <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              해당 매장은 주유 할인 혜택을 제공하지 않습니다.
+              {t("receiptScanError.notGasDiscountStore.description")}
             </CustomText>
           </View>
         );
@@ -111,14 +118,18 @@ export const ReceiptScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              주유 금액이 부족합니다.
+              {t("receiptScanError.insufficientAmount.title")}
             </CustomText>
 
-            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              주유 금액이 최소 {router.params.message}원 이상일 경우에만
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={16}>
-              할인 쿠폰이 발급됩니다.
+            <CustomText
+              marginTop={8}
+              textAlign="center"
+              color={colors.gray7}
+              fontSize={16}
+            >
+              {t("receiptScanError.insufficientAmount.description", {
+                minAmount: router.params.message,
+              })}
             </CustomText>
           </View>
         );
@@ -127,11 +138,11 @@ export const ReceiptScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              주유 할인 대상 매장이 아닙니다.
+              {t("receiptScanError.notGasDiscountStore.title")}
             </CustomText>
 
             <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              해당 매장은 주유 할인 혜택을 제공하지 않습니다.
+              {t("receiptScanError.notGasDiscountStore.description")}
             </CustomText>
           </View>
         );
@@ -140,7 +151,7 @@ export const ReceiptScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              영수증 유효기간이 지났습니다.
+              {t("receiptScanError.expired.title")}
             </CustomText>
 
             <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
@@ -153,14 +164,16 @@ export const ReceiptScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              영수증 인식에 실패했습니다.
+              {t("receiptScanError.recognitionFailed.title")}
             </CustomText>
 
-            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              깨끗한한 배경에 영수증을 놓고
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={16}>
-              전체가 잘 나오도록 촬영해 주세요.
+            <CustomText
+              marginTop={8}
+              textAlign="center"
+              color={colors.gray7}
+              fontSize={16}
+            >
+              {t("receiptScanError.recognitionFailed.description")}
             </CustomText>
           </View>
         );
@@ -202,7 +215,7 @@ export const ReceiptScanError = () => {
           borderWidth={1}
         >
           <CustomText fontSize={18} fontWeight={"600"}>
-            다시 촬영하기
+            {t("receiptScanError.retake")}
           </CustomText>
         </CustomButton>
       </View>

@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Dimensions, Image, StyleSheet, View } from "react-native";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import RenderHTML from "react-native-render-html";
+import { useTranslation } from "react-i18next";
 import { GetStoreDetailResponse } from "@/api/models";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
@@ -18,6 +19,8 @@ interface Props {
 const { width: screenWidth } = Dimensions.get("window");
 
 export const MyStoreInfo = ({ storeData }: Props) => {
+  const { t } = useTranslation("store");
+
   if (!storeData) return;
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -40,7 +43,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
       />
 
       <CustomText fontSize={18} fontWeight={"600"}>
-        위치
+        {t("info.location")}
       </CustomText>
 
       <View style={styles.map}>
@@ -60,7 +63,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
       >
         <Image source={naviIcon} style={styles.naviIcon} />
         <CustomText fontSize={13} fontWeight={"500"}>
-          길찾기
+          {t("navigate")}
         </CustomText>
       </CustomButton>
 
@@ -72,7 +75,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
             fontSize={18}
             fontWeight={"600"}
           >
-            매장 소개
+            {t("info.description")}
           </CustomText>
 
           <RenderHTML
@@ -98,7 +101,7 @@ export const MyStoreInfo = ({ storeData }: Props) => {
             fontSize={18}
             fontWeight={"600"}
           >
-            매장 유의사항
+            {t("info.policy")}
           </CustomText>
 
           <RenderHTML

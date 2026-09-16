@@ -5,6 +5,7 @@ import { colors } from "@/styles";
 import { PassType, ServiceType } from "@/types";
 import { formatEllipsis, formatPassType, getResponsiveSize } from "@/utils";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -30,6 +31,8 @@ export const MyStoreFilter = ({
   setPassType,
   coordinate,
 }: Props) => {
+  const { t } = useTranslation("store");
+
   const [scrollEnabled, setScrollEnabled] = useState(false);
 
   const handleServiceType = (value: ServiceType) => () => {
@@ -62,25 +65,7 @@ export const MyStoreFilter = ({
             fontSize={16}
             fontWeight={serviceType === "AUTO" ? "600" : "500"}
           >
-            자동세차
-          </CustomText>
-        </Pressable>
-        <Pressable
-          onPress={handleServiceType("HANDS")}
-          style={[
-            styles.serviceButton,
-            serviceType === "HANDS" && {
-              borderBottomColor: colors.black,
-              borderBottomWidth: 2,
-            },
-          ]}
-        >
-          <CustomText
-            color={serviceType === "HANDS" ? colors.black : colors.gray5}
-            fontSize={16}
-            fontWeight={serviceType === "HANDS" ? "600" : "500"}
-          >
-            핸즈클리닝
+            {t("filter.auto")}
           </CustomText>
         </Pressable>
       </View>
@@ -110,7 +95,7 @@ export const MyStoreFilter = ({
               color={passType === null ? colors.white : colors.black}
               fontSize={14}
             >
-              전체
+              {t("common:all")}
             </CustomText>
           </Pressable>
           {passTypes.map((value, index) => (

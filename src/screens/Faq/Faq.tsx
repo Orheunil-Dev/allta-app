@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { getResponsiveSize } from "@/utils";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
 import { CustomText } from "@/components/ui/CustomText";
 import { colors } from "@/styles";
-import { faqs } from "@/constants";
+import { getFaqs } from "@/constants";
 import { aIcon, grayDownArrow, qIcon } from "@/assets/images";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
 
-type Category = (typeof faqs)[number]["category"];
+type Category = string;
 
 const FaqItem = ({ value, isOpen, onToggle }: any) => {
   const animatedAnswerStyle = useAnimatedStyle(() => ({
@@ -64,6 +65,10 @@ const FaqItem = ({ value, isOpen, onToggle }: any) => {
 };
 
 export const Faq = () => {
+  const { t } = useTranslation("mypage");
+
+  const faqs = getFaqs();
+
   const [category, setCategory] = useState<Category | null>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -85,7 +90,7 @@ export const Faq = () => {
         <View style={styles.top}>
           <View style={{ flexDirection: "row" }}>
             <CustomText marginRight={8} fontSize={20} fontWeight={"600"}>
-              고객센터 문의
+              {t("faq.customerCenter")}
             </CustomText>
             <CustomText color={colors.point2} fontSize={20} fontWeight={"600"}>
               1668-1620
@@ -93,7 +98,7 @@ export const Faq = () => {
           </View>
 
           <CustomText color={colors.gray7} fontSize={14}>
-            평일 10:00 ~ 18:00
+            {t("faq.businessHours")}
           </CustomText>
         </View>
 
@@ -109,7 +114,7 @@ export const Faq = () => {
             ]}
           >
             <CustomText color={category === null ? colors.white : colors.black}>
-              전체
+              {t("common:all")}
             </CustomText>
           </Pressable>
 

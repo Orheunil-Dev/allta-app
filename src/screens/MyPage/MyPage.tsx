@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -28,6 +29,8 @@ import {
 import { colors } from "@/styles";
 
 export const MyPage = () => {
+  const { t } = useTranslation("mypage");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -66,7 +69,7 @@ export const MyPage = () => {
         <View style={{ width: getResponsiveSize(24) }} />
 
         <CustomText fontSize={16} fontWeight={"600"}>
-          마이페이지
+          {t("title")}
         </CustomText>
 
         <Pressable
@@ -97,7 +100,7 @@ export const MyPage = () => {
               }}
             >
               <CustomText fontSize={20} fontWeight={"600"}>
-                {userProfileData.name} 님
+                {t("profile.greeting", { name: userProfileData.name })}
               </CustomText>
 
               <Pressable
@@ -128,7 +131,7 @@ export const MyPage = () => {
                     fontSize={12}
                     fontWeight={"500"}
                   >
-                    대표차량
+                    {t("car:mainCar.badge")}
                   </CustomText>
                 </View>
               </View>
@@ -139,7 +142,7 @@ export const MyPage = () => {
                   fontSize={15}
                   fontWeight={"600"}
                 >
-                  차량을 등록해주세요
+                  {t("car:list.empty")}
                 </CustomText>
               </View>
             )}
@@ -158,7 +161,7 @@ export const MyPage = () => {
                 fontSize={20}
                 fontWeight={"600"}
               >
-                로그인
+                {t("common:auth.login")}
               </CustomText>
 
               <Pressable>
@@ -167,7 +170,7 @@ export const MyPage = () => {
             </View>
 
             <CustomText color={colors.gray5} fontSize={16}>
-              로그인하고 더 많은 기능을 이용해보세요!
+              {t("profile.loginPrompt")}
             </CustomText>
           </View>
         )}
@@ -190,7 +193,7 @@ export const MyPage = () => {
               style={styles.pass}
             >
               <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
-                프리미엄
+                {t("passType.premium")}
               </CustomText>
               <CustomText
                 marginTop={4}
@@ -214,7 +217,7 @@ export const MyPage = () => {
               style={styles.pass}
             >
               <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
-                스탠다드
+                {t("passType.standard")}
               </CustomText>
               <CustomText
                 marginTop={4}
@@ -238,7 +241,7 @@ export const MyPage = () => {
               style={styles.pass}
             >
               <CustomText color={colors.gray7} fontSize={15} fontWeight={"500"}>
-                일회권
+                {t("passType.ticket")}
               </CustomText>
               <CustomText
                 marginTop={4}
@@ -263,7 +266,7 @@ export const MyPage = () => {
               style={styles.button}
             >
               <Image source={carIcon} style={styles.icon} />
-              <CustomText fontSize={16}>차량 관리</CustomText>
+              <CustomText fontSize={16}>{t("menu.carManagement")}</CustomText>
             </Pressable>
 
             <Pressable
@@ -275,7 +278,7 @@ export const MyPage = () => {
               style={styles.button}
             >
               <Image source={cardIcon} style={styles.icon} />
-              <CustomText fontSize={16}>카드 관리</CustomText>
+              <CustomText fontSize={16}>{t("menu.cardManagement")}</CustomText>
             </Pressable>
           </View>
 
@@ -294,7 +297,7 @@ export const MyPage = () => {
               style={styles.button}
             >
               <Image source={addressIcon} style={styles.icon} />
-              <CustomText fontSize={16}>주소 관리</CustomText>
+              <CustomText fontSize={16}>{t("menu.addressManagement")}</CustomText>
             </Pressable>
 
             <Pressable
@@ -307,7 +310,7 @@ export const MyPage = () => {
               style={styles.button}
             >
               <Image source={passIcon} style={styles.icon} />
-              <CustomText fontSize={16}>보유 이용권</CustomText>
+              <CustomText fontSize={16}>{t("menu.myPasses")}</CustomText>
             </Pressable>
           </View>
 
@@ -317,7 +320,7 @@ export const MyPage = () => {
               style={styles.button}
             >
               <Image source={serviceHistoryIcon} style={styles.icon} />
-              <CustomText fontSize={16}>이용 내역</CustomText>
+              <CustomText fontSize={16}>{t("menu.serviceHistory")}</CustomText>
             </Pressable>
 
             <Pressable
@@ -329,7 +332,7 @@ export const MyPage = () => {
               style={styles.button}
             >
               <Image source={purchaseIcon} style={styles.icon} />
-              <CustomText fontSize={16}>결제 내역</CustomText>
+              <CustomText fontSize={16}>{t("menu.purchaseHistory")}</CustomText>
             </Pressable>
           </View>
         </View>
@@ -340,7 +343,7 @@ export const MyPage = () => {
             style={styles.button}
           >
             <Image source={couponIcon} style={styles.icon} />
-            <CustomText fontSize={16}>쿠폰</CustomText>
+            <CustomText fontSize={16}>{t("menu.coupon")}</CustomText>
           </Pressable>
 
           <Pressable
@@ -352,7 +355,7 @@ export const MyPage = () => {
             style={styles.button}
           >
             <Image source={eventIcon} style={styles.icon} />
-            <CustomText fontSize={16}>이벤트</CustomText>
+            <CustomText fontSize={16}>{t("menu.event")}</CustomText>
           </Pressable>
 
           <Pressable
@@ -360,7 +363,7 @@ export const MyPage = () => {
             style={styles.button}
           >
             <Image source={referralIcon} style={styles.icon} />
-            <CustomText fontSize={16}>친구 초대</CustomText>
+            <CustomText fontSize={16}>{t("menu.referral")}</CustomText>
           </Pressable>
         </View>
 
@@ -381,7 +384,7 @@ export const MyPage = () => {
             style={styles.button}
           >
             <Image source={noticeIcon} style={styles.icon} />
-            <CustomText fontSize={16}>공지사항</CustomText>
+            <CustomText fontSize={16}>{t("menu.notice")}</CustomText>
           </Pressable>
 
           <Pressable
@@ -389,7 +392,7 @@ export const MyPage = () => {
             style={styles.button}
           >
             <Image source={contactIcon} style={styles.icon} />
-            <CustomText fontSize={16}>FAQ</CustomText>
+            <CustomText fontSize={16}>{t("menu.faq")}</CustomText>
           </Pressable>
 
           <Pressable
@@ -401,7 +404,7 @@ export const MyPage = () => {
             style={styles.button}
           >
             <Image source={inquiryIcon} style={styles.icon} />
-            <CustomText fontSize={16}>1:1 문의</CustomText>
+            <CustomText fontSize={16}>{t("menu.inquiry")}</CustomText>
           </Pressable>
         </View>
       </ScrollView>

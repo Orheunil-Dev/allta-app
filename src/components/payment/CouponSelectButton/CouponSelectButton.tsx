@@ -4,6 +4,7 @@ import { CustomText } from "@/components/ui/CustomText";
 import { getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, View } from "react-native";
 import { colors } from "@/styles";
 import { Coupon } from "@/types";
@@ -27,6 +28,8 @@ export const CouponSelectButton = ({
   passType,
 }: Props) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const { t } = useTranslation("payment");
 
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
@@ -75,7 +78,7 @@ export const CouponSelectButton = ({
       />
 
       <CustomText fontSize={18} fontWeight={"600"}>
-        쿠폰
+        {t("couponSelect.title")}
       </CustomText>
 
       <CustomButton
@@ -88,10 +91,12 @@ export const CouponSelectButton = ({
         <View style={styles.button}>
           <CustomText fontSize={15} fontWeight={"500"}>
             {!couponData || !couponData.data.length
-              ? "사용 가능한 쿠폰이 없습니다."
+              ? t("benefit:coupon.empty")
               : coupon
               ? coupon.name
-              : `사용 가능한 쿠폰이 ${couponData.data.length}개 있어요`}
+              : t("couponSelect.available", {
+                  count: couponData.data.length,
+                })}
           </CustomText>
           <Image
             source={blackRightArrow}

@@ -4,7 +4,7 @@ import { SettingStackParamList } from "@/navigations";
 import RenderHTML from "react-native-render-html";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
-import { terms } from "@/constants";
+import { getTerms } from "@/constants";
 import { colors } from "@/styles";
 import { ScrollView } from "react-native-gesture-handler";
 import { CustomSafeAreaView } from "@/components/ui/CustomSafeAreaView";
@@ -16,7 +16,7 @@ type TermsDetailRouteProp = RouteProp<SettingStackParamList, "TermsDetail">;
 export const TermsDetail = () => {
   const route = useRoute<TermsDetailRouteProp>();
 
-  const term = terms.find((term) => term.title === route.params.title);
+  const term = getTerms()[route.params.index];
 
   return (
     <CustomSafeAreaView edges={["bottom"]}>

@@ -1,10 +1,11 @@
 import { CustomBottomSheet } from "@/components/ui/CustomBottomSheet";
 import { CustomButton } from "@/components/ui/CustomButton";
 import { CustomText } from "@/components/ui/CustomText";
-import { paymentTerms } from "@/constants";
+import { getPaymentTerms } from "@/constants";
 import { colors } from "@/styles";
 import { getFontSize, getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useTranslation } from "react-i18next";
 import { Dimensions, ScrollView, StyleSheet } from "react-native";
 import RenderHTML from "react-native-render-html";
 
@@ -15,6 +16,8 @@ interface Props {
 const { width: screenWidth } = Dimensions.get("window");
 
 export const PaymentTermsBottomSheet = ({ ref }: Props) => {
+  const { t } = useTranslation("payment");
+
   const handleClose = () => {
     return ref?.current?.close();
   };
@@ -23,7 +26,7 @@ export const PaymentTermsBottomSheet = ({ ref }: Props) => {
     <CustomBottomSheet
       ref={ref}
       height={getResponsiveSize(600)}
-      title="주문 내용 확인 및 결제 동의"
+      title={t("terms.title")}
       onClose={handleClose}
     >
       <ScrollView
@@ -33,7 +36,7 @@ export const PaymentTermsBottomSheet = ({ ref }: Props) => {
       >
         <RenderHTML
           contentWidth={screenWidth - getResponsiveSize(40)}
-          source={{ html: paymentTerms }}
+          source={{ html: getPaymentTerms() }}
           tagsStyles={{
             h3: {
               fontFamily: "Pretendard-SemiBold",
@@ -66,7 +69,7 @@ export const PaymentTermsBottomSheet = ({ ref }: Props) => {
         backgroundColor={colors.main}
       >
         <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-          확인
+          {t("common:confirm")}
         </CustomText>
       </CustomButton>
     </CustomBottomSheet>

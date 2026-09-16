@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import dayjs from "dayjs";
@@ -14,6 +15,8 @@ import { defaultStoreImage } from "@/assets/images";
 import { colors } from "@/styles";
 
 export const ServiceHistory = () => {
+  const { t } = useTranslation("mypage");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -116,7 +119,7 @@ export const ServiceHistory = () => {
               fontSize={20}
               fontWeight={"600"}
             >
-              이용 내역이 없습니다.
+              {t("serviceHistory.empty")}
             </CustomText>
           </View>
         )}

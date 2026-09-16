@@ -1,0 +1,105 @@
+{
+  "title": "마이페이지",
+  "profile": {
+    "greeting": "{{name}} 님",
+    "loginPrompt": "로그인하고 더 많은 기능을 이용해보세요!"
+  },
+  "passType": {
+    "premium": "프리미엄",
+    "standard": "스탠다드",
+    "ticket": "일회권"
+  },
+  "menu": {
+    "carManagement": "차량 관리",
+    "cardManagement": "카드 관리",
+    "addressManagement": "주소 관리",
+    "myPasses": "보유 이용권",
+    "serviceHistory": "이용 내역",
+    "purchaseHistory": "결제 내역",
+    "coupon": "쿠폰",
+    "event": "이벤트",
+    "referral": "친구 초대",
+    "notice": "공지사항",
+    "faq": "FAQ",
+    "inquiry": "1:1 문의"
+  },
+  "requestError": "요청 중 오류가 발생했습니다.",
+  "setting": {
+    "notificationSetting": "알림 설정",
+    "termsAndPolicies": "약관 및 정책",
+    "version": "버전 정보 {{version}}",
+    "update": "업데이트",
+    "withdraw": "탈퇴하기",
+    "storeOpenError": "앱스토어 이동에 실패했습니다.",
+    "logoutConfirm": "로그아웃 하시겠습니까?"
+  },
+  "notification": {
+    "label": "이벤트 • 혜택 및 정보 알림",
+    "agreed": "알림 수신 동의",
+    "disagreed": "알림 수신 해제",
+    "permissionAlert": {
+      "title": "알림 권한이 없습니다",
+      "message": "앱 설정에서 알림 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+      "settings": "설정"
+    },
+    "empty": {
+      "title": "아직 새로운 알림이 없습니다.",
+      "description": "새로운 소식이 있으면 알려드릴게요!"
+    }
+  },
+  "marketing": {
+    "label": "마케팅 활용 및 광고성 정보 수신 동의",
+    "agreed": "마케팅 정보 수신 동의",
+    "disagreed": "마케팅 정보 수신 해제"
+  },
+  "withdrawal": {
+    "title": "더 나은 서비스를 위해\n탈퇴 사유를 알려주세요.",
+    "reasons": {
+      "inconvenient": "앱 사용이 불편했어요.",
+      "rarelyUsed": "자주 사용하지 않아요.",
+      "expensive": "가격이 부담돼요.",
+      "storeUnsatisfied": "이용하는 매장 상태가 만족스럽지 않아요."
+    },
+    "otherReason": "기타 (직접입력)",
+    "submit": "탈퇴하기",
+    "confirmModal": {
+      "title": "정말 회원 탈퇴를 하시나요?",
+      "description": "탈퇴 시 계정 및 보유 이용권과 쿠폰은\n삭제되어 복구 할 수 없습니다.",
+      "question": "정말 탈퇴하시겠습니까?",
+      "withdraw": "탈퇴하기",
+      "goBack": "돌아가기"
+    },
+    "completeModal": {
+      "title": "회원 탈퇴 완료",
+      "message": "회원 탈퇴가 완료되었습니다.\n감사합니다."
+    },
+    "error": "회원 탈퇴에 실패했습니다."
+  },
+  "notice": {
+    "itemTitle": "[공지] {{title}}",
+    "empty": "등록된 공지사항이 없습니다"
+  },
+  "inquiry": {
+    "answered": "답변 완료",
+    "pending": "답변 대기",
+    "empty": "문의 내역이 없습니다.",
+    "register": "문의하기",
+    "maxCount": "문의는 최대 {{count}}개까지 등록 가능합니다.",
+    "contentPlaceholder": "문의 내용을 입력해주세요.",
+    "contentMinLength": "내용은 최소 {{count}}자 이상 입력해주세요.",
+    "contentMaxLength": "내용은 최대 {{count}}자 이하로 입력해주세요.",
+    "registerSuccess": "문의 등록이 완료되었습니다.",
+    "registerError": "문의 등록 중 오류가 발생했습니다.",
+    "deleteConfirm": "문의를 삭제하시겠습니까?",
+    "deleteAnsweredError": "답변이 완료된 문의 내역은 삭제할 수 없습니다.",
+    "deleteSuccess": "문의 삭제가 완료되었습니다.",
+    "deleteError": "문의 내역 삭제 중 오류가 발생했습니다."
+  },
+  "faq": {
+    "customerCenter": "고객센터 문의",
+    "businessHours": "평일 10:00 ~ 18:00"
+  },
+  "serviceHistory": {
+    "empty": "이용 내역이 없습니다."
+  }
+}

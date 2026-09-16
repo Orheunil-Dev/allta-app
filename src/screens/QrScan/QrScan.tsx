@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   Dimensions,
@@ -39,6 +40,8 @@ import { colors } from "@/styles";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 export const QrScan = () => {
+  const { t } = useTranslation("scan");
+
   const navigation = useNavigation();
 
   const qrScanNavigation =
@@ -66,16 +69,16 @@ export const QrScan = () => {
     if (permission.status !== "granted") {
       if (!permission.canAskAgain) {
         Alert.alert(
-          "카메라 접근 권한이 없습니다",
-          "앱 설정에서 카메라 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          t("permission.camera.title"),
+          t("permission.camera.message"),
           [
             {
-              text: "취소",
+              text: t("common:cancel"),
               style: "cancel",
               onPress: () => navigation.goBack(),
             },
             {
-              text: "설정 열기",
+              text: t("permission.openSettings"),
               onPress: () => {
                 Linking.openSettings();
               },
@@ -183,15 +186,7 @@ export const QrScan = () => {
                 fontSize={20}
                 fontWeight={"600"}
               >
-                매장 QR을 스캔해
-              </CustomText>
-              <CustomText
-                textAlign="center"
-                color={colors.white}
-                fontSize={20}
-                fontWeight={"600"}
-              >
-                이용권을 확인해주세요!
+                {t("qrScan.guide")}
               </CustomText>
             </Animated.View>
 

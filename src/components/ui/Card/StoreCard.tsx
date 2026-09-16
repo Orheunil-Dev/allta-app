@@ -13,6 +13,7 @@ import { PassPrice, ServiceType } from "@/types";
 import { useDistanceCalculator } from "@/hooks";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { StoreStackParamList } from "@/navigations";
 import { colors } from "@/styles";
 
@@ -34,6 +35,8 @@ export const StoreCard = ({
   lat = 37.5759785,
   lng = 127.1935115,
 }: Props) => {
+  const { t } = useTranslation("store");
+
   const storeNavigation =
     useNavigation<NativeStackNavigationProp<StoreStackParamList>>();
 
@@ -114,7 +117,7 @@ export const StoreCard = ({
         {store.storeType === "WACHEN" && (
           <View style={[styles.tag, { backgroundColor: colors.back1 }]}>
             <CustomText color={colors.white} fontSize={12} fontWeight={"500"}>
-              무인매장
+              {t("card.unmanned")}
             </CustomText>
           </View>
         )}
@@ -141,7 +144,7 @@ export const StoreCard = ({
           {(store.groupStoresCount ?? 0) > 1 && (
             <View style={styles.groupCount}>
               <CustomText color={colors.gray7} fontSize={12} fontWeight={"500"}>
-                매장 {store.groupStoresCount! - 1}곳 포함
+                {t("card.groupCount", { count: store.groupStoresCount! - 1 })}
               </CustomText>
             </View>
           )}
@@ -150,16 +153,17 @@ export const StoreCard = ({
         {store.passPrice && (
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <CustomText color={colors.gray7} fontSize={14} numberOfLines={1}>
-              이용권 최저가
+              {t("card.lowestPrice")}
             </CustomText>
 
             <CustomText marginLeft={8} fontSize={18} fontWeight={"600"}>
-              {getLowestPrice(
-                store.passPrice && typeof store.passPrice === "string"
-                  ? JSON.parse(store.passPrice)
-                  : store.passPrice,
-              )?.toLocaleString()}
-              원 ~
+              {t("priceFrom", {
+                price: getLowestPrice(
+                  store.passPrice && typeof store.passPrice === "string"
+                    ? JSON.parse(store.passPrice)
+                    : store.passPrice,
+                )?.toLocaleString(),
+              })}
             </CustomText>
           </View>
         )}

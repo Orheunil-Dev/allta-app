@@ -1,0 +1,99 @@
+{
+  "goHome": "回到首頁",
+  "store": "門市",
+  "permission": {
+    "camera": {
+      "title": "沒有相機存取權限",
+      "message": "您可以在應用程式設定中允許相機存取權限。要前往設定嗎？"
+    },
+    "album": {
+      "title": "沒有相簿存取權限",
+      "message": "您可以在應用程式設定中允許相簿存取權限。要前往設定嗎？"
+    },
+    "openSettings": "開啟設定",
+    "settings": "設定"
+  },
+  "qrScan": {
+    "guide": "請掃描門市 QR Code\n確認使用券！"
+  },
+  "qrScanComplete": {
+    "title": "QR Code 掃描完成！",
+    "description": "請選擇要使用的車輛與使用券。\n選擇後將無法變更使用券。",
+    "selectCar": "選擇車輛",
+    "selectPass": "選擇使用券",
+    "passOrderNotice": "* 各類使用券將優先顯示即將到期的使用券。",
+    "noAvailablePass": "沒有可使用的使用券。",
+    "pass": {
+      "ticket": "自動洗車單次券",
+      "standard": "自動洗車標準方案",
+      "premium": "自動洗車高級方案"
+    },
+    "error": {
+      "useRequest": "申請使用票券時發生錯誤。",
+      "invalidPass": "使用券資訊有誤。",
+      "selectPass": "選擇使用券時發生錯誤。"
+    }
+  },
+  "qrScanError": {
+    "invalidQr": {
+      "title": "無效的 QR Code。",
+      "description": "請重新確認 QR Code。"
+    },
+    "noAvailablePass": {
+      "title": "沒有可使用的使用券。",
+      "description": "此加油站沒有可使用的使用券。\n請購買使用券，或前往其他門市。"
+    },
+    "unknown": {
+      "title": "掃描 QR Code 時發生錯誤。",
+      "description": "請重新確認 QR Code。"
+    },
+    "goToPurchase": "前往購買使用券",
+    "rescan": "重新掃描"
+  },
+  "usePassComplete": {
+    "title": "使用券確認完成！",
+    "description": "為了進行洗車，\n請向工作人員出示此畫面。",
+    "viewHistory": "查看使用紀錄",
+    "service": "洗車服務",
+    "pass": "使用券",
+    "carNumber": "車牌號碼",
+    "carInfo": "車輛資訊",
+    "usedAt": "使用時間"
+  },
+  "receiptScan": {
+    "guide": "請將收據的門市資訊與付款資訊\n拍攝清楚"
+  },
+  "receiptScanComplete": {
+    "title": "收據辨識完成！",
+    "description": "已發放加油折扣優惠券。\n請至「我的頁面 > 優惠券匣」確認。",
+    "goToCoupons": "前往優惠券匣",
+    "discountAmount": "折扣金額",
+    "validPeriod": "使用期限"
+  },
+  "receiptScanError": {
+    "recognitionFailed": {
+      "title": "收據辨識失敗。",
+      "description": "請將收據放在乾淨的背景上，\n並拍攝完整的收據。"
+    },
+    "duplicated": {
+      "title": "此收據已登錄。",
+      "description": "此收據已發放過優惠券。\n每張收據僅可發放一次優惠券。"
+    },
+    "notPartnerStore": {
+      "title": "非 Allta 合作門市。",
+      "description": "收據折扣僅適用於合作門市。"
+    },
+    "notGasDiscountStore": {
+      "title": "非加油折扣適用門市。",
+      "description": "此門市不提供加油折扣優惠。"
+    },
+    "insufficientAmount": {
+      "title": "加油金額不足。",
+      "description": "加油金額須達 {{minAmount}} 元以上，\n才會發放折扣優惠券。"
+    },
+    "expired": {
+      "title": "收據已超過有效期限。"
+    },
+    "retake": "重新拍攝"
+  }
+}

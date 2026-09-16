@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, Image, Pressable, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -28,6 +29,8 @@ export const CardList = () => {
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
+  const { t } = useTranslation("payment");
+
   const [card, setCard] = useState<Card | undefined>(undefined);
 
   // 카드 목록 조회 API
@@ -46,7 +49,7 @@ export const CardList = () => {
     if (cardData?.data.length && cardData?.data.length > 4) {
       return setErrorModal({
         visible: true,
-        message: "카드는 최대 5개까지 등록 가능합니다.",
+        message: t("card.maxCount"),
       });
     }
 
@@ -82,7 +85,7 @@ export const CardList = () => {
           borderColor={colors.gray2}
         >
           <Image source={plusIcon} style={styles.plusIcon} />
-          <CustomText fontSize={16}>카드 추가하기</CustomText>
+          <CustomText fontSize={16}>{t("card.add")}</CustomText>
         </CustomButton>
 
         <FlatList
@@ -118,7 +121,7 @@ export const CardList = () => {
                       fontWeight={"500"}
                       lineHeight={1.4}
                     >
-                      대표카드
+                      {t("cardList.mainCard")}
                     </CustomText>
                   </View>
                 )}

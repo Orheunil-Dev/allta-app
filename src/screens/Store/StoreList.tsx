@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, FlatList, Linking, StyleSheet, View } from "react-native";
 import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import * as Location from "expo-location";
+import { useTranslation } from "react-i18next";
 import { Airbridge } from "airbridge-react-native-sdk";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { StoreStackParamList } from "@/navigations";
@@ -22,6 +23,8 @@ import { colors } from "@/styles";
 type StoreRouteProp = RouteProp<StoreStackParamList, "StoreList">;
 
 export const StoreList = () => {
+  const { t } = useTranslation("store");
+
   const route = useRoute<StoreRouteProp>();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -153,12 +156,12 @@ export const StoreList = () => {
 
           if (status !== "granted") {
             Alert.alert(
-              "위치정보 접근 권한이 없습니다",
-              "앱 설정에서 위치정보 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+              t("address:locationPermission.title"),
+              t("address:locationPermission.message"),
               [
-                { text: "닫기", style: "cancel" },
+                { text: t("common:close"), style: "cancel" },
                 {
-                  text: "설정",
+                  text: t("address:locationPermission.openSettings"),
                   onPress: () => Linking.openSettings(),
                 },
               ],
@@ -240,7 +243,7 @@ export const StoreList = () => {
             fontSize={20}
             fontWeight={"600"}
           >
-            근처에 올타 제휴점이 없습니다.
+            {t("list.empty")}
           </CustomText>
         </View>
       )}

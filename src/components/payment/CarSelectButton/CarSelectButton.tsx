@@ -4,6 +4,7 @@ import { CustomText } from "@/components/ui/CustomText";
 import { getResponsiveSize } from "@/utils";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, View } from "react-native";
 import { colors } from "@/styles";
 import { CarListBottomSheet } from "@/components/bottom-sheet/CarListBottomSheet";
@@ -29,6 +30,8 @@ export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
+  const { t } = useTranslation("payment");
+
   const { data: carData, refetch: carsRefetch } = useCarControllerGetCarList({
     query: {
       queryKey: ["cars"],
@@ -42,7 +45,7 @@ export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
     if (carData?.data.length && carData?.data.length > 4) {
       return setErrorModal({
         visible: true,
-        message: "차량은 최대 5대까지 등록 가능합니다.",
+        message: t("carSelect.maxCount"),
       });
     }
 
@@ -84,7 +87,7 @@ export const CarSelectButton = ({ car, setCar, showRegister }: Props) => {
       >
         <View style={styles.button}>
           <CustomText fontSize={15} fontWeight={"500"}>
-            {car ? car.number : "차량을 등록해주세요"}
+            {car ? car.number : t("carSelect.registerPrompt")}
           </CustomText>
           <Image
             source={blackRightArrow}

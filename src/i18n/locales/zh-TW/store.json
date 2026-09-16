@@ -1,0 +1,105 @@
+{
+  "distanceKm": "{{distance}} km",
+  "priceFrom": "{{price}} 元起",
+  "storeInfo": "門市資訊",
+  "navigate": "導航",
+  "day": {
+    "mon": "週一",
+    "tue": "週二",
+    "wed": "週三",
+    "thu": "週四",
+    "fri": "週五",
+    "sat": "週六",
+    "sun": "週日"
+  },
+  "businessHours": {
+    "open": "營業中",
+    "closed": "公休",
+    "beforeOpen": "尚未營業",
+    "ended": "已打烊",
+    "breakTime": "休息時間",
+    "opensAt": "{{time}} 開始營業",
+    "nextOpensAt": "預計 {{time}} 開始營業",
+    "resumesAt": "{{time}} 恢復營業"
+  },
+  "filter": {
+    "auto": "自動洗車",
+    "currentLocation": "目前位置",
+    "tags": {
+      "brush": "毛刷",
+      "noBrush": "無刷",
+      "underbody": "底盤清洗",
+      "preWash": "預洗",
+      "bubble": "泡沫",
+      "drying": "除水"
+    }
+  },
+  "list": {
+    "empty": "附近沒有 Allta 特約門市。"
+  },
+  "card": {
+    "groupCount": "含 {{count}} 間門市",
+    "lowestPrice": "使用券最低價",
+    "unmanned": "無人門市"
+  },
+  "detail": {
+    "breakTime": "休息時間 {{time}}",
+    "tabs": {
+      "pass": "使用券",
+      "stores": "可使用門市",
+      "info": "資訊"
+    },
+    "purchasePass": "購買使用券"
+  },
+  "info": {
+    "openTmap": "即將開啟 TMAP。",
+    "openKakaoMap": "即將開啟 KakaoMap。",
+    "location": "位置",
+    "description": "門市介紹",
+    "policy": "門市注意事項"
+  },
+  "navi": {
+    "kakaoMap": "KakaoMap",
+    "tmap": "TMAP"
+  },
+  "pass": {
+    "guide": "使用說明",
+    "monthlyPriceFrom": "每月 {{price}} 元起",
+    "premium": {
+      "title": "高級",
+      "dailyWash": "一個月內每天皆可洗車",
+      "autoBilling": "每月自動付款"
+    },
+    "standard": {
+      "title": "標準",
+      "monthlyWash": "每月可洗車 {{count}} 次",
+      "reasonablePrice": "以合理價格享受洗車"
+    },
+    "ticket": {
+      "title": "單次券",
+      "singleUse": "輕鬆無負擔的單次使用券",
+      "anyDay": "任選日期，洗車 1 次"
+    },
+    "policy": {
+      "noTransfer": "· 使用券不可轉讓給他人或其他帳號",
+      "premiumUsage": "· 可在使用券標示的門市每日洗車 1 次",
+      "standardUsage": "· 可在使用券標示的門市洗車 {{count}} 次",
+      "ticketUsage": "· 可在使用券標示的門市洗車 1 次",
+      "singleCar": "· 每張使用券僅限標示的 1 輛車輛使用",
+      "storeNotice": "· 另請參閱各門市的個別注意事項"
+    }
+  },
+  "myList": {
+    "empty": "沒有持有的使用券。"
+  },
+  "myDetail": {
+    "tabs": {
+      "pass": "我的使用券"
+    }
+  },
+  "myPass": {
+    "ticket": "單次券",
+    "usageSuffix": "/{{max}} 次",
+    "empty": "沒有持有的使用券。"
+  }
+}

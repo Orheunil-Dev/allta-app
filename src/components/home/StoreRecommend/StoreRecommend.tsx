@@ -17,10 +17,13 @@ import {
   View,
 } from "react-native";
 import * as Location from "expo-location";
+import { useTranslation } from "react-i18next";
 import { useDistanceCalculator } from "@/hooks";
 import { StoreDetailItemPassPrice } from "@/types";
 
 export const StoreRecommend = () => {
+  const { t } = useTranslation("home");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -72,12 +75,12 @@ export const StoreRecommend = () => {
 
           if (status !== "granted") {
             Alert.alert(
-              "위치정보 접근 권한이 없습니다",
-              "앱 설정에서 위치정보 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+              t("locationPermission.title"),
+              t("locationPermission.message"),
               [
-                { text: "닫기", style: "cancel" },
+                { text: t("common:close"), style: "cancel" },
                 {
-                  text: "설정",
+                  text: t("locationPermission.settings"),
                   onPress: () => Linking.openSettings(),
                 },
               ]
@@ -110,7 +113,7 @@ export const StoreRecommend = () => {
     <View style={styles.container}>
       <View style={styles.myStore}>
         <CustomText color={colors.black} fontSize={18} fontWeight={"600"}>
-          추천 매장
+          {t("storeRecommend.title")}
         </CustomText>
 
         <Pressable
@@ -123,7 +126,7 @@ export const StoreRecommend = () => {
           style={styles.moreStore}
         >
           <CustomText color={colors.gray5} fontSize={14}>
-            더보기
+            {t("common:more")}
           </CustomText>
 
           <Image source={homeMoreArrow} style={styles.moreIcon} />

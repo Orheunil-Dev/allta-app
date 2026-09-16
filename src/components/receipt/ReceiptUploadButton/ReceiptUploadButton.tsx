@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as MediaLibrary from "expo-media-library";
@@ -34,6 +35,8 @@ export const ReceiptUploadButton = ({
   setIsLoading,
   receiptScanNavigation,
 }: Props) => {
+  const { t } = useTranslation("scan");
+
   const [firstPhoto, setFirstPhoto] = useState<string | null>(null);
 
   const {
@@ -49,11 +52,14 @@ export const ReceiptUploadButton = ({
     if (permission.status !== "granted") {
       if (!permission.canAskAgain) {
         Alert.alert(
-          "앨범 접근 권한이 없습니다",
-          "앱 설정에서 앨범 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          t("permission.album.title"),
+          t("permission.album.message"),
           [
-            { text: "닫기", style: "cancel" },
-            { text: "설정", onPress: () => Linking.openSettings() },
+            { text: t("common:close"), style: "cancel" },
+            {
+              text: t("permission.settings"),
+              onPress: () => Linking.openSettings(),
+            },
           ],
           { cancelable: false }
         );
@@ -200,7 +206,7 @@ export const ReceiptUploadButton = ({
 
             return receiptScanNavigation.navigate("ReceiptScanError", {
               code: "001",
-              message: "영수증 인식에 실패했습니다.",
+              message: t("receiptScanError.recognitionFailed.title"),
             });
           },
         }
@@ -216,7 +222,7 @@ export const ReceiptUploadButton = ({
       } else {
         return receiptScanNavigation.navigate("ReceiptScanError", {
           code: "001",
-          message: "영수증 인식에 실패했습니다.",
+          message: t("receiptScanError.recognitionFailed.title"),
         });
       }
     }

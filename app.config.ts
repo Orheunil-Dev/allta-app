@@ -32,13 +32,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ],
     infoPlist: {
       NSCameraUsageDescription:
-        "이용권 확인을 위한 QR스캔 기능 및 주유 영수증 할인을 위한 영수증 촬영 기능을 위한 카메라 접근 권한이 필요합니다.",
+        "需要相機權限，以掃描 QR Code 確認使用券，以及拍攝加油收據以享優惠。",
       NSPhotoLibraryUsageDescription:
-        "주유 영수증 할인을 위한 영수증 이미지 업로드 기능을 위해 사진 접근 권한이 필요합니다.",
+        "需要照片存取權限，以上傳加油收據圖片享有優惠。",
       NSLocationWhenInUseUsageDescription:
-        "현 위치 날씨 API 요청과 현 위치 기반 매장 추천 기능을 위해 위치 정보 접근 권한이 필요합니다.",
+        "需要位置資訊權限，以查詢目前位置的天氣並推薦附近門市。",
       NSUserTrackingUsageDescription:
-        "앱 사용 경험을 개선하고 맞춤형 광고를 제공하기 위해 추적 권한이 필요합니다.",
+        "需要追蹤權限，以改善 App 使用體驗並提供個人化廣告。",
       CFBundleURLTypes: [
         {
           CFBundleTypeRole: "Editor",
@@ -179,8 +179,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-image-picker",
       {
-        photosPermission:
-          "영수증 사진 업로드를 위해 사진 접근 권한이 필요합니다.",
+        photosPermission: "需要照片存取權限，以上傳收據照片。",
       },
     ],
     [

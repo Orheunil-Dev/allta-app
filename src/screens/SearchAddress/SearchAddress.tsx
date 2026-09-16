@@ -12,6 +12,7 @@ import { myLocationIcon, searchIcon } from "@/assets/images";
 import * as Location from "expo-location";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 import { AddressStackParamList } from "@/navigations";
 
 type Address = {
@@ -24,6 +25,8 @@ type Address = {
 };
 
 export const SearchAddress = () => {
+  const { t } = useTranslation("address");
+
   const addressNavigation =
     useNavigation<NativeStackNavigationProp<AddressStackParamList>>();
 
@@ -43,18 +46,18 @@ export const SearchAddress = () => {
 
       if (status !== "granted") {
         Alert.alert(
-          "위치정보 접근 권한이 없습니다",
-          "앱 설정에서 위치정보 접근 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          t("locationPermission.title"),
+          t("locationPermission.message"),
           [
             {
-              text: "닫기",
+              text: t("common:close"),
               style: "cancel",
               onPress: () => {
                 return;
               },
             },
             {
-              text: "설정",
+              text: t("locationPermission.openSettings"),
               onPress: () => Linking.openSettings(),
             },
           ]
@@ -142,7 +145,7 @@ export const SearchAddress = () => {
               autoCorrect={false}
               autoCapitalize="none"
               placeholderTextColor={colors.gray5}
-              placeholder="지번, 도로명, 건물명으로 검색"
+              placeholder={t("search.placeholder")}
               maxLength={50}
               underlineColorAndroid="transparent"
               style={styles.input}
@@ -159,7 +162,7 @@ export const SearchAddress = () => {
           >
             <Image source={myLocationIcon} style={styles.icon} />
             <CustomText marginLeft={4} fontSize={15} fontWeight={"500"}>
-              현재 위치로 설정
+              {t("setCurrentLocation")}
             </CustomText>
           </CustomButton>
         </View>

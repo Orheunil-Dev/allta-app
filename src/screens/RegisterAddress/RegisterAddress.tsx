@@ -9,6 +9,7 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { useAddressControllerRegisterAddresses } from "@/api/address/address";
 import { RegisterAddresssRequest } from "@/api/models";
 import { AddressStackParamList } from "@/navigations";
@@ -31,6 +32,8 @@ type RegisterAddressRouteProp = RouteProp<
 const { width: screenWidth } = Dimensions.get("window");
 
 export const RegisterAddress = () => {
+  const { t } = useTranslation("address");
+
   const router = useRoute<RegisterAddressRouteProp>();
 
   const addressNavigation =
@@ -84,13 +87,13 @@ export const RegisterAddress = () => {
       case "HOME":
         return setAddressForm((prev) => ({
           ...prev,
-          nickname: "집",
+          nickname: t("register.home"),
         }));
 
       case "COMPANY":
         return setAddressForm((prev) => ({
           ...prev,
-          nickname: "회사",
+          nickname: t("register.company"),
         }));
 
       case "ETC":
@@ -194,7 +197,7 @@ export const RegisterAddress = () => {
                     fontSize={15}
                     fontWeight={"500"}
                   >
-                    집
+                    {t("register.home")}
                   </CustomText>
                 </Pressable>
 
@@ -219,7 +222,7 @@ export const RegisterAddress = () => {
                     fontSize={15}
                     fontWeight={"500"}
                   >
-                    회사
+                    {t("register.company")}
                   </CustomText>
                 </Pressable>
 
@@ -242,7 +245,7 @@ export const RegisterAddress = () => {
                     fontSize={15}
                     fontWeight={"500"}
                   >
-                    기타
+                    {t("register.etc")}
                   </CustomText>
                 </Pressable>
               </View>
@@ -264,7 +267,7 @@ export const RegisterAddress = () => {
                   }}
                   maxLength={30}
                   marginTop={12}
-                  placeholder="별명을 입력해주세요"
+                  placeholder={t("register.nicknamePlaceholder")}
                 />
               )}
             </View>
@@ -279,7 +282,7 @@ export const RegisterAddress = () => {
             backgroundColor={colors.main}
           >
             <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-              확인
+              {t("common:confirm")}
             </CustomText>
           </CustomButton>
         </View>
