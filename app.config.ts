@@ -3,7 +3,7 @@ import "dotenv/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "올타",
+  name: "奧塔",
   slug: "allta-app",
   currentFullName: "@orheunil/allta-user",
   originalFullName: "@orheunil/allta-user",
