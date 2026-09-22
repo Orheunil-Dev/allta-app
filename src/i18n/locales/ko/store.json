@@ -1,0 +1,105 @@
+{
+  "distanceKm": "{{distance}}km",
+  "priceFrom": "{{price}}원 ~",
+  "storeInfo": "매장 정보",
+  "navigate": "길찾기",
+  "day": {
+    "mon": "월",
+    "tue": "화",
+    "wed": "수",
+    "thu": "목",
+    "fri": "금",
+    "sat": "토",
+    "sun": "일"
+  },
+  "businessHours": {
+    "open": "영업중",
+    "closed": "휴무",
+    "beforeOpen": "영업 전",
+    "ended": "영업 종료",
+    "breakTime": "브레이크타임",
+    "opensAt": "{{time}} 오픈",
+    "nextOpensAt": "{{time}} 오픈 예정",
+    "resumesAt": "{{time}} 영업 시작"
+  },
+  "filter": {
+    "auto": "자동세차",
+    "currentLocation": "현위치",
+    "tags": {
+      "brush": "브러시",
+      "noBrush": "노브러시",
+      "underbody": "하부세차",
+      "preWash": "프리워시",
+      "bubble": "버블",
+      "drying": "물기제거"
+    }
+  },
+  "list": {
+    "empty": "근처에 올타 제휴점이 없습니다."
+  },
+  "card": {
+    "groupCount": "매장 {{count}}곳 포함",
+    "lowestPrice": "이용권 최저가",
+    "unmanned": "무인매장"
+  },
+  "detail": {
+    "breakTime": "브레이크 타임 {{time}}",
+    "tabs": {
+      "pass": "이용권",
+      "stores": "이용 가능 매장",
+      "info": "정보"
+    },
+    "purchasePass": "이용권 구매하기"
+  },
+  "info": {
+    "openTmap": "티맵으로 이동합니다.",
+    "openKakaoMap": "카카오맵으로 이동합니다.",
+    "location": "위치",
+    "description": "매장 소개",
+    "policy": "매장 유의사항"
+  },
+  "navi": {
+    "kakaoMap": "카카오맵",
+    "tmap": "티맵"
+  },
+  "pass": {
+    "guide": "이용안내",
+    "monthlyPriceFrom": "월 {{price}}원 ~",
+    "premium": {
+      "title": "프리미엄",
+      "dailyWash": "한 달간 매일 세차 가능",
+      "autoBilling": "월마다 자동 결제"
+    },
+    "standard": {
+      "title": "스탠다드",
+      "monthlyWash": "월 {{count}}회 세차 가능",
+      "reasonablePrice": "합리적인 가격으로 세차 가능"
+    },
+    "ticket": {
+      "title": "일회권",
+      "singleUse": "부담 없는 단일 이용권",
+      "anyDay": "원하는 날, 1회 세차"
+    },
+    "policy": {
+      "noTransfer": "· 이용권은 타인, 또는 다른 아이디(계정)로 양도불가",
+      "premiumUsage": "· 이용권에 표기된 매장에서 1일 1회 세차 가능",
+      "standardUsage": "· 이용권에 표기된 매장에서 {{count}}회 세차 가능",
+      "ticketUsage": "· 이용권에 표기된 매장에서 1회 세차 가능",
+      "singleCar": "· 이용권당 표기된 차량 1대만 이용가능",
+      "storeNotice": "· 추가로 각 매장별 별도 안내사항 참조"
+    }
+  },
+  "myList": {
+    "empty": "보유한 이용권이 없습니다."
+  },
+  "myDetail": {
+    "tabs": {
+      "pass": "내 이용권"
+    }
+  },
+  "myPass": {
+    "ticket": "일회권",
+    "usageSuffix": "/{{max}} 회",
+    "empty": "보유 이용권이 없습니다."
+  }
+}

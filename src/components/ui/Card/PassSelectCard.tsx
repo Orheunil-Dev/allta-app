@@ -1,4 +1,5 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { CustomText } from "../CustomText";
 import { termsCheckedIcon, uncheckedIconGray2 } from "@/assets/images";
 import { formatUsageLeft, getResponsiveSize } from "@/utils";
@@ -25,6 +26,8 @@ export const PassSelectCard = ({
   isAvailable = true,
   isSelected,
 }: Props) => {
+  const { t } = useTranslation("pass");
+
   const renderUsage = () => {
     switch (type) {
       case "TICKET":
@@ -34,7 +37,7 @@ export const PassSelectCard = ({
               1
             </CustomText>
             <CustomText fontSize={15} fontWeight={"500"}>
-              /1 회
+              {t("labels.countOf", { max: 1 })}
             </CustomText>
           </View>
         );
@@ -54,7 +57,7 @@ export const PassSelectCard = ({
               {`${formatUsageLeft(usage ?? 0, maxUsage ?? 0)}`}
             </CustomText>
             <CustomText fontSize={15} fontWeight={"500"}>
-              /{maxUsage} 회
+              {t("labels.countOf", { max: maxUsage })}
             </CustomText>
           </View>
         );
@@ -63,7 +66,7 @@ export const PassSelectCard = ({
         return (
           <View style={{ flexDirection: "row" }}>
             <CustomText fontSize={15} fontWeight={"500"}>
-              1일 1회
+              {t("select.oncePerDay")}
             </CustomText>
           </View>
         );
@@ -83,9 +86,9 @@ export const PassSelectCard = ({
         <View style={styles.disableLayout}>
           <CustomText color={colors.white} fontSize={16} fontWeight={"600"}>
             {type === "STANDARD"
-              ? "사용이 완료된 이용권입니다."
+              ? t("select.usedUp")
               : type === "PREMIUM"
-              ? "오늘 사용 완료된 이용권입니다."
+              ? t("select.usedToday")
               : " "}
           </CustomText>
         </View>
@@ -106,7 +109,7 @@ export const PassSelectCard = ({
       <View style={styles.bottom}>
         <View style={styles.item}>
           <CustomText color={colors.gray5} fontSize={15} fontWeight={"500"}>
-            남은 횟수
+            {t("labels.remainingCount")}
           </CustomText>
 
           {renderUsage()}
@@ -116,7 +119,7 @@ export const PassSelectCard = ({
 
         <View style={styles.item}>
           <CustomText color={colors.gray5} fontSize={15} fontWeight={"500"}>
-            이용 기간
+            {t("labels.usagePeriod")}
           </CustomText>
           <CustomText fontSize={15} fontWeight={"500"}>
             {availablePeriod}

@@ -1,0 +1,17 @@
+{
+  "storeNotFound": "查無門市資訊。",
+  "productPriceError": "商品金額發生錯誤。",
+  "productNotFound": "沒有商品資訊。",
+  "productInvalid": "商品資訊不正確。",
+  "uploadFailed": "上傳失敗",
+  "cardRegisterFailed": "卡片登錄失敗",
+  "cardNotFound": "查無卡片資訊。",
+  "couponNotFound": "查無優惠券資訊。",
+  "userNotFound": "查無會員資訊。",
+  "approvalFailed": "核准失敗",
+  "unauthorized": "請先登入。",
+  "forbidden": "沒有存取權限。",
+  "notFound": "找不到您要求的資訊。",
+  "badRequest": "請求無效。",
+  "internalError": "伺服器發生錯誤，請稍後再試。"
+}

@@ -2,6 +2,7 @@ import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { usePurchaseControllerGetPurchaseDetail } from "@/api/purchase/purchase";
 import { PurchaseStackParamList } from "@/navigations";
 import {
@@ -23,6 +24,7 @@ type PurchaseDetailRouteProp = RouteProp<
 
 export const PurchaseDetail = () => {
   const router = useRoute<PurchaseDetailRouteProp>();
+  const { t } = useTranslation("pass");
 
   const {
     data: purchaseData,
@@ -41,13 +43,13 @@ export const PurchaseDetail = () => {
           return (
             <View key={String(createdAt)} style={styles.box}>
               <CustomText fontSize={18} fontWeight={"600"}>
-                결제 정보
+                {t("purchase.detail.paymentInfo")}
               </CustomText>
 
               <View style={styles.content}>
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    결제 일시
+                    {t("purchase.detail.paidAt")}
                   </CustomText>
                   <CustomText fontSize={16}>
                     {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
@@ -56,7 +58,7 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    결제 방법
+                    {t("purchase.detail.paymentMethod")}
                   </CustomText>
                   <CustomText fontSize={16}>
                     {formatCardCompany(purchaseData.data.cardCompany)}{" "}
@@ -68,35 +70,41 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    이용권 금액
+                    {t("purchase.detail.passAmount")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {purchaseData.data.originalAmount.toLocaleString()}원
+                    {t("common:currency", {
+                      amount: purchaseData.data.originalAmount.toLocaleString(),
+                    })}
                   </CustomText>
                 </View>
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    쿠폰 할인
+                    {t("purchase.detail.couponDiscount")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {purchaseData.data.discountAmount > 0
-                      ? `- ${purchaseData.data.discountAmount.toLocaleString()}`
-                      : "0"}
-                    원
+                    {t("common:currency", {
+                      amount:
+                        purchaseData.data.discountAmount > 0
+                          ? `- ${purchaseData.data.discountAmount.toLocaleString()}`
+                          : "0",
+                    })}
                   </CustomText>
                 </View>
 
                 <View style={styles.row}>
                   <CustomText fontSize={16} fontWeight={"600"}>
-                    총 결제 금액
+                    {t("purchase.detail.totalPaidAmount")}
                   </CustomText>
                   <CustomText
                     color={colors.point2}
                     fontSize={16}
                     fontWeight={"600"}
                   >
-                    {purchaseData.data.totalAmount.toLocaleString()}원
+                    {t("common:currency", {
+                      amount: purchaseData.data.totalAmount.toLocaleString(),
+                    })}
                   </CustomText>
                 </View>
               </View>
@@ -107,13 +115,13 @@ export const PurchaseDetail = () => {
           return (
             <View key={String(createdAt)} style={styles.box}>
               <CustomText fontSize={18} fontWeight={"600"}>
-                부분 환불 정보
+                {t("purchase.detail.partialRefundInfo")}
               </CustomText>
 
               <View style={styles.content}>
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    환불 일시
+                    {t("purchase.detail.refundedAt")}
                   </CustomText>
                   <CustomText fontSize={16}>
                     {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
@@ -122,7 +130,7 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    환불 방법
+                    {t("purchase.detail.refundMethod")}
                   </CustomText>
                   <CustomText fontSize={16}>
                     {formatCardCompany(purchaseData.data.cardCompany)}{" "}
@@ -134,23 +142,25 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    결제 금액
+                    {t("purchase.detail.totalAmount")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {purchaseData.data.totalAmount.toLocaleString()}원
+                    {t("common:currency", {
+                      amount: purchaseData.data.totalAmount.toLocaleString(),
+                    })}
                   </CustomText>
                 </View>
 
                 <View style={styles.row}>
                   <CustomText fontSize={16} fontWeight={"600"}>
-                    총 환불 금액
+                    {t("purchase.detail.totalRefundAmount")}
                   </CustomText>
                   <CustomText
                     color={colors.point2}
                     fontSize={16}
                     fontWeight={"600"}
                   >
-                    -{amount.toLocaleString()}원
+                    -{t("common:currency", { amount: amount.toLocaleString() })}
                   </CustomText>
                 </View>
               </View>
@@ -161,13 +171,13 @@ export const PurchaseDetail = () => {
           return (
             <View key={String(createdAt)} style={styles.box}>
               <CustomText fontSize={18} fontWeight={"600"}>
-                전체 환불 정보
+                {t("purchase.detail.fullRefundInfo")}
               </CustomText>
 
               <View style={styles.content}>
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    환불 일시
+                    {t("purchase.detail.refundedAt")}
                   </CustomText>
                   <CustomText fontSize={16}>
                     {dayjs(createdAt).format("YYYY.MM.DD HH:mm")}
@@ -176,7 +186,7 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    환불 방법
+                    {t("purchase.detail.refundMethod")}
                   </CustomText>
                   <CustomText fontSize={16}>
                     {formatCardCompany(purchaseData.data.cardCompany)}{" "}
@@ -188,23 +198,25 @@ export const PurchaseDetail = () => {
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray5} fontSize={16}>
-                    결제 금액
+                    {t("purchase.detail.totalAmount")}
                   </CustomText>
                   <CustomText fontSize={16}>
-                    {purchaseData.data.totalAmount.toLocaleString()}원
+                    {t("common:currency", {
+                      amount: purchaseData.data.totalAmount.toLocaleString(),
+                    })}
                   </CustomText>
                 </View>
 
                 <View style={styles.row}>
                   <CustomText fontSize={16} fontWeight={"600"}>
-                    총 환불 금액
+                    {t("purchase.detail.totalRefundAmount")}
                   </CustomText>
                   <CustomText
                     color={colors.point2}
                     fontSize={16}
                     fontWeight={"600"}
                   >
-                    -{amount.toLocaleString()}원
+                    -{t("common:currency", { amount: amount.toLocaleString() })}
                   </CustomText>
                 </View>
               </View>
@@ -239,21 +251,22 @@ export const PurchaseDetail = () => {
                 {formatPaymentStatus(purchaseData.data.status)}
               </CustomText>
               <CustomText color={colors.gray5} fontSize={18}>
-                {purchaseData.data.status === "APPROVED" ? "가" : "이"} 완료
-                되었습니다.
+                {purchaseData.data.status === "APPROVED"
+                  ? t("purchase.detail.completed.approved")
+                  : t("purchase.detail.completed.refunded")}
               </CustomText>
             </View>
           </View>
 
           <View style={styles.box}>
             <CustomText fontSize={18} fontWeight={"600"}>
-              이용권 정보
+              {t("purchase.detail.passInfo")}
             </CustomText>
 
             <View style={styles.content}>
               <View style={styles.row}>
                 <CustomText color={colors.gray5} fontSize={16}>
-                  세차 서비스
+                  {t("labels.washService")}
                 </CustomText>
                 <CustomText fontSize={16}>
                   {formatServiceType(purchaseData.data.serviceType)}
@@ -262,7 +275,7 @@ export const PurchaseDetail = () => {
 
               <View style={styles.row}>
                 <CustomText color={colors.gray5} fontSize={16}>
-                  이용권
+                  {t("labels.pass")}
                 </CustomText>
                 <CustomText fontSize={16}>
                   {formatPassType(purchaseData.data.productType)}
@@ -271,7 +284,7 @@ export const PurchaseDetail = () => {
 
               <View style={styles.row}>
                 <CustomText color={colors.gray5} fontSize={16}>
-                  매장
+                  {t("labels.store")}
                 </CustomText>
                 <CustomText fontSize={16}>
                   {purchaseData.data.storeName}
@@ -280,7 +293,7 @@ export const PurchaseDetail = () => {
 
               <View style={styles.row}>
                 <CustomText color={colors.gray5} fontSize={16}>
-                  등록 차량
+                  {t("purchase.detail.registeredCar")}
                 </CustomText>
                 <CustomText fontSize={16}>
                   {purchaseData.data.carNumber}

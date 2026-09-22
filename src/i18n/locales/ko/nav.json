@@ -1,0 +1,67 @@
+{
+  "tab": {
+    "home": "홈",
+    "myStore": "내 매장",
+    "qrScan": "QR 스캔",
+    "myPage": "내 정보"
+  },
+  "address": {
+    "list": "주소 관리",
+    "search": "주소 검색",
+    "register": "주소 등록"
+  },
+  "card": {
+    "list": "카드 관리",
+    "register": "카드 등록"
+  },
+  "car": {
+    "list": "차량 관리",
+    "register": "차량 등록",
+    "update": "차량 수정"
+  },
+  "container": {
+    "notification": "알림",
+    "serviceHistory": "이용 내역",
+    "coupon": "쿠폰",
+    "referral": "친구 초대 / 등록",
+    "faq": "FAQ",
+    "profile": "내 정보",
+    "guide": "올타 이용 가이드",
+    "selfGuide": "무인 매장 이용 안내"
+  },
+  "event": {
+    "list": "이벤트"
+  },
+  "inquiry": {
+    "title": "1:1 문의"
+  },
+  "myStore": {
+    "list": "내 매장"
+  },
+  "notice": {
+    "title": "공지사항"
+  },
+  "pass": {
+    "list": "보유 이용권",
+    "detail": "이용권 상세"
+  },
+  "payment": {
+    "payment": "결제",
+    "complete": "결제 완료"
+  },
+  "purchase": {
+    "list": "결제 내역",
+    "detail": "결제 상세"
+  },
+  "qrScan": {
+    "error": "이용권 확인"
+  },
+  "setting": {
+    "setting": "앱 설정",
+    "notification": "알림 설정",
+    "terms": "약관 및 정책"
+  },
+  "store": {
+    "list": "매장 둘러보기"
+  }
+}

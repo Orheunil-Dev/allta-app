@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
@@ -29,10 +30,8 @@ import { WeatherCast } from "@/components/home/WeatherCast";
 import { IS_COUPON_RECEIVED, IS_NOTIFICATION_GRANTED } from "@/constants";
 import {
   autoWashIcon,
-  handsWashIcon,
   homeFooterArrow,
   qrIcon,
-  receiptIcon,
   welcomeCoupon,
 } from "@/assets/images";
 import { colors } from "@/styles";
@@ -43,6 +42,8 @@ interface Props {
 }
 
 export const Home = ({ showSplash, showUpdate }: Props) => {
+  const { t } = useTranslation("home");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -53,6 +54,7 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
 
   const [showCouponModal, setShowCouponModal] = useState<boolean>(false);
   const [footerOpen, setFooterOpen] = useState<boolean>(false);
+  const [footerContentHeight, setFooterContentHeight] = useState<number>(0);
 
   // 배너 목록 조회 API
   const {
@@ -83,13 +85,13 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
   };
 
   // getResponsive 함수 애니메이션 함수 안에 넣을 시 에러 발생
-  const footerHeight = getResponsiveSize(100);
   const footerMarginTop = getResponsiveSize(12);
 
   // 푸터 애니메이션
   const openAnimatedStyle = useAnimatedStyle(() => {
     return {
-      height: withTiming(footerOpen ? footerHeight : 0, {
+      // 언어별로 줄 수가 달라지므로 고정값 대신 측정한 내용 높이로 펼친다
+      height: withTiming(footerOpen ? footerContentHeight : 0, {
         duration: 250,
       }),
       marginTop: withTiming(footerOpen ? footerMarginTop : 0, {
@@ -202,13 +204,13 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
           mmkvStorage.removeItem(IS_COUPON_RECEIVED);
           setShowCouponModal(false);
         }}
-        closeButtonText="닫기"
+        closeButtonText={t("common:close")}
         onNext={() => {
           mmkvStorage.removeItem(IS_COUPON_RECEIVED);
           setShowCouponModal(false);
           containerNavigation.navigate("Coupon");
         }}
-        nextButtonText="확인하기"
+        nextButtonText={t("welcomeCoupon.check")}
         backgroundColor={colors.white}
       >
         <Image
@@ -220,12 +222,12 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
           }}
         />
         <CustomText fontSize={18} fontWeight={"600"}>
-          웰컴쿠폰이 도착했습니다!
+          {t("welcomeCoupon.title")}
         </CustomText>
         <CustomText marginTop={8} fontSize={16}>
-          가입을 축하드립니다.
+          {t("welcomeCoupon.congrats")}
         </CustomText>
-        <CustomText fontSize={16}>쿠폰함에서 바로 확인해보세요.</CustomText>
+        <CustomText fontSize={16}>{t("welcomeCoupon.checkNow")}</CustomText>
       </CustomModal>
 
       <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
@@ -251,72 +253,17 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
                   fontSize={18}
                   fontWeight={"600"}
                 >
-                  자동세차
+                  {t("menu.autoWash.title")}
                 </CustomText>
                 <CustomText
                   color={colors.gray5}
                   fontSize={13}
                   fontWeight={"500"}
                 >
-                  최신 기계로 간단하게!
+                  {t("menu.autoWash.subtitle")}
                 </CustomText>
 
                 <Image source={autoWashIcon} style={styles.buttonIcon} />
-              </Pressable>
-
-              <Pressable
-                onPress={() =>
-                  containerNavigation.navigate("StoreStack", {
-                    screen: "StoreList",
-                    params: { serviceType: "HANDS" },
-                  })
-                }
-                style={styles.stores}
-              >
-                <CustomText
-                  color={colors.main}
-                  fontSize={18}
-                  fontWeight={"600"}
-                >
-                  핸즈클리닝
-                </CustomText>
-                <CustomText
-                  color={colors.gray5}
-                  fontSize={13}
-                  fontWeight={"500"}
-                >
-                  손 세차로 구석구석!
-                </CustomText>
-
-                <Image source={handsWashIcon} style={styles.buttonIcon} />
-              </Pressable>
-            </View>
-
-            <View style={styles.mainArea}>
-              <Pressable
-                onPress={() =>
-                  containerNavigation.navigate("ReceiptScanStack", {
-                    screen: "ReceiptScan",
-                  })
-                }
-                style={styles.stores}
-              >
-                <CustomText
-                  color={colors.main}
-                  fontSize={18}
-                  fontWeight={"600"}
-                >
-                  세차 할인
-                </CustomText>
-                <CustomText
-                  color={colors.gray5}
-                  fontSize={13}
-                  fontWeight={"500"}
-                >
-                  제휴매장 쿠폰 받기
-                </CustomText>
-
-                <Image source={receiptIcon} style={styles.buttonIcon} />
               </Pressable>
 
               <Pressable
@@ -332,14 +279,14 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
                   fontSize={18}
                   fontWeight={"600"}
                 >
-                  세차권 사용
+                  {t("menu.usePass.title")}
                 </CustomText>
                 <CustomText
                   color={colors.white}
                   fontSize={13}
                   fontWeight={"500"}
                 >
-                  QR 스캔
+                  {t("menu.usePass.subtitle")}
                 </CustomText>
 
                 <Image source={qrIcon} style={styles.buttonIcon} />
@@ -359,7 +306,7 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
                 style={styles.footerButton}
               >
                 <CustomText color={colors.gray7} fontSize={14}>
-                  (주)옳은일
+                  {t("footer.company")}
                 </CustomText>
 
                 <Animated.View
@@ -370,32 +317,38 @@ export const Home = ({ showSplash, showUpdate }: Props) => {
               </Pressable>
 
               <CustomText color={colors.gray5} fontSize={14} numberOfLines={1}>
-                고객센터 운영시간(월~금 : 10-18시)
+                {t("footer.customerCenterHours")}
               </CustomText>
             </View>
 
             <Animated.View style={[styles.footerBottom, openAnimatedStyle]}>
-              <CustomText color={colors.gray5} fontSize={14}>
-                대표이사 : 이승열
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                사업자등록번호 : 850-81-02703
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                통신판매번호 : 2024-경기하남-2769
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                주소 : 경기도 하남시 미사강변한강로 155
-              </CustomText>
-              <CustomText color={colors.gray5} fontSize={14}>
-                대표전화 : 1668-1620
-              </CustomText>
+              <View
+                onLayout={(event) =>
+                  setFooterContentHeight(event.nativeEvent.layout.height)
+                }
+              >
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.ceo")}
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.businessNumber")}
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.salesNumber")}
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.address")}
+                </CustomText>
+                <CustomText color={colors.gray5} fontSize={14}>
+                  {t("footer.phone")}
+                </CustomText>
+              </View>
             </Animated.View>
-          </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+      </View>
+    </ScrollView>
+  </SafeAreaView>
+);
 };
 
 const styles = StyleSheet.create({
@@ -501,7 +454,6 @@ const styles = StyleSheet.create({
     height: getResponsiveSize(20),
   },
   footerBottom: {
-    justifyContent: "center",
     overflow: "hidden",
   },
 });

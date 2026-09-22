@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { Payment, PaymentComplete } from "@/screens/Payment";
 import { PassType, ServiceType, CarType } from "@/types";
 import { CustomHeader } from "@/components/layout/CustomHeader";
@@ -26,20 +27,22 @@ export type PaymentStackParamList = {
 const Stack = createNativeStackNavigator();
 
 export const PaymentStack = () => {
+  const { t } = useTranslation("nav");
+
   return (
     <Stack.Navigator initialRouteName="Payment">
       <Stack.Screen
         name="Payment"
         component={Payment}
         options={{
-          header: () => <CustomHeader title="결제" showBackButton />,
+          header: () => <CustomHeader title={t("payment.payment")} showBackButton />,
         }}
       />
       <Stack.Screen
         name="PaymentComplete"
         component={PaymentComplete}
         options={{
-          header: () => <CustomHeader title="결제 완료" />,
+          header: () => <CustomHeader title={t("payment.complete")} />,
         }}
       />
     </Stack.Navigator>

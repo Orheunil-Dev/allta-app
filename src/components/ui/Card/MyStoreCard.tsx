@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { MyStoreListItem } from "@/api/models";
 import { MyStoreStackParamList } from "@/navigations";
@@ -29,6 +30,8 @@ export const MyStoreCard = ({
   lat = 37.5759785,
   lng = 127.1935115,
 }: Props) => {
+  const { t } = useTranslation("store");
+
   const myStoreNavigation =
     useNavigation<NativeStackNavigationProp<MyStoreStackParamList>>();
 
@@ -69,7 +72,7 @@ export const MyStoreCard = ({
           }
           style={styles.storeImage}
         >
-          {bi.status !== "영업중" && (
+          {!bi.isOpen && (
             <View style={styles.overlay}>
               <CustomText color={colors.white} fontSize={15} fontWeight={"500"}>
                 {bi.status}
@@ -141,7 +144,7 @@ export const MyStoreCard = ({
           borderColor={colors.gray2}
         >
           <CustomText fontSize={13} fontWeight={"500"}>
-            매장 정보
+            {t("storeInfo")}
           </CustomText>
         </CustomButton>
 
@@ -152,7 +155,7 @@ export const MyStoreCard = ({
           backgroundColor={colors.point2}
         >
           <CustomText color={colors.white} fontSize={13} fontWeight={"500"}>
-            길찾기
+            {t("navigate")}
           </CustomText>
         </CustomButton>
       </View>

@@ -1,0 +1,126 @@
+{
+  "welcomeCoupon": {
+    "title": "迎新優惠券已送達！",
+    "congrats": "恭喜您完成註冊。",
+    "checkNow": "立即前往優惠券匣查看吧。",
+    "check": "查看"
+  },
+  "menu": {
+    "autoWash": {
+      "title": "自動洗車",
+      "subtitle": "最新設備，輕鬆洗車！"
+    },
+    "usePass": {
+      "title": "使用洗車券",
+      "subtitle": "掃描 QR Code"
+    }
+  },
+  "footer": {
+    "company": "Orheunil Co., Ltd.",
+    "customerCenterHours": "客服時間（週一至週五 10-18 時）",
+    "ceo": "代表理事：Lee Seungyeol",
+    "businessNumber": "商業登記號碼：850-81-02703",
+    "salesNumber": "通訊販賣業登記號碼：2024-京畿河南-2769",
+    "address": "地址：155, Misagangbyeonhangang-ro, Hanam-si, Gyeonggi-do, Korea",
+    "phone": "代表電話：1668-1620"
+  },
+  "permission": {
+    "title": {
+      "line1": "為了使用 App，",
+      "line2": "請允許存取權限。"
+    },
+    "notification": {
+      "title": "通知",
+      "description": "提供活動、優惠、公告等通知"
+    },
+    "camera": {
+      "title": "相機",
+      "description": "掃描門市 QR Code 及拍攝加油收據"
+    },
+    "photo": {
+      "title": "照片",
+      "description": "上傳加油收據"
+    },
+    "location": {
+      "title": "位置",
+      "description": "依目前位置推薦附近門市"
+    }
+  },
+  "splash": {
+    "update": {
+      "button": "立即更新",
+      "title": "更新",
+      "description1": "為了提供穩定的服務，",
+      "description2": "請將 App 更新至最新版本。"
+    },
+    "status": {
+      "finished": "更新已完成。",
+      "checkingVersion": "正在確認版本。",
+      "applying": "正在套用更新。"
+    }
+  },
+  "popup": {
+    "hideForToday": "今日不再顯示"
+  },
+  "storeRecommend": {
+    "title": "推薦門市"
+  },
+  "locationPermission": {
+    "title": "尚未取得位置存取權限",
+    "message": "您可以在 App 設定中允許位置存取權限。是否前往設定？",
+    "settings": "設定"
+  },
+  "weather": {
+    "today": "今天的天氣是「{{weather}}」",
+    "phrases": {
+      "sunny": [
+        "今天正適合洗車",
+        "陽光正好，來洗車吧",
+        "洗車的完美日子",
+        "洗完車心情更好",
+        "閃亮的車最適合今天",
+        "該把灰塵洗掉囉",
+        "洗完車去兜風吧",
+        "今天是洗車的好天氣",
+        "陽光下愛車閃閃發亮",
+        "用洗車讓一天煥然一新"
+      ],
+      "cloudy": [
+        "陰天也能閃閃發亮",
+        "陰天正適合洗車",
+        "沒有陽光也要乾淨的車",
+        "天氣陰，愛車依然亮",
+        "現在就是洗車好時機",
+        "人少的日子輕鬆洗車",
+        "今天洗車，明天也 OK",
+        "雲層下閃亮的愛車",
+        "天陰，洗完車心情晴朗",
+        "今天是完美的洗車日"
+      ],
+      "rain": [
+        "下雨天也要保養愛車",
+        "留下雨痕前先洗車",
+        "雨中也要保持閃亮",
+        "雨天開車請小心",
+        "剩下的就交給洗車",
+        "不要雨痕，要閃亮",
+        "雨中也別忘了保養愛車",
+        "開著乾淨的車出發吧",
+        "今天下雨，愛車需要保養",
+        "小心駕駛，別忘了洗車"
+      ],
+      "snow": [
+        "雪後路滑，開車請小心",
+        "雪路後的清潔交給洗車",
+        "積雪過後記得洗車",
+        "雪路駕駛請小心",
+        "讓積雪的車重新閃亮",
+        "路面濕滑，注意安全",
+        "雪停後讓愛車煥然一新",
+        "找回積雪愛車的光澤",
+        "雪路之後別忘了洗車",
+        "白雪過後，洗車最完美"
+      ]
+    }
+  }
+}

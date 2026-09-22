@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CookieManager from "@react-native-cookies/cookies";
@@ -19,14 +20,20 @@ import { BottomButtonArea } from "@/components/layout/BottomButtonArea";
 import { checkedRadioIcon, uncheckedRadioIcon } from "@/assets/images";
 import { colors } from "@/styles";
 
+// value는 API(deleteReason)로 전송되는 값이라 번역하지 않고, 화면 표시는 labelKey로 처리
 const withdrawalReasons = [
-  "앱 사용이 불편했어요.",
-  "자주 사용하지 않아요.",
-  "가격이 부담돼요.",
-  "이용하는 매장 상태가 만족스럽지 않아요.",
-];
+  { value: "앱 사용이 불편했어요.", labelKey: "withdrawal.reasons.inconvenient" },
+  { value: "자주 사용하지 않아요.", labelKey: "withdrawal.reasons.rarelyUsed" },
+  { value: "가격이 부담돼요.", labelKey: "withdrawal.reasons.expensive" },
+  {
+    value: "이용하는 매장 상태가 만족스럽지 않아요.",
+    labelKey: "withdrawal.reasons.storeUnsatisfied",
+  },
+] as const;
 
 export const Withdrawal = () => {
+  const { t } = useTranslation("mypage");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -63,8 +70,8 @@ export const Withdrawal = () => {
 
           setCommonModal({
             visible: true,
-            title: "회원 탈퇴 완료",
-            message: "회원 탈퇴가 완료되었습니다.\n감사합니다.",
+            title: t("withdrawal.completeModal.title"),
+            message: t("withdrawal.completeModal.message"),
           });
 
           return containerNavigation.dispatch(
@@ -84,7 +91,7 @@ export const Withdrawal = () => {
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "회원 탈퇴에 실패했습니다.",
+            message: error?.message ?? t("withdrawal.error"),
           });
         },
       }
@@ -97,34 +104,30 @@ export const Withdrawal = () => {
         visible={showModal}
         onClose={handleWithdrawal}
         isCloseButtonDisable={withdrawalLoading}
-        closeButtonText="탈퇴하기"
+        closeButtonText={t("withdrawal.confirmModal.withdraw")}
         onNext={() => setShowModal(false)}
-        nextButtonText="돌아가기"
+        nextButtonText={t("withdrawal.confirmModal.goBack")}
       >
         <CustomText fontSize={18} fontWeight={"600"}>
-          정말 회원 탈퇴를 하시나요?
+          {t("withdrawal.confirmModal.title")}
         </CustomText>
 
-        <CustomText marginTop={8} fontSize={16}>
-          탈퇴 시 계정 및 보유 이용권과 쿠폰은
+        <CustomText marginTop={8} fontSize={16} textAlign="center">
+          {t("withdrawal.confirmModal.description")}
         </CustomText>
-        <CustomText fontSize={16}>삭제되어 복구 할 수 없습니다.</CustomText>
         <CustomText marginTop={20} fontSize={16}>
-          정말 탈퇴하시겠습니까?
+          {t("withdrawal.confirmModal.question")}
         </CustomText>
       </CustomModal>
 
       <View style={styles.container}>
         <CustomText fontSize={24} fontWeight={"700"}>
-          더 나은 서비스를 위해
-        </CustomText>
-        <CustomText fontSize={24} fontWeight={"700"}>
-          탈퇴 사유를 알려주세요.
+          {t("withdrawal.title")}
         </CustomText>
 
         <View style={{ marginTop: getResponsiveSize(20) }}>
-          {withdrawalReasons.map((value, index) => (
-            <View key={index} style={styles.reason}>
+          {withdrawalReasons.map(({ value, labelKey }) => (
+            <View key={value} style={styles.reason}>
               <Pressable
                 onPress={() => {
                   {
@@ -141,7 +144,7 @@ export const Withdrawal = () => {
                 />
               </Pressable>
 
-              <CustomText fontSize={16}>{value}</CustomText>
+              <CustomText fontSize={16}>{t(labelKey)}</CustomText>
             </View>
           ))}
 
@@ -158,7 +161,7 @@ export const Withdrawal = () => {
               />
             </Pressable>
 
-            <CustomText fontSize={16}>기타 (직접입력)</CustomText>
+            <CustomText fontSize={16}>{t("withdrawal.otherReason")}</CustomText>
           </View>
         </View>
 
@@ -186,7 +189,7 @@ export const Withdrawal = () => {
             fontSize={18}
             fontWeight={"600"}
           >
-            탈퇴하기
+            {t("withdrawal.submit")}
           </CustomText>
         </CustomButton>
       </BottomButtonArea>

@@ -1,5 +1,6 @@
 import { Image, Linking, Pressable, StyleSheet, View } from "react-native";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useTranslation } from "react-i18next";
 import { useToastMessage } from "@/hooks";
 import { getResponsiveSize } from "@/utils";
 import { CustomBottomSheet } from "../ui/CustomBottomSheet";
@@ -21,6 +22,8 @@ export const NaviBottomSheet = ({
   lng,
   storeName,
 }: Props) => {
+  const { t } = useTranslation("store");
+
   const { SuccessToast, ErrorToast } = useToastMessage();
 
   // TMAP 네비게이션 열기
@@ -32,7 +35,7 @@ export const NaviBottomSheet = ({
 
     Linking.openURL(tmapScheme);
 
-    SuccessToast("티맵으로 이동합니다.");
+    SuccessToast(t("info.openTmap"));
 
     return onClose();
   };
@@ -44,7 +47,7 @@ export const NaviBottomSheet = ({
     const tmapScheme = `kakaomap://route?ep=${lat},${lng}&by=CAR`;
     Linking.openURL(tmapScheme);
 
-    SuccessToast("카카오맵으로 이동합니다.");
+    SuccessToast(t("info.openKakaoMap"));
 
     return onClose();
   };
@@ -57,7 +60,7 @@ export const NaviBottomSheet = ({
     >
       <View style={styles.container}>
         <CustomText textAlign="center" fontSize={18} fontWeight={"600"}>
-          길찾기
+          {t("navigate")}
         </CustomText>
 
         <Pressable onPress={onClose} style={styles.closeButton}>
@@ -74,7 +77,7 @@ export const NaviBottomSheet = ({
           <Image source={kakaoMapIcon} style={styles.icon} />
 
           <CustomText marginLeft={12} fontSize={16}>
-            카카오맵
+            {t("navi.kakaoMap")}
           </CustomText>
         </Pressable>
 
@@ -82,7 +85,7 @@ export const NaviBottomSheet = ({
           <Image source={tmapIcon} style={styles.icon} />
 
           <CustomText marginLeft={12} fontSize={16}>
-            티맵
+            {t("navi.tmap")}
           </CustomText>
         </Pressable>
       </View>

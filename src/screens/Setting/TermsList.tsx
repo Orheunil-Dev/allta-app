@@ -4,12 +4,14 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SettingStackParamList } from "@/navigations";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
-import { terms } from "@/constants";
+import { getTerms } from "@/constants";
 import { colors } from "@/styles";
 
 export const TermsList = () => {
   const settingNavigation =
     useNavigation<NativeStackNavigationProp<SettingStackParamList>>();
+
+  const terms = getTerms();
 
   return (
     <View style={styles.container}>
@@ -18,6 +20,7 @@ export const TermsList = () => {
           onPress={() =>
             settingNavigation.navigate("TermsDetail", {
               title: value.title,
+              index,
             })
           }
           key={index}

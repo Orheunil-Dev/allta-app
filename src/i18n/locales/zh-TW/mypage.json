@@ -1,0 +1,105 @@
+{
+  "title": "我的",
+  "profile": {
+    "greeting": "{{name}}",
+    "loginPrompt": "登入後即可使用更多功能！"
+  },
+  "passType": {
+    "premium": "Premium",
+    "standard": "Standard",
+    "ticket": "單次券"
+  },
+  "menu": {
+    "carManagement": "車輛管理",
+    "cardManagement": "卡片管理",
+    "addressManagement": "地址管理",
+    "myPasses": "持有使用券",
+    "serviceHistory": "使用紀錄",
+    "purchaseHistory": "付款紀錄",
+    "coupon": "優惠券",
+    "event": "活動",
+    "referral": "邀請好友",
+    "notice": "公告",
+    "faq": "常見問題",
+    "inquiry": "一對一諮詢"
+  },
+  "requestError": "處理請求時發生錯誤。",
+  "setting": {
+    "notificationSetting": "通知設定",
+    "termsAndPolicies": "條款與政策",
+    "version": "版本資訊 {{version}}",
+    "update": "更新",
+    "withdraw": "刪除帳號",
+    "storeOpenError": "無法開啟應用程式商店。",
+    "logoutConfirm": "確定要登出嗎？"
+  },
+  "notification": {
+    "label": "活動 • 優惠及資訊通知",
+    "agreed": "已同意接收通知",
+    "disagreed": "已取消接收通知",
+    "permissionAlert": {
+      "title": "尚未開啟通知權限",
+      "message": "您可以在 App 設定中允許通知權限，要前往設定嗎？",
+      "settings": "設定"
+    },
+    "empty": {
+      "title": "目前沒有新通知。",
+      "description": "有新消息時會通知您！"
+    }
+  },
+  "marketing": {
+    "label": "同意接收行銷及廣告資訊",
+    "agreed": "已同意接收行銷訊息",
+    "disagreed": "已取消接收行銷訊息"
+  },
+  "withdrawal": {
+    "title": "為了提供更好的服務，\n請告訴我們刪除帳號的原因。",
+    "reasons": {
+      "inconvenient": "App 使用起來不方便。",
+      "rarelyUsed": "不常使用。",
+      "expensive": "價格負擔太大。",
+      "storeUnsatisfied": "對使用的門市狀況不滿意。"
+    },
+    "otherReason": "其他（自行輸入）",
+    "submit": "刪除帳號",
+    "confirmModal": {
+      "title": "真的要刪除帳號嗎？",
+      "description": "刪除帳號後，帳號及持有的使用券與優惠券\n將一併刪除且無法復原。",
+      "question": "確定要刪除帳號嗎？",
+      "withdraw": "刪除帳號",
+      "goBack": "返回"
+    },
+    "completeModal": {
+      "title": "帳號刪除完成",
+      "message": "您的帳號已刪除。\n感謝您的使用。"
+    },
+    "error": "刪除帳號失敗。"
+  },
+  "notice": {
+    "itemTitle": "[公告] {{title}}",
+    "empty": "目前沒有公告"
+  },
+  "inquiry": {
+    "answered": "已回覆",
+    "pending": "等待回覆",
+    "empty": "尚無諮詢紀錄。",
+    "register": "我要諮詢",
+    "maxCount": "最多可建立 {{count}} 筆諮詢。",
+    "contentPlaceholder": "請輸入諮詢內容。",
+    "contentMinLength": "內容至少需輸入 {{count}} 個字。",
+    "contentMaxLength": "內容最多只能輸入 {{count}} 個字。",
+    "registerSuccess": "諮詢已送出。",
+    "registerError": "送出諮詢時發生錯誤。",
+    "deleteConfirm": "確定要刪除此諮詢嗎？",
+    "deleteAnsweredError": "已回覆的諮詢紀錄無法刪除。",
+    "deleteSuccess": "諮詢已刪除。",
+    "deleteError": "刪除諮詢紀錄時發生錯誤。"
+  },
+  "faq": {
+    "customerCenter": "客服諮詢",
+    "businessHours": "平日 10:00 ~ 18:00"
+  },
+  "serviceHistory": {
+    "empty": "尚無使用紀錄。"
+  }
+}

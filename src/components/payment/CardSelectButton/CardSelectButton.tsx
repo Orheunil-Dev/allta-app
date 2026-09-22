@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -32,6 +33,8 @@ export const CardSelectButton = ({ card, setCard }: Props) => {
 
   const setErrorModal = useSetAtom(errorModalAtom);
 
+  const { t } = useTranslation("payment");
+
   const { data: cardData, refetch: cardsRefetch } =
     useCardControllerGetCardList({
       query: {
@@ -46,7 +49,7 @@ export const CardSelectButton = ({ card, setCard }: Props) => {
     if (cardData?.data.length && cardData?.data.length > 4) {
       return setErrorModal({
         visible: true,
-        message: "차량은 최대 5대까지 등록 가능합니다.",
+        message: t("card.maxCount"),
       });
     }
 
@@ -80,7 +83,7 @@ export const CardSelectButton = ({ card, setCard }: Props) => {
       />
 
       <CustomText fontSize={18} fontWeight={"600"}>
-        결제 수단
+        {t("cardSelect.title")}
       </CustomText>
 
       <CustomButton
@@ -96,7 +99,7 @@ export const CardSelectButton = ({ card, setCard }: Props) => {
               ? `${formatCardCompany(
                   card.cardCompany
                 )} ${formatCardDisplayNumber(card.cardDisplayNumber)}`
-              : "카드를 등록해주세요"}
+              : t("card.registerPrompt")}
           </CustomText>
           <Image
             source={blackRightArrow}

@@ -1,3 +1,4 @@
+import i18n from "@/i18n";
 import { DayKey } from "@/types";
 
 export const dayOrder: DayKey[] = [
@@ -10,12 +11,15 @@ export const dayOrder: DayKey[] = [
   "SUN",
 ];
 
-export const dayLabel: Record<DayKey, string> = {
-  MON: "월",
-  TUE: "화",
-  WED: "수",
-  THU: "목",
-  FRI: "금",
-  SAT: "토",
-  SUN: "일",
+const dayLabelKeys: Record<DayKey, string> = {
+  MON: "mon",
+  TUE: "tue",
+  WED: "wed",
+  THU: "thu",
+  FRI: "fri",
+  SAT: "sat",
+  SUN: "sun",
 };
+
+export const getDayLabel = (day: DayKey): string =>
+  i18n.t(`store:day.${dayLabelKeys[day]}`);

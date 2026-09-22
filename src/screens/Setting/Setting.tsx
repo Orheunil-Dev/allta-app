@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CookieManager from "@react-native-cookies/cookies";
@@ -19,6 +20,8 @@ import { rigthArrowIcon } from "@/assets/images";
 import { colors } from "@/styles";
 
 export const Setting = () => {
+  const { t } = useTranslation("mypage");
+
   const [appVersion, setAppVersion] = useState<string>("");
   const [isOldVersion, setIsOldVersion] = useState<boolean>(false);
 
@@ -48,7 +51,7 @@ export const Setting = () => {
     } catch (error) {
       setErrorModal({
         visible: true,
-        message: "앱스토어 이동에 실패했습니다.",
+        message: t("setting.storeOpenError"),
       });
     }
   };
@@ -109,32 +112,32 @@ export const Setting = () => {
       <CustomModal
         visible={showModal}
         onClose={() => setShowModal(false)}
-        closeButtonText="취소"
+        closeButtonText={t("common:cancel")}
         onNext={handleLogout}
-        nextButtonText="확인"
+        nextButtonText={t("common:confirm")}
       >
         <CustomText fontSize={18} fontWeight={"600"}>
-          로그아웃
+          {t("common:auth.logout")}
         </CustomText>
 
         <CustomText marginTop={8} fontSize={16}>
-          로그아웃 하시겠습니까?
+          {t("setting.logoutConfirm")}
         </CustomText>
       </CustomModal>
 
       <CustomModal
         visible={showModal}
         onClose={() => setShowModal(false)}
-        closeButtonText="취소"
+        closeButtonText={t("common:cancel")}
         onNext={handleLogout}
-        nextButtonText="확인"
+        nextButtonText={t("common:confirm")}
       >
         <CustomText fontSize={18} fontWeight={"600"}>
-          로그아웃
+          {t("common:auth.logout")}
         </CustomText>
 
         <CustomText marginTop={8} fontSize={16}>
-          로그아웃 하시겠습니까?
+          {t("setting.logoutConfirm")}
         </CustomText>
       </CustomModal>
 
@@ -142,7 +145,7 @@ export const Setting = () => {
         onPress={() => settingNavigation.navigate("NotificationSetting")}
         style={styles.button}
       >
-        <CustomText fontSize={16}>알림 설정</CustomText>
+        <CustomText fontSize={16}>{t("setting.notificationSetting")}</CustomText>
         <Image source={rigthArrowIcon} style={styles.icon} />
       </Pressable>
 
@@ -150,24 +153,26 @@ export const Setting = () => {
         onPress={() => settingNavigation.navigate("TermsList")}
         style={styles.button}
       >
-        <CustomText fontSize={16}>약관 및 정책</CustomText>
+        <CustomText fontSize={16}>{t("setting.termsAndPolicies")}</CustomText>
         <Image source={rigthArrowIcon} style={styles.icon} />
       </Pressable>
 
       <View style={styles.button}>
-        <CustomText fontSize={16}>버전 정보 {appVersion}</CustomText>
+        <CustomText fontSize={16}>
+          {t("setting.version", { version: appVersion })}
+        </CustomText>
 
         {isOldVersion && (
           <Pressable onPress={handleOpenStore} style={styles.updateButton}>
             <CustomText color={colors.gray7} fontSize={12} fontWeight={"500"}>
-              업데이트
+              {t("setting.update")}
             </CustomText>
           </Pressable>
         )}
       </View>
 
       <Pressable onPress={() => setShowModal(true)} style={styles.button}>
-        <CustomText fontSize={16}>로그아웃</CustomText>
+        <CustomText fontSize={16}>{t("common:auth.logout")}</CustomText>
       </Pressable>
 
       <Pressable
@@ -179,7 +184,7 @@ export const Setting = () => {
           fontSize={15}
           textDecorationLine="underline"
         >
-          탈퇴하기
+          {t("setting.withdraw")}
         </CustomText>
       </Pressable>
     </View>

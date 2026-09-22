@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -29,6 +30,8 @@ export const CouponListBottomSheet = ({
   selectedCoupon,
   setSelectedCoupon,
 }: Props) => {
+  const { t } = useTranslation("benefit");
+
   // 쿠폰 선택
   const handleSelectCoupon = (value: Coupon) => () => {
     if (selectedCoupon?.id === value.id) {
@@ -59,7 +62,7 @@ export const CouponListBottomSheet = ({
     <CustomBottomSheet
       ref={ref}
       height={getResponsiveSize(650)}
-      title="쿠폰 선택"
+      title={t("couponSheet.title")}
       onClose={handleClose}
       hasCloseButton
     >
@@ -103,7 +106,9 @@ export const CouponListBottomSheet = ({
 
                 <View style={styles.row}>
                   <CustomText color={colors.gray6} fontSize={13}>
-                    {dayjs(item.expiredAt).format("YYYY.MM.DD")} 까지
+                    {t("coupon.expiresAt", {
+                      date: dayjs(item.expiredAt).format("YYYY.MM.DD"),
+                    })}
                   </CustomText>
                 </View>
               </Pressable>
@@ -117,7 +122,7 @@ export const CouponListBottomSheet = ({
               fontSize={20}
               fontWeight={"600"}
             >
-              사용 가능한 쿠폰이 없습니다
+              {t("coupon.empty")}
             </CustomText>
           </View>
         )}
@@ -131,7 +136,7 @@ export const CouponListBottomSheet = ({
         backgroundColor={colors.main}
       >
         <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-          쿠폰 적용하기
+          {t("couponSheet.apply")}
         </CustomText>
       </CustomButton>
     </CustomBottomSheet>

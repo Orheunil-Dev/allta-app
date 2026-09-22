@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import {
   CommonActions,
   RouteProp,
@@ -26,6 +27,8 @@ import { colors } from "@/styles";
 type InquiryDetailRouteProp = RouteProp<InquiryStackParamList, "InquiryDetail">;
 
 export const InquiryDetail = () => {
+  const { t } = useTranslation("mypage");
+
   const router = useRoute<InquiryDetailRouteProp>();
   const navigation = useNavigation();
 
@@ -59,7 +62,7 @@ export const InquiryDetail = () => {
     if (!inquiryData) return;
 
     if (inquiryData.data.isAnswered) {
-      ErrorToast("답변이 완료된 문의 내역은 삭제할 수 없습니다.");
+      ErrorToast(t("inquiry.deleteAnsweredError"));
       return setShowDeleteModal(false);
     }
 
@@ -73,7 +76,7 @@ export const InquiryDetail = () => {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["inquiries"] });
 
-          SuccessToast("문의 삭제가 완료되었습니다.");
+          SuccessToast(t("inquiry.deleteSuccess"));
           setShowDeleteModal(false);
 
           return navigation.dispatch(
@@ -86,9 +89,10 @@ export const InquiryDetail = () => {
         onError: (error: any) => {
           setShowDeleteModal(false);
 
-          return setErrorModal(
-            error.message ?? "문의 내역 삭제 중 오류가 발생했습니다."
-          );
+          return setErrorModal({
+            visible: true,
+            message: error?.message ?? t("inquiry.deleteError"),
+          });
         },
       }
     );
@@ -99,12 +103,12 @@ export const InquiryDetail = () => {
       <CustomModal
         visible={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
-        closeButtonText="취소"
+        closeButtonText={t("common:cancel")}
         onNext={handleDeleteInquiry}
-        nextButtonText="삭제"
+        nextButtonText={t("common:delete")}
       >
         <CustomText marginTop={16} fontSize={18} fontWeight={"600"}>
-          문의를 삭제하시겠습니까?
+          {t("inquiry.deleteConfirm")}
         </CustomText>
       </CustomModal>
 
@@ -136,7 +140,9 @@ export const InquiryDetail = () => {
                   }
                   fontWeight={"500"}
                 >
-                  {inquiryData.data.isAnswered ? "답변 완료" : "답변 대기"}
+                  {inquiryData.data.isAnswered
+                    ? t("inquiry.answered")
+                    : t("inquiry.pending")}
                 </CustomText>
               </View>
 
@@ -146,7 +152,7 @@ export const InquiryDetail = () => {
                   style={styles.deleteButton}
                 >
                   <CustomText color={colors.gray5} fontSize={13}>
-                    삭제
+                    {t("common:delete")}
                   </CustomText>
                 </Pressable>
               )}
@@ -184,7 +190,7 @@ export const InquiryDetail = () => {
                   color={colors.point2}
                   fontWeight={"500"}
                 >
-                  답변 완료
+                  {t("inquiry.answered")}
                 </CustomText>
               </View>
 
@@ -206,7 +212,7 @@ export const InquiryDetail = () => {
       ) : (
         <View style={styles.emptyBox}>
           <CustomText color={colors.gray5} fontSize={20} fontWeight={"600"}>
-            문의 내역이 없습니다.
+            {t("inquiry.empty")}
           </CustomText>
         </View>
       )}

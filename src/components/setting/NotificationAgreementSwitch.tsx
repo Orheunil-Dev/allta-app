@@ -1,4 +1,5 @@
 import { Alert, Linking, StyleSheet, Switch, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
 import {
   useNotificationControllerCheckPushTokenStored,
@@ -13,6 +14,8 @@ import { IS_NOTIFICATION_GRANTED } from "@/constants";
 import { colors } from "@/styles";
 
 export const NotificationAgreementSwitch = () => {
+  const { t } = useTranslation("mypage");
+
   const { SuccessToast, ErrorToast } = useToastMessage();
 
   const isNotificationGranted = mmkvStorage.getBoolean(IS_NOTIFICATION_GRANTED);
@@ -50,12 +53,12 @@ export const NotificationAgreementSwitch = () => {
 
       if (status !== "granted") {
         Alert.alert(
-          "알림 권한이 없습니다",
-          "앱 설정에서 알림 권한을 허용할 수 있습니다. 이동하시겠습니까?",
+          t("notification.permissionAlert.title"),
+          t("notification.permissionAlert.message"),
           [
-            { text: "닫기", style: "cancel" },
+            { text: t("common:close"), style: "cancel" },
             {
-              text: "설정",
+              text: t("notification.permissionAlert.settings"),
               onPress: () => Linking.openSettings(),
             },
           ]
@@ -78,11 +81,11 @@ export const NotificationAgreementSwitch = () => {
       },
       {
         onSuccess: () => {
-          SuccessToast("알림 수신 동의");
+          SuccessToast(t("notification.agreed"));
           refetch();
         },
         onError: () => {
-          ErrorToast("요청 중 오류가 발생했습니다.");
+          ErrorToast(t("requestError"));
         },
       }
     );
@@ -96,18 +99,18 @@ export const NotificationAgreementSwitch = () => {
 
     deletePushToken(undefined, {
       onSuccess: () => {
-        SuccessToast("알림 수신 해제");
+        SuccessToast(t("notification.disagreed"));
         refetch();
       },
       onError: () => {
-        ErrorToast("요청 중 오류가 발생했습니다.");
+        ErrorToast(t("requestError"));
       },
     });
   };
 
   return (
     <View style={styles.container}>
-      <CustomText fontSize={16}>이벤트 • 혜택 및 정보 알림</CustomText>
+      <CustomText fontSize={16}>{t("notification.label")}</CustomText>
 
       <Switch
         value={data?.isPushTokenStored && isNotificationGranted ? true : false}

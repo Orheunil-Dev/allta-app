@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
@@ -30,16 +31,14 @@ const registerFormSchema = z.object({
   carVendor: z.string(),
   carModel: z.string(),
   carType: z.string(),
-  carNumber: z
-    .string()
-    .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다."),
+  carNumber: z.string().regex(regexCarNumber),
 });
 
-const carNumberSchema = z
-  .string()
-  .regex(regexCarNumber, "올바른 차량번호 형식이 아닙니다.");
+const carNumberSchema = z.string().regex(regexCarNumber);
 
 export const CarRegister = () => {
+  const { t } = useTranslation("car");
+
   const carStackNavigation =
     useNavigation<NativeStackNavigationProp<CarStackParamList>>();
 
@@ -130,7 +129,7 @@ export const CarRegister = () => {
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "프로필 수정 중 에러가 발생했습니다.",
+            message: error?.message ?? t("register.error"),
           });
         },
       }
@@ -139,13 +138,17 @@ export const CarRegister = () => {
 
   const isValid = registerFormSchema.safeParse(registerForm).success;
 
+  const isCarNumberInvalid =
+    registerForm.carNumber.length > 6 &&
+    !carNumberSchema.safeParse(registerForm.carNumber).success;
+
   return (
     <CustomSafeAreaView edges={["bottom"]}>
       <CustomKeyboardAvoidingView>
         {/* 제조사 바텀시트 */}
         <CustomBottomSheet
           ref={brandSelectRef}
-          title="제조사"
+          title={t("form.vendor")}
           hasCloseButton
           onClose={handleCloseBrandSelect}
         >
@@ -183,7 +186,7 @@ export const CarRegister = () => {
         {/* 차량모델 바텀시트 */}
         <CustomBottomSheet
           ref={modelSelectRef}
-          title="모델"
+          title={t("form.model")}
           hasCloseButton
           onClose={handleCloseModelSelect}
         >
@@ -217,7 +220,7 @@ export const CarRegister = () => {
           <ScrollView showsVerticalScrollIndicator={false}>
             {/* 제조사 선택 */}
             <CustomText fontSize={16} fontWeight={"500"}>
-              제조사
+              {t("form.vendor")}
             </CustomText>
             <Pressable
               style={styles.selectInput}
@@ -227,7 +230,7 @@ export const CarRegister = () => {
                 <CustomTextInput
                   value={registerForm.carVendor}
                   onChangeText={() => {}}
-                  placeholder="선택"
+                  placeholder={t("common:select")}
                 />
               </View>
 
@@ -236,7 +239,7 @@ export const CarRegister = () => {
 
             {/* 차량모델 선택 */}
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              모델
+              {t("form.model")}
             </CustomText>
             <Pressable
               style={styles.selectInput}
@@ -246,7 +249,7 @@ export const CarRegister = () => {
                 <CustomTextInput
                   value={registerForm.carModel}
                   onChangeText={() => {}}
-                  placeholder="선택"
+                  placeholder={t("common:select")}
                 />
               </View>
 
@@ -255,7 +258,7 @@ export const CarRegister = () => {
 
             {/* 차량번호 입력 */}
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              차량번호
+              {t("form.carNumber")}
             </CustomText>
             <CustomTextInput
               value={registerForm.carNumber}
@@ -264,12 +267,9 @@ export const CarRegister = () => {
               }
               maxLength={10}
               errorMessage={
-                registerForm.carNumber.length > 6
-                  ? carNumberSchema.safeParse(registerForm.carNumber).error
-                      ?.issues?.[0]?.message
-                  : undefined
+                isCarNumberInvalid ? t("form.carNumberInvalid") : undefined
               }
-              placeholder="예) 12가3456"
+              placeholder={t("form.carNumberPlaceholder")}
               onReset={() => handleChangeRegisterForm("carNumber", "")}
             />
 
@@ -284,8 +284,7 @@ export const CarRegister = () => {
 
               <View style={{ flex: 1, marginLeft: getResponsiveSize(8) }}>
                 <CustomText color={colors.gray5} fontSize={14}>
-                  찾으시는 차량 모델이 목록에 없는 경우, 고객센터로 문의해
-                  주세요.
+                  {t("form.modelNotFound")}
                 </CustomText>
               </View>
             </View>
@@ -306,7 +305,7 @@ export const CarRegister = () => {
                 fontSize={16}
                 fontWeight={"600"}
               >
-                등록하기
+                {t("register.submit")}
               </CustomText>
             )}
           </CustomButton>

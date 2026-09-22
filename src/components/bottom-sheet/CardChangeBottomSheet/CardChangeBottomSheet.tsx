@@ -1,5 +1,6 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { GetCardListResponse } from "@/api/models";
 import {
@@ -29,6 +30,8 @@ export const CardChangeBottomSheet = ({
   cardData,
   onPressRegister,
 }: Props) => {
+  const { t } = useTranslation("payment");
+
   // 카드 선택
   const handleSelectCard = (value: Card) => () => {
     if (card?.id === value.id) {
@@ -46,7 +49,7 @@ export const CardChangeBottomSheet = ({
     <CustomBottomSheet
       ref={ref}
       height={getResponsiveSize(500)}
-      title="카드 선택"
+      title={t("card.selectTitle")}
       onClose={handleClose}
       hasCloseButton
     >
@@ -94,7 +97,7 @@ export const CardChangeBottomSheet = ({
               fontSize={20}
               fontWeight={"600"}
             >
-              카드를 등록해주세요
+              {t("card.registerPrompt")}
             </CustomText>
           </View>
         )}
@@ -108,7 +111,7 @@ export const CardChangeBottomSheet = ({
         backgroundColor={colors.main}
       >
         <CustomText color={colors.white} fontSize={18} fontWeight={"600"}>
-          결제수단 변경하기
+          {t("cardChange.changeMethod")}
         </CustomText>
       </CustomButton>
     </CustomBottomSheet>

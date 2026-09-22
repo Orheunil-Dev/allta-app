@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useCardControllerGetCardList } from "@/api/card/card";
 import { usePassControllerUpdateSubscriptionCard } from "@/api/pass/pass";
@@ -33,6 +34,8 @@ export const CardChangeButton = ({
   cardDisplayNumber,
   subscriptionRefetch,
 }: Props) => {
+  const { t } = useTranslation("pass");
+
   const containerNavigation =
     useNavigation<NativeStackNavigationProp<ContainerStackParamList>>();
 
@@ -66,7 +69,7 @@ export const CardChangeButton = ({
   const handleChangeCard = () => {
     if (!card) {
       setShowModal(false);
-      return ErrorToast("결제수단이 선택되지 않았습니다.");
+      return ErrorToast(t("cardChange.notSelected"));
     }
 
     if (
@@ -74,7 +77,7 @@ export const CardChangeButton = ({
       card.cardCompany === cardCompany
     ) {
       setShowModal(false);
-      return ErrorToast("기존 결제수단과 동일한 카드입니다.");
+      return ErrorToast(t("cardChange.sameCard"));
     }
 
     bottomSheetRef.current?.close();
@@ -88,12 +91,12 @@ export const CardChangeButton = ({
       },
       {
         onSuccess: () => {
-          SuccessToast("결제수단이 변경되었습니다.");
+          SuccessToast(t("cardChange.success"));
           setShowModal(false);
           return subscriptionRefetch();
         },
         onError: () => {
-          ErrorToast("결제수단이 변경 중 오류가 발생했습니다.");
+          ErrorToast(t("cardChange.error"));
           return setShowModal(false);
         },
       }
@@ -123,22 +126,21 @@ export const CardChangeButton = ({
       <CustomModal
         visible={showModal}
         onClose={() => setShowModal(false)}
-        closeButtonText="취소"
+        closeButtonText={t("common:cancel")}
         onNext={handleChangeCard}
         isNextButtonDisable={updateSubscriptionCardLoading}
-        nextButtonText="변경하기"
+        nextButtonText={t("cardChange.confirmButton")}
       >
         <CustomText fontSize={18} fontWeight={"600"}>
-          카드 변경
+          {t("cardChange.modalTitle")}
+        </CustomText>
+
+        <CustomText marginTop={8} textAlign="center" fontSize={16}>
+          {t("cardChange.modalMessage")}
         </CustomText>
 
         <CustomText marginTop={8} fontSize={16}>
-          다음 결제일부터 새로운 결제수단으로
-        </CustomText>
-        <CustomText fontSize={16}>자동 결제가 진행됩니다.</CustomText>
-
-        <CustomText marginTop={8} fontSize={16}>
-          변경하시겠습니까?
+          {t("cardChange.modalConfirm")}
         </CustomText>
       </CustomModal>
 
@@ -151,7 +153,7 @@ export const CardChangeButton = ({
       />
 
       <CustomText color={colors.gray7} fontSize={12} fontWeight={"500"}>
-        변경
+        {t("common:change")}
       </CustomText>
     </Pressable>
   );

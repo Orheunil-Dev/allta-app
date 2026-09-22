@@ -1,11 +1,6 @@
-type Faqs = {
-  category: string;
-  question: string;
-  answer: string;
-  height?: number;
-};
+import { Faq } from "./types";
 
-export const faqs: Faqs[] = [
+export const faqs: Faq[] = [
   {
     category: "회원/로그인",
     question: "회원가입 방법이 궁금해요.",

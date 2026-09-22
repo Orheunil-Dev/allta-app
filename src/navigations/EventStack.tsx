@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { EventDetail, EventList } from "@/screens/Event";
 
@@ -12,13 +13,15 @@ export type EventStackParamList = {
 const Stack = createNativeStackNavigator();
 
 export const EventStack = () => {
+  const { t } = useTranslation("nav");
+
   return (
     <Stack.Navigator initialRouteName="EventList">
       <Stack.Screen
         name="EventList"
         component={EventList}
         options={{
-          header: () => <CustomHeader title="이벤트" showBackButton />,
+          header: () => <CustomHeader title={t("event.list")} showBackButton />,
         }}
       />
       <Stack.Screen

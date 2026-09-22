@@ -14,15 +14,17 @@ import {
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Image, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 type QrScanRouteProps = RouteProp<QrScanStackParamList, "QrScanError">;
 
 interface PassPrice {
   AUTO?: Record<string, number>;
-  HANDS?: Record<string, number>;
 }
 
 export const QrScanError = () => {
+  const { t } = useTranslation("scan");
+
   const router = useRoute<QrScanRouteProps>();
 
   const navigation = useNavigation();
@@ -44,33 +46,19 @@ export const QrScanError = () => {
 
     const passPrice = storeData?.store.passPrice as PassPrice;
 
-    if (passPrice?.AUTO) {
-      return containerNavigation.navigate("StoreStack", {
-        screen: "StoreDetail",
-        params: {
-          serviceType: "AUTO",
-          storeId: storeData.store.id,
-          storeName: storeData.store.name,
-          ...(storeData.store.storeGroupId && {
-            storeGroupId: storeData.store.storeGroupId,
-          }),
-        },
-      });
-    } else if (passPrice?.HANDS) {
-      return containerNavigation.navigate("StoreStack", {
-        screen: "StoreDetail",
-        params: {
-          serviceType: "HANDS",
-          storeId: storeData.store.id,
-          storeName: storeData.store.name,
-          ...(storeData.store.storeGroupId && {
-            storeGroupId: storeData.store.storeGroupId,
-          }),
-        },
-      });
-    } else {
-      return handleRouteHome();
-    }
+    if (!passPrice?.AUTO) return handleRouteHome();
+
+    return containerNavigation.navigate("StoreStack", {
+      screen: "StoreDetail",
+      params: {
+        serviceType: "AUTO",
+        storeId: storeData.store.id,
+        storeName: storeData.store.name,
+        ...(storeData.store.storeGroupId && {
+          storeGroupId: storeData.store.storeGroupId,
+        }),
+      },
+    });
   };
 
   // 홈으로 이동
@@ -94,11 +82,11 @@ export const QrScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              유효하지 않은 QR코드입니다.
+              {t("qrScanError.invalidQr.title")}
             </CustomText>
 
             <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              QR코드를 다시 확인해주세요.
+              {t("qrScanError.invalidQr.description")}
             </CustomText>
           </View>
         );
@@ -107,13 +95,15 @@ export const QrScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              이용 가능한 이용권이 없습니다.
+              {t("qrScanError.noAvailablePass.title")}
             </CustomText>
-            <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              해당 주유소에서 사용할 수 있는 이용권이 없습니다.
-            </CustomText>
-            <CustomText color={colors.gray7} fontSize={16}>
-              이용권을 구매하거나, 다른 매장을 이용해 주세요.
+            <CustomText
+              marginTop={8}
+              textAlign="center"
+              color={colors.gray7}
+              fontSize={16}
+            >
+              {t("qrScanError.noAvailablePass.description")}
             </CustomText>
           </View>
         );
@@ -122,11 +112,11 @@ export const QrScanError = () => {
         return (
           <View style={styles.errorMessage}>
             <CustomText marginTop={20} fontSize={22} fontWeight={"600"}>
-              QR스캔 중 오류가 발생했습니다.
+              {t("qrScanError.unknown.title")}
             </CustomText>
 
             <CustomText marginTop={8} color={colors.gray7} fontSize={16}>
-              QR코드를 다시 확인해주세요.
+              {t("qrScanError.unknown.description")}
             </CustomText>
           </View>
         );
@@ -157,7 +147,7 @@ export const QrScanError = () => {
               borderWidth={1}
             >
               <CustomText fontSize={18} fontWeight={"600"}>
-                이용권 구매하러 가기
+                {t("qrScanError.goToPurchase")}
               </CustomText>
             </CustomButton>
           </View>
@@ -172,7 +162,7 @@ export const QrScanError = () => {
               borderWidth={1}
             >
               <CustomText fontSize={18} fontWeight={"600"}>
-                다시 촬영하기
+                {t("qrScanError.rescan")}
               </CustomText>
             </CustomButton>
           </View>

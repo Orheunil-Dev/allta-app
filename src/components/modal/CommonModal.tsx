@@ -1,5 +1,6 @@
 import { CustomText } from "@/components/ui/CustomText";
 import { useAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 import { commonModalAtom } from "@/jotai";
 import { getResponsiveSize } from "@/utils";
 import {
@@ -14,6 +15,8 @@ import { colors } from "@/styles";
 import { CustomButton } from "@/components/ui/CustomButton";
 
 export const CommonModal = () => {
+  const { t } = useTranslation("common");
+
   const [modal, setModal] = useAtom(commonModalAtom);
 
   const handleClose = () => {
@@ -46,7 +49,7 @@ export const CommonModal = () => {
               onPress={handleClose}
             >
               <CustomText fontSize={15} fontWeight="500">
-                확인
+                {t("confirm")}
               </CustomText>
             </CustomButton>
           </View>

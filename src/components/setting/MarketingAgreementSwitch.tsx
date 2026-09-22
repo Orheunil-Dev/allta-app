@@ -1,4 +1,5 @@
 import { StyleSheet, Switch, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import {
   useUserControllerGetMarketingAgreementStatus,
   useUserControllerUpdateMarketingAgreementStatus,
@@ -9,6 +10,8 @@ import { CustomText } from "../ui/CustomText";
 import { colors } from "@/styles";
 
 export const MarketingAgreementSwitch = () => {
+  const { t } = useTranslation("mypage");
+
   const { SuccessToast, ErrorToast } = useToastMessage();
 
   // 마케팅 활용 여부 조회 API
@@ -35,12 +38,12 @@ export const MarketingAgreementSwitch = () => {
       {
         onSuccess: () => {
           SuccessToast(
-            `마케팅 정보 수신 ${data.isMarketing ? "해제" : "동의"}`
+            data.isMarketing ? t("marketing.disagreed") : t("marketing.agreed")
           );
           refetch();
         },
         onError: () => {
-          ErrorToast("요청 중 오류가 발생했습니다.");
+          ErrorToast(t("requestError"));
         },
       }
     );
@@ -48,9 +51,7 @@ export const MarketingAgreementSwitch = () => {
 
   return (
     <View style={styles.container}>
-      <CustomText fontSize={16}>
-        마케팅 활용 및 광고성 정보 수신 동의
-      </CustomText>
+      <CustomText fontSize={16}>{t("marketing.label")}</CustomText>
 
       <Switch
         value={data?.isMarketing ?? false}

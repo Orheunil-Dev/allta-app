@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { StoreDetail, StoreList } from "@/screens/Store";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import { ServiceType } from "@/types";
@@ -19,13 +20,15 @@ export type StoreStackParamList = {
 const Stack = createNativeStackNavigator<StoreStackParamList>();
 
 export const StoreStack = () => {
+  const { t } = useTranslation("nav");
+
   return (
     <Stack.Navigator initialRouteName="StoreList">
       <Stack.Screen
         name="StoreList"
         component={StoreList}
         options={{
-          header: () => <CustomHeader title="매장 둘러보기" showBackButton />,
+          header: () => <CustomHeader title={t("store.list")} showBackButton />,
         }}
       />
       <Stack.Screen

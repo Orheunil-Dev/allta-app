@@ -4,6 +4,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
+import { useTranslation } from "react-i18next";
 import { getResponsiveSize } from "@/utils";
 import { CustomText } from "@/components/ui/CustomText";
 import { checkIcon, grayDownArrow } from "@/assets/images";
@@ -29,6 +30,8 @@ export const PassInfo = ({
   standardMaxUsage,
   passPrice,
 }: Props) => {
+  const { t } = useTranslation("store");
+
   const [showPolicy, setShowPolicy] = useState<PassType | undefined>(undefined);
 
   const prices = passPrice?.[serviceType] as PassPrice;
@@ -78,7 +81,7 @@ export const PassInfo = ({
           >
             <Pressable onPress={onPressPass("PREMIUM")}>
               <CustomText fontSize={16} fontWeight={"600"}>
-                프리미엄
+                {t("pass.premium.title")}
               </CustomText>
               <CustomText
                 marginTop={4}
@@ -87,21 +90,24 @@ export const PassInfo = ({
                 fontSize={20}
                 fontWeight={"600"}
               >
-                월 {Math.min(...Object.values(prices.PREMIUM)).toLocaleString()}
-                원 ~
+                {t("pass.monthlyPriceFrom", {
+                  price: Math.min(
+                    ...Object.values(prices.PREMIUM)
+                  ).toLocaleString(),
+                })}
               </CustomText>
 
               <View style={styles.row}>
                 <Image source={checkIcon} style={styles.check} />
                 <CustomText color={colors.gray7} fontSize={15}>
-                  한 달간 매일 세차 가능
+                  {t("pass.premium.dailyWash")}
                 </CustomText>
               </View>
 
               <View style={[styles.row, { marginTop: getResponsiveSize(4) }]}>
                 <Image source={checkIcon} style={styles.check} />
                 <CustomText color={colors.gray7} fontSize={15}>
-                  월마다 자동 결제
+                  {t("pass.premium.autoBilling")}
                 </CustomText>
               </View>
             </Pressable>
@@ -115,7 +121,7 @@ export const PassInfo = ({
                   fontSize={15}
                   fontWeight={"500"}
                 >
-                  이용안내
+                  {t("pass.guide")}
                 </CustomText>
 
                 <Animated.Image
@@ -128,16 +134,16 @@ export const PassInfo = ({
                 style={[styles.accordianBox, accordianAnimatedStyle("PREMIUM")]}
               >
                 <CustomText color={colors.gray5} fontSize={13}>
-                  · 이용권은 타인, 또는 다른 아이디(계정)로 양도불가
+                  {t("pass.policy.noTransfer")}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={13}>
-                  · 이용권에 표기된 매장에서 1일 1회 세차 가능
+                  {t("pass.policy.premiumUsage")}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={13}>
-                  · 이용권당 표기된 차량 1대만 이용가능
+                  {t("pass.policy.singleCar")}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={13}>
-                  · 추가로 각 매장별 별도 안내사항 참조
+                  {t("pass.policy.storeNotice")}
                 </CustomText>
               </Animated.View>
             </Pressable>
@@ -156,7 +162,7 @@ export const PassInfo = ({
           >
             <Pressable onPress={onPressPass("STANDARD")}>
               <CustomText fontSize={16} fontWeight={"600"}>
-                스탠다드
+                {t("pass.standard.title")}
               </CustomText>
               <CustomText
                 marginTop={4}
@@ -165,22 +171,24 @@ export const PassInfo = ({
                 fontSize={20}
                 fontWeight={"600"}
               >
-                월{" "}
-                {Math.min(...Object.values(prices.STANDARD)).toLocaleString()}원
-                ~
+                {t("pass.monthlyPriceFrom", {
+                  price: Math.min(
+                    ...Object.values(prices.STANDARD)
+                  ).toLocaleString(),
+                })}
               </CustomText>
 
               <View style={styles.row}>
                 <Image source={checkIcon} style={styles.check} />
                 <CustomText color={colors.gray7} fontSize={15}>
-                  월 {standardMaxUsage}회 세차 가능
+                  {t("pass.standard.monthlyWash", { count: standardMaxUsage })}
                 </CustomText>
               </View>
 
               <View style={[styles.row, { marginTop: getResponsiveSize(4) }]}>
                 <Image source={checkIcon} style={styles.check} />
                 <CustomText color={colors.gray7} fontSize={15}>
-                  합리적인 가격으로 세차 가능
+                  {t("pass.standard.reasonablePrice")}
                 </CustomText>
               </View>
             </Pressable>
@@ -197,7 +205,7 @@ export const PassInfo = ({
                   fontSize={15}
                   fontWeight={"500"}
                 >
-                  이용안내
+                  {t("pass.guide")}
                 </CustomText>
 
                 <Animated.Image
@@ -213,16 +221,16 @@ export const PassInfo = ({
                 ]}
               >
                 <CustomText color={colors.gray5} fontSize={13}>
-                  · 이용권은 타인, 또는 다른 아이디(계정)로 양도불가
+                  {t("pass.policy.noTransfer")}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={13}>
-                  {`· 이용권에 표기된 매장에서 ${standardMaxUsage}회 세차 가능`}
+                  {t("pass.policy.standardUsage", { count: standardMaxUsage })}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={13}>
-                  · 이용권당 표기된 차량 1대만 이용가능
+                  {t("pass.policy.singleCar")}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={13}>
-                  · 추가로 각 매장별 별도 안내사항 참조
+                  {t("pass.policy.storeNotice")}
                 </CustomText>
               </Animated.View>
             </View>
@@ -241,7 +249,7 @@ export const PassInfo = ({
           >
             <Pressable onPress={onPressPass("TICKET")}>
               <CustomText fontSize={16} fontWeight={"600"}>
-                일회권
+                {t("pass.ticket.title")}
               </CustomText>
               <CustomText
                 marginTop={4}
@@ -250,20 +258,24 @@ export const PassInfo = ({
                 fontSize={20}
                 fontWeight={"600"}
               >
-                {Math.min(...Object.values(prices.TICKET)).toLocaleString()}원 ~
+                {t("priceFrom", {
+                  price: Math.min(
+                    ...Object.values(prices.TICKET)
+                  ).toLocaleString(),
+                })}
               </CustomText>
 
               <View style={styles.row}>
                 <Image source={checkIcon} style={styles.check} />
                 <CustomText color={colors.gray7} fontSize={15}>
-                  부담 없는 단일 이용권
+                  {t("pass.ticket.singleUse")}
                 </CustomText>
               </View>
 
               <View style={[styles.row, { marginTop: getResponsiveSize(4) }]}>
                 <Image source={checkIcon} style={styles.check} />
                 <CustomText color={colors.gray7} fontSize={15}>
-                  원하는 날, 1회 세차
+                  {t("pass.ticket.anyDay")}
                 </CustomText>
               </View>
             </Pressable>
@@ -280,7 +292,7 @@ export const PassInfo = ({
                   fontSize={15}
                   fontWeight={"500"}
                 >
-                  이용안내
+                  {t("pass.guide")}
                 </CustomText>
 
                 <Animated.Image
@@ -293,16 +305,16 @@ export const PassInfo = ({
                 style={[styles.accordianBox, accordianAnimatedStyle("TICKET")]}
               >
                 <CustomText color={colors.gray5} fontSize={14}>
-                  · 이용권은 타인, 또는 다른 아이디(계정)로 양도불가
+                  {t("pass.policy.noTransfer")}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={14}>
-                  · 이용권에 표기된 매장에서 1회 세차 가능
+                  {t("pass.policy.ticketUsage")}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={14}>
-                  · 이용권당 표기된 차량 1대만 이용가능
+                  {t("pass.policy.singleCar")}
                 </CustomText>
                 <CustomText color={colors.gray5} fontSize={14}>
-                  · 추가로 각 매장별 별도 안내사항 참조
+                  {t("pass.policy.storeNotice")}
                 </CustomText>
               </Animated.View>
             </View>

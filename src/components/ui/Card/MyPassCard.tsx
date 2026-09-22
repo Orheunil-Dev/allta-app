@@ -1,6 +1,7 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { PassStackParamList } from "@/navigations";
 import {
   formatPassType,
@@ -32,6 +33,8 @@ export const MyPassCard = ({
   usage,
   maxUsage,
 }: Props) => {
+  const { t } = useTranslation("pass");
+
   const passStackNavigation =
     useNavigation<NativeStackNavigationProp<PassStackParamList>>();
 
@@ -65,7 +68,7 @@ export const MyPassCard = ({
       <View style={styles.bottom}>
         <View style={styles.row}>
           <CustomText color={colors.gray5} fontSize={15} fontWeight={"500"}>
-            매장
+            {t("labels.store")}
           </CustomText>
 
           <View style={{ flexDirection: "row" }}>
@@ -77,7 +80,7 @@ export const MyPassCard = ({
 
         <View style={styles.row}>
           <CustomText color={colors.gray5} fontSize={15} fontWeight={"500"}>
-            사용기한
+            {t("labels.validPeriod")}
           </CustomText>
 
           <View style={{ flexDirection: "row" }}>
@@ -90,7 +93,7 @@ export const MyPassCard = ({
         {type === "STANDARD" && (
           <View style={styles.row}>
             <CustomText color={colors.gray5} fontSize={15} fontWeight={"500"}>
-              남은 횟수
+              {t("labels.remainingCount")}
             </CustomText>
 
             <View style={{ flexDirection: "row" }}>
@@ -106,7 +109,7 @@ export const MyPassCard = ({
                 {formatUsageLeft(usage ?? 0, maxUsage ?? 0)}
               </CustomText>
               <CustomText fontSize={15} fontWeight={"500"}>
-                /{maxUsage} 회
+                {t("labels.countOf", { max: maxUsage })}
               </CustomText>
             </View>
           </View>

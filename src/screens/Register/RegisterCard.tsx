@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   CommonActions,
@@ -30,29 +31,38 @@ import { colors } from "@/styles";
 
 type RegisterCardRouteProp = RouteProp<LoginStackParamList, "RegisterCard">;
 
-// 유효성 검사
-const registerFormSchema = z.object({
-  cardNumber: z
-    .string()
-    .trim()
-    .min(18, "올바른 카드 번호를 입력해주세요.")
-    .max(19, "올바른 카드 번호를 입력해주세요."),
-  expiration: z.string().trim().length(7, "올바른 유효 기간을 입력해주세요."),
-  cardPassword: z
-    .string()
-    .trim()
-    .length(2, "올바른 카드 비밀번호를 입력해주세요."),
-  identityNumber: z
-    .string()
-    .trim()
-    .refine(
-      (val) => val.length === 6 || val.length === 10,
-      "올바른 생년월일을 입력해주세요.",
-    ),
-});
-
 export const RegisterCard = () => {
   const route = useRoute<RegisterCardRouteProp>();
+
+  const { t } = useTranslation("auth");
+
+  // 유효성 검사
+  const registerFormSchema = useMemo(
+    () =>
+      z.object({
+        cardNumber: z
+          .string()
+          .trim()
+          .min(18, t("validation.cardNumberInvalid"))
+          .max(19, t("validation.cardNumberInvalid")),
+        expiration: z
+          .string()
+          .trim()
+          .length(7, t("validation.expirationInvalid")),
+        cardPassword: z
+          .string()
+          .trim()
+          .length(2, t("validation.cardPasswordInvalid")),
+        identityNumber: z
+          .string()
+          .trim()
+          .refine(
+            (val) => val.length === 6 || val.length === 10,
+            t("validation.birthDateInvalid"),
+          ),
+      }),
+    [t],
+  );
 
   const loginStackNavigation =
     useNavigation<NativeStackNavigationProp<LoginStackParamList>>();
@@ -142,7 +152,8 @@ export const RegisterCard = () => {
         onError: (error: any) => {
           setErrorModal({
             visible: true,
-            message: error?.message ?? "추가정보 등록에 실패했습니다.",
+            message:
+              error?.message ?? t("register.card.error.registerFailed"),
           });
         },
       },
@@ -155,11 +166,11 @@ export const RegisterCard = () => {
         <View style={styles.container}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <CustomText fontSize={24} fontWeight={"600"}>
-              결제할 카드를 등록해주세요.
+              {t("register.card.title")}
             </CustomText>
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              카드번호
+              {t("register.card.cardNumber")}
             </CustomText>
             <SignUpTextInput
               value={registerForm.cardNumber}
@@ -172,7 +183,7 @@ export const RegisterCard = () => {
             />
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              유효기간
+              {t("register.card.expiration")}
             </CustomText>
             <SignUpTextInput
               value={registerForm.expiration}
@@ -185,7 +196,7 @@ export const RegisterCard = () => {
             />
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              비밀번호
+              {t("register.card.password")}
             </CustomText>
             <SignUpTextInput
               value={registerForm.cardPassword}
@@ -195,11 +206,11 @@ export const RegisterCard = () => {
               maxLength={2}
               keyboardType="number-pad"
               secureTextEntry={true}
-              placeholder="앞 두자리"
+              placeholder={t("register.card.passwordPlaceholder")}
             />
 
             <CustomText marginTop={32} fontSize={16} fontWeight={"500"}>
-              생년월일
+              {t("register.card.birthDate")}
             </CustomText>
             <SignUpTextInput
               value={registerForm.identityNumber}
@@ -208,7 +219,7 @@ export const RegisterCard = () => {
               }
               maxLength={10}
               keyboardType="number-pad"
-              placeholder="생년월일 또는 사업자등록번호"
+              placeholder={t("register.card.birthDatePlaceholder")}
             />
           </ScrollView>
 
@@ -226,7 +237,7 @@ export const RegisterCard = () => {
                 fontSize={16}
                 fontWeight={"600"}
               >
-                다음
+                {t("common:next")}
               </CustomText>
             )}
           </CustomButton>
@@ -247,7 +258,7 @@ export const RegisterCard = () => {
           textAlign="center"
           marginBottom={16}
         >
-          건너뛰기
+          {t("skip")}
         </CustomText>
       </Pressable>
     </CustomSafeAreaView>

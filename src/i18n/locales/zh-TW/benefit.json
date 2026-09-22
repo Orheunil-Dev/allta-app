@@ -1,0 +1,43 @@
+{
+  "coupon": {
+    "codeRequired": "請輸入優惠碼。",
+    "registered": "優惠券已登錄。",
+    "codePlaceholder": "輸入優惠碼",
+    "register": "登錄優惠券",
+    "onPurchase": "購買{{passType}}時適用",
+    "expiresAt": "有效期限至 {{date}}",
+    "empty": "沒有可用的優惠券。"
+  },
+  "couponSheet": {
+    "title": "選擇優惠券",
+    "apply": "套用優惠券"
+  },
+  "referral": {
+    "codeLength": "推薦碼為 6 碼。",
+    "ownCode": "無法登錄自己的推薦碼。",
+    "invalidCode": "推薦碼無效。",
+    "registered": "推薦碼已登錄。",
+    "registerError": "登錄推薦碼時發生錯誤。",
+    "copied": "推薦碼已複製。",
+    "myCode": "我的推薦碼",
+    "shareKakao": "用 KakaoTalk 邀請",
+    "copyCode": "複製推薦碼",
+    "registerTitle": "登錄推薦碼",
+    "registerDescription": "推薦碼輸入後無法變更。",
+    "codePlaceholder": "輸入推薦碼",
+    "registerCode": "登錄代碼",
+    "notice": {
+      "title": "注意事項",
+      "oneTimeOnly": "推薦碼於註冊後僅可登錄 1 次，之後無法修改。",
+      "noSelfCode": "無法將自己的推薦碼登錄給自己。",
+      "fraud": "若以不正當方式（假帳號、重複登錄等）參與，將收回優惠，並可能限制服務使用。",
+      "subjectToChange": "本活動可能因本公司因素而變更或結束。"
+    }
+  },
+  "event": {
+    "title": "活動",
+    "ongoing": "進行中的活動",
+    "emptyTitle": "目前沒有進行中的活動。",
+    "emptyDescription": "活動消息即將公布，敬請期待！"
+  }
+}

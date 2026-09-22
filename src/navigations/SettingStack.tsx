@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 import { CustomHeader } from "@/components/layout/CustomHeader";
 import {
   NotificationSetting,
@@ -14,6 +15,7 @@ export type SettingStackParamList = {
   TermsList: undefined;
   TermsDetail: {
     title: string;
+    index: number;
   };
   Withdrawal: undefined;
 };
@@ -21,27 +23,29 @@ export type SettingStackParamList = {
 const Stack = createNativeStackNavigator<SettingStackParamList>();
 
 export const SettingStack = () => {
+  const { t } = useTranslation("nav");
+
   return (
     <Stack.Navigator initialRouteName="Setting">
       <Stack.Screen
         name="Setting"
         component={Setting}
         options={{
-          header: () => <CustomHeader title="앱 설정" showBackButton />,
+          header: () => <CustomHeader title={t("setting.setting")} showBackButton />,
         }}
       />
       <Stack.Screen
         name="NotificationSetting"
         component={NotificationSetting}
         options={{
-          header: () => <CustomHeader title="알림 설정" showBackButton />,
+          header: () => <CustomHeader title={t("setting.notification")} showBackButton />,
         }}
       />
       <Stack.Screen
         name="TermsList"
         component={TermsList}
         options={{
-          header: () => <CustomHeader title="약관 및 정책" showBackButton />,
+          header: () => <CustomHeader title={t("setting.terms")} showBackButton />,
         }}
       />
       <Stack.Screen

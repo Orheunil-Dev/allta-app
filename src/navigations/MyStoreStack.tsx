@@ -2,6 +2,7 @@ import { CustomHeader } from "@/components/layout/CustomHeader";
 import { MyStoreDetail, MyStoreList } from "@/screens/MyStore";
 import { formatEllipsis } from "@/utils";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 export type MyStoreStackParamList = {
   MyStoreList: undefined;
@@ -14,13 +15,15 @@ export type MyStoreStackParamList = {
 const Stack = createNativeStackNavigator<MyStoreStackParamList>();
 
 export const MyStoreStack = () => {
+  const { t } = useTranslation("nav");
+
   return (
     <Stack.Navigator initialRouteName="MyStoreList">
       <Stack.Screen
         name="MyStoreList"
         component={MyStoreList}
         options={{
-          header: () => <CustomHeader title="내 매장" showBackButton />,
+          header: () => <CustomHeader title={t("myStore.list")} showBackButton />,
         }}
       />
       <Stack.Screen
